@@ -1,23 +1,26 @@
 import React from 'react';
-import {View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import styled from 'styled-components';
+import AList from '../../organisms/Home/AList';
+import {ScrollView} from 'react-native';
 
 const AComponent = () => {
-  const dummy = [1, 2, 3, 4];
+  const dummyData = [
+    'Top 랭킹',
+    '5분 레시피',
+    '1월 혜택',
+    '늘어나는 광고',
+    'Top 랭킹',
+    '5분 레시피',
+    '1월 혜택',
+    '늘어나는 광고',
+  ];
+
   return (
-    <AComponentContainer>
-      {dummy.map((v, i) => {
-        <View />;
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+      {dummyData.map((v, i) => {
+        return <AList key={i} value={v} />;
       })}
-    </AComponentContainer>
+    </ScrollView>
   );
 };
 
-const AComponentContainer = styled(SafeAreaView)`
-  width: 83px;
-  height: 66px;
-  border-radius: 7px;
-  border: 1px solid black;
-`;
 export default AComponent;

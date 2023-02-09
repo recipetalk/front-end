@@ -1,6 +1,4 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import styled from 'styled-components';
 
 const CComponent = () => {
@@ -12,18 +10,16 @@ const CComponent = () => {
   );
 };
 
-const CComponentContainer = styled(SafeAreaView)`
-  border: 1px solid black;
+const CComponentContainer = styled.SafeAreaView`
   margin-top: 17px;
 `;
-const CustomText = styled(Text)`
+const CustomText = styled.Text`
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
-  margin: auto;
 `;
-const CustomView = styled(View)`
-  width: 323px;
+const CustomView = styled.View`
+  width: 100%;
   height: 170px;
 
   border-radius: 8px;

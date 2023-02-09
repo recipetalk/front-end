@@ -1,10 +1,8 @@
 import React from 'react';
 import {Text} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import styled from 'styled-components';
 
 const AList = props => {
-  console.log('alist', props.value);
   return (
     <AListContainer>
       <Text>{props.value}</Text>
@@ -12,10 +10,12 @@ const AList = props => {
   );
 };
 
-const AListContainer = styled(SafeAreaView)`
+const AListContainer = styled.SafeAreaView`
   width: 83px;
   height: 66px;
   border-radius: 7px;
-  background-color: gray;
+  border: 1px solid black;
+  margin-right: 12px;
 `;
+
 export default AList;

@@ -1,5 +1,4 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import SearchInput from '../components/atoms/SearchInput';
 import styled from 'styled-components';
 import Header from '../components/organisms/Header';
@@ -8,23 +7,26 @@ import BComponent from '../components/templates/Home/BComponent';
 import CComponent from '../components/templates/Home/CComponent';
 import DComponent from '../components/templates/Home/DComponent';
 import EComponent from '../components/templates/Home/EComponent';
-import {ScrollView} from 'react-native';
 
 const HomeScreen = () => {
   return (
     <HomeScreenContainer>
       <Header />
-      <ScrollView>
+      <ScrollViewContainer showsVerticalScrollIndicator={false}>
         <SearchInput />
         <AComponent />
         <BComponent />
         <CComponent />
         <DComponent />
         <EComponent />
-      </ScrollView>
+      </ScrollViewContainer>
     </HomeScreenContainer>
   );
 };
 
-const HomeScreenContainer = styled(SafeAreaView)``;
+const HomeScreenContainer = styled.SafeAreaView``;
+
+const ScrollViewContainer = styled.ScrollView`
+  margin: 0 15px 0 15px;
+`;
 export default HomeScreen;

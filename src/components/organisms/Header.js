@@ -1,16 +1,26 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {View} from 'react-native';
 import styled from 'styled-components';
 
 const Header = () => {
-  return <CustomHeader />;
+  return (
+    <CustomHeader>
+      <View>
+        <Logo source={require('../../assets/images/Logo.png')} />
+      </View>
+    </CustomHeader>
+  );
 };
 
-const CustomHeader = styled(SafeAreaView)`
-  width: 390px;
+const CustomHeader = styled.SafeAreaView`
+  width: 100%;
   height: 72px;
-
   background: #f09311;
+`;
+
+const Logo = styled.Image`
+  width: 110px;
+  margin: 20px;
 `;
 
 export default Header;
