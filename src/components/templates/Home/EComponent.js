@@ -1,34 +1,72 @@
 import React from 'react';
 import styled from 'styled-components';
+import EList from '../../organisms/Home/EList';
 
 const EComponent = () => {
+  const dummy = [
+    {
+      title: 1,
+      content: 'aaaa',
+    },
+    {
+      title: 2,
+      content: 'abbbbb',
+    },
+    {
+      title: 3,
+      content: 'ccccc',
+    },
+    {
+      title: 4,
+      content: 'adddd',
+    },
+    {
+      title: 5,
+      content: 'aeeeeeee',
+    },
+    {
+      title: 6,
+      content: 'ddddd',
+    },
+  ];
   return (
     <EComponentContainer>
-      <CustomText>1인 가구 레시피</CustomText>
-      <CustomView />
+      <Header>
+        <CustomText>1인 가구 레시피</CustomText>
+        <ViewMoreBtn>
+          <ViewMoreText>더보기</ViewMoreText>
+        </ViewMoreBtn>
+      </Header>
+      <EList value={dummy} />
     </EComponentContainer>
   );
 };
 
 const EComponentContainer = styled.SafeAreaView`
-  border: 1px solid black;
   margin-top: 17px;
-  margin-bottom: 100px;
+  margin-bottom: 70px;
+`;
+
+const Header = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 13px;
 `;
 
 const CustomText = styled.Text`
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
-  margin: auto;
 `;
 
-const CustomView = styled.View`
-  width: 323px;
-  height: 170px;
+const ViewMoreBtn = styled.TouchableOpacity``;
+const ViewMoreText = styled.Text`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
 
-  border-radius: 8px;
-  border: 1px solid black;
-  margin: auto;
+  color: #a9a9a9;
 `;
 export default EComponent;

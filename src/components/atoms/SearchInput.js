@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const SearchInput = () => {
   return (
     <SafeAreaView>
-      <CustomInput placeholder="검색어를 입력해주세요" />
+      <CustomInput paddingLeft={10} placeholder="검색어를 입력해주세요" />
     </SafeAreaView>
   );
 };
