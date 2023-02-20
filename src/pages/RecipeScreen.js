@@ -1,11 +1,32 @@
 import React from 'react';
-import {Text} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { Platform } from 'react-native';
+import styled from "styled-components/native";
+import SearchWithFilterHeader from '../components/organisms/RecipeHome/SearchWithFilterHeader';
+
 
 const RecipeScreen = () => {
-  <SafeAreaView>
-    <Text>레시피 페이지입니다.</Text>
-  </SafeAreaView>;
+  return(
+    <RecipeHomeScreenContainer>
+      <SearchWithFilterHeader/>
+      <InfoScrollContainer>
+
+      </InfoScrollContainer>
+    </RecipeHomeScreenContainer>
+  )
 };
+
+const RecipeHomeScreenContainer = Platform.OS == 'ios' ? styled.SafeAreaView`
+`: 
+
+styled.View`
+`
+;
+
+const InfoScrollContainer = styled.ScrollView`
+
+  background : #FFFFFF;
+  width: 100%;
+  height : 100%;
+`;
 
 export default RecipeScreen;
