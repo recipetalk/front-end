@@ -28,6 +28,7 @@ const BottomTab = () => {
         component={RecipeScreen}
         options={{
           title: '레시피',
+          headerShown: false,
         }}
       />
       <Tab.Screen

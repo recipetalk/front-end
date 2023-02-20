@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, SafeAreaView} from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 const DATA = [
   {

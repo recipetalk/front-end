@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, Text} from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 const DList = props => {
   return (
@@ -28,7 +28,7 @@ const DList = props => {
   );
 };
 
-const DListContainer = styled.SafeAreaView`
+const DListContainer = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: center;

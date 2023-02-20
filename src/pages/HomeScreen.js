@@ -1,6 +1,6 @@
 import React from 'react';
 import SearchInput from '../components/atoms/SearchInput';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import Header from '../components/organisms/Header';
 import AComponent from '../components/templates/Home/AComponent';
 import BComponent from '../components/templates/Home/BComponent';
