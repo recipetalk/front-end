@@ -29,7 +29,7 @@ export default function RadioButton({
     font-weight: 700;
     color: ${() => (item.id === clickedNumber ? clickedTextColor : textColor)};
     text-align: center;
-    line-height: 30;
+    line-height: 27px;
   `;
 
   return (
