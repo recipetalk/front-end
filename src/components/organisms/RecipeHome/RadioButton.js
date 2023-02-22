@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import React from 'react';
 
 export default function RadioButton({
   item,
@@ -19,11 +20,11 @@ export default function RadioButton({
     border-radius: 5px;
     margin: 0px 7px 15px 0px;
     border: ${() =>
-      borderColor && item.id === clickedNumber
+      borderColor !== undefined && item.id === clickedNumber
         ? '1px solid ' + clickedBorderColor
-        : '1px solid ' + borderColor
+        : borderColor === undefined
         ? 'none'
-        : borderColor};
+        : '1px solid ' + borderColor};
   `;
   const Label = styled.Text`
     font-weight: 700;

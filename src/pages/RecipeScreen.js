@@ -1,32 +1,18 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import styled from "styled-components/native";
+import {Platform} from 'react-native';
+import styled from 'styled-components/native';
 import SearchWithFilterHeader from '../components/organisms/RecipeHome/SearchWithFilterHeader';
-
+import RecentRecipeComponent from '../components/templates/RecipeHome/RecentRecipeComponent';
 
 const RecipeScreen = () => {
-  return(
+  return (
     <RecipeHomeScreenContainer>
-      <SearchWithFilterHeader/>
-      <InfoScrollContainer>
-
-      </InfoScrollContainer>
+      <SearchWithFilterHeader />
+      <RecentRecipeComponent />
     </RecipeHomeScreenContainer>
-  )
+  );
 };
 
-const RecipeHomeScreenContainer = Platform.OS == 'ios' ? styled.SafeAreaView`
-`: 
-
-styled.View`
-`
-;
-
-const InfoScrollContainer = styled.ScrollView`
-
-  background : #FFFFFF;
-  width: 100%;
-  height : 100%;
-`;
-
+const RecipeHomeScreenContainer =
+  Platform.OS === 'ios' ? styled.SafeAreaView`` : styled.View``;
 export default RecipeScreen;

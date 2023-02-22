@@ -12,12 +12,17 @@ const SearchWithFilterHeader = () => {
     Platform.OS === 'ios'
       ? styled.SafeAreaView`
           background: #f5f5f5;
-          margin: 0 15px;
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
         `
       : styled.View`
           background: #f5f5f5;
-          margin: 0 15px;
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
         `;
+
+  const SearchInputContainer = styled.View`
+    width: 90%;
+    margin: 0 auto;
+  `;
 
   const HorizontalScrollContainer = styled.ScrollView``;
 
@@ -81,7 +86,9 @@ const SearchWithFilterHeader = () => {
 
   return (
     <SearchHeaderContainer>
-      <SearchInput />
+      <SearchInputContainer>
+        <SearchInput />
+      </SearchInputContainer>
       <HorizontalScrollContainer horizontal={true}>
         {firstFilter.map(value => (
           <RadioButton
@@ -104,7 +111,7 @@ const SearchWithFilterHeader = () => {
             clickedTextColor={'#F09311'}
             clickedNumber={secondClicked.id}
             item={value}
-            borderColor={'#333333'}
+            borderColor={'#D8D8D8'}
             clickedBorderColor={'#F09311'}
           />
         ))}
