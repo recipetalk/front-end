@@ -1,12 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
 import reactotron from '../../config';
-import FirstFilterIsClickedReducer from './RecipeHome/FirstFilterClickedNum';
-import SecondFilterIsClickedReducer from './RecipeHome/SecondFilterClickedNum';
+import FirstFilterIsClickedReducer from './RecipeHome/FirstFilterClicked';
+import SecondFilterIsClickedReducer from './RecipeHome/SecondFilterClicked';
 
 export const store = configureStore({
   reducer: {
-    firstFilterClickedNum: FirstFilterIsClickedReducer,
-    secondFilterClickedNum: SecondFilterIsClickedReducer,
+    firstFilterClicked: FirstFilterIsClickedReducer,
+    secondFilterClicked: SecondFilterIsClickedReducer,
   },
   enhancers: [reactotron.createEnhancer()], //
 });

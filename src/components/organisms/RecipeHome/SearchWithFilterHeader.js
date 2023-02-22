@@ -4,8 +4,8 @@ import styled from 'styled-components/native';
 import SearchInput from '../../atoms/SearchInput';
 import RadioButton from './RadioButton';
 import {useSelector, useDispatch} from 'react-redux';
-import {setFirstClickedNum} from '../../../store/RecipeHome/FirstFilterClickedNum';
-import {setSecondClickedNum} from '../../../store/RecipeHome/SecondFilterClickedNum';
+import {setFirstClicked} from '../../../store/RecipeHome/FirstFilterClicked';
+import {setSecondClicked} from '../../../store/RecipeHome/SecondFilterClicked';
 
 const SearchWithFilterHeader = () => {
   const SearchHeaderContainer =
@@ -21,25 +21,25 @@ const SearchWithFilterHeader = () => {
 
   const HorizontalScrollContainer = styled.ScrollView``;
 
-  const firstClickedNum = useSelector(state => state.firstFilterClickedNum);
-  const secondClickedNum = useSelector(state => state.secondFilterClickedNum);
+  const firstClicked = useSelector(state => state.firstFilterClicked.value);
+  const secondClicked = useSelector(state => state.secondFilterClicked.value);
 
   const dispatch = useDispatch();
 
   const firstFilter = [
     {
       id: 1,
-      onPress: () => dispatch(setFirstClickedNum(1)),
+      onPress: () => dispatch(setFirstClicked({id: 1, title: '최신'})),
       title: '최신',
     },
     {
       id: 2,
-      onPress: () => dispatch(setFirstClickedNum(2)),
+      onPress: () => dispatch(setFirstClicked({id: 2, title: '인기'})),
       title: '인기',
     },
     {
       id: 3,
-      onPress: () => dispatch(setFirstClickedNum(3)),
+      onPress: () => dispatch(setFirstClicked({id: 3, title: '이웃'})),
       title: '이웃',
     },
   ];
@@ -47,27 +47,27 @@ const SearchWithFilterHeader = () => {
   const secondFilter = [
     {
       id: 1,
-      onPress: () => dispatch(setSecondClickedNum(1)),
+      onPress: () => dispatch(setSecondClicked({id: 1, title: '한식'})),
       title: '한식',
     },
     {
       id: 2,
-      onPress: () => dispatch(setSecondClickedNum(2)),
+      onPress: () => dispatch(setSecondClicked({id: 2, title: '건강'})),
       title: '건강',
     },
     {
       id: 3,
-      onPress: () => dispatch(setSecondClickedNum(3)),
+      onPress: () => dispatch(setSecondClicked({id: 3, title: '건강'})),
       title: '건강',
     },
     {
       id: 4,
-      onPress: () => dispatch(setSecondClickedNum(4)),
+      onPress: () => dispatch(setSecondClicked({id: 4, title: '건강'})),
       title: '건강',
     },
     {
       id: 5,
-      onPress: () => dispatch(setSecondClickedNum(5)),
+      onPress: () => dispatch(setSecondClicked({id: 5, title: '건강'})),
       title: '건강',
     },
   ];
@@ -90,7 +90,7 @@ const SearchWithFilterHeader = () => {
             clickedBackgroundColor={'#666666'}
             textColor={'#666666'}
             clickedTextColor={'#D8D8D8'}
-            clickedNumber={firstClickedNum}
+            clickedNumber={firstClicked.id}
             item={value}
           />
         ))}
@@ -102,7 +102,7 @@ const SearchWithFilterHeader = () => {
             clickedBackgroundColor={'#FFFFFF'}
             textColor={'#333333'}
             clickedTextColor={'#F09311'}
-            clickedNumber={secondClickedNum}
+            clickedNumber={secondClicked.id}
             item={value}
             borderColor={'#333333'}
             clickedBorderColor={'#F09311'}
