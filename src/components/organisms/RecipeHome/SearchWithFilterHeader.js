@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Platform} from 'react-native';
 import styled from 'styled-components/native';
 import SearchInput from '../../atoms/SearchInput';
 import RadioButton from './RadioButton';
+import {useSelector, useDispatch} from 'react-redux';
+import {setFirstClickedNum} from '../../../store/RecipeHome/FirstFilterClickedNum';
+import {setSecondClickedNum} from '../../../store/RecipeHome/SecondFilterClickedNum';
 
-// props는 차 후 ui 이동할 때 검색어가 남아있도록 하기 위함.
-const SearchWithFilterHeader = props => {
+const SearchWithFilterHeader = () => {
   const SearchHeaderContainer =
     Platform.OS === 'ios'
       ? styled.SafeAreaView`
@@ -19,23 +21,25 @@ const SearchWithFilterHeader = props => {
 
   const HorizontalScrollContainer = styled.ScrollView``;
 
-  let [firstIsClicked, setFirstIsClicked] = useState(1);
-  let [secondIsClicked, setSecondIsClicked] = useState(1);
+  const firstClickedNum = useSelector(state => state.firstFilterClickedNum);
+  const secondClickedNum = useSelector(state => state.secondFilterClickedNum);
+
+  const dispatch = useDispatch();
 
   const firstFilter = [
     {
       id: 1,
-      onPress: () => setFirstIsClicked(1),
+      onPress: () => dispatch(setFirstClickedNum(1)),
       title: '최신',
     },
     {
       id: 2,
-      onPress: () => setFirstIsClicked(2),
+      onPress: () => dispatch(setFirstClickedNum(2)),
       title: '인기',
     },
     {
       id: 3,
-      onPress: () => setFirstIsClicked(3),
+      onPress: () => dispatch(setFirstClickedNum(3)),
       title: '이웃',
     },
   ];
@@ -43,27 +47,27 @@ const SearchWithFilterHeader = props => {
   const secondFilter = [
     {
       id: 1,
-      onPress: () => setSecondIsClicked(1),
+      onPress: () => dispatch(setSecondClickedNum(1)),
       title: '한식',
     },
     {
       id: 2,
-      onPress: () => setSecondIsClicked(2),
+      onPress: () => dispatch(setSecondClickedNum(2)),
       title: '건강',
     },
     {
       id: 3,
-      onPress: () => setSecondIsClicked(3),
+      onPress: () => dispatch(setSecondClickedNum(3)),
       title: '건강',
     },
     {
       id: 4,
-      onPress: () => setSecondIsClicked(4),
+      onPress: () => dispatch(setSecondClickedNum(4)),
       title: '건강',
     },
     {
       id: 5,
-      onPress: () => setSecondIsClicked(5),
+      onPress: () => dispatch(setSecondClickedNum(5)),
       title: '건강',
     },
   ];
@@ -86,7 +90,7 @@ const SearchWithFilterHeader = props => {
             clickedBackgroundColor={'#666666'}
             textColor={'#666666'}
             clickedTextColor={'#D8D8D8'}
-            clickedNumber={firstIsClicked}
+            clickedNumber={firstClickedNum}
             item={value}
           />
         ))}
@@ -98,7 +102,7 @@ const SearchWithFilterHeader = props => {
             clickedBackgroundColor={'#FFFFFF'}
             textColor={'#333333'}
             clickedTextColor={'#F09311'}
-            clickedNumber={secondIsClicked}
+            clickedNumber={secondClickedNum}
             item={value}
             borderColor={'#333333'}
             clickedBorderColor={'#F09311'}
