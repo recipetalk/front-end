@@ -1,60 +1,60 @@
 import React from 'react';
-import {FlatList, SafeAreaView} from 'react-native';
-import styled from 'styled-components';
-
-const DATA = [
-  {
-    title: 1,
-  },
-  {
-    title: 2,
-  },
-  {
-    title: 3,
-  },
-  {
-    title: 4,
-  },
-  {
-    title: 5,
-  },
-  {
-    title: 6,
-  },
-];
-
-const Item = ({title}) => (
-  <TestView>
-    <TestText>{title}</TestText>
-  </TestView>
-);
+import {Image, Text} from 'react-native';
+import styled from 'styled-components/native';
 
 const EList = props => {
   return (
-    <SafeAreaView>
-      <FlatList
-        data={DATA}
-        renderItem={({item}) => <Item title={item.title} />}
-        numColumns={2}
-        keyExtractor={(item, index) => index}
-      />
-    </SafeAreaView>
+    <EListContainer>
+      <CustomView />
+      <Text>[찌개요리] 자취 8년차 된장찌개</Text>
+      <Text>맛있는 된장찌개의 비법은 쌈장입..</Text>
+      <Line />
+
+      <ImageInfoPart>
+        <LikePart>
+          <Image source={require('../../../assets/images/Like.png')} />
+          <Text>10</Text>
+        </LikePart>
+
+        <CommentPart>
+          <Image source={require('../../../assets/images/Comment.png')} />
+          <Text>10</Text>
+        </CommentPart>
+      </ImageInfoPart>
+    </EListContainer>
   );
 };
 
-const TestView = styled.View`
-  margin: auto;
-  background-color: gray;
-  margin-bottom: 20px;
-  width: 156px;
-  height: 156px;
-  opacity: 0.3;
-  border-radius: 7px;
+const EListContainer = styled.SafeAreaView`
+  margin-right: 20px;
 `;
 
-const TestText = styled.Text`
-  color: black;
-  font-size: 14px;
+const CustomView = styled.View`
+  width: 200px;
+  height: 100px;
+
+  border-radius: 8px;
+  border: 1px solid black;
 `;
 
+const Line = styled.View`
+  border-bottom-width: 1px;
+  border-bottom-color: gray;
+`;
+
+const ImageInfoPart = styled.View`
+  display: flex;
+  flex-direction: row;
+`;
+
+const LikePart = styled.View`
+  display: flex;
+  flex-direction: row;
+  margin-right: 14px;
+`;
+
+const CommentPart = styled.View`
+  display: flex;
+  flex-direction: row;
+`;
 export default EList;

@@ -1,5 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
+import {Image} from 'react-native';
+import styled from 'styled-components/native';
 import DList from '../../organisms/Home/DList';
 
 const DComponent = () => {
@@ -9,7 +10,7 @@ const DComponent = () => {
       <Header>
         <CustomText>인기 레시피 TOP</CustomText>
         <ViewMoreBtn>
-          <ViewMoreText>더보기</ViewMoreText>
+          <Image source={require('../../../assets/images/More.png')} />
         </ViewMoreBtn>
       </Header>
 
@@ -38,12 +39,4 @@ const CustomText = styled.Text`
 `;
 
 const ViewMoreBtn = styled.TouchableOpacity``;
-const ViewMoreText = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-
-  color: #a9a9a9;
-`;
 export default DComponent;

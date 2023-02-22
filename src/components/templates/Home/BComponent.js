@@ -1,16 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 const BComponent = () => {
   return (
     <BComponentContainer>
       <Header>
-        <CustomText>오늘 저녁 이거 어때요?</CustomText>
-        <ViewMoreBtn>
+        <CustomText>오늘의 레시피</CustomText>
+        <ViewMoreBtn onPress={() => console.log('inin')}>
           <ViewMoreText>더보기</ViewMoreText>
         </ViewMoreBtn>
       </Header>
-      <CustomView />
+      <ViewMoreBtn onPress={() => console.log('inin')}>
+        <CustomView />
+      </ViewMoreBtn>
     </BComponentContainer>
   );
 };

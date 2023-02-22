@@ -1,50 +1,31 @@
 import React from 'react';
-import styled from 'styled-components';
+import {Image, ScrollView} from 'react-native';
+import styled from 'styled-components/native';
+import AList from '../../organisms/Home/AList';
 import EList from '../../organisms/Home/EList';
 
 const EComponent = () => {
-  const dummy = [
-    {
-      title: 1,
-      content: 'aaaa',
-    },
-    {
-      title: 2,
-      content: 'abbbbb',
-    },
-    {
-      title: 3,
-      content: 'ccccc',
-    },
-    {
-      title: 4,
-      content: 'adddd',
-    },
-    {
-      title: 5,
-      content: 'aeeeeeee',
-    },
-    {
-      title: 6,
-      content: 'ddddd',
-    },
-  ];
+  const dummyData = [1, 2, 3, 4, 5];
   return (
     <EComponentContainer>
       <Header>
-        <CustomText>1인 가구 레시피</CustomText>
+        <CustomText>인기 레시피 TOP</CustomText>
         <ViewMoreBtn>
-          <ViewMoreText>더보기</ViewMoreText>
+          <Image source={require('../../../assets/images/More.png')} />
         </ViewMoreBtn>
       </Header>
-      <EList value={dummy} />
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        {dummyData.map((v, i) => {
+          return <EList key={i} value={v} />;
+        })}
+      </ScrollView>
     </EComponentContainer>
   );
 };
 
 const EComponentContainer = styled.SafeAreaView`
   margin-top: 17px;
-  margin-bottom: 70px;
+  margin-bottom: 100px;
 `;
 
 const Header = styled.View`
