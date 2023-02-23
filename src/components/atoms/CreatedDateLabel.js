@@ -3,8 +3,6 @@ import React from 'react';
 
 export default function CreatedDateLabel({createdDate}) {
   const Label = styled.Text`
-    position: absolute;
-    right: 0;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;

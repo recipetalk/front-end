@@ -6,7 +6,8 @@ export default function LikeAndCommentNum({likeNum, isLiked, commentNum}) {
     height: 25px;
     gap: 10px;
     flex-direction: row;
-    margin-top: 5px;
+
+    margin: auto 0;
   `;
 
   const LikeImg = styled.Image`

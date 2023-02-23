@@ -13,15 +13,26 @@ export default function RecipeSimpleDescription({
   description,
   createdDate,
 }) {
-  const ThumbnailImg = thumbnailUrl !== '' ? styled.Image`` : styled.View``;
+  const ThumbnailImg =
+    thumbnailUrl !== undefined
+      ? styled.Image`
+          width: 100%;
+          height: 170px;
+          border: 1px solid black;
+          border-radius: 8px;
+        `
+      : styled.View`
+          width: 100%;
+          height: 170px;
+          border: 1px solid black;
+          border-radius: 8px;
+        `;
 
   const RecipeSimpleDescriptionContainer = styled.View`
-    align-items: flex-start;
     padding: 0px;
     gap: 13px;
-
-    width: 323px;
-    height: 375px;
+    width: 90%;
+    height: 400px;
 
     margin: 0 auto;
   `;
@@ -32,7 +43,7 @@ export default function RecipeSimpleDescription({
     font-size: 16px;
     letter-spacing: -1px;
     color: #333333;
-    margin-top: -12px;
+    margin-top: -9px;
   `;
 
   const Description = styled.Text`
@@ -46,10 +57,19 @@ export default function RecipeSimpleDescription({
     color: #666666;
   `;
 
+  const ViewAndCreatedDateLabelContainer = styled.View`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  `;
+
   return (
     <RecipeSimpleDescriptionContainer>
-      <RecipeQuantityLabel quantity={quantity} />
-      <CreatedDateLabel createdDate={createdDate} />
+      <ThumbnailImg />
+      <ViewAndCreatedDateLabelContainer>
+        <RecipeQuantityLabel quantity={quantity} />
+        <CreatedDateLabel createdDate={createdDate} />
+      </ViewAndCreatedDateLabelContainer>
       <TitleText>{title}</TitleText>
       <Description>{description}</Description>
       <Hashtag hashtags={hashtags} />

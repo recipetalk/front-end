@@ -2,7 +2,7 @@ import React from 'react';
 import {Platform} from 'react-native';
 import styled from 'styled-components/native';
 import SearchInput from '../../atoms/SearchInput';
-import RadioButton from './RadioButton';
+import RadioButton from '../../atoms/board/RadioButton';
 import {useSelector, useDispatch} from 'react-redux';
 import {setFirstClicked} from '../../../store/RecipeHome/FirstFilterClicked';
 import {setSecondClicked} from '../../../store/RecipeHome/SecondFilterClicked';
@@ -13,10 +13,12 @@ const SearchWithFilterHeader = () => {
       ? styled.SafeAreaView`
           background: #f5f5f5;
           box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+          z-index: 1;
         `
       : styled.View`
           background: #f5f5f5;
           box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+          z-index: 1;
         `;
 
   const SearchInputContainer = styled.View`
@@ -24,7 +26,9 @@ const SearchWithFilterHeader = () => {
     margin: 0 auto;
   `;
 
-  const HorizontalScrollContainer = styled.ScrollView``;
+  const HorizontalScrollContainer = styled.ScrollView`
+    margin-left: 20px;
+  `;
 
   const firstClicked = useSelector(state => state.firstFilterClicked.value);
   const secondClicked = useSelector(state => state.secondFilterClicked.value);

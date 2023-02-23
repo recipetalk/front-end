@@ -2,7 +2,7 @@ import React from 'react';
 import {Platform} from 'react-native';
 import styled from 'styled-components/native';
 import SearchWithFilterHeader from '../components/organisms/RecipeHome/SearchWithFilterHeader';
-import RecentRecipeComponent from '../components/templates/RecipeHome/RecentRecipeComponent';
+import RecentRecipeComponent from '../components/organisms/RecipeHome/RecentRecipeComponent';
 
 const RecipeScreen = () => {
   return (

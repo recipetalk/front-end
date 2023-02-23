@@ -1,13 +1,15 @@
-import SimpleProfileWithDescription from '../../atoms/profile/SimpleProfileWithDescription';
-import RecipeSimpleDescription from '../../atoms/board/RecipeSimpleDescription';
+import SimpleProfileWithDescription from '../profile/SimpleProfileWithDescription';
+import RecipeSimpleDescription from './RecipeSimpleDescription';
 import styled from 'styled-components/native';
 import React from 'react';
 
-export default function RecentRecipeComponent() {
-  const RecentRecipeComponent = styled.View``;
+export default function BoardComponent() {
+  const BoardComponent = styled.View`
+    background-color: #ffffff;
+  `;
 
   return (
-    <RecentRecipeComponent>
+    <BoardComponent>
       <SimpleProfileWithDescription
         nickname={'사용자아이디0000'}
         description={'4아이 엄마~^^'}
@@ -20,6 +22,6 @@ export default function RecentRecipeComponent() {
         }
         quantity={'4'}
       />
-    </RecentRecipeComponent>
+    </BoardComponent>
   );
 }

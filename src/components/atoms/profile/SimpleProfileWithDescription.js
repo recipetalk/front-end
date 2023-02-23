@@ -15,7 +15,7 @@ export default function SimpleProfileWithDescription({
   `;
 
   const SimpleProfile = styled.View`
-    width: 323px;
+    width: 90%;
     height: 46px;
 
     margin: auto auto;
