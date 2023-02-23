@@ -7,6 +7,8 @@ import BComponent from '../components/templates/Home/BComponent';
 import CComponent from '../components/templates/Home/CComponent';
 import DComponent from '../components/templates/Home/DComponent';
 import EComponent from '../components/templates/Home/EComponent';
+import FComponent from '../components/templates/Home/FComponent';
+import GComponent from '../components/templates/Home/GComponent';
 
 const HomeScreen = () => {
   return (
@@ -19,6 +21,8 @@ const HomeScreen = () => {
         <CComponent />
         <DComponent />
         <EComponent />
+        <FComponent />
+        <GComponent />
       </ScrollViewContainer>
     </HomeScreenContainer>
   );
