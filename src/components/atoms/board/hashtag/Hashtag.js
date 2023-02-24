@@ -13,7 +13,7 @@ export default function Hashtag({hashtags}) {
     height: 20px;
   `;
 
-  const Button = styled.View`
+  const Button = styled.TouchableOpacity`
     box-sizing: border-box;
 
     /* Auto layout */

@@ -33,20 +33,30 @@ export default function LikeAndCommentNum({likeNum, isLiked, commentNum}) {
     color: #666666;
   `;
 
+  const TouchContainer = styled.TouchableOpacity`
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  `;
+
   return (
     <LikeAndCommentNumContainer>
-      <LikeImg
-        source={
-          isLiked
-            ? require('../../../../assets/images/LikeTrue.png')
-            : require('../../../../assets/images/LikeFalse.png')
-        }
-      />
-      <NumLabel>{likeNum}</NumLabel>
-      <CommentImg
-        source={require('../../../../assets/images/BoardComment.png')}
-      />
-      <NumLabel>{commentNum}</NumLabel>
+      <TouchContainer>
+        <LikeImg
+          source={
+            isLiked
+              ? require('../../../../assets/images/LikeTrue.png')
+              : require('../../../../assets/images/LikeFalse.png')
+          }
+        />
+        <NumLabel>{likeNum}</NumLabel>
+      </TouchContainer>
+      <TouchContainer>
+        <CommentImg
+          source={require('../../../../assets/images/BoardComment.png')}
+        />
+        <NumLabel>{commentNum}</NumLabel>
+      </TouchContainer>
     </LikeAndCommentNumContainer>
   );
 }
