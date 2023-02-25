@@ -1,30 +1,24 @@
 import React from 'react';
-import {Image, ScrollView} from 'react-native';
+import {Image} from 'react-native';
 import styled from 'styled-components/native';
-import EList from '../../organisms/Home/EList';
+import FItem from '../../organisms/Home/FItem';
 
-const EComponent = () => {
-  const dummyData = [1, 2, 3, 4, 5];
+const FComponent = () => {
   return (
-    <EComponentContainer>
+    <FComponentContainer>
       <Header>
         <CustomText>인기 레시피 TOP</CustomText>
         <ViewMoreBtn>
           <Image source={require('../../../assets/images/More.png')} />
         </ViewMoreBtn>
       </Header>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        {dummyData.map((v, i) => {
-          return <EList key={i} value={v} />;
-        })}
-      </ScrollView>
-    </EComponentContainer>
+      <FItem />
+    </FComponentContainer>
   );
 };
 
-const EComponentContainer = styled.SafeAreaView`
-  margin-top: 17px;
-  margin-bottom: 50px;
+const FComponentContainer = styled.SafeAreaView`
+  margin-bottom: 30px;
 `;
 
 const Header = styled.View`
@@ -42,4 +36,4 @@ const CustomText = styled.Text`
 
 const ViewMoreBtn = styled.TouchableOpacity``;
 
-export default EComponent;
+export default FComponent;

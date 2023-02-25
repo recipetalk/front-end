@@ -1,28 +1,29 @@
 import React from 'react';
 import {Image} from 'react-native';
 import styled from 'styled-components/native';
-import DList from '../../organisms/Home/DList';
+import HList from '../../organisms/Home/HList';
 
-const DComponent = () => {
-  const dummy = [1, 2, 3, 4, 5];
+const HComponent = () => {
+  const dummy = [1, 2, 3, 4];
   return (
-    <DComponentContainer>
+    <HComponentContainer>
       <Header>
-        <CustomText>인기 레시피 TOP</CustomText>
+        <CustomText>1인 가구 레시피</CustomText>
         <ViewMoreBtn>
           <Image source={require('../../../assets/images/More.png')} />
         </ViewMoreBtn>
       </Header>
-
-      {dummy.map((v, i) => {
-        return <DList key={i} value={v} />;
-      })}
-    </DComponentContainer>
+      <HListView>
+        {dummy.map((v, i) => {
+          return <HList key={i} value={v} />;
+        })}
+      </HListView>
+    </HComponentContainer>
   );
 };
 
-const DComponentContainer = styled.SafeAreaView`
-  margin-top: 17px;
+const HComponentContainer = styled.SafeAreaView`
+  margin-bottom: 100px;
 `;
 
 const Header = styled.View`
@@ -39,4 +40,10 @@ const CustomText = styled.Text`
 `;
 
 const ViewMoreBtn = styled.TouchableOpacity``;
-export default DComponent;
+
+const HListView = styled.View`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+export default HComponent;
