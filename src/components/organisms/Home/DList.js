@@ -28,7 +28,7 @@ const DList = props => {
   );
 };
 
-const DListContainer = styled.SafeAreaView`
+const DListContainer = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: center;

@@ -17,6 +17,14 @@ import MypageScreen from './src/pages/MypageScreen';
 import ReceiptScreen from './src/pages/ReceiptScreen';
 import RecipeScreen from './src/pages/RecipeScreen';
 import SignUpScreen from './src/pages/SignUpScreen';
+import {store} from './src/store/config';
+import {Provider} from 'react-redux';
+
+if (__DEV__) {
+  import('./config').then(() => {
+    console.log('Reactotron Configured');
+  });
+}
 
 function App() {
   const Stack = createNativeStackNavigator();
@@ -47,9 +55,11 @@ function App() {
   //   </NavigationContainer>
   // );
   return (
-    <NavigationContainer>
-      <BottomTab />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <BottomTab />
+      </NavigationContainer>
+    </Provider>
   );
 }
 
