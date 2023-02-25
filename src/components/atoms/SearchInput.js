@@ -1,4 +1,5 @@
 import React from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {Platform} from 'react-native';
 import styled from 'styled-components/native';
 

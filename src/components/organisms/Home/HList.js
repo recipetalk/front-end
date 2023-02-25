@@ -2,14 +2,11 @@ import React from 'react';
 import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
 
-const EList = props => {
+const HList = props => {
   return (
-    <EListContainer>
-      <CustomView />
-      <Title>[찌개요리] 자취 8년차 된장찌개</Title>
-      <Content>맛있는 된장찌개의 비법은 쌈장입..</Content>
-      <Line />
-
+    <HListContainer>
+      <Thumbnail />
+      <Title>자취 8년차 된장찌개 맛있....</Title>
       <ImageInfoPart>
         <LikePart>
           <Image source={require('../../../assets/images/Like.png')} />
@@ -21,35 +18,28 @@ const EList = props => {
           <Text>10</Text>
         </CommentPart>
       </ImageInfoPart>
-    </EListContainer>
+    </HListContainer>
   );
 };
-
-const EListContainer = styled.SafeAreaView`
-  margin-right: 20px;
+const HListContainer = styled.View`
+  margin-bottom: 16px;
 `;
 
-const CustomView = styled.View`
-  width: 200px;
-  height: 100px;
-
-  border-radius: 8px;
+const Thumbnail = styled.View`
+  width: 166px;
+  height: 166px;
   border: 1px solid black;
-
+  border-radius: 5px;
   margin-bottom: 8px;
+  margin-right: 12px;
 `;
 
 const Title = styled.Text`
-  margin-bottom: 8px;
-`;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
 
-const Content = styled.Text`
-  margin-bottom: 15px;
-`;
-
-const Line = styled.View`
-  border-bottom-width: 1px;
-  border-bottom-color: gray;
+  color: #666666;
   margin-bottom: 8px;
 `;
 
@@ -68,4 +58,4 @@ const CommentPart = styled.View`
   display: flex;
   flex-direction: row;
 `;
-export default EList;
+export default HList;
