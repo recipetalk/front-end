@@ -8,7 +8,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import HomeScreen from './src/pages/HomeScreen';
 import LoginScreen from './src/pages/LoginScreen';
 import {store} from './src/store/config';
 import {Provider} from 'react-redux';
@@ -16,6 +15,7 @@ import SignupIdScreen from './src/pages/signup/SignupIdScreen';
 import SignupNicknameScreen from './src/pages/signup/SignupNicknameScreen';
 import SignupPasswordScreen from './src/pages/signup/SignupPasswordScreen';
 import SignupPhoneVerificationScreen from './src/pages/signup/SignupPhoneVerificationScreen';
+import BottomTab from './src/components/atoms/BottomTab';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -101,7 +101,7 @@ function App() {
           />
           <Stack.Screen
             name="Home"
-            component={HomeScreen}
+            component={BottomTab}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
