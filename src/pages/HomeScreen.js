@@ -9,6 +9,7 @@ import EComponent from '../components/templates/Home/EComponent';
 import FComponent from '../components/templates/Home/FComponent';
 import GComponent from '../components/templates/Home/GComponent';
 import HComponent from '../components/templates/Home/HComponent';
+import Footer from '../components/organisms/Footer';
 
 const HomeScreen = () => {
   return (
@@ -23,6 +24,7 @@ const HomeScreen = () => {
         <FComponent />
         <GComponent />
         <HComponent />
+        <Footer />
       </ScrollViewContainer>
     </HomeScreenContainer>
   );
