@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import SloganText from '../components/atoms/title/recipetalkSlogan';
 import styled from 'styled-components/native';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
@@ -80,7 +79,7 @@ export default function LoginScreen({navigation}) {
         <LoginButton onPress={() => navigation.navigate('Home')}>
           <LoginButtonLabel>로그인</LoginButtonLabel>
         </LoginButton>
-        <SignButton onPress={() => navigation.navigate('SignUp')}>
+        <SignButton onPress={() => navigation.navigate('SignupIdScreen')}>
           <SignButtonLabel>회원가입</SignButtonLabel>
         </SignButton>
         <SimpleLoginContainer>
