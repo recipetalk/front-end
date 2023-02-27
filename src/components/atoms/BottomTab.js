@@ -5,6 +5,8 @@ import IngredientsScreen from '../../pages/IngredientsScreen';
 import MypageScreen from '../../pages/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
+import LoginScreen from '../../pages/LoginScreen';
+import SignUpScreen from '../../pages/SignUpScreen';
 
 const BottomTab = () => {
   const Tab = createBottomTabNavigator();
@@ -50,6 +52,20 @@ const BottomTab = () => {
         component={MypageScreen}
         options={{
           title: 'My',
+        }}
+      />
+      <Tab.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="SignUp"
+        component={SignUpScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
