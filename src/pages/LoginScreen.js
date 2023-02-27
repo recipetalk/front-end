@@ -79,7 +79,7 @@ export default function LoginScreen({navigation}) {
         <LoginButton onPress={() => navigation.navigate('Home')}>
           <LoginButtonLabel>로그인</LoginButtonLabel>
         </LoginButton>
-        <SignButton onPress={() => navigation.navigate('SignupIdScreen')}>
+        <SignButton onPress={() => navigation.navigate('Signup')}>
           <SignButtonLabel>회원가입</SignButtonLabel>
         </SignButton>
         <SimpleLoginContainer>
@@ -111,8 +111,8 @@ const LoginButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   margin: 10px auto;
-  background: #E1E1E1;
-  border-radius: 25px;x
+  background: #e1e1e1;
+  border-radius: 25px;
 `;
 
 const FindLoginPasswordContainer = styled.View`

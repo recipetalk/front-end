@@ -27,7 +27,11 @@ function SignStackNavigator() {
   const SignStack = createNativeStackNavigator();
   return (
     <SignStack.Navigator>
-      <SignStack.Screen name="SignupIdScreen" component={SignupIdScreen} />
+      <SignStack.Screen
+        name="SignupIdScreen"
+        component={SignupIdScreen}
+        options={{headerShown: false}}
+      />
       <SignStack.Screen
         name="SignupNickname"
         component={SignupNicknameScreen}
@@ -52,11 +56,15 @@ function LoginStackNavigator() {
   return (
     <LoginStack.Navigator>
       <LoginStack.Screen
-        name="Login"
+        name="LoginHome"
         component={LoginScreen}
         options={{headerShown: false}}
       />
-      <LoginStack.Screen name="Signup" component={SignStackNavigator} />
+      <LoginStack.Screen
+        name="Signup"
+        component={SignStackNavigator}
+        options={{headerShown: false}}
+      />
     </LoginStack.Navigator>
   );
 }
