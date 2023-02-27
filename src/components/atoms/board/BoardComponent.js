@@ -21,6 +21,7 @@ export default function BoardComponent() {
           '안녕하세요 자취 8년차의 특별한 부대찌개 레시피를. 공개합니다. 여러분 요리는 과학이에요. 레시피를 불과 8년차...'
         }
         quantity={'4'}
+        recipeId={1}
       />
     </BoardComponent>
   );

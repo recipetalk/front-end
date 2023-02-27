@@ -14,5 +14,11 @@ const RecipeScreen = () => {
 };
 
 const RecipeHomeScreenContainer =
-  Platform.OS === 'ios' ? styled.SafeAreaView`` : styled.View``;
+  Platform.OS === 'ios'
+    ? styled.SafeAreaView`
+        margin-bottom: 125px;
+      `
+    : styled.View`
+        margin-bottom: 125px;
+      `;
 export default RecipeScreen;

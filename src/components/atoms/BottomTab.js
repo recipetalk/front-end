@@ -36,6 +36,7 @@ const BottomTab = () => {
         component={ReceiptScreen}
         options={{
           title: '영수증',
+          headerShown: false,
         }}
       />
       <Tab.Screen

@@ -34,7 +34,6 @@ export default function LikeAndCommentNum({likeNum, isLiked, commentNum}) {
   `;
 
   const TouchContainer = styled.TouchableOpacity`
-    display: flex;
     flex-direction: row;
     gap: 10px;
   `;

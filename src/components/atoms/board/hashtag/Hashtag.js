@@ -14,10 +14,6 @@ export default function Hashtag({hashtags}) {
   `;
 
   const Button = styled.TouchableOpacity`
-    box-sizing: border-box;
-
-    /* Auto layout */
-
     display: flex;
     flex-direction: row;
     align-items: flex-start;

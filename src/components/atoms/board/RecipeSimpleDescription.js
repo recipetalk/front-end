@@ -12,6 +12,7 @@ export default function RecipeSimpleDescription({
   hashtags,
   description,
   createdDate,
+  recipeId,
 }) {
   const ThumbnailImg =
     thumbnailUrl !== undefined
@@ -64,6 +65,8 @@ export default function RecipeSimpleDescription({
     flex-direction: row;
     justify-content: space-between;
   `;
+
+  const gotoDetailRecipe = () => {};
 
   return (
     <RecipeSimpleDescriptionContainer>
