@@ -8,7 +8,7 @@ const DComponent = () => {
   return (
     <DComponentContainer>
       <Header>
-        <CustomText>인기 레시피 TOP</CustomText>
+        <CustomText>최신 레시피</CustomText>
         <ViewMoreBtn>
           <Image source={require('../../../assets/images/More.png')} />
         </ViewMoreBtn>

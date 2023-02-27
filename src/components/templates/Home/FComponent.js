@@ -7,7 +7,7 @@ const FComponent = () => {
   return (
     <FComponentContainer>
       <Header>
-        <CustomText>인기 레시피 TOP</CustomText>
+        <CustomText>PICK 레시피</CustomText>
         <ViewMoreBtn>
           <Image source={require('../../../assets/images/More.png')} />
         </ViewMoreBtn>
