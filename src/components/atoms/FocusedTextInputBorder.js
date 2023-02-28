@@ -14,6 +14,7 @@ export default function FocusedTextInputBorder({
       onBlur={() => setIsHighlighted(false)}
       placeholder={placeholder}
       secureTextEntry={secureTextEntry !== undefined ? secureTextEntry : false}
+      clearButtonMode={'while-editing'}
     />
   );
 }
