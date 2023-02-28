@@ -19,10 +19,15 @@ export default function LoginScreen({navigation}) {
 
   const AutoLogin = () => {
     const styles = StyleSheet.create({
-      checkbox: {
-        width: 15,
-        height: 15,
-      },
+      checkbox:
+        Platform.OS === 'ios'
+          ? {
+              width: 15,
+              height: 15,
+            }
+          : {
+              marginRight: -15,
+            },
       label: {
         color: 'black',
         marginLeft: Platform.OS === 'ios' ? 10 : 17,
