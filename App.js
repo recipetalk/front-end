@@ -16,6 +16,7 @@ import SignupNicknameScreen from './src/pages/signup/SignupNicknameScreen';
 import SignupPasswordScreen from './src/pages/signup/SignupPasswordScreen';
 import SignupPhoneVerificationScreen from './src/pages/signup/SignupPhoneVerificationScreen';
 import BottomTab from './src/components/atoms/BottomTab';
+import SimpleLoginScreen from './src/pages/SimpleLoginScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -63,6 +64,11 @@ function LoginStackNavigator() {
       <LoginStack.Screen
         name="Signup"
         component={SignStackNavigator}
+        options={{headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="SimpleLogin"
+        component={SimpleLoginScreen}
         options={{headerShown: false}}
       />
     </LoginStack.Navigator>

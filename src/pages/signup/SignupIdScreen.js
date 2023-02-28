@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Platform} from 'react-native';
+import {Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/profile/ActiveButton';
+import FocusedTextInputBorder from '../../components/atoms/FocusedTextInputBorder';
 
 export default function SignupIdScreen({navigation}) {
   const Description = styled.Text`
@@ -41,15 +42,6 @@ export default function SignupIdScreen({navigation}) {
           width: 100%;
         `;
 
-  const LoginText = styled.TextInput`
-    background: #ffffff;
-    border: 1px solid #ededed;
-    height: 48px;
-    border-radius: 8px;
-    padding: 8px;
-    width: 70%;
-  `;
-
   const LoginLabel = styled.Text`
     font-style: normal;
     font-weight: 700;
@@ -68,9 +60,7 @@ export default function SignupIdScreen({navigation}) {
 
   const DuplicationAndTextInputContainer = styled.View`
     width: 100%;
-    display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     gap: 5px;
   `;
 
@@ -81,8 +71,6 @@ export default function SignupIdScreen({navigation}) {
 
     margin-left: auto;
     margin-right: auto;
-
-    border: 1px solid black;
 
     bottom: -300px;
   `;
@@ -98,7 +86,9 @@ export default function SignupIdScreen({navigation}) {
       <LoginContainer>
         <LoginLabel>아이디</LoginLabel>
         <DuplicationAndTextInputContainer>
-          <LoginText />
+          <View style={{width: '76%'}}>
+            <FocusedTextInputBorder />
+          </View>
           <ActiveButton
             width="80px"
             height="48px"

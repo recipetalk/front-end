@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Checkbox from '@react-native-community/checkbox';
 import {Platform} from 'react-native';
+import FocusedTextInputBorder from '../components/atoms/FocusedTextInputBorder';
 
 export default function LoginScreen({navigation}) {
   const [autologinChecked, setAutologinChecked] = useState(false);
@@ -62,9 +63,9 @@ export default function LoginScreen({navigation}) {
         <SloganText />
         <LoginContainer>
           <LoginLabel>아이디</LoginLabel>
-          <LoginText placeholder="아이디를 입력해주세요" />
+          <FocusedTextInputBorder placeholder="아이디를 입력해주세요" />
           <LoginLabel>비밀번호</LoginLabel>
-          <LoginText
+          <FocusedTextInputBorder
             placeholder="비밀번호를 입력해주세요"
             secureTextEntry={true}
           />
@@ -87,7 +88,8 @@ export default function LoginScreen({navigation}) {
         <SignButton onPress={() => navigation.navigate('Signup')}>
           <SignButtonLabel>회원가입</SignButtonLabel>
         </SignButton>
-        <SimpleLoginContainer>
+        <SimpleLoginContainer
+          onPress={() => navigation.navigate('SimpleLogin')}>
           <SimpleLoginLabel>간편로그인으로 시작하기</SimpleLoginLabel>
         </SimpleLoginContainer>
       </ScrollView>
@@ -100,14 +102,6 @@ const LogoImage = styled.Image`
   height: 48px;
   margin-left: 16px;
   margin-top: 16px;
-`;
-
-const LoginText = styled.TextInput`
-  background: #ffffff;
-  border: 1px solid #ededed;
-  height: 48px;
-  border-radius: 8px;
-  padding: 8px;
 `;
 
 const LoginButton = styled.TouchableOpacity`
