@@ -23,7 +23,7 @@ const HComponent = () => {
 };
 
 const HComponentContainer = styled.SafeAreaView`
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 `;
 
 const Header = styled.View`
