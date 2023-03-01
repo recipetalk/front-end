@@ -17,6 +17,8 @@ import SignupPasswordScreen from './src/pages/signup/SignupPasswordScreen';
 import SignupPhoneVerificationScreen from './src/pages/signup/SignupPhoneVerificationScreen';
 import BottomTab from './src/components/atoms/BottomTab';
 import SimpleLoginScreen from './src/pages/SimpleLoginScreen';
+import EfficacyScreen from './src/pages/Ingredients/EfficacyScreen';
+import PrepScreen from './src/pages/Ingredients/PrepScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -116,6 +118,16 @@ function App() {
           <Stack.Screen
             name="Home"
             component={BottomTab}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Efficacy"
+            component={EfficacyScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Prep"
+            component={PrepScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

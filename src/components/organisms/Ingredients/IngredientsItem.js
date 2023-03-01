@@ -1,7 +1,11 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
+
 const IngredientsItem = () => {
+  const navigation = useNavigation();
+
   return (
     <IngredientsItemContainer>
       <Header>
@@ -14,11 +18,11 @@ const IngredientsItem = () => {
         </MoreButton>
       </Header>
       <IngredientsInfo>
-        <EfficacyBtn>
+        <EfficacyBtn onPress={() => navigation.navigate('Efficacy')}>
           <EfficacyText>효능 및 정보</EfficacyText>
         </EfficacyBtn>
         <Text> | </Text>
-        <PrepBtn>
+        <PrepBtn onPress={() => navigation.navigate('Prep')}>
           <PrepText>손질법 보기</PrepText>
         </PrepBtn>
       </IngredientsInfo>

@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-const IngredientsHeader = () => {
+const IngredientsHeader = props => {
   return (
     <Header>
       <Back source={require('../../../assets/images/Back.png')} />
-      <HeaderTitle>내 식재료</HeaderTitle>
+      <HeaderTitle>{props.title}</HeaderTitle>
     </Header>
   );
 };

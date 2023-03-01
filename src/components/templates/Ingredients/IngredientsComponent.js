@@ -6,7 +6,7 @@ import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 const IngredientsComponent = () => {
   return (
     <IngredientsComponentContainer>
-      <IngredientsHeader />
+      <IngredientsHeader title="내 식재료" />
       <IngredientsContent />
     </IngredientsComponentContainer>
   );
