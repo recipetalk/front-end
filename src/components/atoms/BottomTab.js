@@ -43,6 +43,7 @@ const BottomTab = () => {
         component={IngredientsScreen}
         options={{
           title: '식재료',
+          headerShown: false,
         }}
       />
       <Tab.Screen
