@@ -1,19 +1,17 @@
 import React from 'react';
-import {View} from 'react-native';
 import styled from 'styled-components/native';
 import IngredientsHeader from '../../components/organisms/Ingredients/IngredientsHeader';
+import IngredientsInfo from '../../components/organisms/Ingredients/IngredientsInfo';
 
 const EfficacyScreen = () => {
   return (
     <EfficacyScreenContainer>
-      <IngredientsHeader title="효능 및 정보" />
-      <IngredientsInfo>
-        <View>
-          <Name>마늘</Name>
-          <Category>분류: 향신료 | 채소</Category>
-        </View>
-        <ImageView />
-      </IngredientsInfo>
+      <IngredientsHeader
+        title="효능 및 정보"
+        isTitleOnly={false}
+        btnTextValue="수정"
+      />
+      <IngredientsInfo />
       <EfficacyInfo>
         <EfficacyText>효능</EfficacyText>
         <EfficacyContent>
@@ -36,36 +34,6 @@ const EfficacyScreen = () => {
 const EfficacyScreenContainer = styled.SafeAreaView`
   display: flex;
   background-color: #ffffff;
-`;
-
-const IngredientsInfo = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 18px;
-`;
-
-const Name = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 34px;
-
-  color: #333333;
-  margin-bottom: 10px;
-`;
-
-const Category = styled.Text`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-
-  color: #666666;
-`;
-
-const ImageView = styled.View`
-  width: 100px;
-  height: 100px;
-  background-color: gray;
 `;
 
 const EfficacyInfo = styled.View`

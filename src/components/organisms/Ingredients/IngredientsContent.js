@@ -7,7 +7,7 @@ const IngredientsContent = () => {
   const dummy = [1, 2, 3, 4, 5];
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <Content>
         <ContentTitle>식재료 명</ContentTitle>
         <RegisterContainer>
