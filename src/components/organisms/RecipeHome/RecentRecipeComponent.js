@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import {FlatList, View} from 'react-native';
 import BoardComponent from '../../atoms/board/BoardComponent';
 
-export default function RecentRecipeComponent() {
+export default function RecentRecipeComponent({navigation}) {
   const data = [1, 2, 3, 4];
 
   const renderItem = ({item}) => {
@@ -12,7 +12,7 @@ export default function RecentRecipeComponent() {
     `;
     return (
       <View>
-        <BoardComponent />
+        <BoardComponent navigation={navigation} />
         <HorizonalBar />
       </View>
     );

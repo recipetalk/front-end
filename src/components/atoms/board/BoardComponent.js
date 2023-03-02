@@ -3,13 +3,13 @@ import RecipeSimpleDescription from './RecipeSimpleDescription';
 import styled from 'styled-components/native';
 import React from 'react';
 
-export default function BoardComponent() {
-  const BoardComponent = styled.View`
+export default function BoardComponent({navigation}) {
+  const BoardComponentContainer = styled.View`
     background-color: #ffffff;
   `;
 
   return (
-    <BoardComponent>
+    <BoardComponentContainer>
       <SimpleProfileWithDescription
         nickname={'사용자아이디0000'}
         description={'4아이 엄마~^^'}
@@ -22,7 +22,8 @@ export default function BoardComponent() {
         }
         quantity={'4'}
         recipeId={1}
+        navigation={navigation}
       />
-    </BoardComponent>
+    </BoardComponentContainer>
   );
 }

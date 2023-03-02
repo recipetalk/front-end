@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {Platform} from 'react-native';
-import ActiveButton from '../../components/atoms/profile/ActiveButton';
+import ActiveButton from '../../components/atoms/board/ActiveButton';
 
 export default function SignupNicknameScreen({navigation}) {
   const Description = styled.Text`

@@ -13,6 +13,7 @@ export default function RecipeSimpleDescription({
   description,
   createdDate,
   recipeId,
+  navigation,
 }) {
   const ThumbnailImg =
     thumbnailUrl !== undefined
@@ -70,7 +71,7 @@ export default function RecipeSimpleDescription({
 
   return (
     <RecipeSimpleDescriptionContainer>
-      <TouchContainer>
+      <TouchContainer onPress={() => navigation.push('RecipeDetail')}>
         <ThumbnailImg />
         <ViewAndCreatedDateLabelContainer>
           <RecipeQuantityLabel quantity={quantity} />

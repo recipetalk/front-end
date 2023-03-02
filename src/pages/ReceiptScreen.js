@@ -1,14 +1,9 @@
 import React from 'react';
 import {Platform} from 'react-native';
-import RecipeDetailDescription from '../components/atoms/board/RecipeDetailDescription';
 import styled from 'styled-components/native';
 
 const ReceiptScreen = () => {
-  return (
-    <ReciptScreenContainer>
-      <RecipeDetailDescription />
-    </ReciptScreenContainer>
-  );
+  return <ReciptScreenContainer />;
 };
 
 const ReciptScreenContainer =

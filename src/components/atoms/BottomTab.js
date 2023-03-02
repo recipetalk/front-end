@@ -5,6 +5,26 @@ import IngredientsScreen from '../../pages/IngredientsScreen';
 import MypageScreen from '../../pages/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import RecipeDetailDescriptionScreen from '../../pages/RecipeDetailDescriptionScreen';
+
+const RecipeStackNavigator = () => {
+  const RecipeStack = createNativeStackNavigator();
+  return (
+    <RecipeStack.Navigator>
+      <RecipeStack.Screen
+        name="RecipeHome"
+        component={RecipeScreen}
+        options={{headerShown: false}}
+      />
+      <RecipeStack.Screen
+        name="RecipeDetail"
+        component={RecipeDetailDescriptionScreen}
+        options={{headerShown: false}}
+      />
+    </RecipeStack.Navigator>
+  );
+};
 
 const BottomTab = () => {
   const Tab = createBottomTabNavigator();
@@ -25,7 +45,7 @@ const BottomTab = () => {
       />
       <Tab.Screen
         name="Recipe"
-        component={RecipeScreen}
+        component={RecipeStackNavigator}
         options={{
           title: '레시피',
           headerShown: false,

@@ -4,11 +4,11 @@ import styled from 'styled-components/native';
 import SearchWithFilterHeader from '../components/organisms/RecipeHome/SearchWithFilterHeader';
 import RecentRecipeComponent from '../components/organisms/RecipeHome/RecentRecipeComponent';
 
-const RecipeScreen = () => {
+const RecipeScreen = ({navigation}) => {
   return (
     <RecipeHomeScreenContainer>
       <SearchWithFilterHeader />
-      <RecentRecipeComponent />
+      <RecentRecipeComponent navigation={navigation} />
     </RecipeHomeScreenContainer>
   );
 };

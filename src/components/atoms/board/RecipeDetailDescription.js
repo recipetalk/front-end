@@ -1,20 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Platform} from 'react-native';
 import SimpleProfileWithDescription from '../profile/SimpleProfileWithDescription';
 import Hashtag from './hashtag/Hashtag';
 import LikeAndCommentNum from './LikeAndComment/LikeAndCommentNum';
 import RecipeQuantityLabel from './RecipeQuantityLabel';
+import ExpandableText from './ExpandableText';
 
-export default function RecipeDetailDescription() {
-  const Header = styled.View`
-    width: 100%;
-    height: 50px;
-    background: #f09311;
-  `;
-
+export default function RecipeDetailDescription({navigation}) {
   const RecipeDetailDescriptionContainer = styled.ScrollView`
-    border: 1px solid red;
     height: 100%;
   `;
 
@@ -25,12 +18,14 @@ export default function RecipeDetailDescription() {
 
   const SimpleProfileWithDescriptionContainer = styled.View`
     background: #ffffff;
+    margin-bottom: 7px;
   `;
 
   const TitleContainer = styled.View`
     width: 100%;
     display: flex;
     gap: 10px;
+    margin-top: 30px;
   `;
 
   const Title = styled.Text`
@@ -47,11 +42,11 @@ export default function RecipeDetailDescription() {
 
   const DescriptionDetailContainer = styled.View`
     background: #ffffff;
-    border: 1px solid green;
     width: 100%;
-    margin: 0 auto;
+    margin: 0 auto 1px auto;
     gap: 10px;
-    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
   `;
 
   const LikeAndCountNumContainer = styled.View`
@@ -61,7 +56,6 @@ export default function RecipeDetailDescription() {
 
   return (
     <RecipeDetailDescriptionContainer>
-      <Header />
       <ThumbnailImg />
       <SimpleProfileWithDescriptionContainer>
         <SimpleProfileWithDescription
@@ -74,6 +68,12 @@ export default function RecipeDetailDescription() {
           <Title>[찌개요리]자취 8년차 된장찌개 맛있게 끓이는 법</Title>
           <RecipeQuantityLabel quantity={4} />
         </TitleContainer>
+        <ExpandableText
+          text={`생각해보니 결혼한 지 5년이 넘었는데도 친정 부모님께 제대로 된 요리하나 만들어드린 적이 없는 무심함 큰딸 이더라구요.
+"부모님이 집에 오셔도 오랜만에 엄마 밥"
+생각해보니 결혼한 지 5년이 넘었는데도 친정 부모님께 제대로 된 요리하나 만들어드린 적이 없는 무심함 큰딸 이더라구요.
+"부모님이 집에 오셔도 오랜만에 엄마 밥"`}
+        />
         <Hashtag hashtags={['#한식', '#한식', '#한식']} />
         <LikeAndCountNumContainer>
           <LikeAndCommentNum likeNum={545} commentNum={545} />
