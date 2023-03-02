@@ -12,6 +12,8 @@ export default function RecipeSimpleDescription({
   hashtags,
   description,
   createdDate,
+  recipeId,
+  navigation,
 }) {
   const ThumbnailImg =
     thumbnailUrl !== undefined
@@ -30,11 +32,13 @@ export default function RecipeSimpleDescription({
 
   const RecipeSimpleDescriptionContainer = styled.View`
     padding: 0px;
-    gap: 13px;
     width: 90%;
     height: 400px;
-
     margin: 0 auto;
+  `;
+
+  const TouchContainer = styled.TouchableOpacity`
+    gap: 13px;
   `;
 
   const TitleText = styled.Text`
@@ -63,15 +67,19 @@ export default function RecipeSimpleDescription({
     justify-content: space-between;
   `;
 
+  const gotoDetailRecipe = () => {};
+
   return (
     <RecipeSimpleDescriptionContainer>
-      <ThumbnailImg />
-      <ViewAndCreatedDateLabelContainer>
-        <RecipeQuantityLabel quantity={quantity} />
-        <CreatedDateLabel createdDate={createdDate} />
-      </ViewAndCreatedDateLabelContainer>
-      <TitleText>{title}</TitleText>
-      <Description>{description}</Description>
+      <TouchContainer onPress={() => navigation.push('RecipeDetail')}>
+        <ThumbnailImg />
+        <ViewAndCreatedDateLabelContainer>
+          <RecipeQuantityLabel quantity={quantity} />
+          <CreatedDateLabel createdDate={createdDate} />
+        </ViewAndCreatedDateLabelContainer>
+        <TitleText>{title}</TitleText>
+        <Description>{description}</Description>
+      </TouchContainer>
       <Hashtag hashtags={hashtags} />
       <LikeAndCommentNum isLiked={true} commentNum={54} likeNum={546} />
     </RecipeSimpleDescriptionContainer>

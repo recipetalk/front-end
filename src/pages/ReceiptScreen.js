@@ -1,11 +1,12 @@
 import React from 'react';
-import {Text} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {Platform} from 'react-native';
+import styled from 'styled-components/native';
 
 const ReceiptScreen = () => {
-  <SafeAreaView>
-    <Text>ReceiptScreen 페이지입니다.</Text>
-  </SafeAreaView>;
+  return <ReciptScreenContainer />;
 };
+
+const ReciptScreenContainer =
+  Platform.OS === 'ios' ? styled.SafeAreaView`` : styled.View``;
 
 export default ReceiptScreen;
