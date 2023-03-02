@@ -1,14 +1,23 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-const IngredientsInfo = () => {
+const IngredientsInfo = props => {
   return (
     <IngredientsInfoContainer>
       <TextView>
         <Name>마늘</Name>
         <Category>분류: 향신료 | 채소</Category>
       </TextView>
-      <ImageView />
+      {props.isEdit ? (
+        <>
+          <ImageView />
+          <EditImageView>
+            <CameraImg source={require('../../../assets/images/Camera.png')} />
+          </EditImageView>
+        </>
+      ) : (
+        <ImageView />
+      )}
     </IngredientsInfoContainer>
   );
 };
@@ -49,4 +58,17 @@ const ImageView = styled.View`
   background-color: gray;
 `;
 
+const EditImageView = styled.TouchableOpacity`
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  right: 18px;
+  top: 18px;
+  position: absolute;
+  justify-content: center;
+`;
+
+const CameraImg = styled.Image`
+  margin: auto;
+`;
 export default IngredientsInfo;

@@ -12,7 +12,7 @@ const EfficacyScreen = () => {
         btnTextValue="수정"
         screen="EfficacyEdit"
       />
-      <IngredientsInfo />
+      <IngredientsInfo isEdit={false} />
       <EfficacyInfo>
         <EfficacyText>효능</EfficacyText>
         <EfficacyContent>

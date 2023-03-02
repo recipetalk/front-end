@@ -7,7 +7,7 @@ const EfficacyEditScreen = () => {
   return (
     <EfficacyEditScreenContainer>
       <IngredientsHeader title="효능 및 정보" isTitleOnly={true} />
-      <IngredientsInfo />
+      <IngredientsInfo isEdit={true} />
       <EfficacyInfo>
         <EfficacyText>효능</EfficacyText>
         <EfficacyContent>
@@ -38,7 +38,7 @@ const EfficacyEditScreenContainer = styled.SafeAreaView`
   height: 100%;
 `;
 
-const EfficacyInfo = styled.View`
+const EfficacyInfo = styled.TouchableOpacity`
   padding: 18px;
 `;
 
