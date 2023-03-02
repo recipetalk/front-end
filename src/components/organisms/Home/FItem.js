@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
+import BottomImageComponent from '../BottomImageComponent';
 
 const FItem = () => {
   const dummyTag = ['#한식', '#중식', '#일식'];
@@ -23,17 +23,7 @@ const FItem = () => {
         })}
       </TagContainer>
 
-      <ImageInfoPart>
-        <LikePart>
-          <Image source={require('../../../assets/images/Like.png')} />
-          <Text>10</Text>
-        </LikePart>
-
-        <CommentPart>
-          <Image source={require('../../../assets/images/Comment.png')} />
-          <Text>10</Text>
-        </CommentPart>
-      </ImageInfoPart>
+      <BottomImageComponent isBookmark={true} />
     </FItemContainer>
   );
 };
@@ -95,19 +85,4 @@ const TagText = styled.Text`
   color: #f09311;
 `;
 
-const ImageInfoPart = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
-
-const LikePart = styled.View`
-  display: flex;
-  flex-direction: row;
-  margin-right: 14px;
-`;
-
-const CommentPart = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
 export default FItem;

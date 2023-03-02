@@ -1,10 +1,14 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import styled from 'styled-components/native';
+import Line from '../../components/atoms/Line';
 import DList from '../../components/organisms/Home/DList';
 import IngredientsHeader from '../../components/organisms/Ingredients/IngredientsHeader';
 import IngredientsInfo from '../../components/organisms/Ingredients/IngredientsInfo';
 
 const PrepScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <PrepScreenContainer>
       <IngredientsHeader title="손질법" />
@@ -18,7 +22,7 @@ const PrepScreen = () => {
         </Header>
         {[1, 2, 3, 4, 5].map((v, i) => {
           return (
-            <Test key={i}>
+            <Test key={i} onPress={() => navigation.navigate('PrepDetail')}>
               <DList />
             </Test>
           );
@@ -29,12 +33,6 @@ const PrepScreen = () => {
 };
 
 const PrepScreenContainer = styled.SafeAreaView``;
-
-const Line = styled.View`
-  width: 100%;
-  height: 6px;
-  background-color: #f5f5f5;
-`;
 
 const Header = styled.View`
   display: flex;

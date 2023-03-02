@@ -19,6 +19,7 @@ import BottomTab from './src/components/atoms/BottomTab';
 import SimpleLoginScreen from './src/pages/SimpleLoginScreen';
 import EfficacyScreen from './src/pages/Ingredients/EfficacyScreen';
 import PrepScreen from './src/pages/Ingredients/PrepScreen';
+import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -128,6 +129,11 @@ function App() {
           <Stack.Screen
             name="Prep"
             component={PrepScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="PrepDetail"
+            component={PrepDetailScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
