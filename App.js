@@ -20,6 +20,8 @@ import SimpleLoginScreen from './src/pages/SimpleLoginScreen';
 import EfficacyScreen from './src/pages/Ingredients/EfficacyScreen';
 import PrepScreen from './src/pages/Ingredients/PrepScreen';
 import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
+import EfficacyEditScreen from './src/pages/Ingredients/EfficacyEditScreen';
+import PrepEditScreen from './src/pages/Ingredients/PrepEditScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -127,8 +129,18 @@ function App() {
             options={{headerShown: false}}
           />
           <Stack.Screen
+            name="EfficacyEdit"
+            component={EfficacyEditScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
             name="Prep"
             component={PrepScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="PrepEdit"
+            component={PrepEditScreen}
             options={{headerShown: false}}
           />
           <Stack.Screen

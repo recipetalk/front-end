@@ -14,7 +14,7 @@ const IngredientsHeader = props => {
         <HeaderTitle>{props.title}</HeaderTitle>
       </TitleContainer>
       {props.isTitleOnly ? null : (
-        <BtnBtn>
+        <BtnBtn onPress={() => navigation.navigate(props.screen)}>
           <BtnValueText>{props.btnTextValue}</BtnValueText>
         </BtnBtn>
       )}

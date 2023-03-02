@@ -10,6 +10,7 @@ const EfficacyScreen = () => {
         title="효능 및 정보"
         isTitleOnly={false}
         btnTextValue="수정"
+        screen="EfficacyEdit"
       />
       <IngredientsInfo />
       <EfficacyInfo>
