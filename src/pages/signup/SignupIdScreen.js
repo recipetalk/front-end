@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {Platform, View} from 'react-native';
-import ActiveButton from '../../components/atoms/profile/ActiveButton';
+import ActiveButton from '../../components/atoms/board/ActiveButton';
 import FocusedTextInputBorder from '../../components/atoms/FocusedTextInputBorder';
 
 export default function SignupIdScreen({navigation}) {

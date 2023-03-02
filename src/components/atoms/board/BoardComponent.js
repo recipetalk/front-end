@@ -3,13 +3,13 @@ import RecipeSimpleDescription from './RecipeSimpleDescription';
 import styled from 'styled-components/native';
 import React from 'react';
 
-export default function BoardComponent() {
-  const BoardComponent = styled.View`
+export default function BoardComponent({navigation}) {
+  const BoardComponentContainer = styled.View`
     background-color: #ffffff;
   `;
 
   return (
-    <BoardComponent>
+    <BoardComponentContainer>
       <SimpleProfileWithDescription
         nickname={'사용자아이디0000'}
         description={'4아이 엄마~^^'}
@@ -21,7 +21,9 @@ export default function BoardComponent() {
           '안녕하세요 자취 8년차의 특별한 부대찌개 레시피를. 공개합니다. 여러분 요리는 과학이에요. 레시피를 불과 8년차...'
         }
         quantity={'4'}
+        recipeId={1}
+        navigation={navigation}
       />
-    </BoardComponent>
+    </BoardComponentContainer>
   );
 }

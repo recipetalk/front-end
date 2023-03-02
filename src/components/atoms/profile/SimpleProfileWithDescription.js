@@ -21,6 +21,10 @@ export default function SimpleProfileWithDescription({
     margin: auto auto;
   `;
 
+  const ProfileTouchableContainer = styled.TouchableOpacity`
+    width: 70%;
+  `;
+
   const ProfileImg =
     profileURI !== undefined
       ? styled.Image`
@@ -62,11 +66,13 @@ export default function SimpleProfileWithDescription({
     top: 25px;
   `;
 
-  const Following = styled.Text`
+  const FollowingTouchableContainer = styled.TouchableOpacity`
     position: absolute;
-    right: 0px;
     top: 33%;
+    right: 0px;
+  `;
 
+  const Following = styled.Text`
     color: #f09311;
 
     font-style: normal;
@@ -81,10 +87,14 @@ export default function SimpleProfileWithDescription({
   return (
     <ProfileContainer>
       <SimpleProfile>
-        <ProfileImg source={{uri: profileURI}} />
-        <Nickname>{nickname}</Nickname>
-        <Description>{description}</Description>
-        <Following>소식받기</Following>
+        <ProfileTouchableContainer>
+          <ProfileImg source={{uri: profileURI}} />
+          <Nickname>{nickname}</Nickname>
+          <Description>{description}</Description>
+        </ProfileTouchableContainer>
+        <FollowingTouchableContainer>
+          <Following>소식받기</Following>
+        </FollowingTouchableContainer>
       </SimpleProfile>
     </ProfileContainer>
   );
