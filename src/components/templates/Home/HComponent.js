@@ -10,7 +10,7 @@ const HComponent = () => {
       <Header>
         <CustomText>1인 가구 레시피</CustomText>
         <ViewMoreBtn>
-          <Image source={require('../../../assets/images/More.png')} />
+          <Image source={require('../../../assets/images/More_Arrow.png')} />
         </ViewMoreBtn>
       </Header>
       <HListView>

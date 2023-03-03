@@ -8,7 +8,7 @@ const GComponent = () => {
     <GComponentContainer>
       <TitleContainer>
         <Title>레시피톡 기획전</Title>
-        <Image source={require('../../../assets/images/More_w.png')} />
+        <Image source={require('../../../assets/images/More_Arrow_w.png')} />
       </TitleContainer>
     </GComponentContainer>
   );

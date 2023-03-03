@@ -10,7 +10,7 @@ const EComponent = () => {
       <Header>
         <CustomText>인기 레시피 TOP</CustomText>
         <ViewMoreBtn>
-          <Image source={require('../../../assets/images/More.png')} />
+          <Image source={require('../../../assets/images/More_Arrow.png')} />
         </ViewMoreBtn>
       </Header>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>

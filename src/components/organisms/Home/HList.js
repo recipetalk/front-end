@@ -1,23 +1,13 @@
 import React from 'react';
-import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
+import BottomImageComponent from '../BottomImageComponent';
 
 const HList = props => {
   return (
     <HListContainer>
       <Thumbnail />
       <Title>자취 8년차 된장찌개 맛있....</Title>
-      <ImageInfoPart>
-        <LikePart>
-          <Image source={require('../../../assets/images/Like.png')} />
-          <Text>10</Text>
-        </LikePart>
-
-        <CommentPart>
-          <Image source={require('../../../assets/images/Comment.png')} />
-          <Text>10</Text>
-        </CommentPart>
-      </ImageInfoPart>
+      <BottomImageComponent isBookmark={false} />
     </HListContainer>
   );
 };
@@ -43,19 +33,4 @@ const Title = styled.Text`
   margin-bottom: 8px;
 `;
 
-const ImageInfoPart = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
-
-const LikePart = styled.View`
-  display: flex;
-  flex-direction: row;
-  margin-right: 14px;
-`;
-
-const CommentPart = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
 export default HList;

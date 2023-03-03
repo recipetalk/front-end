@@ -10,7 +10,7 @@ const DComponent = () => {
       <Header>
         <CustomText>최신 레시피</CustomText>
         <ViewMoreBtn>
-          <Image source={require('../../../assets/images/More.png')} />
+          <Image source={require('../../../assets/images/More_Arrow.png')} />
         </ViewMoreBtn>
       </Header>
 

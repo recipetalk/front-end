@@ -1,7 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../../pages/HomeScreen';
-import IngredientsScreen from '../../pages/IngredientsScreen';
+import IngredientsScreen from '../../pages/Ingredients/IngredientsScreen';
 import MypageScreen from '../../pages/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
@@ -64,6 +64,7 @@ const BottomTab = () => {
         component={IngredientsScreen}
         options={{
           title: '식재료',
+          headerShown: false,
         }}
       />
       <Tab.Screen
