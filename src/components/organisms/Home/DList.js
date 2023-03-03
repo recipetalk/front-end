@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
+import BottomImageComponent from '../BottomImageComponent';
 
 const DList = props => {
   return (
@@ -11,18 +11,7 @@ const DList = props => {
         <UserID>사용자아이디0000</UserID>
         <Titie>자취8년차 부대찌개 레시피 공...</Titie>
         <Content>레시피 설명 길어지면 이렇게 …</Content>
-
-        <ImageInfoPart>
-          <LikePart>
-            <Image source={require('../../../assets/images/Like.png')} />
-            <Text>10</Text>
-          </LikePart>
-
-          <CommentPart>
-            <Image source={require('../../../assets/images/Comment.png')} />
-            <Text>10</Text>
-          </CommentPart>
-        </ImageInfoPart>
+        <BottomImageComponent isBookmark={false} />
       </InfoPart>
     </DListContainer>
   );
@@ -31,18 +20,13 @@ const DList = props => {
 const DListContainer = styled.View`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  gap: 12px;
-
-  width: 360px;
-  height: 124px;
-
-  border-bottom-width: 4px;
-  border-bottom-color: white;
-
-  margin-bottom: 10px;
+  width: 100%;
+  height: 150px;
+  padding: 18px;
+  gap: 20px;
+  border-bottom-width: 2px;
+  border-bottom-color: #e1e1e1;
+  background-color: #ffffff;
 `;
 
 const ImagePart = styled.View`

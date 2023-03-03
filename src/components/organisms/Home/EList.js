@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
+import BottomImageComponent from '../BottomImageComponent';
 
 const EList = props => {
   return (
@@ -10,17 +10,7 @@ const EList = props => {
       <Content>맛있는 된장찌개의 비법은 쌈장입..</Content>
       <Line />
 
-      <ImageInfoPart>
-        <LikePart>
-          <Image source={require('../../../assets/images/Like.png')} />
-          <Text>10</Text>
-        </LikePart>
-
-        <CommentPart>
-          <Image source={require('../../../assets/images/Comment.png')} />
-          <Text>10</Text>
-        </CommentPart>
-      </ImageInfoPart>
+      <BottomImageComponent isBookmark={false} />
     </EListContainer>
   );
 };
@@ -53,19 +43,4 @@ const Line = styled.View`
   margin-bottom: 8px;
 `;
 
-const ImageInfoPart = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
-
-const LikePart = styled.View`
-  display: flex;
-  flex-direction: row;
-  margin-right: 14px;
-`;
-
-const CommentPart = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
 export default EList;
