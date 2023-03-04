@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Text} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function DetailProfileWithDescription({
   username,
@@ -8,6 +9,8 @@ export default function DetailProfileWithDescription({
   description,
   profileURI,
 }) {
+  const navigation = useNavigation();
+
   const ProfileContainer = styled.View`
     width: 100%;
     height: 100%;
@@ -15,7 +18,8 @@ export default function DetailProfileWithDescription({
 
   const SimpleProfile = styled.View`
     width: 90%;
-    margin: 15px auto 40px;
+    margin: 15px auto 20px;
+    display: flex;
   `;
 
   const ProfileTouchableContainer = styled.View`
@@ -38,11 +42,11 @@ export default function DetailProfileWithDescription({
         `;
 
   const Nickname = styled.Text`
-    margin-top: 15px;
+    margin-top: 10px;
     color: #333333;
     font-style: normal;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 13px;
     bottom: 3px;
   `;
 
@@ -61,7 +65,6 @@ export default function DetailProfileWithDescription({
     padding: 15px;
     border: 1px solid #eeeeee;
     border-radius: 6px;
-
     margin-top: 15px;
   `;
 
@@ -80,10 +83,6 @@ export default function DetailProfileWithDescription({
     line-height: 17px;
 
     text-align: right;
-  `;
-
-  const FollowingNumLabel = styled.Text`
-  
   `;
 
   const SettingImg = styled.Image`
@@ -117,7 +116,7 @@ export default function DetailProfileWithDescription({
           fontSize: 18,
           color: '#383838',
         }}>
-        {title}    {num}개
+        {title} {num}개
       </Text>
     );
   };
@@ -128,15 +127,43 @@ export default function DetailProfileWithDescription({
     flex
   `;
 
+  const FollowingLabel = ({title, num}) => {
+    return (
+      <TouchableOpacity style={{alignItems: 'center'}} a>
+        <Text style={{fontStyle: 'normal', fontSize: 17, color: 'black'}}>
+          {title}
+        </Text>
+        <Text style={{fontStyle: 'normal', fontSize: 17, color: 'black'}}>
+          {num}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const FollowingLabelContainer = styled.View`
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    left: 25%;
+    top: 5%;
+    justify-content: space-evenly;
+    width: 100%;
+  `;
+
   //TODO : IMG URI 체킹할 방법 알아내야함.
   //TODO : 내아이디가 아니면 프로필 수정과 세팅, 내가 작성한 댓글, 기타 안뜨게 하기
   return (
     <ProfileContainer>
       <SimpleProfile>
-        <ProfileTouchableContainer>
+        <ProfileTouchableContainer onPress={() => navigation.push()}>
           <ProfileImg source={{uri: profileURI}} />
+          <FollowingLabelContainer>
+            <FollowingLabel title="팔로잉" num="12" />
+            <FollowingLabel title="팔로워" num="12" />
+          </FollowingLabelContainer>
           <Nickname>{nickname}</Nickname>
         </ProfileTouchableContainer>
+
         <FollowingTouchableContainer>
           <SettingImg source={require('../../../assets/images/Setting.png')} />
         </FollowingTouchableContainer>
