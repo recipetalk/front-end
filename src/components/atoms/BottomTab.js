@@ -7,6 +7,7 @@ import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RecipeDetailDescriptionScreen from '../../pages/RecipeDetailDescriptionScreen';
+import Header from '../organisms/Header';
 
 const RecipeStackNavigator = () => {
   const RecipeStack = createNativeStackNavigator();
@@ -72,6 +73,7 @@ const BottomTab = () => {
         component={MypageScreen}
         options={{
           title: 'My',
+          headerShown: false,
         }}
       />
     </Tab.Navigator>
