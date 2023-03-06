@@ -3,40 +3,24 @@ import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 
 const PrepOrderComponent = ({num}) => {
-  const navigation = useNavigation();
-
   return (
     <PrepOrderItem>
-      <NumberPart>
-        <NumberText>{num}</NumberText>
-      </NumberPart>
       <InfoPart>
+        <NumberPart>
+          <NumberText>{num}</NumberText>
+        </NumberPart>
         <TextPart>
           {`2인분기준으로조리했으며 계랑은 밥숟가락과
 종이컵입니다. 2인분기준으로조리했으며 계랑은 밥숟가락과 종이컵입니다. 2인분기준으로조리했으며 계랑은 밥숟가락과 종이컵입니다.`}
         </TextPart>
-
-        <ImagePart />
-        <TouchContainer
-          onPress={() => navigation.push('SequenceDetailDescription')}>
-          <MorePart>
-            <MoreImg source={require('../../assets/images/Find_g.png')} />
-            <MoreText>자세히보기</MoreText>
-          </MorePart>
-        </TouchContainer>
       </InfoPart>
+      <ImagePart />
     </PrepOrderItem>
   );
 };
 
 const PrepOrderItem = styled.View`
-  display: flex;
-  flex-direction: row;
-
-  width: 350px;
-  height: 280px;
-  margin: auto;
-  margin-bottom: 15px;
+  width: 100%;
 `;
 
 const NumberPart = styled.View`
@@ -45,6 +29,7 @@ const NumberPart = styled.View`
   background-color: #f09311;
   border-radius: 50px;
   margin-right: 10px;
+  margin-left: 5%;
   justify-content: center;
 `;
 
@@ -57,48 +42,30 @@ const NumberText = styled.Text`
   color: #ffffff;
 `;
 
-const InfoPart = styled.View``;
+const InfoPart = styled.View`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 30px;
+`;
 
 const TextPart = styled.Text`
   width: 310px;
-  height: 80px;
+
   margin-bottom: 10px;
 
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
 
-  color: #666666;
+  color: #e1e1e1;
 `;
 
 const ImagePart = styled.View`
-  width: 310px;
-  height: 140px;
+  width: 100%;
+  height: 300px;
   background-color: gray;
   margin-bottom: 10px;
   border-radius: 8px;
 `;
-
-const MorePart = styled.View`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  justify-content: flex-end;
-`;
-
-const MoreText = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-
-  color: #a0a0a0;
-`;
-
-const MoreImg = styled.Image`
-  width: 15px;
-  height: 15px;
-`;
-
-const TouchContainer = styled.TouchableOpacity``;
 
 export default PrepOrderComponent;
