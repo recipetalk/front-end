@@ -5,6 +5,7 @@ import Hashtag from './hashtag/Hashtag';
 import LikeAndCommentNum from './LikeAndComment/LikeAndCommentNum';
 import RecipeQuantityLabel from './RecipeQuantityLabel';
 import ExpandableText from './ExpandableText';
+import PrepOrderComponent from '../../organisms/PrepOrderComponent';
 
 export default function RecipeDetailDescription({navigation}) {
   const RecipeDetailDescriptionContainer = styled.ScrollView`
@@ -54,6 +55,18 @@ export default function RecipeDetailDescription({navigation}) {
     margin-bottom: 15px;
   `;
 
+  const OrderTitle = styled.Text`
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+
+    color: #333333;
+    padding: 18px;
+  `;
+  const PrepOrderContainer = styled.View`
+    background: #ffffff;
+  `;
+
   return (
     <RecipeDetailDescriptionContainer>
       <ThumbnailImg />
@@ -79,6 +92,12 @@ export default function RecipeDetailDescription({navigation}) {
           <LikeAndCommentNum likeNum={545} commentNum={545} />
         </LikeAndCountNumContainer>
       </DescriptionDetailContainer>
+      <PrepOrderContainer>
+        <OrderTitle>손질 순서</OrderTitle>
+        {[1, 2, 3, 4, 5].map(i => {
+          return <PrepOrderComponent num={i} key={i} />;
+        })}
+      </PrepOrderContainer>
     </RecipeDetailDescriptionContainer>
   );
 }

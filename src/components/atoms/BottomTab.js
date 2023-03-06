@@ -8,6 +8,25 @@ import RecipeScreen from '../../pages/RecipeScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RecipeDetailDescriptionScreen from '../../pages/RecipeDetailDescriptionScreen';
 import Header from '../organisms/Header';
+import SequenceDetailDescriptionScreen from '../../pages/SequenceDetailDescriptionScreen';
+
+const RecipeDetailStackNavigator = () => {
+  const RecipeDetailStack = createNativeStackNavigator();
+  return (
+    <RecipeDetailStack.Navigator>
+      <RecipeDetailStack.Screen
+        name="RecipeDetailDescription"
+        component={RecipeDetailDescriptionScreen}
+        options={{headerShown: false}}
+      />
+      <RecipeDetailStack.Screen
+        name="SequenceDetailDescription"
+        component={SequenceDetailDescriptionScreen}
+        options={{headerShown: false}}
+      />
+    </RecipeDetailStack.Navigator>
+  );
+};
 
 const RecipeStackNavigator = () => {
   const RecipeStack = createNativeStackNavigator();
@@ -20,7 +39,7 @@ const RecipeStackNavigator = () => {
       />
       <RecipeStack.Screen
         name="RecipeDetail"
-        component={RecipeDetailDescriptionScreen}
+        component={RecipeDetailStackNavigator}
         options={{headerShown: false}}
       />
     </RecipeStack.Navigator>
