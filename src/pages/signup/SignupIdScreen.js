@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Platform, View} from 'react-native';
+import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
 import FocusedTextInputBorder from '../../components/atoms/FocusedTextInputBorder';
 
@@ -75,8 +75,18 @@ export default function SignupIdScreen({navigation}) {
     bottom: -300px;
   `;
 
+  const TouchableContainer = styled.TouchableOpacity`
+    width: 55px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+  `;
+
   return (
     <SignupIdScreenContainer>
+      <TouchableContainer onPress={() => navigation.pop()}>
+        <Image source={require('../../assets/images/Back.png')} />
+      </TouchableContainer>
       <DescriptionContainer>
         <FirstDescription>회원가입을 시작할게요!</FirstDescription>
         <Description>로그인 시 사용할</Description>
@@ -106,7 +116,7 @@ export default function SignupIdScreen({navigation}) {
           border_radius="25px"
           LabelInfo="다음"
           LabelSize="17px"
-          onPress={() => navigation.navigate('SignupNickname')}
+          onPress={() => navigation.push('SignupNickname')}
         />
       </NextButtonContainer>
     </SignupIdScreenContainer>

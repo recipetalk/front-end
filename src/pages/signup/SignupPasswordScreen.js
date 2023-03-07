@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Platform} from 'react-native';
+import {Image, Platform} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
 
 export default function SignupIdScreen({navigation}) {
@@ -73,13 +73,21 @@ export default function SignupIdScreen({navigation}) {
     margin-left: auto;
     margin-right: auto;
 
-    border: 1px solid black;
-
     bottom: -210px;
+  `;
+
+  const TouchableContainer = styled.TouchableOpacity`
+    width: 55px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
   `;
 
   return (
     <SignupIdScreenContainer>
+      <TouchableContainer onPress={() => navigation.pop()}>
+        <Image source={require('../../assets/images/Back.png')} />
+      </TouchableContainer>
       <DescriptionContainer>
         <FirstDescription>중간쯤 이에요!</FirstDescription>
         <Description>비밀번호를</Description>
@@ -102,7 +110,7 @@ export default function SignupIdScreen({navigation}) {
           border_radius="25px"
           LabelInfo="다음"
           LabelSize="17px"
-          onPress={() => navigation.navigate('SignupNickname')}
+          onPress={() => navigation.push('SignupNickname')}
         />
       </NextButtonContainer>
     </SignupIdScreenContainer>
