@@ -1,7 +1,7 @@
 import React from 'react';
 import {Image, Platform, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
-import RecipeDetailDescription from '../components/atoms/board/RecipeDetailDescription';
+import RecipeDetailDescription from '../../components/atoms/board/RecipeDetailDescription';
 
 const RecipeDetailDescriptionScreen = ({navigation}) => {
   return (
@@ -11,7 +11,7 @@ const RecipeDetailDescriptionScreen = ({navigation}) => {
           style={{padding: 9, width: 15, height: 15}}
           onPress={() => navigation.pop()}>
           <Image
-            source={require('../assets/images/Back_w.png')}
+            source={require('../../assets/images/Back_w.png')}
             resizeMode="contain"
             style={{width: 15, height: 30}}
           />

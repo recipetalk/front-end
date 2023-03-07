@@ -22,11 +22,37 @@ import PrepScreen from './src/pages/Ingredients/PrepScreen';
 import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
 import EfficacyEditScreen from './src/pages/Ingredients/EfficacyEditScreen';
 import PrepEditScreen from './src/pages/Ingredients/PrepEditScreen';
+import RecipeEditFirstScreen from './src/pages/recipe/RecipeEditFirstScreen';
+import RecipeEditSecondScreen from './src/pages/recipe/RecipeEditSecondScreen';
+import RecipeEditThirdScreen from './src/pages/recipe/RecipeEditThirdScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
     console.log('Reactotron Configured');
   });
+}
+
+function RecipeEditStackNavigator() {
+  const RecipeEditStack = createNativeStackNavigator();
+  return (
+    <RecipeEditStack.Navigator>
+      <RecipeEditStack.Screen
+        name="RecipeEditFirstScreen"
+        component={RecipeEditFirstScreen}
+        options={{headerShown: false}}
+      />
+      <RecipeEditStack.Screen
+        name="RecipeEditSecondScreen"
+        component={RecipeEditSecondScreen}
+        options={{headerShown: false}}
+      />
+      <RecipeEditStack.Screen
+        name="RecipeEditThirdScreen"
+        component={RecipeEditThirdScreen}
+        options={{headerShown: false}}
+      />
+    </RecipeEditStack.Navigator>
+  );
 }
 
 function SignStackNavigator() {
@@ -146,6 +172,11 @@ function App() {
           <Stack.Screen
             name="PrepDetail"
             component={PrepDetailScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RecipeEdit"
+            component={RecipeEditStackNavigator}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
