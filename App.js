@@ -22,6 +22,7 @@ import PrepScreen from './src/pages/Ingredients/PrepScreen';
 import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
 import EfficacyEditScreen from './src/pages/Ingredients/EfficacyEditScreen';
 import PrepEditScreen from './src/pages/Ingredients/PrepEditScreen';
+import IngredientsScreen from './src/pages/Ingredients/IngredientsScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -121,6 +122,11 @@ function App() {
           <Stack.Screen
             name="Home"
             component={BottomTab}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Ingredients"
+            component={IngredientsScreen}
             options={{headerShown: false}}
           />
           <Stack.Screen

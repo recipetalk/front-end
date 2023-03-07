@@ -1,14 +1,13 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../../pages/HomeScreen';
-import IngredientsScreen from '../../pages/Ingredients/IngredientsScreen';
 import MypageScreen from '../../pages/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RecipeDetailDescriptionScreen from '../../pages/RecipeDetailDescriptionScreen';
-import Header from '../organisms/Header';
 import SequenceDetailDescriptionScreen from '../../pages/SequenceDetailDescriptionScreen';
+import IngredientsAddScreen from '../../pages/Ingredients/IngredientsAddScreen';
 
 const RecipeDetailStackNavigator = () => {
   const RecipeDetailStack = createNativeStackNavigator();
@@ -80,8 +79,8 @@ const BottomTab = () => {
         }}
       />
       <Tab.Screen
-        name="Ingredients"
-        component={IngredientsScreen}
+        name="IngredientsAdd"
+        component={IngredientsAddScreen}
         options={{
           title: '식재료',
           headerShown: false,

@@ -6,16 +6,24 @@ const IngredientsHeader = props => {
   const navigation = useNavigation();
 
   return (
-    <Header>
+    <Header isTransparent={props.isTransparent}>
       <TitleContainer>
         <BackBtn onPress={() => navigation.goBack()}>
-          <Back source={require('../../../assets/images/Back.png')} />
+          {props.isTransparent ? (
+            <Back source={require('../../../assets/images/Back_w.png')} />
+          ) : (
+            <Back source={require('../../../assets/images/Back.png')} />
+          )}
         </BackBtn>
-        <HeaderTitle>{props.title}</HeaderTitle>
+        <HeaderTitle isTransparent={props.isTransparent}>
+          {props.title}
+        </HeaderTitle>
       </TitleContainer>
       {props.isTitleOnly ? null : (
         <BtnBtn onPress={() => navigation.navigate(props.screen)}>
-          <BtnValueText>{props.btnTextValue}</BtnValueText>
+          <BtnValueText isTransparent={props.isTransparent}>
+            {props.btnTextValue}
+          </BtnValueText>
         </BtnBtn>
       )}
     </Header>
@@ -29,7 +37,8 @@ const Header = styled.View`
   padding: 20px;
   border-bottom-width: 1px;
   border-bottom-color: #e1e1e1;
-  background-color: #ffffff;
+  background-color: ${props => (props.isTransparent ? 'black' : '#ffffff')};
+  opacity: ${props => (props.isTransparent ? '0.8' : '1.0')};
 `;
 
 const TitleContainer = styled.View`
@@ -40,21 +49,23 @@ const TitleContainer = styled.View`
 const BackBtn = styled.TouchableOpacity``;
 const Back = styled.Image`
   margin-right: 20px;
+  width: 18px;
+  height: 18px;
 `;
 
 const HeaderTitle = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-  color: #333333;
+  color: ${props => (props.isTransparent ? '#ffffff' : '#333333')};
 `;
 
 const BtnValueText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-
-  color: #f09311;
+  color: ${props => (props.isTransparent ? '#ffffff' : '#f09311')};
 `;
+
 const BtnBtn = styled.TouchableOpacity``;
 export default IngredientsHeader;
