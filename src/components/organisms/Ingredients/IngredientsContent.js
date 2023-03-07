@@ -1,93 +1,69 @@
 import React from 'react';
+import {View} from 'react-native';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
+import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import IngredientsItem from './IngredientsItem';
 
 const IngredientsContent = () => {
   const dummy = [1, 2, 3, 4, 5];
-
+  const oneItem = [
+    {placeholder: '등록일', label: '최신순', value: '최신순'},
+    {placeholder: '등록일', label: '과거순', value: '과거순'},
+  ];
+  const twoItem = [
+    {placeholder: '가나다', label: '오름차순', value: '오름차순'},
+    {placeholder: '가나다', label: '내림차순', value: '내림차순'},
+  ];
+  const threeItem = [
+    {
+      placeholder: '소비기한',
+      label: '가까운 순서 보기(임박)',
+      value: '가까운 순서 보기(임박)',
+    },
+    {
+      placeholder: '소비기한',
+      label: '여유로운 순서 보기(여유)',
+      value: '여유로운 순서 보기(여유)',
+    },
+  ];
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <>
       <Content>
-        <ContentTitle>식재료 명</ContentTitle>
-        <RegisterContainer>
-          <RegisterInput placeholder="  예) 감자  " />
-          <RegisterButton>
-            <RegisterButtonText>재료 등록</RegisterButtonText>
-          </RegisterButton>
-        </RegisterContainer>
-        <StatusContainer>
-          <StatusText>상태 입력</StatusText>
-          <RegisterInput placeholder="  예) 1개 " />
-        </StatusContainer>
-        <StatusContainer>
-          <StatusText>유통 기한</StatusText>
-          <RegisterInput placeholder="  예) 1개 " />
-        </StatusContainer>
-        <StatusContainer>
-          <StatusText>수량 입력</StatusText>
-          <RegisterInput placeholder="  예) 1개 " />
-        </StatusContainer>
+        <View>
+          <DropDownPickerComponent width="90px" items={oneItem} />
+        </View>
+        <View>
+          <DropDownPickerComponent width="90px" items={twoItem} />
+        </View>
+        <View>
+          <DropDownPickerComponent width="160px" items={threeItem} />
+        </View>
       </Content>
-      {dummy.map((v, i) => {
-        return <IngredientsItem key={i} />;
-      })}
-    </ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ContentTitle>나의 식재료</ContentTitle>
+        {dummy.map((v, i) => {
+          return <IngredientsItem key={i} />;
+        })}
+      </ScrollView>
+    </>
   );
 };
 
 const Content = styled.View`
-  height: 300px;
-  background-color: #ffffff;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  padding: 18px;
+  z-index: 2;
 `;
 
 const ContentTitle = styled.Text`
   font-style: normal;
   font-weight: 700;
-  font-size: 14px;
-
-  color: #666666;
-  margin: 35px 0 10px 25px;
-`;
-
-const RegisterContainer = styled.View`
-  margin: 0 0 15px 25px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const RegisterInput = styled.TextInput`
-  background: #ffffff;
-  width: 242px;
-  height: 48px;
-  border: 1px solid #d8d8d8;
-  border-radius: 8px;
-  margin-right: 10px;
-`;
-
-const RegisterButton = styled.TouchableOpacity`
-  width: 80px;
-  height: 48px;
-  background: #e1e1e1;
-  border-radius: 8px;
-  justify-content: center;
-`;
-
-const RegisterButtonText = styled.Text`
-  text-align: center;
-`;
-
-const StatusContainer = styled.View`
-  margin: 0 0 10px 25px;
-  display: flex;
-  flex-direction: row;
-`;
-
-const StatusText = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
+  font-size: 20px;
+  padding: 18px;
   color: #333333;
-  margin-right: 25px;
 `;
+
 export default IngredientsContent;

@@ -6,7 +6,11 @@ import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 const IngredientsComponent = () => {
   return (
     <IngredientsComponentContainer>
-      <IngredientsHeader title="내 식재료" isTitleOnly={true} btnTextValue="" />
+      <IngredientsHeader
+        title="내 식재료 전체보기"
+        isTitleOnly={true}
+        btnTextValue=""
+      />
       <IngredientsContent />
     </IngredientsComponentContainer>
   );
