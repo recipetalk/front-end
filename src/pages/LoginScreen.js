@@ -63,11 +63,15 @@ export default function LoginScreen({navigation}) {
         <SloganText />
         <LoginContainer>
           <LoginLabel>아이디</LoginLabel>
-          <FocusedTextInputBorder placeholder="아이디를 입력해주세요" />
+          <FocusedTextInputBorder
+            placeholder="아이디를 입력해주세요"
+            placeholderTextColor="#a4a4a4"
+          />
           <LoginLabel>비밀번호</LoginLabel>
           <FocusedTextInputBorder
             placeholder="비밀번호를 입력해주세요"
             secureTextEntry={true}
+            placeholderTextColor="#a4a4a4"
           />
           <FindLoginPasswordContainer>
             <TouchableOpacity>
