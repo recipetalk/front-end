@@ -8,9 +8,8 @@ export default function DetailProfileWithDescription({
   nickname,
   description,
   profileURI,
+  navigation,
 }) {
-  const navigation = useNavigation();
-
   const ProfileContainer = styled.View`
     width: 100%;
     height: 100%;
@@ -182,7 +181,8 @@ export default function DetailProfileWithDescription({
         <NaviImg source={require('../../../assets/images/More_b.png')} />
       </TouchableNaviContainer>
       <VerticalBar />
-      <TouchableNaviContainer>
+      <TouchableNaviContainer
+        onPress={() => navigation.navigate('CommentHistory')}>
         <NaviLabel title="작성한 덧글" num="235" />
         <NaviImg source={require('../../../assets/images/More_b.png')} />
       </TouchableNaviContainer>

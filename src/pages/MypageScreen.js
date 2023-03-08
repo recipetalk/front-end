@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import styled from 'styled-components/native';
 import DetailProfileWithDescription from '../components/atoms/profile/DetailProfileWithDescription';
 
-const MypageScreen = () => {
+const MypageScreen = ({navigation}) => {
   return (
     <MypageScreenContainer>
       <Header>
@@ -14,6 +14,7 @@ const MypageScreen = () => {
       <DetailProfileWithDescription
         nickname="홍길동"
         description="나는 사실 양아치"
+        navigation={navigation}
       />
     </MypageScreenContainer>
   );
