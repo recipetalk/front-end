@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-export default function SignupIdScreen({navigator}) {
+export default function SignupIdScreen({navigation}) {
   const Description = styled.Text`
     font-style: normal;
     font-weight: 400;
