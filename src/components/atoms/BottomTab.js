@@ -6,9 +6,6 @@ import MypageScreen from '../../pages/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import RecipeDetailDescriptionScreen from '../../pages/recipe/RecipeDetailDescriptionScreen';
-import Header from '../organisms/Header';
-import SequenceDetailDescriptionScreen from '../../pages/SequenceDetailDescriptionScreen';
 import RecipeDetailStackNavigator from '../../navigations/RecipeDetailStackNavigator';
 
 const RecipeStackNavigator = () => {

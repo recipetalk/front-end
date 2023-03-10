@@ -21,7 +21,7 @@ export default function ActiveButton({
 
   const Label = styled.Text`
     font-weight: 700;
-    color: ${() => (isActive ? '#FFFFF' : '#666666')};
+    color: ${() => (isActive ? '#FFFFFF' : '#666666')};
     text-align: center;
     line-height: 27px;
     font-size: ${() => LabelSize};
