@@ -1,11 +1,18 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../../pages/HomeScreen';
-import IngredientsScreen from '../../pages/Ingredients/IngredientsScreen';
 import MypageScreen from '../../pages/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import RecipeDetailDescriptionScreen from '../../pages/RecipeDetailDescriptionScreen';
+import SequenceDetailDescriptionScreen from '../../pages/SequenceDetailDescriptionScreen';
+import IngredientsAddScreen from '../../pages/Ingredients/IngredientsAddScreen';
+import IngredientsScreen from '../../pages/Ingredients/IngredientsScreen';
+import EfficacyScreen from '../../pages/Ingredients/EfficacyScreen';
+import PrepScreen from '../../pages/Ingredients/PrepScreen';
+import PrepDetailScreen from '../../pages/Ingredients/PrepDetailScreen';
+import EfficacyEditScreen from '../../pages/Ingredients/EfficacyEditScreen';
 import RecipeDetailStackNavigator from '../../navigations/RecipeDetailStackNavigator';
 
 const RecipeStackNavigator = () => {
@@ -23,6 +30,47 @@ const RecipeStackNavigator = () => {
         options={{headerShown: false}}
       />
     </RecipeStack.Navigator>
+  );
+};
+
+const IngredientsStackNavigator = () => {
+  const IngredientsStack = createNativeStackNavigator();
+
+  return (
+    <IngredientsStack.Navigator>
+      <IngredientsStack.Screen
+        name="IngredientsAdd"
+        component={IngredientsAddScreen}
+        options={{headerShown: false}}
+      />
+      <IngredientsStack.Screen
+        name="Ingredients"
+        component={IngredientsScreen}
+        options={{headerShown: false}}
+      />
+
+      <IngredientsStack.Screen
+        name="Efficacy"
+        component={EfficacyScreen}
+        options={{headerShown: false}}
+      />
+      <IngredientsStack.Screen
+        name="EfficacyEdit"
+        component={EfficacyEditScreen}
+        options={{headerShown: false}}
+      />
+      <IngredientsStack.Screen
+        name="Prep"
+        component={PrepScreen}
+        options={{headerShown: false}}
+      />
+
+      <IngredientsStack.Screen
+        name="PrepDetail"
+        component={PrepDetailScreen}
+        options={{headerShown: false}}
+      />
+    </IngredientsStack.Navigator>
   );
 };
 
@@ -60,8 +108,8 @@ const BottomTab = () => {
         }}
       />
       <Tab.Screen
-        name="Ingredients"
-        component={IngredientsScreen}
+        name="IngredientsHome"
+        component={IngredientsStackNavigator}
         options={{
           title: '식재료',
           headerShown: false,
