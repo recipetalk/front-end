@@ -13,24 +13,7 @@ import EfficacyScreen from '../../pages/Ingredients/EfficacyScreen';
 import PrepScreen from '../../pages/Ingredients/PrepScreen';
 import PrepDetailScreen from '../../pages/Ingredients/PrepDetailScreen';
 import EfficacyEditScreen from '../../pages/Ingredients/EfficacyEditScreen';
-
-const RecipeDetailStackNavigator = () => {
-  const RecipeDetailStack = createNativeStackNavigator();
-  return (
-    <RecipeDetailStack.Navigator>
-      <RecipeDetailStack.Screen
-        name="RecipeDetailDescription"
-        component={RecipeDetailDescriptionScreen}
-        options={{headerShown: false}}
-      />
-      <RecipeDetailStack.Screen
-        name="SequenceDetailDescription"
-        component={SequenceDetailDescriptionScreen}
-        options={{headerShown: false}}
-      />
-    </RecipeDetailStack.Navigator>
-  );
-};
+import RecipeDetailStackNavigator from '../../navigations/RecipeDetailStackNavigator';
 
 const RecipeStackNavigator = () => {
   const RecipeStack = createNativeStackNavigator();

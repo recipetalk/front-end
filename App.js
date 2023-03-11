@@ -18,11 +18,39 @@ import SignupPhoneVerificationScreen from './src/pages/signup/SignupPhoneVerific
 import BottomTab from './src/components/atoms/BottomTab';
 import SimpleLoginScreen from './src/pages/SimpleLoginScreen';
 import PrepEditScreen from './src/pages/Ingredients/PrepEditScreen';
+import RecipeEditFirstScreen from './src/pages/recipe/RecipeEditFirstScreen';
+import RecipeEditSecondScreen from './src/pages/recipe/RecipeEditSecondScreen';
+import RecipeEditThirdScreen from './src/pages/recipe/RecipeEditThirdScreen';
+import CommentHistoryScreen from './src/pages/myPage/CommentHistoryScreen';
+import RecipeDetailStackNavigator from './src/navigations/RecipeDetailStackNavigator';
 
 if (__DEV__) {
   import('./config').then(() => {
     console.log('Reactotron Configured');
   });
+}
+
+function RecipeEditStackNavigator() {
+  const RecipeEditStack = createNativeStackNavigator();
+  return (
+    <RecipeEditStack.Navigator>
+      <RecipeEditStack.Screen
+        name="RecipeEditFirstScreen"
+        component={RecipeEditFirstScreen}
+        options={{headerShown: false}}
+      />
+      <RecipeEditStack.Screen
+        name="RecipeEditSecondScreen"
+        component={RecipeEditSecondScreen}
+        options={{headerShown: false}}
+      />
+      <RecipeEditStack.Screen
+        name="RecipeEditThirdScreen"
+        component={RecipeEditThirdScreen}
+        options={{headerShown: false}}
+      />
+    </RecipeEditStack.Navigator>
+  );
 }
 
 function SignStackNavigator() {
