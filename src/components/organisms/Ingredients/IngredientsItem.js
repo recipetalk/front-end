@@ -34,7 +34,7 @@ const IngredientsItem = () => {
 };
 
 const IngredientsItemContainer = styled.View`
-  margin: 15px 15px 0 15px;
+  margin: 0 15px 15px 15px;
   background-color: #ffffff;
   border-radius: 3px;
   height: 130px;
