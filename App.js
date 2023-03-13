@@ -152,6 +152,21 @@ function App() {
             component={PrepEditScreen}
             options={{headerShown: false}}
           />
+          <Stack.Screen
+            name="RecipeEdit"
+            component={RecipeEditStackNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="CommentHistory"
+            component={CommentHistoryScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RecipeDetailScreen"
+            component={RecipeDetailStackNavigator}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
