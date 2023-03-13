@@ -5,8 +5,6 @@ import MypageScreen from '../../pages/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import RecipeDetailDescriptionScreen from '../../pages/RecipeDetailDescriptionScreen';
-import SequenceDetailDescriptionScreen from '../../pages/SequenceDetailDescriptionScreen';
 import IngredientsAddScreen from '../../pages/Ingredients/IngredientsAddScreen';
 import IngredientsScreen from '../../pages/Ingredients/IngredientsScreen';
 import EfficacyScreen from '../../pages/Ingredients/EfficacyScreen';

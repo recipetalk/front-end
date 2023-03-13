@@ -23,6 +23,7 @@ import RecipeEditSecondScreen from './src/pages/recipe/RecipeEditSecondScreen';
 import RecipeEditThirdScreen from './src/pages/recipe/RecipeEditThirdScreen';
 import CommentHistoryScreen from './src/pages/myPage/CommentHistoryScreen';
 import RecipeDetailStackNavigator from './src/navigations/RecipeDetailStackNavigator';
+import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -150,6 +151,21 @@ function App() {
           <Stack.Screen
             name="PrepEdit"
             component={PrepEditScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RecipeEdit"
+            component={RecipeEditStackNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="CommentHistory"
+            component={CommentHistoryScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RecipeDetailScreen"
+            component={RecipeDetailStackNavigator}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
