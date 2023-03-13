@@ -1,9 +1,9 @@
-import React from 'react';
 import styled from 'styled-components/native';
-import {Image, Platform} from 'react-native';
+import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
+import React from 'react';
 
-export default function SignupNicknameScreen({navigation}) {
+export default function SignupFirstEmailVerificationScreen({navigation}) {
   const Description = styled.Text`
     font-style: normal;
     font-weight: 400;
@@ -32,10 +32,12 @@ export default function SignupNicknameScreen({navigation}) {
           position: relative;
           height: 100%;
           width: 100%;
+          border: 1px solid green;
         `
       : styled.View`
           position: relative;
           height: 100%;
+          border: 1px solid green;
           width: 100%;
         `;
 
@@ -64,14 +66,6 @@ export default function SignupNicknameScreen({navigation}) {
     gap: 7px;
   `;
 
-  const DuplicationAndTextInputContainer = styled.View`
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
-  `;
-
   const NextButtonContainer = styled.View`
     position: relative;
 
@@ -80,7 +74,7 @@ export default function SignupNicknameScreen({navigation}) {
     margin-left: auto;
     margin-right: auto;
 
-    bottom: -300px;
+    bottom: -210px;
   `;
 
   const TouchableContainer = styled.TouchableOpacity`
@@ -96,33 +90,33 @@ export default function SignupNicknameScreen({navigation}) {
         <Image source={require('../../assets/images/Back.png')} />
       </TouchableContainer>
       <DescriptionContainer>
-        <FirstDescription>회원가입을 시작할게요!</FirstDescription>
-        <Description>사용할 닉네임을</Description>
-        <Description>입력해주세요.</Description>
+        <FirstDescription>거의다 왔어요!</FirstDescription>
+        <Description>중복 가입 방지를 위해</Description>
+        <Description>이메일을 입력해 주세요.</Description>
       </DescriptionContainer>
 
       <LoginContainer>
-        <LoginLabel>닉네임</LoginLabel>
-        <DuplicationAndTextInputContainer>
-          <LoginText />
+        <LoginLabel>이메일</LoginLabel>
+        <View style={{flexDirection: 'row', gap: 20, width: '100%'}}>
+          <LoginText placeholder="이메일을 입력해주세요" />
           <ActiveButton
-            width="80px"
+            width="23%"
             height="48px"
             border_radius="8px"
-            LabelInfo="중복확인"
-            LabelSize="14px"
+            LabelInfo="중복 확인"
+            LabelSize="17px"
+            onPress={() => {}}
           />
-        </DuplicationAndTextInputContainer>
+        </View>
       </LoginContainer>
-
       <NextButtonContainer>
         <ActiveButton
           width="100%"
           height="48px"
           border_radius="25px"
-          LabelInfo="다음"
+          LabelInfo="전송"
           LabelSize="17px"
-          onPress={() => navigation.push('SignupPassword')}
+          onPress={() => navigation.push('SignupEmailSecond')}
         />
       </NextButtonContainer>
     </SignupIdScreenContainer>

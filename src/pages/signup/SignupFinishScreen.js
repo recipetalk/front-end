@@ -1,9 +1,9 @@
-import React from 'react';
 import styled from 'styled-components/native';
-import {Image, Platform} from 'react-native';
+import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
+import React from 'react';
 
-export default function SignupNicknameScreen({navigation}) {
+export default function SignupFinishScreen({navigation}) {
   const Description = styled.Text`
     font-style: normal;
     font-weight: 400;
@@ -24,6 +24,7 @@ export default function SignupNicknameScreen({navigation}) {
     width: 90%;
     margin-left: 25px;
     margin-top: 15px;
+    gap: 10px;
   `;
 
   const SignupIdScreenContainer =
@@ -32,10 +33,12 @@ export default function SignupNicknameScreen({navigation}) {
           position: relative;
           height: 100%;
           width: 100%;
+          border: 1px solid green;
         `
       : styled.View`
           position: relative;
           height: 100%;
+          border: 1px solid green;
           width: 100%;
         `;
 
@@ -64,23 +67,16 @@ export default function SignupNicknameScreen({navigation}) {
     gap: 7px;
   `;
 
-  const DuplicationAndTextInputContainer = styled.View`
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
-  `;
-
   const NextButtonContainer = styled.View`
     position: relative;
 
     width: 90%;
 
+    margin-top: 135px;
     margin-left: auto;
     margin-right: auto;
 
-    bottom: -300px;
+    bottom: -210px;
   `;
 
   const TouchableContainer = styled.TouchableOpacity`
@@ -90,39 +86,54 @@ export default function SignupNicknameScreen({navigation}) {
     justify-content: center;
   `;
 
+  const SecondSlogan = styled.Text`
+    font-style: normal;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 41px;
+    margin-top: -10px;
+
+    color: #666666;
+  `;
+
+  const ThirdSlogan = styled.Text`
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+
+    margin-top: 15px;
+    color: #666666;
+  `;
+
+  const LogoImage = styled.Image`
+    width: 75px;
+    height: 48px;
+    margin-left: 16px;
+    margin-top: 16px;
+  `;
+
   return (
     <SignupIdScreenContainer>
-      <TouchableContainer onPress={() => navigation.pop()}>
-        <Image source={require('../../assets/images/Back.png')} />
-      </TouchableContainer>
+      <LogoImage
+        source={require('../../assets/images/OrangeLogo.png')}
+        resizeMode="contain"
+      />
       <DescriptionContainer>
-        <FirstDescription>회원가입을 시작할게요!</FirstDescription>
-        <Description>사용할 닉네임을</Description>
-        <Description>입력해주세요.</Description>
+        <SecondSlogan>반가워요 홍길동님!</SecondSlogan>
+        <SecondSlogan>회원가입이</SecondSlogan>
+        <SecondSlogan>완료되었어요.</SecondSlogan>
+        <ThirdSlogan>매일의 요리가 새로워지는 레시피톡</ThirdSlogan>
       </DescriptionContainer>
-
-      <LoginContainer>
-        <LoginLabel>닉네임</LoginLabel>
-        <DuplicationAndTextInputContainer>
-          <LoginText />
-          <ActiveButton
-            width="80px"
-            height="48px"
-            border_radius="8px"
-            LabelInfo="중복확인"
-            LabelSize="14px"
-          />
-        </DuplicationAndTextInputContainer>
-      </LoginContainer>
 
       <NextButtonContainer>
         <ActiveButton
           width="100%"
           height="48px"
           border_radius="25px"
-          LabelInfo="다음"
+          LabelInfo="시작하기"
           LabelSize="17px"
-          onPress={() => navigation.push('SignupPassword')}
+          isActive={true}
+          onPress={() => navigation.push('Home')}
         />
       </NextButtonContainer>
     </SignupIdScreenContainer>

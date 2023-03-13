@@ -14,7 +14,7 @@ import {Provider} from 'react-redux';
 import SignupIdScreen from './src/pages/signup/SignupIdScreen';
 import SignupNicknameScreen from './src/pages/signup/SignupNicknameScreen';
 import SignupPasswordScreen from './src/pages/signup/SignupPasswordScreen';
-import SignupPhoneVerificationScreen from './src/pages/signup/SignupPhoneVerificationScreen';
+import SignupFirstEmailVerificationScreen from './src/pages/signup/SignupFirstEmailVerificationScreen';
 import BottomTab from './src/components/atoms/BottomTab';
 import SimpleLoginScreen from './src/pages/SimpleLoginScreen';
 import PrepEditScreen from './src/pages/Ingredients/PrepEditScreen';
@@ -23,7 +23,8 @@ import RecipeEditSecondScreen from './src/pages/recipe/RecipeEditSecondScreen';
 import RecipeEditThirdScreen from './src/pages/recipe/RecipeEditThirdScreen';
 import CommentHistoryScreen from './src/pages/myPage/CommentHistoryScreen';
 import RecipeDetailStackNavigator from './src/navigations/RecipeDetailStackNavigator';
-import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
+import SignupSecondEmailVerificationScreen from './src/pages/signup/SignupSecondEmailVerificationScreen';
+import SignupFinishScreen from './src/pages/signup/SignupFinishScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -74,8 +75,18 @@ function SignStackNavigator() {
         options={{headerShown: false}}
       />
       <SignStack.Screen
-        name="SignupPhoneVerification"
-        component={SignupPhoneVerificationScreen}
+        name="SignupEmailFirst"
+        component={SignupFirstEmailVerificationScreen}
+        options={{headerShown: false}}
+      />
+      <SignStack.Screen
+        name="SignupEmailSecond"
+        component={SignupSecondEmailVerificationScreen}
+        options={{headerShown: false}}
+      />
+      <SignStack.Screen
+        name="SignupFinish"
+        component={SignupFinishScreen}
         options={{headerShown: false}}
       />
     </SignStack.Navigator>

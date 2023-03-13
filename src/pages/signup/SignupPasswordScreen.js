@@ -110,7 +110,7 @@ export default function SignupIdScreen({navigation}) {
           border_radius="25px"
           LabelInfo="다음"
           LabelSize="17px"
-          onPress={() => navigation.push('SignupNickname')}
+          onPress={() => navigation.push('SignupEmailFirst')}
         />
       </NextButtonContainer>
     </SignupIdScreenContainer>
