@@ -17,8 +17,7 @@ const PrepOrderComponent = ({num}) => {
         </TextPart>
 
         <ImagePart />
-        <TouchContainer
-          onPress={() => navigation.push('SequenceDetailDescription')}>
+        <TouchContainer onPress={() => navigation.push('SequenceDetailScreen')}>
           <MorePart>
             <MoreImg source={require('../../assets/images/Find_g.png')} />
             <MoreText>자세히보기</MoreText>

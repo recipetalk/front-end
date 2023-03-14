@@ -12,11 +12,6 @@ const RecipeDetailStackNavigator = () => {
         component={RecipeDetailDescriptionScreen}
         options={{headerShown: false}}
       />
-      <RecipeDetailStack.Screen
-        name="SequenceDetailDescription"
-        component={SequenceDetailDescriptionScreen}
-        options={{headerShown: false}}
-      />
     </RecipeDetailStack.Navigator>
   );
 };
