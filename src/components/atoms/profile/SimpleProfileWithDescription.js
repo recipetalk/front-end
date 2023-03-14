@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {Text} from 'react-native';
 
 export default function SimpleProfileWithDescription({
   username,
   nickname,
   description,
   profileURI,
+  isMine,
+  navigation,
 }) {
   const ProfileContainer = styled.View`
     position: relative;
@@ -21,21 +24,25 @@ export default function SimpleProfileWithDescription({
     margin: auto auto;
   `;
 
-  const ProfileTouchableContainer = styled.TouchableOpacity`
-    width: 70%;
-  `;
+  const ProfileTouchableContainer = isMine
+    ? styled.View`
+        width: 70%;
+      `
+    : styled.TouchableOpacity`
+        width: 70%;
+      `;
 
   const ProfileImg =
     profileURI !== undefined
       ? styled.Image`
-          border-radius: 100px;
-          border: 1px solid black;
+          border-radius: 13.873px;
+          background-color: #e5e5e5;
           width: 46px;
           height: 46px;
         `
       : styled.View`
-          border-radius: 100px;
-          border: 1px solid black;
+          border-radius: 13.873px;
+          background-color: #e5e5e5;
           width: 46px;
           height: 46px;
         `;
@@ -85,17 +92,18 @@ export default function SimpleProfileWithDescription({
 
   //TODO : IMG URI 체킹할 방법 알아내야함.
   return (
-    <ProfileContainer>
-      <SimpleProfile>
-        <ProfileTouchableContainer>
-          <ProfileImg source={{uri: profileURI}} />
-          <Nickname>{nickname}</Nickname>
-          <Description>{description}</Description>
-        </ProfileTouchableContainer>
-        <FollowingTouchableContainer>
-          <Following>소식받기</Following>
-        </FollowingTouchableContainer>
-      </SimpleProfile>
-    </ProfileContainer>
+    <SimpleProfile>
+      <ProfileTouchableContainer>
+        <ProfileImg source={{uri: profileURI}} />
+        <Nickname>{nickname}</Nickname>
+        <Description numberOfLines={1} ellipsizeMode={'tail'}>
+          {description}
+        </Description>
+      </ProfileTouchableContainer>
+      <FollowingTouchableContainer
+        onPress={isMine ? () => navigation.push('ProfileScreen') : undefined}>
+        <Following>{isMine ? '프로필' : '소식받기'}</Following>
+      </FollowingTouchableContainer>
+    </SimpleProfile>
   );
 }
