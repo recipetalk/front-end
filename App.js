@@ -25,6 +25,7 @@ import CommentHistoryScreen from './src/pages/myPage/CommentHistoryScreen';
 import RecipeDetailStackNavigator from './src/navigations/RecipeDetailStackNavigator';
 import SignupSecondEmailVerificationScreen from './src/pages/signup/SignupSecondEmailVerificationScreen';
 import SignupFinishScreen from './src/pages/signup/SignupFinishScreen';
+import ProfileScreen from './src/pages/myPage/ProfileScreen';
 import SequenceDetailDescriptionScreen from './src/pages/SequenceDetailDescriptionScreen';
 import SetTimerPage from './src/pages/timer/SetTimerPage';
 
@@ -179,6 +180,11 @@ function App() {
           <Stack.Screen
             name="RecipeDetailScreen"
             component={RecipeDetailStackNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
             options={{headerShown: false}}
           />
           <Stack.Screen

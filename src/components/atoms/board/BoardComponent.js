@@ -5,6 +5,8 @@ import React from 'react';
 
 export default function BoardComponent({navigation}) {
   const BoardComponentContainer = styled.View`
+    padding-top: 15px;
+    gap: 15px;
     background-color: #ffffff;
   `;
 

@@ -1,23 +1,45 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import DetailProfileWithDescription from '../components/atoms/profile/DetailProfileWithDescription';
-import {Dimensions} from 'react-native';
+import {Image, View} from 'react-native';
+import SimpleProfileWithDescription from '../components/atoms/profile/SimpleProfileWithDescription';
+import FollowingComponent from '../components/organisms/mypage/FollowingComponent';
 
 const MypageScreen = ({navigation}) => {
   return (
     <MypageScreenContainer>
       <InnerContainer>
         <Header>
-          <HeaderLabel>프로필</HeaderLabel>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 20,
+              paddingLeft: 10,
+            }}>
+            <HeaderTouchButton onPress={() => navigation.pop()}>
+              <Image
+                source={require('../assets/images/Back.png')}
+                resizeMode={'contain'}
+              />
+            </HeaderTouchButton>
+            <HeaderLabel>마이페이지</HeaderLabel>
+          </View>
         </Header>
-
-        <DetailProfileWithDescription
-          nickname="홍길동"
-          description="나는 사실 양아치"
-          navigation={navigation}
-          isMine={true}
-        />
-
+        <VerticalBar height={'2px'} />
+        <InfoContainer>
+          <SimpleProfileWithDescription
+            nickname="사용자아이디0000"
+            description="4아이 엄마~^^ 소개합니다. 나의 레시피 1줄까지만 쓰게할까 테스트문구 테스트"
+            navigation={navigation}
+            isMine={true}
+          />
+          <FollowingComponent
+            followingNumber={123}
+            followerNumber={'1K'}
+            recipeNumber={22}
+          />
+        </InfoContainer>
+        <VerticalBar height={'2px'} />
         <NavigatePart>
           <NavigateContainer>
             <NavigateTouchButton>
@@ -38,6 +60,15 @@ const MypageScreen = ({navigation}) => {
             </NavigateTouchButton>
           </NavigateContainer>
           <NavigateContainer>
+            <NavigateTouchButton>
+              <NavigateIcon
+                source={require('../assets/images/Ingredients.png')}
+                resizeMode={'contain'}
+              />
+              <NavigateTitle>재료 손질법 관리</NavigateTitle>
+            </NavigateTouchButton>
+          </NavigateContainer>
+          <NavigateContainer>
             <NavigateTouchButton
               onPress={() => navigation.push('CommentHistory')}>
               <NavigateIcon
@@ -48,7 +79,7 @@ const MypageScreen = ({navigation}) => {
             </NavigateTouchButton>
           </NavigateContainer>
         </NavigatePart>
-        <VerticalBar />
+        <VerticalBar height={'4px'} />
         <NoticePart>
           <NavigateTouchButton>
             <NoticeTitle>공지사항</NoticeTitle>
@@ -67,8 +98,21 @@ const MypageScreen = ({navigation}) => {
 
 const VerticalBar = styled.View`
   width: 100%;
-  height: 4px;
+  height: ${props => props.height};
   background: #f5f5f5;
+`;
+
+const InfoContainer = styled.View`
+  gap: 15px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+`;
+
+const HeaderTouchButton = styled.TouchableOpacity`
+  width: 25px;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const MypageScreenContainer = styled.SafeAreaView`
@@ -77,18 +121,18 @@ const MypageScreenContainer = styled.SafeAreaView`
 `;
 
 const Header = styled.View`
-  background: #f09311;
+  background: #ffffff;
   width: 100%;
   height: 50px;
-  align-items: center;
+
   justify-content: center;
 `;
 
 const HeaderLabel = styled.Text`
-  color: #ffffff;
+  color: #333333;
   font-style: normal;
-  font-weight: 700;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 18px;
 `;
 
 const InnerContainer = styled.ScrollView`
@@ -98,7 +142,7 @@ const InnerContainer = styled.ScrollView`
 
 const NavigatePart = styled.View`
   width: 100%;
-  height: 165px;
+  height: auto;
   background: #ffffff;
   gap: 30px;
   padding: 20px;
