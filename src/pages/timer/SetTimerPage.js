@@ -77,12 +77,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 20,
     color: '#a0a0a0',
+    fontFamily: 'Pretendard Variable',
   },
   isHighlighted: {
     fontStyle: 'normal',
     fontWeight: '700',
     fontSize: 20,
     color: '#ffffff',
+    fontFamily: 'Pretendard Variable',
   },
 });
 const Header = styled.View`
@@ -119,7 +121,6 @@ const InputPart = styled.View`
   height: 260px;
   margin: 0 auto;
   justify-content: space-between;
-
   align-items: center;
 `;
 

@@ -41,7 +41,7 @@ const SimpleLoginLabel = styled.Text`
   font-weight: 400;
   font-size: 14px;
   text-decoration-line: underline;
-
+  font-family: 'Pretendard Variable';
   color: #666666;
 `;
 

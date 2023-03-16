@@ -38,6 +38,7 @@ const Name = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 34px;
+  font-family: 'Pretendard Variable';
 
   color: #333333;
   margin-bottom: 10px;
@@ -47,6 +48,7 @@ const Category = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
+  font-family: 'Pretendard Variable';
 
   color: #666666;
 `;

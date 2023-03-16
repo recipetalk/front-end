@@ -21,6 +21,7 @@ const ExpandableText = ({text}) => {
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
+    font-family: 'Pretendard Variable';
   `;
 
   return (

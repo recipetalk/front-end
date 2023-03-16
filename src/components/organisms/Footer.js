@@ -29,6 +29,7 @@ const Top = styled.Text`
   font-size: 12px;
   margin: 20px 0 13px;
   color: #868686;
+  font-family: 'Pretendard Variable';
 `;
 
 const Bottom = styled.Text`
@@ -37,5 +38,6 @@ const Bottom = styled.Text`
   font-size: 12px;
   margin-bottom: 5px;
   color: #868686;
+  font-family: 'Pretendard Variable';
 `;
 export default Footer;

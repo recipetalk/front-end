@@ -25,6 +25,7 @@ export default function ActiveButton({
     text-align: center;
     line-height: 27px;
     font-size: ${() => LabelSize};
+    font-family: 'Pretendard Variable';
   `;
 
   function notAction() {}

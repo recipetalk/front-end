@@ -117,6 +117,7 @@ const ImageSelectLabel = styled.Text`
   font-size: 16px;
   color: #f09311;
   text-align: right;
+  font-family: 'Pretendard Variable';
 `;
 
 const RecipeEditScreenContainer = styled.SafeAreaView`
@@ -148,12 +149,13 @@ const Description = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
+  font-family: 'Pretendard Variable';
 `;
 
 const DummyTextInput = styled.TextInput`
   border: 1px solid #d8d8d8;
   width: 40%;
-
+  font-family: 'Pretendard Variable';
   border-radius: 8px;
 
   font-style: normal;
@@ -199,6 +201,7 @@ const TitleTextInput = styled.TextInput`
   font-weight: 500;
   font-size: 24px;
   width: 90%;
+  font-family: 'Pretendard Variable';
 `;
 
 const DescriptionTextInput = styled.TextInput`
@@ -207,7 +210,7 @@ const DescriptionTextInput = styled.TextInput`
   font-size: 16px;
   height: auto;
   text-align-vertical: top;
-
+  font-family: 'Pretendard Variable';
   color: #666666;
 `;
 
@@ -226,6 +229,7 @@ const CookingSectionLabel = styled.Text`
   font-weight: 500;
   font-size: 18px;
   color: #333333;
+  font-family: 'Pretendard Variable';
 `;
 
 const CookingSectionPart = styled.View`
@@ -258,6 +262,7 @@ const HashtagInput = styled.TextInput`
   color: #a0a0a0;
   padding: 10px;
   border-radius: 8px;
+  font-family: 'Pretendard Variable';
 `;
 
 const HashtagItem = styled.View`
@@ -272,6 +277,7 @@ const HashtagItem = styled.View`
 
 const HashtagItemLabel = styled.Text`
   color: #666666;
+  font-family: 'Pretendard Variable';
 `;
 
 const HashtagCancelTouchable = styled.TouchableOpacity``;
@@ -289,6 +295,8 @@ const PartTitleLabel = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
+
+  font-family: 'Pretendard Variable';
 
   color: #333333;
 `;

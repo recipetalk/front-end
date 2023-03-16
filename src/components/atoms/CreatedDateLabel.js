@@ -6,7 +6,7 @@ export default function CreatedDateLabel({createdDate}) {
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
-
+    font-family: 'Pretendard Variable';
     text-align: center;
     line-height: 15px;
 

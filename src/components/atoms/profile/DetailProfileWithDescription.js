@@ -58,6 +58,7 @@ export default function DetailProfileWithDescription({
     font-weight: 500;
     font-size: 16px;
     line-height: 19px;
+    font-family: 'Pretendard Variable';
   `;
 
   const Description = styled.Text`
@@ -75,7 +76,7 @@ export default function DetailProfileWithDescription({
 
   const Following = styled.Text`
     color: #f09311;
-
+    font-family: 'Pretendard Variable';
     font-style: normal;
     font-weight: 500;
     font-size: 14px;

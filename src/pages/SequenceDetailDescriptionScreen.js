@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 20,
     color: '#ffffff',
+    fontFamily: 'Pretendard Variable',
   },
 
   isStartClicked: {
@@ -154,6 +155,7 @@ const Colon = styled.Text`
   font-weight: 700;
   font-size: 20px;
   color: #ffffff;
+  font-family: 'Pretendard Variable';
 `;
 
 const InputPart = styled.View`
@@ -182,6 +184,7 @@ const TextBoxLabel = styled.Text`
   font-weight: 500;
   font-size: 14px;
   color: #d8d8d8;
+  font-family: 'Pretendard Variable';
 `;
 const InitTimerBox = styled.View`
   position: absolute;
@@ -203,6 +206,7 @@ const ButtonLabel = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
+  font-family: 'Pretendard Variable';
 `;
 
 const StartButton = styled.TouchableOpacity`
@@ -286,6 +290,7 @@ const BarLabel = styled.Text`
   font-size: 20px;
   color: #ffffff;
   width: auto;
+  font-family: 'Pretendard Variable';
 `;
 
 const TimerLabelBox = styled.View`
@@ -295,11 +300,12 @@ const TimerLabelBox = styled.View`
   gap: 7px;
 `;
 
+export default SequenceDetailDescriptionScreen;
+
 const TimerLabel = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
+  font-family: 'Pretendard Variable';
   color: #d8d8d8;
 `;
-
-export default SequenceDetailDescriptionScreen;

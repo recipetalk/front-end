@@ -72,6 +72,7 @@ const AddPrepOrderText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
+  font-family: 'Pretendard Variable';
 
   color: #f09311;
 `;
@@ -88,6 +89,7 @@ const OrderTitle = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
+  font-family: 'Pretendard Variable';
 
   color: #333333;
   padding: 18px;
@@ -114,6 +116,7 @@ const PrepOrderNumText = styled.Text`
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
+  font-family: 'Pretendard Variable';
 
   color: #ffffff;
 `;
@@ -142,6 +145,7 @@ const PrepOrderContentText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
+  font-family: 'Pretendard Variable';
 
   color: #a0a0a0;
 `;

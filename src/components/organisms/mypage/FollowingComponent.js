@@ -38,6 +38,7 @@ const MyInfoTitleLabel = styled.Text`
   font-weight: 500;
   font-size: 14px;
   color: #666666;
+  font-family: 'Pretendard Variable';
 `;
 
 const MyInfoNumberLabel = styled.Text`
@@ -45,6 +46,7 @@ const MyInfoNumberLabel = styled.Text`
   font-weight: 700;
   font-size: 20px;
   color: #333333;
+  font-family: 'Pretendard Variable';
 `;
 
 const MyInfoItem = styled.TouchableOpacity`

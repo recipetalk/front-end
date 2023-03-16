@@ -8,6 +8,7 @@ export default function SignupFirstEmailVerificationScreen({navigation}) {
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
+    font-family: 'Pretendard Variable';
     color: black;
   `;
 
@@ -15,7 +16,7 @@ export default function SignupFirstEmailVerificationScreen({navigation}) {
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
-
+    font-family: 'Pretendard Variable';
     color: #f09311;
     margin-bottom: 15px;
   `;
@@ -54,7 +55,7 @@ export default function SignupFirstEmailVerificationScreen({navigation}) {
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
-
+    font-family: 'Pretendard Variable';
     margin-left: 8px;
     color: #666666;
     margin-top: 15px;

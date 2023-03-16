@@ -4,22 +4,6 @@ import ActiveButton from '../../components/atoms/board/ActiveButton';
 import React from 'react';
 
 export default function SignupFinishScreen({navigation}) {
-  const Description = styled.Text`
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    color: black;
-  `;
-
-  const FirstDescription = styled.Text`
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-
-    color: #f09311;
-    margin-bottom: 15px;
-  `;
-
   const DescriptionContainer = styled.View`
     width: 90%;
     margin-left: 25px;
@@ -49,13 +33,14 @@ export default function SignupFinishScreen({navigation}) {
     border-radius: 8px;
     padding: 8px;
     width: 70%;
+    font-family: 'Pretendard Variable';
   `;
 
   const LoginLabel = styled.Text`
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
-
+    font-family: 'Pretendard Variable';
     margin-left: 8px;
     color: #666666;
     margin-top: 15px;
@@ -92,7 +77,7 @@ export default function SignupFinishScreen({navigation}) {
     font-size: 30px;
     line-height: 41px;
     margin-top: -10px;
-
+    font-family: 'Pretendard Variable';
     color: #666666;
   `;
 
@@ -100,7 +85,7 @@ export default function SignupFinishScreen({navigation}) {
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
-
+    font-family: 'Pretendard Variable';
     margin-top: 15px;
     color: #666666;
   `;

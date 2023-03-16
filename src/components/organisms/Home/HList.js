@@ -28,6 +28,7 @@ const Title = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
+  font-family: 'Pretendard Variable';
 
   color: #666666;
   margin-bottom: 8px;

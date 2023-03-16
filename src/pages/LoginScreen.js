@@ -131,7 +131,7 @@ const FindLabel = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-
+  font-family: 'Pretendard Variable';
   color: #666666;
 `;
 
@@ -139,7 +139,7 @@ const LoginButtonLabel = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 15px;
-
+  font-family: 'Pretendard Variable';
   color: #666666;
 `;
 
@@ -147,7 +147,7 @@ const SignButtonLabel = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 15px;
-
+  font-family: 'Pretendard Variable';
   color: #ffffff;
 `;
 
@@ -165,7 +165,7 @@ const LoginLabel = styled.Text`
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
-
+  font-family: 'Pretendard Variable';
   margin-left: 8px;
   color: #666666;
   margin-top: 15px;
@@ -190,7 +190,7 @@ const SimpleLoginLabel = styled.Text`
   font-weight: 400;
   font-size: 14px;
   text-decoration-line: underline;
-
+  font-family: 'Pretendard Variable';
   color: #f09311;
 `;
 

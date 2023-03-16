@@ -22,5 +22,6 @@ const CustomInput = styled.TextInput`
   border-radius: 100px;
   margin-top: 18px;
   margin-bottom: 18px;
+  font-family: 'Pretendard Variable';
 `;
 export default SearchInput;

@@ -133,6 +133,7 @@ const HeaderLabel = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
+  font-family: 'Pretendard Variable';
 `;
 
 const InnerContainer = styled.ScrollView`
@@ -164,7 +165,7 @@ const NavigateTitle = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
-
+  font-family: 'Pretendard Variable';
   color: black;
 `;
 
@@ -186,5 +187,6 @@ const NoticeTitle = styled.Text`
   font-weight: 400;
   font-size: 16px;
   color: black;
+  font-family: 'Pretendard Variable';
 `;
 export default MypageScreen;

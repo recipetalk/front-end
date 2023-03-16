@@ -31,6 +31,7 @@ export default function RadioButton({
     color: ${() => (item.id === clickedNumber ? clickedTextColor : textColor)};
     text-align: center;
     line-height: 27px;
+    font-family: 'Pretendard Variable';
   `;
 
   return (

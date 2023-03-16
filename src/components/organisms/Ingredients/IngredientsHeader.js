@@ -58,6 +58,7 @@ const HeaderTitle = styled.Text`
   font-weight: 500;
   font-size: 18px;
   color: ${props => (props.isTransparent ? '#ffffff' : '#333333')};
+  font-family: 'Pretendard Variable';
 `;
 
 const BtnValueText = styled.Text`
@@ -65,6 +66,7 @@ const BtnValueText = styled.Text`
   font-weight: 500;
   font-size: 18px;
   color: ${props => (props.isTransparent ? '#ffffff' : '#f09311')};
+  font-family: 'Pretendard Variable';
 `;
 
 const BtnBtn = styled.TouchableOpacity``;

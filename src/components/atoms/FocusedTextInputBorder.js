@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: '#ffffff',
     height: 48,
+    fontFamily: 'Pretendard Variable',
   },
   isHighlighted: {
     borderColor: '#666666',

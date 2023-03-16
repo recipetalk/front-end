@@ -52,7 +52,7 @@ const NumberText = styled.Text`
   font-weight: 700;
   font-size: 18px;
   text-align: center;
-
+  font-family: 'Pretendard Variable';
   color: #ffffff;
 `;
 
@@ -62,7 +62,7 @@ const TextPart = styled.Text`
   width: 310px;
   height: 80px;
   margin-bottom: 10px;
-
+  font-family: 'Pretendard Variable';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
@@ -89,7 +89,7 @@ const MoreText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-
+  font-family: 'Pretendard Variable';
   color: #a0a0a0;
 `;
 

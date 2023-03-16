@@ -131,9 +131,10 @@ const ScanText = styled.Text`
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
-
+  font-family: 'Pretendard Variable';
   color: #f09311;
   text-align: center;
+  font-family: 'Pretendard Variable';
 `;
 
 const ScanImage = styled.Image`
@@ -154,8 +155,9 @@ const AddIngredientsText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-
+  font-family: 'Pretendard Variable';
   color: #f09311;
+  font-family: 'Pretendard Variable';
 `;
 
 const TouchContainer = styled.TouchableOpacity``;
@@ -174,8 +176,9 @@ const RecentIngredientsText = styled.Text`
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
-
+  font-family: 'Pretendard Variable';
   color: #333333;
+  font-family: 'Pretendard Variable';
 `;
 
 const TotalContainer = styled.View`
@@ -192,8 +195,9 @@ const TotalText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-
+  font-family: 'Pretendard Variable';
   color: #f09311;
+  font-family: 'Pretendard Variable';
 `;
 
 const AddIngredientsItem = styled.View`
@@ -220,13 +224,14 @@ const AddText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-
+  font-family: 'Pretendard Variable';
   color: #f09311;
 `;
 const DelText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
+  font-family: 'Pretendard Variable';
 
   color: #a0a0a0;
 `;
@@ -237,6 +242,7 @@ const ContentTitle = styled.Text`
   font-size: 14px;
   color: #666666;
   margin-bottom: 5px;
+  font-family: 'Pretendard Variable';
 `;
 
 const RegisterContainer = styled.View`
@@ -251,6 +257,7 @@ const RegisterInput = styled.TextInput`
   height: 48px;
   border: 1px solid #d8d8d8;
   border-radius: 8px;
+  font-family: 'Pretendard Variable';
 `;
 
 const StatusContainer = styled.View`
@@ -265,13 +272,14 @@ const StatusInput = styled.TextInput`
   height: 48px;
   border: 1px solid #d8d8d8;
   border-radius: 8px;
+  font-family: 'Pretendard Variable';
 `;
 
 const StatusText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-
+  font-family: 'Pretendard Variable';
   color: #333333;
   margin-right: 25px;
 `;
@@ -287,7 +295,7 @@ const RegisterButtonText = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
-
+  font-family: 'Pretendard Variable';
   text-align: center;
 
   color: #ffffff;

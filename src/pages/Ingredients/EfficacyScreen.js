@@ -46,6 +46,7 @@ const EfficacyText = styled.Text`
   font-weight: 600;
   font-size: 20px;
   color: #383838;
+  font-family: 'Pretendard Variable';
 
   margin-bottom: 16px;
 `;
@@ -55,6 +56,7 @@ const EfficacyContent = styled.Text`
   font-weight: 400;
   font-size: 16px;
   color: #666666;
+  font-family: 'Pretendard Variable';
 `;
 
 export default EfficacyScreen;

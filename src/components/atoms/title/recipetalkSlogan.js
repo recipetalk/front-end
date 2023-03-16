@@ -17,7 +17,7 @@ export default function SloganText() {
     font-weight: 400;
     font-size: 30px;
     line-height: 41px;
-
+    font-family: 'Pretendard Variable';
     color: black;
   `;
 
@@ -27,7 +27,7 @@ export default function SloganText() {
     font-size: 30px;
     line-height: 41px;
     margin-top: -10px;
-
+    font-family: 'Pretendard Variable';
     color: black;
   `;
 
@@ -35,7 +35,7 @@ export default function SloganText() {
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
-
+    font-family: 'Pretendard Variable';
     margin-top: 15px;
     color: #666666;
   `;

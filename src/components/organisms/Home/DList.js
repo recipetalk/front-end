@@ -47,6 +47,7 @@ const UserID = styled.Text`
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
+  font-family: 'Pretendard Variable';
 
   color: #acacac;
   margin-bottom: 10px;
@@ -57,6 +58,7 @@ const Titie = styled.Text`
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
+  font-family: 'Pretendard Variable';
 
   color: #333333;
   margin-bottom: 5px;
@@ -67,6 +69,7 @@ const Content = styled.Text`
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
+  font-family: 'Pretendard Variable';
 
   color: #686868;
   margin-bottom: 10px;

@@ -66,7 +66,7 @@ const TimeInfo = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
-
+  font-family: 'Pretendard Variable';
   color: #a0a0a0;
 `;
 
@@ -74,7 +74,7 @@ const ContentText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
-
+  font-family: 'Pretendard Variable';
   color: #666666;
 `;
 export default CommentComponent;

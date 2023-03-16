@@ -64,6 +64,7 @@ const ContentTitle = styled.Text`
   font-size: 20px;
   padding: 18px;
   color: #333333;
+  font-family: 'Pretendard Variable';
 `;
 
 export default IngredientsContent;

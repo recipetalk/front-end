@@ -57,6 +57,8 @@ const TextInputBox = styled.TextInput`
   font-weight: 500;
   font-size: 15px;
 
+  font-family: 'Pretendard Variable';
+
   color: #666666;
 `;
 
@@ -99,6 +101,8 @@ const AddPrepOrderText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
+
+  font-family: 'Pretendard Variable';
 
   color: #f09311;
 `;
@@ -161,6 +165,8 @@ const OrderTitle = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
+
+  font-family: 'Pretendard Variable';
 
   color: #333333;
 `;

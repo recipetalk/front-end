@@ -33,7 +33,7 @@ export default function RecipeDetailDescription({navigation}) {
     font-style: normal;
     font-weight: 500;
     font-size: 24px;
-
+    font-family: 'Pretendard Variable';
     /* or 31px */
 
     /* #333333 */
@@ -59,7 +59,7 @@ export default function RecipeDetailDescription({navigation}) {
     font-style: normal;
     font-weight: 500;
     font-size: 24px;
-
+    font-family: 'Pretendard Variable';
     color: #333333;
     padding: 18px;
   `;

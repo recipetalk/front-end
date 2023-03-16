@@ -47,6 +47,7 @@ const EfficacyText = styled.Text`
   font-weight: 600;
   font-size: 20px;
   color: #383838;
+  font-family: 'Pretendard Variable';
 
   margin-bottom: 16px;
 `;
@@ -56,6 +57,7 @@ const EfficacyContent = styled.Text`
   font-weight: 400;
   font-size: 16px;
   color: #666666;
+  font-family: 'Pretendard Variable';
 `;
 
 const BtnContainer = styled.View`
@@ -80,6 +82,7 @@ const CancelText = styled.Text`
   font-size: 14px;
   text-align: center;
   color: #666666;
+  font-family: 'Pretendard Variable';
 `;
 
 const SaveBtn = styled.TouchableOpacity`
@@ -96,5 +99,6 @@ const SaveText = styled.Text`
   font-size: 14px;
   text-align: center;
   color: #ffffff;
+  font-family: 'Pretendard Variable';
 `;
 export default EfficacyEditScreen;

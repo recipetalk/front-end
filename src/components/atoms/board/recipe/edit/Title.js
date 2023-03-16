@@ -64,6 +64,7 @@ const TitleLabel = styled.Text`
   font-size: 18px;
   color: #333333;
   margin-bottom: 2px;
+  font-family: 'Pretendard Variable';
 `;
 
 const NextLabel = styled.Text`
@@ -72,6 +73,7 @@ const NextLabel = styled.Text`
   font-size: 18px;
   color: #f09311;
   justify-content: center;
+  font-family: 'Pretendard Variable';
 `;
 
 const TouchContainer = styled.TouchableOpacity`

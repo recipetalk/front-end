@@ -41,7 +41,7 @@ export default function Hashtag({hashtags}) {
     font-weight: 400;
     font-size: 12px;
     line-height: 14px;
-
+    font-family: 'Pretendard Variable';
     color: #f09311;
 
     text-align: center;

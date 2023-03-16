@@ -77,7 +77,7 @@ const Title = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
-
+  font-family: 'Pretendard Variable';
   color: #333333;
 `;
 
@@ -98,6 +98,7 @@ const OrderTitle = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
+  font-family: 'Pretendard Variable';
 
   color: #333333;
   padding: 18px;

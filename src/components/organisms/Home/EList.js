@@ -31,10 +31,12 @@ const CustomView = styled.View`
 
 const Title = styled.Text`
   margin-bottom: 8px;
+  font-family: 'Pretendard Variable';
 `;
 
 const Content = styled.Text`
   margin-bottom: 15px;
+  font-family: 'Pretendard Variable';
 `;
 
 const Line = styled.View`

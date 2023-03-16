@@ -91,6 +91,7 @@ const Title = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
+  font-family: 'Pretendard Variable';
 
   color: #a4a4a4;
   margin-bottom: 10px;
@@ -101,6 +102,7 @@ const PrepInput = styled.TextInput`
   height: 100px;
   border: 1px solid black;
   margin-bottom: 50px;
+  font-family: 'Pretendard Variable';
 `;
 
 const PrepOrderContainer = styled.View`
@@ -111,6 +113,7 @@ const OrderTitle = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
+  font-family: 'Pretendard Variable';
 
   color: #333333;
   padding: 18px;
@@ -127,7 +130,7 @@ const AddPrepOrderText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-
+  font-family: 'Pretendard Variable';
   color: #f09311;
 `;
 
@@ -159,6 +162,7 @@ const CancelText = styled.Text`
   font-size: 14px;
   text-align: center;
   color: #666666;
+  font-family: 'Pretendard Variable';
 `;
 
 const SaveBtn = styled.TouchableOpacity`
@@ -175,6 +179,7 @@ const SaveText = styled.Text`
   font-size: 14px;
   text-align: center;
   color: #ffffff;
+  font-family: 'Pretendard Variable';
 `;
 
 const PrepOrderItem = styled.View`
@@ -198,6 +203,7 @@ const PrepOrderNumText = styled.Text`
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
+  font-family: 'Pretendard Variable';
 
   color: #ffffff;
 `;
@@ -224,7 +230,7 @@ const PrepOrderContentText = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
-
+  font-family: 'Pretendard Variable';
   color: #a0a0a0;
 `;
 const PrepOrderCancel = styled.Image`

@@ -38,7 +38,7 @@ const NumberText = styled.Text`
   font-weight: 700;
   font-size: 18px;
   text-align: center;
-
+  font-family: 'Pretendard Variable';
   color: #ffffff;
 `;
 
@@ -50,7 +50,7 @@ const InfoPart = styled.View`
 
 const TextPart = styled.Text`
   width: 310px;
-
+  font-family: 'Pretendard Variable';
   margin-bottom: 10px;
 
   font-style: normal;

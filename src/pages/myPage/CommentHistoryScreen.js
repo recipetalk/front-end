@@ -63,6 +63,7 @@ const TitleLabel = styled.Text`
   font-size: 18px;
   color: #333333;
   margin-bottom: 2px;
+  font-family: 'Pretendard Variable';
 `;
 
 export default CommentHistoryScreen;

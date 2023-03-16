@@ -7,7 +7,7 @@ export default function RecipeQuantityLabel({quantity}) {
     font-weight: 500;
     font-size: 14px;
     line-height: 17px;
-
+    font-family: 'Pretendard Variable';
     color: #a0a0a0;
   `;
 

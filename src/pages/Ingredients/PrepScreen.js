@@ -44,14 +44,14 @@ const TitleHighlight = styled.Text`
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
-
+  font-family: 'Pretendard Variable';
   color: #f09311;
 `;
 const Title = styled.Text`
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
-
+  font-family: 'Pretendard Variable';
   color: #333333;
 `;
 

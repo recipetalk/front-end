@@ -58,7 +58,7 @@ const Name = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
-
+  font-family: 'Pretendard Variable';
   text-align: center;
 
   color: #333333;
@@ -70,6 +70,7 @@ const Amount = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
+  font-family: 'Pretendard Variable';
 
   color: #666666;
 `;
@@ -87,6 +88,7 @@ const EfficacyText = styled.Text`
   font-weight: 600;
   font-size: 15px;
 
+  font-family: 'Pretendard Variable';
   text-align: center;
 
   color: #666666;
@@ -96,7 +98,7 @@ const PrepText = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 15px;
-
+  font-family: 'Pretendard Variable';
   text-align: center;
 
   color: #666666;
@@ -116,6 +118,8 @@ const ExpirationText = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
+
+  font-family: 'Pretendard Variable';
 
   color: #f09311;
   text-align: center;

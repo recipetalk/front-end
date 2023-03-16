@@ -48,12 +48,14 @@ export default function RecipeSimpleDescription({
     letter-spacing: -1px;
     color: #333333;
     margin-top: -9px;
+    font-family: 'Pretendard Variable';
   `;
 
   const Description = styled.Text`
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
+    font-family: 'Pretendard Variable';
 
     letter-spacing: 0px;
 

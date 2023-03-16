@@ -45,6 +45,7 @@ const Title = styled.Text`
   font-weight: 600;
   font-size: 16px;
   line-height: 19px;
+  font-family: 'Pretendard Variable';
 
   color: #333333;
   margin-bottom: 8px;
@@ -54,6 +55,7 @@ const Content = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
+  font-family: 'Pretendard Variable';
 
   color: #666666;
   margin-bottom: 13px;
@@ -81,7 +83,7 @@ const TagText = styled.Text`
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
-
+  font-family: 'Pretendard Variable';
   color: #f09311;
 `;
 

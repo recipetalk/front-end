@@ -52,7 +52,7 @@ export default function SimpleProfileWithDescription({
     height: 19px;
     left: 60px;
     top: 3px;
-
+    font-family: 'Pretendard Variable';
     color: #333333;
     font-style: normal;
     font-weight: 500;
@@ -66,7 +66,7 @@ export default function SimpleProfileWithDescription({
     align-items: center;
     padding: 0px;
     gap: 10px;
-
+    font-family: 'Pretendard Variable';
     color: #acacac;
     position: absolute;
     left: 60px;
@@ -81,7 +81,7 @@ export default function SimpleProfileWithDescription({
 
   const Following = styled.Text`
     color: #f09311;
-
+    font-family: 'Pretendard Variable';
     font-style: normal;
     font-weight: 500;
     font-size: 14px;

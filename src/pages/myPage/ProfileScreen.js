@@ -51,6 +51,7 @@ const HeaderLabel = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
+  font-family: 'Pretendard Variable';
 `;
 
 const HeaderTouchButton = styled.TouchableOpacity`

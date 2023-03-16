@@ -55,7 +55,7 @@ const TotalCategory = styled.Text`
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-
+  font-family: 'Pretendard Variable';
   color: #a9a9a9;
   margin-top: 50px;
 `;

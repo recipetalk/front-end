@@ -61,5 +61,6 @@ const NavigationLabel = styled.Text`
   font-size: 16px;
   font-style: normal;
 
+  font-family: 'Pretendard Variable';
   color: #e1e1e1;
 `;
