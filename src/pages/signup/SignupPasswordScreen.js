@@ -31,7 +31,7 @@ export default function SignupPasswordScreen({navigation}) {
     if (checkPassword.length === 0) {
       setEqualPassword(true);
     }
-  }, [checkPassword]);
+  }, [password, checkPassword]);
 
   return (
     <SignupIdScreenContainer>
