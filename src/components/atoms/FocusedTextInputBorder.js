@@ -5,6 +5,7 @@ export default function FocusedTextInputBorder({
   placeholder,
   secureTextEntry,
   setData,
+  value,
 }) {
   const [isHighlighted, setIsHighlighted] = useState(false);
   return (
@@ -15,6 +16,8 @@ export default function FocusedTextInputBorder({
       placeholder={placeholder}
       secureTextEntry={secureTextEntry !== undefined ? secureTextEntry : false}
       clearButtonMode={'while-editing'}
+      onChangeText={text => setData(text)}
+      value={value}
     />
   );
 }

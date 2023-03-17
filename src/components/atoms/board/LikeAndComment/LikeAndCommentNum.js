@@ -31,7 +31,7 @@ export default function LikeAndCommentNum({likeNum, isLiked, commentNum}) {
     margin-bottom: auto;
     margin-left: -5px;
     color: #666666;
-    font-family: 'Pretendard Variable';
+    font-family: Pretendard Variable;
   `;
 
   const TouchContainer = styled.TouchableOpacity`

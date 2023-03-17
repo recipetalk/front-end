@@ -71,13 +71,13 @@ const SetTimerPage = ({navigation, route}) => {
     </Container>
   );
 };
+
 const styles = StyleSheet.create({
   textInput: {
     fontStyle: 'normal',
     fontWeight: '700',
     fontSize: 20,
     color: '#a0a0a0',
-    fontFamily: 'Pretendard Variable',
   },
   isHighlighted: {
     fontStyle: 'normal',
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Pretendard Variable',
   },
 });
+
 const Header = styled.View`
   width: 90%;
   height: 50px;
@@ -130,6 +131,7 @@ const TextBoxPart = styled.View`
   flex-direction: row;
   justify-content: center;
 `;
+
 const TextInnerPart = styled.View`
   width: 30%;
   align-items: center;
@@ -140,6 +142,7 @@ const TextBoxLabel = styled.Text`
   font-weight: 500;
   font-size: 14px;
   color: #d8d8d8;
+  font-family: Pretendard Variable;
 `;
 
 const ButtonLabel = styled.Text`
@@ -147,6 +150,7 @@ const ButtonLabel = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
+  font-family: Pretendard Variable;
 `;
 
 const StartButton = styled.TouchableOpacity`

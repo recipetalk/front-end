@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {TouchableOpacity} from 'react-native';
 
 export default function ActiveButton({
   width,
@@ -31,7 +32,7 @@ export default function ActiveButton({
   function notAction() {}
 
   return (
-    <Button onPress={onPress !== undefined ? onPress : notAction}>
+    <Button onPress={isActive ? onPress : notAction} disabled={!isActive}>
       <Label>{LabelInfo}</Label>
     </Button>
   );

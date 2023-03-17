@@ -28,6 +28,7 @@ import SignupFinishScreen from './src/pages/signup/SignupFinishScreen';
 import ProfileScreen from './src/pages/myPage/ProfileScreen';
 import SequenceDetailDescriptionScreen from './src/pages/SequenceDetailDescriptionScreen';
 import SetTimerPage from './src/pages/timer/SetTimerPage';
+import SignupStartScreen from './src/pages/signup/SignupStartScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -62,6 +63,11 @@ function SignStackNavigator() {
   const SignStack = createNativeStackNavigator();
   return (
     <SignStack.Navigator>
+      <SignStack.Screen
+        name="SignupFirstScreen"
+        component={SignupStartScreen}
+        options={{headerShown: false}}
+      />
       <SignStack.Screen
         name="SignupIdScreen"
         component={SignupIdScreen}
