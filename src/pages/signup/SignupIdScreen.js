@@ -5,25 +5,25 @@ import ActiveButton from '../../components/atoms/board/ActiveButton';
 import FocusedTextInputBorder from '../../components/atoms/FocusedTextInputBorder';
 import equals from '../../services/object/equals';
 import {jsonAPI} from '../../services/connect/API';
+import AlertYesButton from '../../components/molecules/AlertYesButton';
 
 export default function SignupIdScreen({navigation}) {
   const [id, setId] = useState('');
   const [isAccess, setAccess] = useState(false);
-  const [accessId, setAccessId] = useState('');
-
+  const [accessId, setAccessId] = useState(null);
+  const [visibleAlert, setVisibleAlert] = useState(false);
   const getIsValidId = async () =>
     jsonAPI
       .get('/auth/signup/' + id)
       .then(response => {
-        if (response.status === 200) {
-          setAccess(true);
-          setAccessId(id);
-        } else {
-          setAccess(false);
-        }
+        setAccess(true);
+        setAccessId(id);
+        setVisibleAlert(true);
       })
       .catch(err => {
-        console.log(err);
+        setAccess(false);
+        setAccessId(null);
+        setVisibleAlert(true);
       });
 
   return (
@@ -47,9 +47,9 @@ export default function SignupIdScreen({navigation}) {
             width="80px"
             height="48px"
             border_radius="8px"
-            LabelInfo="중복확인"
+            LabelInfo={!equals(id, accessId) ? '중복확인' : '확인완료'}
             LabelSize="14px"
-            isActive={id.length >= 1}
+            isActive={id.length >= 1 && !equals(id, accessId)}
             onPress={getIsValidId}
           />
         </DuplicationAndTextInputContainer>
@@ -66,6 +66,17 @@ export default function SignupIdScreen({navigation}) {
           isActive={isAccess && equals(id, accessId)}
         />
       </NextButtonContainer>
+      {visibleAlert && isAccess ? (
+        <AlertYesButton
+          title={'사용할 수 있는 아이디입니다 :)'}
+          onPress={() => setVisibleAlert(false)}
+        />
+      ) : visibleAlert && !isAccess ? (
+        <AlertYesButton
+          title={'사용할 수 없는 아이디입니다 :('}
+          onPress={() => setVisibleAlert(false)}
+        />
+      ) : undefined}
     </SignupIdScreenContainer>
   );
 }
@@ -93,20 +104,11 @@ const DescriptionContainer = styled.View`
   margin-top: 15px;
 `;
 
-const SignupIdScreenContainer =
-  Platform.OS === 'ios'
-    ? styled.SafeAreaView`
-        position: relative;
-        height: 100%;
-        width: 100%;
-        border: 1px solid green;
-      `
-    : styled.View`
-        position: relative;
-        height: 100%;
-        border: 1px solid green;
-        width: 100%;
-      `;
+const SignupIdScreenContainer = styled.SafeAreaView`
+  position: relative;
+  height: 100%;
+  width: 100%;
+`;
 
 const LoginLabel = styled.Text`
   font-style: normal;

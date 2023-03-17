@@ -1,96 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import {Image, Platform} from 'react-native';
+import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
+import FocusedTextInputBorder from '../../components/atoms/FocusedTextInputBorder';
+import equals from '../../services/object/equals';
+import {jsonAPI} from '../../services/connect/API';
+import AlertYesButton from '../../components/molecules/AlertYesButton';
 
 export default function SignupNicknameScreen({navigation}) {
-  const Description = styled.Text`
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    color: black;
-    font-family: 'Pretendard Variable';
-  `;
-
-  const FirstDescription = styled.Text`
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    font-family: 'Pretendard Variable';
-    color: #f09311;
-    margin-bottom: 15px;
-  `;
-
-  const DescriptionContainer = styled.View`
-    width: 90%;
-    margin-left: 25px;
-    margin-top: 15px;
-  `;
-
-  const SignupIdScreenContainer =
-    Platform.OS === 'ios'
-      ? styled.SafeAreaView`
-          position: relative;
-          height: 100%;
-          width: 100%;
-        `
-      : styled.View`
-          position: relative;
-          height: 100%;
-          width: 100%;
-        `;
-
-  const LoginText = styled.TextInput`
-    background: #ffffff;
-    border: 1px solid #ededed;
-    height: 48px;
-    border-radius: 8px;
-    padding: 8px;
-    width: 70%;
-    font-family: 'Pretendard Variable';
-  `;
-
-  const LoginLabel = styled.Text`
-    font-style: normal;
-    font-weight: 700;
-    font-size: 14px;
-    font-family: 'Pretendard Variable';
-    margin-left: 8px;
-    color: #666666;
-    margin-top: 15px;
-  `;
-
-  const LoginContainer = styled.View`
-    width: 90%;
-    margin: 30px auto 20px auto;
-    gap: 7px;
-  `;
-
-  const DuplicationAndTextInputContainer = styled.View`
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
-  `;
-
-  const NextButtonContainer = styled.View`
-    position: relative;
-
-    width: 90%;
-
-    margin-left: auto;
-    margin-right: auto;
-
-    bottom: -300px;
-  `;
-
-  const TouchableContainer = styled.TouchableOpacity`
-    width: 55px;
-    height: 48px;
-    align-items: center;
-    justify-content: center;
-  `;
+  const [nickname, setNickname] = useState('');
+  const [isAccess, setAccess] = useState(false);
+  const [accessNickname, setAccessNickname] = useState(null);
+  const [visibleAlert, setVisibleAlert] = useState(false);
+  const getIsValidNickname = async () =>
+    jsonAPI
+      .get('/auth/signup/nickname' + nickname)
+      .then(response => {
+        setAccess(true);
+        setAccessNickname(nickname);
+        setVisibleAlert(true);
+      })
+      .catch(err => {
+        setAccess(false);
+        setAccessNickname(null);
+        setVisibleAlert(true);
+      });
 
   return (
     <SignupIdScreenContainer>
@@ -98,7 +32,7 @@ export default function SignupNicknameScreen({navigation}) {
         <Image source={require('../../assets/images/Back.png')} />
       </TouchableContainer>
       <DescriptionContainer>
-        <FirstDescription>회원가입을 시작할게요!</FirstDescription>
+        <FirstDescription>그다음 이에요!</FirstDescription>
         <Description>사용할 닉네임을</Description>
         <Description>입력해주세요.</Description>
       </DescriptionContainer>
@@ -106,13 +40,19 @@ export default function SignupNicknameScreen({navigation}) {
       <LoginContainer>
         <LoginLabel>닉네임</LoginLabel>
         <DuplicationAndTextInputContainer>
-          <LoginText />
+          <View style={{width: '76%'}}>
+            <FocusedTextInputBorder setData={setNickname} value={nickname} />
+          </View>
           <ActiveButton
             width="80px"
             height="48px"
             border_radius="8px"
-            LabelInfo="중복확인"
+            LabelInfo={
+              !equals(nickname, accessNickname) ? '중복확인' : '확인완료'
+            }
             LabelSize="14px"
+            isActive={nickname.length >= 1 && !equals(nickname, accessNickname)}
+            onPress={getIsValidNickname}
           />
         </DuplicationAndTextInputContainer>
       </LoginContainer>
@@ -125,8 +65,89 @@ export default function SignupNicknameScreen({navigation}) {
           LabelInfo="다음"
           LabelSize="17px"
           onPress={() => navigation.push('SignupPassword')}
+          isActive={isAccess && equals(nickname, accessNickname)}
         />
       </NextButtonContainer>
+      {visibleAlert && isAccess ? (
+        <AlertYesButton
+          title={'사용할 수 있는 닉네임입니다 :)'}
+          onPress={() => setVisibleAlert(false)}
+        />
+      ) : visibleAlert && !isAccess ? (
+        <AlertYesButton
+          title={'사용할 수 없는 닉네임입니다 :('}
+          onPress={() => setVisibleAlert(false)}
+        />
+      ) : undefined}
     </SignupIdScreenContainer>
   );
 }
+
+const Description = styled.Text`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  color: black;
+  font-family: 'Pretendard Variable';
+`;
+
+const FirstDescription = styled.Text`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: 'Pretendard Variable';
+  color: #f09311;
+  margin-bottom: 15px;
+`;
+
+const DescriptionContainer = styled.View`
+  width: 90%;
+  margin-left: 25px;
+  margin-top: 15px;
+`;
+
+const SignupIdScreenContainer = styled.SafeAreaView`
+  position: relative;
+  height: 100%;
+  width: 100%;
+`;
+
+const LoginLabel = styled.Text`
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Pretendard Variable';
+  margin-left: 8px;
+  color: #666666;
+  margin-top: 15px;
+`;
+
+const LoginContainer = styled.View`
+  width: 90%;
+  margin: 30px auto 20px auto;
+  gap: 7px;
+`;
+
+const DuplicationAndTextInputContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  gap: 5px;
+`;
+
+const NextButtonContainer = styled.View`
+  position: relative;
+
+  width: 90%;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  bottom: -300px;
+`;
+
+const TouchableContainer = styled.TouchableOpacity`
+  width: 55px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+`;
