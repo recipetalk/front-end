@@ -6,11 +6,12 @@ export default function FocusedTextInputBorder({
   secureTextEntry,
   setData,
   value,
+  style,
 }) {
   const [isHighlighted, setIsHighlighted] = useState(false);
   return (
     <TextInput
-      style={[styles.textInput, isHighlighted && styles.isHighlighted]}
+      style={[styles.textInput, isHighlighted && styles.isHighlighted, style]}
       onFocus={() => setIsHighlighted(true)}
       onBlur={() => setIsHighlighted(false)}
       placeholder={placeholder}
