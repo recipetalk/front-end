@@ -14,7 +14,7 @@ export const getProfile = async username => {
   return await jsonAPI.get(url, config);
 };
 
-// 프로필 수정
+// 프로필 수정 /api/user/profile
 export const editProfile = async ({
   nickname,
   username,

@@ -1,0 +1,61 @@
+import React, {useEffect, useState} from 'react';
+import styled from 'styled-components/native';
+import {getProfile} from '../../../services/MyPage';
+import SimpleProfileWithDescription from '../../atoms/profile/SimpleProfileWithDescription';
+import FollowingComponent from '../../organisms/mypage/FollowingComponent';
+import MypageHeader from '../../organisms/mypage/MypageHeader';
+import NavigatePartContainerComponent from '../../organisms/mypage/NavigatePartContainerComponent';
+import NoticePartComponent from '../../organisms/mypage/NoticePartComponent';
+
+const MypageComponent = ({navigation}) => {
+  const [profile, setProfile] = useState({});
+
+  useEffect(() => {
+    // TODO : 아이디 리덕스에 저장 후? 가져오기?
+    getProfile('khj745700').then(res => {
+      setProfile(JSON.parse(res.request._response));
+    });
+  }, []);
+
+  return (
+    <InnerContainer>
+      <MypageHeader navigation={navigation} />
+      <VerticalBar height={'2px'} />
+      <InfoContainer>
+        <SimpleProfileWithDescription
+          nickname={profile.nickname}
+          description={profile.description}
+          navigation={navigation}
+          isMine={true}
+        />
+        <FollowingComponent
+          followingNumber={profile.followNum}
+          followerNumber={profile.followNum}
+          recipeNumber={profile.followNum}
+        />
+      </InfoContainer>
+      <VerticalBar height={'2px'} />
+      <NavigatePartContainerComponent navigation={navigation} />
+      <VerticalBar height={'4px'} />
+      <NoticePartComponent navigation={navigation} />
+    </InnerContainer>
+  );
+};
+const VerticalBar = styled.View`
+  width: 100%;
+  height: ${props => props.height};
+  background: #f5f5f5;
+`;
+
+const InfoContainer = styled.View`
+  gap: 15px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+`;
+
+const InnerContainer = styled.ScrollView`
+  background: #ffffff;
+  width: 100%;
+`;
+
+export default MypageComponent;

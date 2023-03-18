@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Text} from 'react-native';
 
 export default function SimpleProfileWithDescription({
   username,
@@ -10,13 +9,6 @@ export default function SimpleProfileWithDescription({
   isMine,
   navigation,
 }) {
-  const ProfileContainer = styled.View`
-    position: relative;
-
-    width: 100%;
-    height: 72px;
-  `;
-
   const SimpleProfile = styled.View`
     width: 90%;
     height: 46px;
