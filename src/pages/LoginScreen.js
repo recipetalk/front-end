@@ -5,7 +5,6 @@ import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Checkbox from '@react-native-community/checkbox';
 import {Platform} from 'react-native';
 import FocusedTextInputBorder from '../components/atoms/FocusedTextInputBorder';
-import {jsonAPI} from '../services/connect/API';
 
 export default function LoginScreen({navigation}) {
   const [autologinChecked, setAutologinChecked] = useState(false);
@@ -54,26 +53,6 @@ export default function LoginScreen({navigation}) {
     );
   };
 
-  const Test = async () => {
-    console.log('login!!');
-    // await jsonAPI
-    //   .post('/auth/login', {
-    //     username: 'khj745700',
-    //     password: 'testtest',
-    //   })
-
-    await jsonAPI
-      .post('/auth/login', {
-        username: 'khj745700',
-        password: 'testtest',
-      })
-      .then(res => {
-        console.log(res);
-        // () => navigation.navigate('SimpleLogin')
-      })
-      .catch(error => console.log(error));
-  };
-
   return (
     <LoginScreenContainer>
       <ScrollView>
@@ -113,7 +92,7 @@ export default function LoginScreen({navigation}) {
         <SignButton onPress={() => navigation.navigate('Signup')}>
           <SignButtonLabel>회원가입</SignButtonLabel>
         </SignButton>
-        <SimpleLoginContainer onPress={Test}>
+        <SimpleLoginContainer>
           <SimpleLoginLabel>간편로그인으로 시작하기</SimpleLoginLabel>
         </SimpleLoginContainer>
       </ScrollView>

@@ -17,6 +17,13 @@ const MypageComponent = ({navigation}) => {
     });
   }, []);
 
+  // editProfile({nickname: 'test111',username: 'test',description: 'test333',profileImg: '',}).then(res => console.log(res.request));
+  // getFollowUser('khj745700').then(res => { console.log(JSON.parse(res.request._response)); });
+  // followUser().then(res => console.log(res.request.status));
+  // unFollowUser().then(res => console.log(res));
+  // blockUser({blockUsername:"test"}).then(res => console.log(res));
+  // getBlockUser().then(res => console.log(res));
+
   return (
     <InnerContainer>
       <MypageHeader navigation={navigation} />
