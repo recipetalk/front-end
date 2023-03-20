@@ -92,8 +92,7 @@ export default function LoginScreen({navigation}) {
         <SignButton onPress={() => navigation.navigate('Signup')}>
           <SignButtonLabel>회원가입</SignButtonLabel>
         </SignButton>
-        <SimpleLoginContainer
-          onPress={() => navigation.navigate('SimpleLogin')}>
+        <SimpleLoginContainer>
           <SimpleLoginLabel>간편로그인으로 시작하기</SimpleLoginLabel>
         </SimpleLoginContainer>
       </ScrollView>
