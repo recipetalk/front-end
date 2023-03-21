@@ -7,7 +7,7 @@
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useEffect} from 'react';
 import LoginScreen from './src/pages/LoginScreen';
 import {store} from './src/store/config';
 import {Provider} from 'react-redux';
@@ -29,6 +29,8 @@ import ProfileScreen from './src/pages/myPage/ProfileScreen';
 import SequenceDetailDescriptionScreen from './src/pages/SequenceDetailDescriptionScreen';
 import SetTimerPage from './src/pages/timer/SetTimerPage';
 import SignupStartScreen from './src/pages/signup/SignupStartScreen';
+import messaging from '@react-native-firebase/messaging';
+import {Alert} from 'react-native';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -128,6 +130,12 @@ function LoginStackNavigator() {
 function App() {
   const Stack = createNativeStackNavigator();
 
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+    return unsubscribe;
+  });
   // return (
   //   <NavigationContainer>
   //     <Stack.Navigator initialRouteName="Login">
