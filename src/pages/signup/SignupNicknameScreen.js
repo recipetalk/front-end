@@ -14,7 +14,7 @@ export default function SignupNicknameScreen({navigation}) {
   const [visibleAlert, setVisibleAlert] = useState(false);
   const getIsValidNickname = async () =>
     jsonAPI
-      .get('/auth/signup/nickname' + nickname)
+      .get('/auth/signup/nickname/' + nickname)
       .then(response => {
         setAccess(true);
         setAccessNickname(nickname);
