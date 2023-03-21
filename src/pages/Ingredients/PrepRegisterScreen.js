@@ -5,12 +5,13 @@ import Line from '../../components/atoms/Line';
 import IngredientsHeader from '../../components/organisms/Ingredients/IngredientsHeader';
 import IngredientsInfo from '../../components/organisms/Ingredients/IngredientsInfo';
 
-const PrepEditScreen = () => {
+const PrepRegisterScreen = () => {
   return (
     <PrepEditScreenContainer>
       <IngredientsHeader title="손질법" isTitleOnly={true} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <IngredientsInfo isEdit={true} />
+
         <PrepIntro>
           <Title>제목</Title>
           <PrepInput
@@ -18,7 +19,9 @@ const PrepEditScreen = () => {
         예) 자취 8년차 언제 먹어도 질리지 않는 맛있는 된장찌개!"
           />
         </PrepIntro>
+
         <Line />
+
         <PrepOrderContainer>
           <OrderTitle>손질 순서</OrderTitle>
           {[1, 2, 3, 4].map(i => {
@@ -58,14 +61,18 @@ const PrepEditScreen = () => {
             );
           })}
         </PrepOrderContainer>
+
         <Line />
+
         <AddPrepOrder>
           <AddPrepOrderText>손질 순서 추가</AddPrepOrderText>
           <TouchContainer>
             <AddImage source={require('../../assets/images/Add_o.png')} />
           </TouchContainer>
         </AddPrepOrder>
+
         <Line />
+
         <BtnContainer>
           <CancelBtn>
             <CancelText>취소</CancelText>
@@ -262,4 +269,4 @@ const AddImgView = styled.TouchableOpacity`
 const AddImg = styled.Image`
   margin: auto;
 `;
-export default PrepEditScreen;
+export default PrepRegisterScreen;

@@ -5,7 +5,7 @@ import MypageScreen from '../../pages/myPage/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import IngredientsAddScreen from '../../pages/Ingredients/IngredientsAddScreen';
+import RegisterMyIngredientsScreen from '../../pages/Ingredients/RegisterMyIngredientsScreen';
 import IngredientsScreen from '../../pages/Ingredients/IngredientsScreen';
 import EfficacyScreen from '../../pages/Ingredients/EfficacyScreen';
 import PrepScreen from '../../pages/Ingredients/PrepScreen';
@@ -37,8 +37,8 @@ const IngredientsStackNavigator = () => {
   return (
     <IngredientsStack.Navigator>
       <IngredientsStack.Screen
-        name="IngredientsAdd"
-        component={IngredientsAddScreen}
+        name="RegisterMyIngredients"
+        component={RegisterMyIngredientsScreen}
         options={{headerShown: false}}
       />
       <IngredientsStack.Screen

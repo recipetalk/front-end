@@ -9,26 +9,28 @@ const IngredientsItem = () => {
   return (
     <IngredientsItemContainer>
       <Header>
-        <RegisterInfo>
+        <IngredientsItemInfo>
           <Name>마늘</Name>
           <Amount>생것 | 200g</Amount>
-        </RegisterInfo>
-        <MoreButton>
+        </IngredientsItemInfo>
+        <TouchContainer>
           <Image source={require('../../../assets/images/More.png')} />
-        </MoreButton>
+        </TouchContainer>
       </Header>
-      <IngredientsInfo>
-        <EfficacyBtn onPress={() => navigation.navigate('Efficacy')}>
+
+      <IngredientsItemETCInfo>
+        <TouchContainer onPress={() => navigation.navigate('Efficacy')}>
           <EfficacyText>효능 및 정보</EfficacyText>
-        </EfficacyBtn>
+        </TouchContainer>
         <Text> | </Text>
-        <PrepBtn onPress={() => navigation.navigate('Prep')}>
+        <TouchContainer onPress={() => navigation.navigate('Prep')}>
           <PrepText>손질법 보기</PrepText>
-        </PrepBtn>
-      </IngredientsInfo>
-      <Expiration>
-        <ExpirationText>유통기한 : 2023 / 02 / 28 까지</ExpirationText>
-      </Expiration>
+        </TouchContainer>
+      </IngredientsItemETCInfo>
+
+      <ExpirationInfo>
+        <ExpirationInfoText>유통기한 : 2023 / 02 / 28 까지</ExpirationInfoText>
+      </ExpirationInfo>
     </IngredientsItemContainer>
   );
 };
@@ -47,9 +49,9 @@ const Header = styled.View`
   padding: 10px;
 `;
 
-const MoreButton = styled.TouchableOpacity``;
+const TouchContainer = styled.TouchableOpacity``;
 
-const RegisterInfo = styled.View`
+const IngredientsItemInfo = styled.View`
   display: flex;
   flex-direction: row;
 `;
@@ -75,14 +77,13 @@ const Amount = styled.Text`
   color: #666666;
 `;
 
-const IngredientsInfo = styled.View`
+const IngredientsItemETCInfo = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin-top: 15px;
 `;
 
-const EfficacyBtn = styled.TouchableOpacity``;
 const EfficacyText = styled.Text`
   font-style: normal;
   font-weight: 600;
@@ -93,7 +94,7 @@ const EfficacyText = styled.Text`
 
   color: #666666;
 `;
-const PrepBtn = styled.TouchableOpacity``;
+
 const PrepText = styled.Text`
   font-style: normal;
   font-weight: 600;
@@ -103,7 +104,7 @@ const PrepText = styled.Text`
 
   color: #666666;
 `;
-const Expiration = styled.View`
+const ExpirationInfo = styled.View`
   width: 340px;
   height: 30px;
   padding: 5px 10px;
@@ -114,7 +115,7 @@ const Expiration = styled.View`
   margin: auto;
 `;
 
-const ExpirationText = styled.Text`
+const ExpirationInfoText = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
