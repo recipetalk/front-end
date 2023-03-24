@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import IngredientsItem from './IngredientsItem';
 
-const RecentlyRegisteredIngredients = () => {
+const RecentlyRegisteredIngredients = items => {
   const navigation = useNavigation();
 
   return (
@@ -21,9 +21,17 @@ const RecentlyRegisteredIngredients = () => {
           </ViewAllContainer>
         </TouchContainer>
       </RecentlyRegisteredIngredientsSection>
-      {[1, 2, 3].map((v, i) => {
-        return <IngredientsItem key={i} />;
-      })}
+      <>
+        {items.items.length === 0 ? (
+          <EmptyItemContainer>
+            <EmptyItemText>아직 등록된 식재료가 없어요!</EmptyItemText>
+          </EmptyItemContainer>
+        ) : (
+          items.items.map((v, i) => {
+            return <IngredientsItem key={i} />;
+          })
+        )}
+      </>
     </>
   );
 };
@@ -59,6 +67,19 @@ const ViewAllText = styled.Text`
   font-size: 14px;
   font-family: 'Pretendard Variable';
   color: #f09311;
+`;
+
+const EmptyItemContainer = styled.View`
+  margin-top: 150px;
+`;
+
+const EmptyItemText = styled.Text`
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+  color: #a0a0a0;
 `;
 
 const TouchContainer = styled.TouchableOpacity``;

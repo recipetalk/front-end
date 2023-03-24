@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import Line from '../../atoms/Line';
-import AddIngredients from '../../organisms/Ingredients/AddIngredients';
+import DirectlyRegisterIngredients from '../../organisms/Ingredients/DirectlyRegisterIngredients';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import RecentlyRegisteredIngredients from '../../organisms/Ingredients/RecentlyRegisteredIngredients';
 
@@ -40,7 +40,11 @@ const RegisterMyIngredientsComponent = () => {
       </RegisterIngredientsDirectlyContainer>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {isPressed ? <AddIngredients /> : <RecentlyRegisteredIngredients />}
+        {isPressed ? (
+          <DirectlyRegisterIngredients />
+        ) : (
+          <RecentlyRegisteredIngredients items={[]} />
+        )}
       </ScrollView>
     </RegisterMyIngredientsComponentContainer>
   );

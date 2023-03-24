@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import IngredientsItem from './IngredientsItem';
 
-const IngredientsContent = () => {
+const ViewAllMyIngredients = () => {
   const dummy = [1, 2, 3, 4, 5];
   const oneItem = [
     {placeholder: '등록일', label: '최신순', value: '최신순'},
@@ -29,7 +29,7 @@ const IngredientsContent = () => {
   ];
   return (
     <>
-      <Content>
+      <DropDownPickerContainer>
         <View>
           <DropDownPickerComponent width="90px" items={oneItem} />
         </View>
@@ -39,9 +39,10 @@ const IngredientsContent = () => {
         <View>
           <DropDownPickerComponent width="160px" items={threeItem} />
         </View>
-      </Content>
+      </DropDownPickerContainer>
+
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ContentTitle>나의 식재료</ContentTitle>
+        <MyIngredientsTitle>나의 식재료</MyIngredientsTitle>
         {dummy.map((v, i) => {
           return <IngredientsItem key={i} />;
         })}
@@ -50,7 +51,7 @@ const IngredientsContent = () => {
   );
 };
 
-const Content = styled.View`
+const DropDownPickerContainer = styled.View`
   height: 80px;
   display: flex;
   flex-direction: row;
@@ -58,7 +59,7 @@ const Content = styled.View`
   z-index: 2;
 `;
 
-const ContentTitle = styled.Text`
+const MyIngredientsTitle = styled.Text`
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -67,4 +68,4 @@ const ContentTitle = styled.Text`
   font-family: 'Pretendard Variable';
 `;
 
-export default IngredientsContent;
+export default ViewAllMyIngredients;
