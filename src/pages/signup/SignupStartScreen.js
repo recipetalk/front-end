@@ -29,89 +29,6 @@ const SignupStartScreen = ({navigation}) => {
     }
   }, [isFirstChecked, isSecondChecked, isThirdChecked]);
 
-  const Description = styled.Text`
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    color: black;
-    font-family: 'Pretendard Variable';
-  `;
-
-  const FirstDescription = styled.Text`
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    font-family: 'Pretendard Variable';
-    color: #f09311;
-    margin-bottom: 15px;
-  `;
-
-  const DescriptionContainer = styled.View`
-    width: 90%;
-    margin-left: 25px;
-    margin-top: 15px;
-  `;
-
-  const SignupIdScreenContainer =
-    Platform.OS === 'ios'
-      ? styled.SafeAreaView`
-          position: relative;
-          height: 100%;
-          width: 100%;
-          border: 1px solid green;
-        `
-      : styled.View`
-          position: relative;
-          height: 100%;
-          border: 1px solid green;
-          width: 100%;
-        `;
-
-  const NextButtonContainer = styled.View`
-    position: relative;
-
-    width: 90%;
-
-    margin-left: auto;
-    margin-right: auto;
-    gap: 10px;
-    bottom: -270px;
-  `;
-
-  const TouchableContainer = styled.TouchableOpacity`
-    width: 55px;
-    height: 48px;
-    align-items: center;
-    justify-content: center;
-  `;
-
-  const CheckPart = styled.View`
-    gap: 10px;
-    width: 100%;
-    margin-top: 30px;
-  `;
-
-  const CheckItem = styled.View`
-    width: 90%;
-    margin: 0 auto;
-  `;
-
-  const CheckboxLabelStyle = StyleSheet.create({
-    sub: {
-      fontFamily: 'Pretendard Variable',
-      fontStyle: 'normal',
-      fontWeight: 400,
-      fontSize: 18,
-      color: '#333333',
-    },
-    title: {
-      fontFamily: 'Pretendard Variable',
-      fontWeight: 'normal',
-      fontSize: 18,
-      color: '#333333',
-    },
-  });
-
   return (
     <SignupIdScreenContainer>
       <TouchableContainer onPress={() => navigation.pop()}>
@@ -175,5 +92,86 @@ const SignupStartScreen = ({navigation}) => {
     </SignupIdScreenContainer>
   );
 };
+
+const Description = styled.Text`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  color: #333333;
+  font-family: 'Pretendard Variable';
+`;
+
+const FirstDescription = styled.Text`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: 'Pretendard Variable';
+  color: #f09311;
+  margin-bottom: 15px;
+`;
+
+const DescriptionContainer = styled.View`
+  width: 90%;
+  margin-left: 25px;
+  margin-top: 15px;
+`;
+
+const SignupIdScreenContainer =
+  Platform.OS === 'ios'
+    ? styled.SafeAreaView`
+        position: relative;
+        height: 100%;
+        width: 100%;
+      `
+    : styled.View`
+        position: relative;
+        height: 100%;
+        width: 100%;
+      `;
+
+const NextButtonContainer = styled.View`
+  position: relative;
+
+  width: 90%;
+
+  margin-left: auto;
+  margin-right: auto;
+  gap: 10px;
+  bottom: -270px;
+`;
+
+const TouchableContainer = styled.TouchableOpacity`
+  width: 55px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CheckPart = styled.View`
+  gap: 10px;
+  width: 100%;
+  margin-top: 30px;
+`;
+
+const CheckItem = styled.View`
+  width: 90%;
+  margin: 0 auto;
+`;
+
+const CheckboxLabelStyle = StyleSheet.create({
+  sub: {
+    fontFamily: 'Pretendard Variable',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    fontSize: 18,
+    color: '#333333',
+  },
+  title: {
+    fontFamily: 'Pretendard Variable',
+    fontWeight: 'normal',
+    fontSize: 18,
+    color: '#333333',
+  },
+});
 
 export default SignupStartScreen;
