@@ -5,25 +5,29 @@ import ActiveButton from '../../components/atoms/board/ActiveButton';
 import FocusedTextInputBorder from '../../components/atoms/FocusedTextInputBorder';
 import {PasswordValidator} from '../../services/validator/PasswordValidator';
 import equals from '../../services/object/equals';
+import {useDispatch, useSelector} from 'react-redux';
+import {setPassword} from '../../store/signup/Signup';
 
 export default function SignupPasswordScreen({navigation}) {
-  const [password, setPassword] = useState('');
-  const [checkPassword, setCheckPassword] = useState('');
+  const globalPassword = useSelector(state => state.signUp.value.password);
+  const dispatch = useDispatch();
+  const [localPassword, setLocalPassword] = useState(globalPassword);
+  const [checkPassword, setCheckPassword] = useState(globalPassword);
   const [isValidPassword, setNotValidPassword] = useState('');
   const [isEqualPassword, setEqualPassword] = useState(true);
   useEffect(() => {
-    if (PasswordValidator(password)) {
+    if (PasswordValidator(localPassword)) {
       setNotValidPassword('ok');
     } else {
       setNotValidPassword('no');
     }
-    if (password.length === 0) {
+    if (localPassword.length === 0) {
       setNotValidPassword('');
     }
-  }, [password]);
+  }, [localPassword]);
 
   useEffect(() => {
-    if (equals(password, checkPassword)) {
+    if (equals(localPassword, checkPassword)) {
       setEqualPassword(true);
     } else {
       setEqualPassword(false);
@@ -31,7 +35,7 @@ export default function SignupPasswordScreen({navigation}) {
     if (checkPassword.length === 0) {
       setEqualPassword(true);
     }
-  }, [password, checkPassword]);
+  }, [localPassword, checkPassword]);
 
   return (
     <SignupIdScreenContainer>
@@ -50,8 +54,8 @@ export default function SignupPasswordScreen({navigation}) {
           style={isValidPassword === 'no' && {borderColor: '#ff665c'}}
           placeholder="비밀번호를 입력해주세요"
           secureTextEntry={true}
-          value={password}
-          setData={setPassword}
+          value={localPassword}
+          setData={setLocalPassword}
         />
         {isValidPassword === 'no' && (
           <ValidateLabel>
@@ -77,8 +81,13 @@ export default function SignupPasswordScreen({navigation}) {
           border_radius="25px"
           LabelInfo="다음"
           LabelSize="17px"
-          isActive={isValidPassword === 'ok' && equals(checkPassword, password)}
-          onPress={() => navigation.push('SignupEmailFirst')}
+          isActive={
+            isValidPassword === 'ok' && equals(checkPassword, localPassword)
+          }
+          onPress={() => {
+            dispatch(setPassword(localPassword));
+            navigation.push('SignupEmailFirst');
+          }}
         />
       </NextButtonContainer>
     </SignupIdScreenContainer>
@@ -89,7 +98,7 @@ const Description = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
-  color: black;
+  color: #333333;
   font-family: 'Pretendard Variable';
 `;
 
@@ -114,12 +123,10 @@ const SignupIdScreenContainer =
         position: relative;
         height: 100%;
         width: 100%;
-        border: 1px solid green;
       `
     : styled.View`
         position: relative;
         height: 100%;
-        border: 1px solid green;
         width: 100%;
       `;
 

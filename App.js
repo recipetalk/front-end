@@ -10,7 +10,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
 import LoginScreen from './src/pages/LoginScreen';
 import {store} from './src/store/config';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 import SignupIdScreen from './src/pages/signup/SignupIdScreen';
 import SignupNicknameScreen from './src/pages/signup/SignupNicknameScreen';
 import SignupPasswordScreen from './src/pages/signup/SignupPasswordScreen';
@@ -31,6 +31,7 @@ import SetTimerPage from './src/pages/timer/SetTimerPage';
 import SignupStartScreen from './src/pages/signup/SignupStartScreen';
 import messaging from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
+import {setFcmToken} from './src/store/fcmToken/FcmToken';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -131,11 +132,20 @@ function App() {
   const Stack = createNativeStackNavigator();
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-    });
-    return unsubscribe;
+    fcmSet();
   });
+
+  const fcmSet = async () => {
+    const enabled = await messaging().hasPermission();
+    if (enabled) {
+      const fcmToken = await messaging().getToken();
+      console.log('fcmToken : ' + fcmToken);
+    } else {
+      console.log('disable');
+      await messaging().requestPermission();
+    }
+  };
+
   // return (
   //   <NavigationContainer>
   //     <Stack.Navigator initialRouteName="Login">

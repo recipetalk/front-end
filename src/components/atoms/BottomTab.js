@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../../pages/HomeScreen';
 import MypageScreen from '../../pages/myPage/MypageScreen';
@@ -74,6 +74,11 @@ const IngredientsStackNavigator = () => {
 
 const BottomTab = () => {
   const Tab = createBottomTabNavigator();
+
+  useEffect(() => {
+    // 여기에 FCM 등록 알고리즘 필요
+    console.log('bottomTab rendering: ');
+  }, []);
 
   return (
     <Tab.Navigator initialRouteName="Home">

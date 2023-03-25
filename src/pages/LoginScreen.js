@@ -1,22 +1,20 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SloganText from '../components/atoms/title/recipetalkSlogan';
 import styled from 'styled-components/native';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Checkbox from '@react-native-community/checkbox';
 import {Platform} from 'react-native';
 import FocusedTextInputBorder from '../components/atoms/FocusedTextInputBorder';
+import {useDispatch} from 'react-redux';
+import {clear} from '../store/signup/Signup';
 
 export default function LoginScreen({navigation}) {
-  const [autologinChecked, setAutologinChecked] = useState(false);
+  const dispatch = useDispatch();
 
-  const AutoLoginCheckContainer = styled.View`
-    position: absolute;
-    right: 0px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  `;
+  useEffect(() => {
+    dispatch(clear());
+  }, []);
+  const [autologinChecked, setAutologinChecked] = useState(false);
 
   const AutoLogin = () => {
     const styles = StyleSheet.create({
@@ -191,6 +189,15 @@ const SimpleLoginLabel = styled.Text`
   text-decoration-line: underline;
   font-family: 'Pretendard Variable';
   color: #f09311;
+`;
+
+const AutoLoginCheckContainer = styled.View`
+  position: absolute;
+  right: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoginScreenContainer =
