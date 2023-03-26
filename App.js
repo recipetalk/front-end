@@ -7,7 +7,7 @@
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginScreen from './src/pages/LoginScreen';
 import {store} from './src/store/config';
 import {Provider, useDispatch, useSelector} from 'react-redux';
@@ -30,8 +30,12 @@ import SequenceDetailDescriptionScreen from './src/pages/SequenceDetailDescripti
 import SetTimerPage from './src/pages/timer/SetTimerPage';
 import SignupStartScreen from './src/pages/signup/SignupStartScreen';
 import messaging from '@react-native-firebase/messaging';
-import {Alert} from 'react-native';
-import {setFcmToken} from './src/store/fcmToken/FcmToken';
+import {loadLoginFromStorage} from './src/services/domain/AutoLogin';
+import {jsonAPI} from './src/services/connect/API';
+import {
+  saveJwtAccessTokenToStorage,
+  saveJwtRefreshToStorage,
+} from './src/services/domain/JwtToken';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -133,7 +137,7 @@ function App() {
 
   useEffect(() => {
     fcmSet();
-  });
+  }, []);
 
   const fcmSet = async () => {
     const enabled = await messaging().hasPermission();
