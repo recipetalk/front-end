@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SloganText from '../components/atoms/title/recipetalkSlogan';
 import styled from 'styled-components/native';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
@@ -7,6 +7,7 @@ import {Platform} from 'react-native';
 import FocusedTextInputBorder from '../components/atoms/FocusedTextInputBorder';
 import {jsonAPI} from '../services/connect/API';
 import {
+  deleteLoginToStorage,
   loadLoginFromStorage,
   saveLoginToStorage,
 } from '../services/domain/AutoLogin';
@@ -23,23 +24,59 @@ export default function LoginScreen({navigation}) {
   const [visibleAlert, setVisibleAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
 
+  useEffect(() => {
+    async function init() {
+      const loadLoginData = await loadLoginFromStorage();
+      console.log(loadLoginData);
+      setId(loadLoginData.username);
+      setPassword(loadLoginData.password);
+      setAutologinChecked(loadLoginData.isAutoLogin);
+
+      if (loadLoginData.isAutoLogin === true) {
+        jsonAPI
+          .post('/auth/login', {
+            username: loadLoginData.username,
+            password: loadLoginData.password,
+          })
+          .then(async res => {
+            await saveJwtRefreshToStorage(res.headers['refresh-token']);
+            await saveJwtAccessTokenToStorage(res.headers.authorization);
+            navigation.reset({routes: [{name: 'Home'}]});
+          })
+          .catch(err => {
+            if (err.response.data === 'Invalid Username or Password') {
+              setVisibleAlert(true);
+              console.log(err.response);
+              setAlertTitle('아이디 또는 비밀번호가 잘못되었습니다.');
+            } else {
+              setVisibleAlert(true);
+              setAlertTitle('네트워크 상태가 올바르지 못합니다.');
+            }
+          });
+      }
+    }
+    init();
+  }, []);
+
   const sendLogin = async () =>
     jsonAPI
       .post('/auth/login', {username: username, password: password})
       .then(async res => {
+        console.log('id');
         console.log(username);
+        console.log('password');
         console.log(password);
         await saveLoginToStorage(username, password, autologinChecked);
         await saveJwtAccessTokenToStorage(res.headers.authorization);
         await saveJwtRefreshToStorage(res.headers['refresh-token']);
-        const data = await loadLoginFromStorage();
-        console.log(data);
+
         console.log(res.status);
-        navigation.navigate('Home');
+        navigation.reset({routes: [{name: 'Home'}]});
       })
       .catch(err => {
         if (err.response.data === 'Invalid Username or Password') {
           setVisibleAlert(true);
+          console.log(err.response);
           setAlertTitle('아이디 또는 비밀번호가 잘못되었습니다.');
         } else {
           setVisibleAlert(true);

@@ -134,42 +134,8 @@ function LoginStackNavigator() {
 
 function App() {
   const Stack = createNativeStackNavigator();
-  const [savedLoginData, setSavedLoginData] = useState({
-    username: '',
-    password: '',
-    isAutoLogin: false,
-  });
-
-  const [renderingFinish, setRenderingFinish] = useState(false);
 
   useEffect(() => {
-    async function init() {
-      const loadLoginData = await loadLoginFromStorage();
-
-      setSavedLoginData({
-        username: loadLoginData.username,
-        password: loadLoginData.password,
-        isAutoLogin: loadLoginData.isAutoLogin,
-      });
-
-      if (loadLoginData.isAutoLogin === true) {
-        console.log('자동로그인');
-        jsonAPI
-          .post('/auth/login', {
-            username: loadLoginData.username,
-            password: loadLoginData.password,
-          })
-          .then(async res => {
-            console.log('자동로그인');
-            await saveJwtRefreshToStorage(res.headers['refresh-token']);
-            await saveJwtAccessTokenToStorage(res.headers.authorization);
-          })
-          .catch(err => {
-            setSavedLoginData({...savedLoginData, isAutoLogin: false});
-          });
-      }
-    }
-    init().then(() => setRenderingFinish(true));
     fcmSet();
   }, []);
 
@@ -213,57 +179,53 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {renderingFinish ? (
-          <Stack.Navigator>
-            {savedLoginData.isAutoLogin ? null : (
-              <Stack.Screen
-                name="Login"
-                component={LoginStackNavigator}
-                options={{headerShown: false}}
-              />
-            )}
-            <Stack.Screen
-              name="Home"
-              component={BottomTab}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="PrepEdit"
-              component={PrepEditScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="RecipeEdit"
-              component={RecipeEditStackNavigator}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="CommentHistory"
-              component={CommentHistoryScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="RecipeDetailScreen"
-              component={RecipeDetailStackNavigator}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="ProfileScreen"
-              component={ProfileScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SequenceDetailScreen"
-              component={SequenceDetailDescriptionScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SetTimerPage"
-              component={SetTimerPage}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-        ) : undefined}
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Login"
+            component={LoginStackNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Home"
+            component={BottomTab}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="PrepEdit"
+            component={PrepEditScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RecipeEdit"
+            component={RecipeEditStackNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="CommentHistory"
+            component={CommentHistoryScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="RecipeDetailScreen"
+            component={RecipeDetailStackNavigator}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ProfileScreen"
+            component={ProfileScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SequenceDetailScreen"
+            component={SequenceDetailDescriptionScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="SetTimerPage"
+            component={SetTimerPage}
+            options={{headerShown: false}}
+          />
+        </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
