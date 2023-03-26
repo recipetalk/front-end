@@ -7,7 +7,7 @@
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginScreen from './src/pages/LoginScreen';
 import {store} from './src/store/config';
 import {Provider, useDispatch, useSelector} from 'react-redux';
@@ -30,8 +30,12 @@ import SequenceDetailDescriptionScreen from './src/pages/SequenceDetailDescripti
 import SetTimerPage from './src/pages/timer/SetTimerPage';
 import SignupStartScreen from './src/pages/signup/SignupStartScreen';
 import messaging from '@react-native-firebase/messaging';
-import {Alert} from 'react-native';
-import {setFcmToken} from './src/store/fcmToken/FcmToken';
+import {loadLoginFromStorage} from './src/services/domain/AutoLogin';
+import {jsonAPI} from './src/services/connect/API';
+import {
+  saveJwtAccessTokenToStorage,
+  saveJwtRefreshToStorage,
+} from './src/services/domain/JwtToken';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -130,10 +134,44 @@ function LoginStackNavigator() {
 
 function App() {
   const Stack = createNativeStackNavigator();
+  const [savedLoginData, setSavedLoginData] = useState({
+    username: '',
+    password: '',
+    isAutoLogin: false,
+  });
+
+  const [renderingFinish, setRenderingFinish] = useState(false);
 
   useEffect(() => {
+    async function init() {
+      const loadLoginData = await loadLoginFromStorage();
+
+      setSavedLoginData({
+        username: loadLoginData.username,
+        password: loadLoginData.password,
+        isAutoLogin: loadLoginData.isAutoLogin,
+      });
+
+      if (loadLoginData.isAutoLogin === true) {
+        console.log('자동로그인');
+        jsonAPI
+          .post('/auth/login', {
+            username: loadLoginData.username,
+            password: loadLoginData.password,
+          })
+          .then(async res => {
+            console.log('자동로그인');
+            await saveJwtRefreshToStorage(res.headers['refresh-token']);
+            await saveJwtAccessTokenToStorage(res.headers.authorization);
+          })
+          .catch(err => {
+            setSavedLoginData({...savedLoginData, isAutoLogin: false});
+          });
+      }
+    }
+    init().then(() => setRenderingFinish(true));
     fcmSet();
-  });
+  }, []);
 
   const fcmSet = async () => {
     const enabled = await messaging().hasPermission();
@@ -175,53 +213,57 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Login"
-            component={LoginStackNavigator}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Home"
-            component={BottomTab}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="PrepEdit"
-            component={PrepEditScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="RecipeEdit"
-            component={RecipeEditStackNavigator}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="CommentHistory"
-            component={CommentHistoryScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="RecipeDetailScreen"
-            component={RecipeDetailStackNavigator}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ProfileScreen"
-            component={ProfileScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SequenceDetailScreen"
-            component={SequenceDetailDescriptionScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SetTimerPage"
-            component={SetTimerPage}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
+        {renderingFinish ? (
+          <Stack.Navigator>
+            {savedLoginData.isAutoLogin ? null : (
+              <Stack.Screen
+                name="Login"
+                component={LoginStackNavigator}
+                options={{headerShown: false}}
+              />
+            )}
+            <Stack.Screen
+              name="Home"
+              component={BottomTab}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="PrepEdit"
+              component={PrepEditScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RecipeEdit"
+              component={RecipeEditStackNavigator}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="CommentHistory"
+              component={CommentHistoryScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RecipeDetailScreen"
+              component={RecipeDetailStackNavigator}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="SequenceDetailScreen"
+              component={SequenceDetailDescriptionScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="SetTimerPage"
+              component={SetTimerPage}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        ) : undefined}
       </NavigationContainer>
     </Provider>
   );
