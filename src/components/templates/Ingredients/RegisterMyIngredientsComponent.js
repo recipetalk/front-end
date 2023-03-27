@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import Line from '../../atoms/Line';
 import DirectlyRegisterIngredients from '../../organisms/Ingredients/DirectlyRegisterIngredients';
@@ -7,7 +8,15 @@ import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import RecentlyRegisteredIngredients from '../../organisms/Ingredients/RecentlyRegisteredIngredients';
 
 const RegisterMyIngredientsComponent = () => {
+  const result = useSelector(state => state.ingredients);
   const [isPressed, setIsPressed] = useState(false);
+  const [empty, setEmpty] = useState([]);
+
+  const addDirectly = () => {
+    setIsPressed(true);
+
+    setEmpty(prev => [...prev, {}]);
+  };
 
   return (
     <RegisterMyIngredientsComponentContainer>
@@ -32,7 +41,7 @@ const RegisterMyIngredientsComponent = () => {
         <RegisterIngredientsDirectlyText>
           재료 직접 추가
         </RegisterIngredientsDirectlyText>
-        <TouchContainer onPress={() => setIsPressed(true)}>
+        <TouchContainer onPress={addDirectly}>
           <RegisterIngredientsDirectlyImage
             source={require('../../../assets/images/Add_o.png')}
           />
@@ -41,14 +50,47 @@ const RegisterMyIngredientsComponent = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {isPressed ? (
-          <DirectlyRegisterIngredients />
+          <DirectlyRegisterIngredientsContainer>
+            <DirectlyRegisterIngredientsText>
+              식재료 등록하기
+            </DirectlyRegisterIngredientsText>
+
+            {empty.map((_, index) => {
+              return <DirectlyRegisterIngredients key={index} id={index} />;
+            })}
+
+            <TouchContainer
+              onPress={() => {
+                setIsPressed(prev => !prev);
+              }}>
+              <IngredientRegisterButton
+                active={result.length > 0 ? true : false}>
+                <IngredientRegisterButtonText>
+                  {`총 ${result.length}개의 식재료 등록하기`}
+                </IngredientRegisterButtonText>
+              </IngredientRegisterButton>
+            </TouchContainer>
+          </DirectlyRegisterIngredientsContainer>
         ) : (
-          <RecentlyRegisteredIngredients items={[]} />
+          <RecentlyRegisteredIngredients items={result} />
         )}
       </ScrollView>
     </RegisterMyIngredientsComponentContainer>
   );
 };
+
+const DirectlyRegisterIngredientsContainer = styled.View`
+  padding: 18px;
+`;
+
+const DirectlyRegisterIngredientsText = styled.Text`
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  font-family: 'Pretendard Variable';
+  color: #333333;
+  font-family: 'Pretendard Variable';
+`;
 
 const RegisterMyIngredientsComponentContainer = styled.View`
   margin-bottom: 600px;
@@ -106,6 +148,23 @@ const RegisterIngredientsDirectlyText = styled.Text`
 const RegisterIngredientsDirectlyImage = styled.Image`
   width: 20px;
   height: 20px;
+`;
+
+const IngredientRegisterButton = styled.View`
+  background: ${props => (props.active ? '#f09311' : '#e1e1e1')}
+  border-radius: 8px;
+  height: 48px;
+  justify-content: center;
+`;
+
+const IngredientRegisterButtonText = styled.Text`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: 'Pretendard Variable';
+  text-align: center;
+
+  color: #ffffff;
 `;
 
 const TouchContainer = styled.TouchableOpacity``;

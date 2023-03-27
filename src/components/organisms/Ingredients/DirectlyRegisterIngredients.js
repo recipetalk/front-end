@@ -1,65 +1,107 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import Checkbox from '@react-native-community/checkbox';
+import {addIngredients} from '../../../store/Ingredients/IngredientsSlice';
+import {useDispatch} from 'react-redux';
 
-const DirectlyRegisterIngredients = () => {
+const DirectlyRegisterIngredients = props => {
+  const dispatch = useDispatch();
   const [isAddChecked, setIsAddChecked] = useState(false);
 
+  const [ingredientsInfo, setIngredientsInfo] = useState({
+    name: '',
+    status: '',
+    expirationDate: '',
+    amount: '',
+  });
+
+  const addThisIngredients = newValue => {
+    setIsAddChecked(newValue);
+
+    if (newValue) {
+      dispatch(
+        addIngredients({
+          id: props.id,
+          name: ingredientsInfo.name,
+          status: ingredientsInfo.status,
+          expirationDate: ingredientsInfo.expirationDate,
+          amount: ingredientsInfo.amount,
+        }),
+      );
+    }
+  };
+
+  const deleteIngredients = () => {
+    console.log('ininini');
+    dispatch();
+  };
+
   return (
-    <DirectlyRegisterIngredientsContainer>
-      <DirectlyRegisterIngredientsText>
-        식재료 등록하기
-      </DirectlyRegisterIngredientsText>
-      <RegisterIngredientsItemContainer>
-        <CheckBoxViewContainer>
-          <CheckBoxView>
-            <RegisterIngredientsCheckbox
-              value={isAddChecked}
-              onValueChange={setIsAddChecked}
-              onFillColor="#F09311"
-              tintColors={{true: '#F09311', false: '#A4A4A4'}}
-              boxType="square"
-              tintColor="#A4A4A4"
-              onCheckColor="#FFFFFF"
-              onTintColor="#F09311"
-            />
-            <RegisterIngredientsText>이 식재료 추가</RegisterIngredientsText>
-          </CheckBoxView>
+    <RegisterIngredientsItemContainer>
+      <CheckBoxViewContainer>
+        <CheckBoxView>
+          <RegisterIngredientsCheckbox
+            value={isAddChecked}
+            onFillColor="#F09311"
+            onValueChange={addThisIngredients}
+            tintColors={{true: '#F09311', false: '#A4A4A4'}}
+            boxType="square"
+            tintColor="#A4A4A4"
+            onCheckColor="#FFFFFF"
+            onTintColor="#F09311"
+          />
+          <RegisterIngredientsText>이 식재료 추가</RegisterIngredientsText>
+        </CheckBoxView>
 
-          <TouchContainer>
-            <DeleteIngredientsText>재료 삭제</DeleteIngredientsText>
-          </TouchContainer>
-        </CheckBoxViewContainer>
-
-        <IngredientName>식재료 명</IngredientName>
-        <IngredientNameContainer>
-          <IngredientNameInput placeholder="  예) 감자  " />
-        </IngredientNameContainer>
-
-        <IngredientStatusContainer>
-          <IngredientStatusText>상태 입력</IngredientStatusText>
-          <IngredientStatusInput placeholder="  예) 1개 " />
-        </IngredientStatusContainer>
-
-        <IngredientStatusContainer>
-          <IngredientStatusText>유통 기한</IngredientStatusText>
-          <IngredientStatusInput placeholder="  예) 1개 " />
-        </IngredientStatusContainer>
-
-        <IngredientStatusContainer>
-          <IngredientStatusText>수량 입력</IngredientStatusText>
-          <IngredientStatusInput placeholder="  예) 1개 " />
-        </IngredientStatusContainer>
-
-        <TouchContainer>
-          <IngredientRegisterButton>
-            <IngredientRegisterButtonText>
-              총 1개의 식재료 등록하기
-            </IngredientRegisterButtonText>
-          </IngredientRegisterButton>
+        <TouchContainer onPress={deleteIngredients}>
+          <DeleteIngredientsText>재료 삭제</DeleteIngredientsText>
         </TouchContainer>
-      </RegisterIngredientsItemContainer>
-    </DirectlyRegisterIngredientsContainer>
+      </CheckBoxViewContainer>
+
+      <IngredientName>식재료 명</IngredientName>
+      <IngredientNameContainer>
+        <IngredientNameInput
+          placeholder="  예) 감자  "
+          value={ingredientsInfo.name}
+          onChangeText={res =>
+            setIngredientsInfo({...ingredientsInfo, name: res})
+          }
+        />
+      </IngredientNameContainer>
+
+      <IngredientStatusContainer>
+        <IngredientStatusText>상태 입력</IngredientStatusText>
+        <IngredientStatusInput
+          placeholder="  예) 1개 "
+          value={ingredientsInfo.status}
+          onChangeText={res =>
+            setIngredientsInfo({...ingredientsInfo, status: res})
+          }
+        />
+      </IngredientStatusContainer>
+
+      <IngredientStatusContainer>
+        <IngredientStatusText>유통 기한</IngredientStatusText>
+        <IngredientStatusInput
+          placeholder="  예) 1개 "
+          value={ingredientsInfo.expirationDate}
+          onChangeText={res =>
+            setIngredientsInfo({...ingredientsInfo, expirationDate: res})
+          }
+        />
+      </IngredientStatusContainer>
+
+      <IngredientStatusContainer>
+        <IngredientStatusText>수량 입력</IngredientStatusText>
+        <IngredientStatusInput
+          placeholder="  예) 1개 "
+          value={ingredientsInfo.amount}
+          onChangeText={res =>
+            setIngredientsInfo({...ingredientsInfo, amount: res})
+          }
+        />
+      </IngredientStatusContainer>
+    </RegisterIngredientsItemContainer>
   );
 };
 
@@ -148,36 +190,6 @@ const IngredientStatusText = styled.Text`
   font-family: 'Pretendard Variable';
   color: #333333;
   margin-right: 25px;
-`;
-
-const IngredientRegisterButton = styled.View`
-  background: #f09311;
-  border-radius: 8px;
-  height: 48px;
-  justify-content: center;
-`;
-
-const IngredientRegisterButtonText = styled.Text`
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  font-family: 'Pretendard Variable';
-  text-align: center;
-
-  color: #ffffff;
-`;
-
-const DirectlyRegisterIngredientsContainer = styled.View`
-  padding: 18px;
-`;
-
-const DirectlyRegisterIngredientsText = styled.Text`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 20px;
-  font-family: 'Pretendard Variable';
-  color: #333333;
-  font-family: 'Pretendard Variable';
 `;
 
 const TouchContainer = styled.TouchableOpacity``;

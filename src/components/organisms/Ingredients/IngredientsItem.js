@@ -3,15 +3,17 @@ import React from 'react';
 import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
 
-const IngredientsItem = () => {
+const IngredientsItem = props => {
   const navigation = useNavigation();
 
   return (
     <IngredientsItemContainer>
       <Header>
         <IngredientsItemInfo>
-          <Name>마늘</Name>
-          <Amount>생것 | 200g</Amount>
+          <Name>{props.item.name}</Name>
+          <Amount>
+            {props.item.status} | {props.item.amount}
+          </Amount>
         </IngredientsItemInfo>
         <TouchContainer>
           <Image source={require('../../../assets/images/More.png')} />
@@ -29,7 +31,9 @@ const IngredientsItem = () => {
       </IngredientsItemETCInfo>
 
       <ExpirationInfo>
-        <ExpirationInfoText>유통기한 : 2023 / 02 / 28 까지</ExpirationInfoText>
+        <ExpirationInfoText>
+          유통기한 : {props.item.expirationDate}까지
+        </ExpirationInfoText>
       </ExpirationInfo>
     </IngredientsItemContainer>
   );

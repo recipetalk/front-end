@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import IngredientsItem from './IngredientsItem';
 
-const RecentlyRegisteredIngredients = items => {
+const RecentlyRegisteredIngredients = props => {
   const navigation = useNavigation();
 
   return (
@@ -22,13 +22,13 @@ const RecentlyRegisteredIngredients = items => {
         </TouchContainer>
       </RecentlyRegisteredIngredientsSection>
       <>
-        {items.items.length === 0 ? (
+        {props.items.length === 0 ? (
           <EmptyItemContainer>
             <EmptyItemText>아직 등록된 식재료가 없어요!</EmptyItemText>
           </EmptyItemContainer>
         ) : (
-          items.items.map((v, i) => {
-            return <IngredientsItem key={i} />;
+          props.items.map((item, i) => {
+            return <IngredientsItem item={item} key={i} />;
           })
         )}
       </>
