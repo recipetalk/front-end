@@ -16,14 +16,6 @@ const ExpandableText = ({text}) => {
     displayText = isExpanded ? text : text.slice(0, maxLength);
   }
 
-  const Description = styled.Text`
-    color: #666666;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    font-family: 'Pretendard Variable';
-  `;
-
   return (
     <View>
       <Description numberOfLines={isExpanded ? undefined : 10}>
@@ -41,5 +33,13 @@ const ExpandableText = ({text}) => {
     </View>
   );
 };
+
+const Description = styled.Text`
+  color: #666666;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: 'Pretendard Variable';
+`;
 
 export default ExpandableText;

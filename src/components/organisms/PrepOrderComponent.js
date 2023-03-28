@@ -32,10 +32,11 @@ const PrepOrderItem = styled.View`
   display: flex;
   flex-direction: row;
 
-  width: 350px;
+  width: 100%;
   height: 280px;
   margin: auto;
   margin-bottom: 15px;
+  justify-content: center;
 `;
 
 const NumberPart = styled.View`
@@ -60,7 +61,7 @@ const InfoPart = styled.View``;
 
 const TextPart = styled.Text`
   width: 310px;
-  height: 80px;
+  height: auto;
   margin-bottom: 10px;
   font-family: 'Pretendard Variable';
   font-style: normal;
