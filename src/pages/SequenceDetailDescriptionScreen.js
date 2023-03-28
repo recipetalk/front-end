@@ -35,9 +35,7 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
         setRemainingTime(remainingTime =>
           remainingTime > 0 ? remainingTime - 1000 : 0,
         );
-        console.log('나 돌고있어!');
         if (remainingTime === 0) {
-          console.log('응애 바로 꺼버리깃!');
           startTimer(false);
           cancelTimer();
         }
