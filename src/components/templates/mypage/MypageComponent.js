@@ -43,8 +43,8 @@ const MypageComponent = ({navigation}) => {
       </InfoContainer>
       <VerticalBar height={'2px'} />
       <NavigatePartContainerComponent navigation={navigation} />
-      <VerticalBar height={'4px'} />
-      <NoticePartComponent navigation={navigation} />
+      {/*<VerticalBar height={'4px'} />*/}
+      {/*<NoticePartComponent navigation={navigation} />*/}
     </InnerContainer>
   );
 };

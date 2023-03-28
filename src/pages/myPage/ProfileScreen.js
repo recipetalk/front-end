@@ -20,10 +20,11 @@ const ProfileScreen = ({navigation}) => {
               resizeMode={'contain'}
             />
           </HeaderTouchButton>
-          <HeaderLabel>마이페이지</HeaderLabel>
+          <HeaderLabel>사용자아이디0000</HeaderLabel>
         </View>
       </Header>
       <VerticalBar height={'1px'} />
+
       <InnerContainer>
         <DetailProfileWithDescription
           navigation={navigation}

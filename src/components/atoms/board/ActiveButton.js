@@ -12,13 +12,13 @@ export default function ActiveButton({
   onPress,
 }) {
   const Button = styled.TouchableOpacity`
-        width: ${() => width}
-        height: ${() => height}
-        border-radius: ${() => border_radius}
-        background-color: ${() => (isActive ? '#F09311' : '#E1E1E1')}
-        align-items: center;
-        justify-content: center;
-    `;
+    width: ${() => width};
+    height: ${() => height};
+    border-radius: ${() => border_radius};
+    background-color: ${() => (isActive ? '#F09311' : '#E1E1E1')};
+    align-items: center;
+    justify-content: center;
+  `;
 
   const Label = styled.Text`
     font-weight: 700;

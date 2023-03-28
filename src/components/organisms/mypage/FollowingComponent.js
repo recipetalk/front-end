@@ -17,7 +17,7 @@ const FollowingComponent = ({
         <MyInfoNumberLabel>{followerNumber}</MyInfoNumberLabel>
       </MyInfoItem>
       <MyInfoItem>
-        <MyInfoTitleLabel>나의레시피</MyInfoTitleLabel>
+        <MyInfoTitleLabel>나의 레시피</MyInfoTitleLabel>
         <MyInfoNumberLabel>{recipeNumber}</MyInfoNumberLabel>
       </MyInfoItem>
     </MyInfoContainer>
@@ -25,7 +25,7 @@ const FollowingComponent = ({
 };
 
 const MyInfoContainer = styled.View`
-  width: 100%;
+  width: 90%;
   height: auto;
   flex-direction: row;
   justify-content: space-evenly;
