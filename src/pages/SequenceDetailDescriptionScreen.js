@@ -71,10 +71,10 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
 
   const hoursLeft = Math.floor(remainingTime / 3600 / 1000);
   const minutesLeft = Math.floor(
-    (remainingTime - hoursLeft * 3600) / 60 / 1000,
+    (remainingTime - hoursLeft * 3600 * 1000) / 60 / 1000,
   );
   const secondsLeft = Math.floor(
-    (remainingTime - hoursLeft * 3600 - minutesLeft * 60) / 1000,
+    (remainingTime - hoursLeft * 3600 * 1000 - minutesLeft * 60 * 1000) / 1000,
   );
 
   const formatTime = time => {
@@ -167,15 +167,9 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
         isClickedStartTimer ? (
           <StartTimerClickedBox>
             <TextBoxLabel>
-              {hour !== '00' || hour !== 0
-                ? Number.parseInt(hour) + '시'
-                : undefined}
-              {min !== '00' || min !== 0
-                ? Number.parseInt(min) + '분'
-                : undefined}
-              {sec !== '00' || sec !== 0
-                ? Number.parseInt(sec) + '초'
-                : undefined}
+              {hour == 0 ? undefined : Number.parseInt(hour) + '시  '}
+              {min == 0 ? undefined : Number.parseInt(min) + '분  '}
+              {sec == 0 ? undefined : Number.parseInt(sec) + '초'}
             </TextBoxLabel>
             <TextBoxPart>
               {hoursLeft !== 0 ? (
@@ -248,6 +242,7 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
                 <TimerLabel>{getFormattedTime(estimatedEndTime)}</TimerLabel>
               </TimerLabelBox>
               <BarLabel>
+                {hoursLeft != 0 ? formatTime(hoursLeft) + ':' : undefined}
                 {formatTime(minutesLeft)}:{formatTime(secondsLeft)}
               </BarLabel>
             </BarLabelBox>
