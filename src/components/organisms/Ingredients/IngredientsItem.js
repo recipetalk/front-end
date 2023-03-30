@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 const IngredientsItem = props => {
   const navigation = useNavigation();
 
-  return (
+  return props.item !== undefined ? (
     <IngredientsItemContainer>
       <Header>
         <IngredientsItemInfo>
@@ -34,6 +34,32 @@ const IngredientsItem = props => {
         <ExpirationInfoText>
           유통기한 : {props.item.expirationDate}까지
         </ExpirationInfoText>
+      </ExpirationInfo>
+    </IngredientsItemContainer>
+  ) : (
+    <IngredientsItemContainer>
+      <Header>
+        <IngredientsItemInfo>
+          <Name>마늘</Name>
+          <Amount>생것 | 100개</Amount>
+        </IngredientsItemInfo>
+        <TouchContainer>
+          <Image source={require('../../../assets/images/More.png')} />
+        </TouchContainer>
+      </Header>
+
+      <IngredientsItemETCInfo>
+        <TouchContainer onPress={() => navigation.navigate('Efficacy')}>
+          <EfficacyText>효능 및 정보</EfficacyText>
+        </TouchContainer>
+        <Text> | </Text>
+        <TouchContainer onPress={() => navigation.navigate('Prep')}>
+          <PrepText>손질법 보기</PrepText>
+        </TouchContainer>
+      </IngredientsItemETCInfo>
+
+      <ExpirationInfo>
+        <ExpirationInfoText>유통기한 : 2023 / 10 / 10까지</ExpirationInfoText>
       </ExpirationInfo>
     </IngredientsItemContainer>
   );

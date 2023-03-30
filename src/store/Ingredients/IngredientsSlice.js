@@ -1,22 +1,27 @@
 import {createSlice} from '@reduxjs/toolkit';
 
+let nextId = 1;
+
 const IngredientsSlice = createSlice({
   name: 'IngredientsSlice',
   initialState: [],
 
   reducers: {
-    addIngredients: (previousState, action) => {
+    addEmptyIngredients: previousState => {
       return [
         ...previousState,
         {
-          id: action.payload.id,
-          name: action.payload.name,
-          status: action.payload.status,
-          expirationDate: action.payload.expirationDate,
-          amount: action.payload.amount,
+          id: nextId++,
+          name: '',
+          status: '',
+          expirationDate: '',
+          amount: '',
+          isChecked: false,
         },
       ];
     },
+
+    addIngredients: (previousState, action) => {},
 
     deleteIngredients: (previousState, action) => {
       return previousState.filter(item => item.id !== action.payload);
@@ -24,5 +29,6 @@ const IngredientsSlice = createSlice({
   },
 });
 
-export const {addIngredients, deleteIngredients} = IngredientsSlice.actions;
+export const {addEmptyIngredients, addIngredients, deleteIngredients} =
+  IngredientsSlice.actions;
 export default IngredientsSlice.reducer;

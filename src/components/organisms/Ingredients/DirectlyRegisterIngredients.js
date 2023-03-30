@@ -21,11 +21,12 @@ const DirectlyRegisterIngredients = props => {
     if (newValue) {
       dispatch(
         addIngredients({
-          id: props.id,
+          id: props.item.id,
           name: ingredientsInfo.name,
           status: ingredientsInfo.status,
           expirationDate: ingredientsInfo.expirationDate,
           amount: ingredientsInfo.amount,
+          isChecked: true,
         }),
       );
     }

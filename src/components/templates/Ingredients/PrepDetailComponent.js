@@ -17,7 +17,7 @@ const PrepDetailComponent = () => {
         title="손질법"
         isTitleOnly={false}
         btnTextValue="수정"
-        screen="PrepEdit"
+        screen="PrepRegister"
       />
       <IngredientsInfo />
       <Line />

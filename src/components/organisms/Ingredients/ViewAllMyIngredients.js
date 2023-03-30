@@ -1,12 +1,14 @@
 import React from 'react';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import IngredientsItem from './IngredientsItem';
 
 const ViewAllMyIngredients = () => {
-  const dummy = [1, 2, 3, 4, 5];
+  const ingredientsList = useSelector(state => state.ingredients);
+
   const oneItem = [
     {placeholder: '등록일', label: '최신순', value: '최신순'},
     {placeholder: '등록일', label: '과거순', value: '과거순'},
@@ -43,8 +45,8 @@ const ViewAllMyIngredients = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <MyIngredientsTitle>나의 식재료</MyIngredientsTitle>
-        {dummy.map((v, i) => {
-          return <IngredientsItem key={i} />;
+        {ingredientsList.map((item, i) => {
+          return <IngredientsItem key={i} item={item} />;
         })}
       </ScrollView>
     </>

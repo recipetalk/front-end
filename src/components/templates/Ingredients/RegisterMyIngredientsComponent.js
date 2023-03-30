@@ -1,21 +1,23 @@
 import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {addEmptyIngredients} from '../../../store/Ingredients/IngredientsSlice';
 import Line from '../../atoms/Line';
 import DirectlyRegisterIngredients from '../../organisms/Ingredients/DirectlyRegisterIngredients';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import RecentlyRegisteredIngredients from '../../organisms/Ingredients/RecentlyRegisteredIngredients';
 
 const RegisterMyIngredientsComponent = () => {
-  const result = useSelector(state => state.ingredients);
+  const dispatch = useDispatch();
+  const ingredientsList = useSelector(state => state.ingredients);
+  console.log('?', ingredientsList);
   const [isPressed, setIsPressed] = useState(false);
-  const [empty, setEmpty] = useState([]);
 
   const addDirectly = () => {
     setIsPressed(true);
 
-    setEmpty(prev => [...prev, {}]);
+    dispatch(addEmptyIngredients());
   };
 
   return (
@@ -55,8 +57,8 @@ const RegisterMyIngredientsComponent = () => {
               식재료 등록하기
             </DirectlyRegisterIngredientsText>
 
-            {empty.map((_, index) => {
-              return <DirectlyRegisterIngredients key={index} id={index} />;
+            {ingredientsList.map((item, index) => {
+              return <DirectlyRegisterIngredients key={index} item={item} />;
             })}
 
             <TouchContainer
@@ -64,15 +66,15 @@ const RegisterMyIngredientsComponent = () => {
                 setIsPressed(prev => !prev);
               }}>
               <IngredientRegisterButton
-                active={result.length > 0 ? true : false}>
+                active={ingredientsList.length > 0 ? true : false}>
                 <IngredientRegisterButtonText>
-                  {`총 ${result.length}개의 식재료 등록하기`}
+                  {`총 ${ingredientsList.length}개의 식재료 등록하기`}
                 </IngredientRegisterButtonText>
               </IngredientRegisterButton>
             </TouchContainer>
           </DirectlyRegisterIngredientsContainer>
         ) : (
-          <RecentlyRegisteredIngredients items={result} />
+          <RecentlyRegisteredIngredients items={ingredientsList} />
         )}
       </ScrollView>
     </RegisterMyIngredientsComponentContainer>
