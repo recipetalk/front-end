@@ -3,11 +3,9 @@ import styled from 'styled-components/native';
 import {getProfile} from '../../../services/MyPage';
 import SimpleProfileWithDescription from '../../atoms/profile/SimpleProfileWithDescription';
 import FollowingComponent from '../../organisms/mypage/FollowingComponent';
-import MypageHeader from '../../organisms/mypage/MypageHeader';
 import NavigatePartContainerComponent from '../../organisms/mypage/NavigatePartContainerComponent';
-import NoticePartComponent from '../../organisms/mypage/NoticePartComponent';
 
-const MypageComponent = ({navigation}) => {
+const MypageComponent = ({navigation, setAlert}) => {
   const [profile, setProfile] = useState({});
 
   useEffect(() => {
@@ -26,7 +24,6 @@ const MypageComponent = ({navigation}) => {
 
   return (
     <InnerContainer>
-      <MypageHeader navigation={navigation} />
       <VerticalBar height={'2px'} />
       <InfoContainer>
         <SimpleProfileWithDescription
@@ -42,7 +39,10 @@ const MypageComponent = ({navigation}) => {
         />
       </InfoContainer>
       <VerticalBar height={'2px'} />
-      <NavigatePartContainerComponent navigation={navigation} />
+      <NavigatePartContainerComponent
+        navigation={navigation}
+        setAlert={setAlert}
+      />
       {/*<VerticalBar height={'4px'} />*/}
       {/*<NoticePartComponent navigation={navigation} />*/}
     </InnerContainer>

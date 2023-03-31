@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 
-const NavigatePartContainerComponent = ({navigation}) => {
+const NavigatePartContainerComponent = ({navigation, setAlert}) => {
   return (
     <NavigatePart>
       <NavigateContainer>
-        <NavigateTouchButton>
+        <NavigateTouchButton onPress={() => navigation.push('MyRecipe')}>
           <NavigateIcon
             source={require('../../../assets/images/Recipe_b.png')}
             resizeMode={'contain'}
@@ -15,7 +15,7 @@ const NavigatePartContainerComponent = ({navigation}) => {
       </NavigateContainer>
 
       <NavigateContainer>
-        <NavigateTouchButton>
+        <NavigateTouchButton onPress={() => navigation.push('MyPrep')}>
           <NavigateIcon
             source={require('../../../assets/images/IngredientTrimming_b.png')}
             resizeMode={'contain'}
@@ -25,7 +25,8 @@ const NavigatePartContainerComponent = ({navigation}) => {
       </NavigateContainer>
 
       <NavigateContainer>
-        <NavigateTouchButton>
+        <NavigateTouchButton
+          onPress={() => navigation.navigate('IngredientsHome')}>
           <NavigateIcon
             source={require('../../../assets/images/Ingredient_b.png')}
             resizeMode={'contain'}
@@ -35,7 +36,7 @@ const NavigatePartContainerComponent = ({navigation}) => {
       </NavigateContainer>
 
       <NavigateContainer>
-        <NavigateTouchButton>
+        <NavigateTouchButton onPress={() => navigation.push('MyBookmark')}>
           <NavigateIcon
             source={require('../../../assets/images/Bookmark_b.png')}
             resizeMode={'contain'}
@@ -45,7 +46,7 @@ const NavigatePartContainerComponent = ({navigation}) => {
       </NavigateContainer>
 
       <NavigateContainer>
-        <NavigateTouchButton>
+        <NavigateTouchButton onPress={() => navigation.push('MyLike')}>
           <NavigateIcon
             source={require('../../../assets/images/Like_b.png')}
             resizeMode={'contain'}
@@ -55,7 +56,7 @@ const NavigatePartContainerComponent = ({navigation}) => {
       </NavigateContainer>
 
       <NavigateContainer>
-        <NavigateTouchButton>
+        <NavigateTouchButton onPress={() => navigation.push('BlockUser')}>
           <NavigateIcon
             source={require('../../../assets/images/block.png')}
             resizeMode={'contain'}
@@ -71,6 +72,14 @@ const NavigatePartContainerComponent = ({navigation}) => {
             resizeMode={'contain'}
           />
           <NavigateTitle>덧글 내역</NavigateTitle>
+        </NavigateTouchButton>
+      </NavigateContainer>
+
+      <NavigateContainer>
+        <NavigateTouchButton onPress={() => setAlert(true)}>
+          <NavigateTitle style={{fontSize: 15, color: '#666666'}}>
+            로그아웃
+          </NavigateTitle>
         </NavigateTouchButton>
       </NavigateContainer>
     </NavigatePart>

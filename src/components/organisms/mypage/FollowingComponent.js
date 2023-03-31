@@ -1,22 +1,24 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {useNavigation} from '@react-navigation/native';
 
 const FollowingComponent = ({
   followingNumber,
   followerNumber,
   recipeNumber,
 }) => {
+  const navigation = useNavigation();
   return (
     <MyInfoContainer>
-      <MyInfoItem>
+      <MyInfoItem onPress={() => navigation.navigate('Following')}>
         <MyInfoTitleLabel>팔로잉</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followingNumber}</MyInfoNumberLabel>
       </MyInfoItem>
-      <MyInfoItem>
+      <MyInfoItem onPress={() => navigation.navigate('Follower')}>
         <MyInfoTitleLabel>팔로워</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followerNumber}</MyInfoNumberLabel>
       </MyInfoItem>
-      <MyInfoItem>
+      <MyInfoItem onPress={() => navigation.navigate('MyRecipe')}>
         <MyInfoTitleLabel>나의 레시피</MyInfoTitleLabel>
         <MyInfoNumberLabel>{recipeNumber}</MyInfoNumberLabel>
       </MyInfoItem>

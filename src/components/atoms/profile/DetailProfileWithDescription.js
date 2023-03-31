@@ -34,17 +34,25 @@ export default function DetailProfileWithDescription({
     <ProfileContainer>
       <View style={{flexDirection: 'row', width: '100%'}}>
         <ProfileImg />
-        <FollowingComponent
-          followingNumber={123}
-          followerNumber={'1K'}
-          recipeNumber={22}
-        />
+        <View
+          style={{
+            width: '85%',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <FollowingComponent
+            followingNumber={123}
+            followerNumber={'1K'}
+            recipeNumber={22}
+          />
+        </View>
       </View>
 
       <Nickname>{nickname}</Nickname>
-      <Description>{description}</Description>
+      <Description numberOfLines={2}>{description}</Description>
       {isMine ? (
         <CustomButton
+          onPress={() => navigation.push('EditProfile')}
           isActive={false}
           nonActive={true}
           labelTitle={'프로필 수정'}
@@ -60,9 +68,10 @@ export default function DetailProfileWithDescription({
   );
 }
 
-const CustomButton = ({isActive, nonActive, labelTitle}) => {
+const CustomButton = ({isActive, nonActive, labelTitle, onPress}) => {
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={[
         styles.default,
         isActive && styles.isActive,
@@ -114,7 +123,7 @@ const ProfileContainer = styled.View`
   height: auto;
 
   background-color: white;
-  padding-bottom: 15px;
+  padding-bottom: 22px;
   padding-top: 20px;
   padding-left: 5%;
   padding-right: 5%;
@@ -131,7 +140,7 @@ const Nickname = styled.Text`
 const Description = styled.Text`
   width: 80%;
   color: #666666;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   margin-top: 5px;
   font-size: 16px;
   line-height: 19px;
