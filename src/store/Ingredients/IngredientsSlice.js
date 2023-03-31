@@ -21,7 +21,20 @@ const IngredientsSlice = createSlice({
       ];
     },
 
-    addIngredients: (previousState, action) => {},
+    addIngredients: (previousState, action) => {
+      return previousState.map(item =>
+        item.id === action.payload.id
+          ? {
+              id: action.payload.id,
+              name: action.payload.name,
+              status: action.payload.status,
+              expirationDate: action.payload.expirationDate,
+              amount: action.payload.amount,
+              isChecked: true,
+            }
+          : item,
+      );
+    },
 
     deleteIngredients: (previousState, action) => {
       return previousState.filter(item => item.id !== action.payload);

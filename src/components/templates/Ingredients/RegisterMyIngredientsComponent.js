@@ -11,13 +11,16 @@ import RecentlyRegisteredIngredients from '../../organisms/Ingredients/RecentlyR
 const RegisterMyIngredientsComponent = () => {
   const dispatch = useDispatch();
   const ingredientsList = useSelector(state => state.ingredients);
-  console.log('?', ingredientsList);
   const [isPressed, setIsPressed] = useState(false);
 
   const addDirectly = () => {
     setIsPressed(true);
 
     dispatch(addEmptyIngredients());
+  };
+
+  const checkIsChecked = () => {
+    return ingredientsList.filter(item => item.isChecked === true).length;
   };
 
   return (
@@ -66,9 +69,9 @@ const RegisterMyIngredientsComponent = () => {
                 setIsPressed(prev => !prev);
               }}>
               <IngredientRegisterButton
-                active={ingredientsList.length > 0 ? true : false}>
+                active={checkIsChecked() > 0 ? true : false}>
                 <IngredientRegisterButtonText>
-                  {`총 ${ingredientsList.length}개의 식재료 등록하기`}
+                  {`총 ${checkIsChecked()}개의 식재료 등록하기`}
                 </IngredientRegisterButtonText>
               </IngredientRegisterButton>
             </TouchContainer>

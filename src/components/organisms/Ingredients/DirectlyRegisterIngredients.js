@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import Checkbox from '@react-native-community/checkbox';
-import {addIngredients} from '../../../store/Ingredients/IngredientsSlice';
+import {
+  addIngredients,
+  deleteIngredients,
+} from '../../../store/Ingredients/IngredientsSlice';
 import {useDispatch} from 'react-redux';
 
 const DirectlyRegisterIngredients = props => {
   const dispatch = useDispatch();
-  const [isAddChecked, setIsAddChecked] = useState(false);
+  const [isAddChecked, setIsAddChecked] = useState(props.item.isChecked);
 
   const [ingredientsInfo, setIngredientsInfo] = useState({
-    name: '',
-    status: '',
-    expirationDate: '',
-    amount: '',
+    name: props.item.name,
+    status: props.item.status,
+    expirationDate: props.item.expirationDate,
+    amount: props.item.amount,
   });
 
   const addThisIngredients = newValue => {
@@ -32,9 +35,8 @@ const DirectlyRegisterIngredients = props => {
     }
   };
 
-  const deleteIngredients = () => {
-    console.log('ininini');
-    dispatch();
+  const deleteThisIngredients = () => {
+    dispatch(deleteIngredients(props.item.id));
   };
 
   return (
@@ -54,7 +56,7 @@ const DirectlyRegisterIngredients = props => {
           <RegisterIngredientsText>이 식재료 추가</RegisterIngredientsText>
         </CheckBoxView>
 
-        <TouchContainer onPress={deleteIngredients}>
+        <TouchContainer onPress={deleteThisIngredients}>
           <DeleteIngredientsText>재료 삭제</DeleteIngredientsText>
         </TouchContainer>
       </CheckBoxViewContainer>
