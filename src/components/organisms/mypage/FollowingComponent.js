@@ -1,23 +1,25 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {useNavigation} from '@react-navigation/native';
 
 const FollowingComponent = ({
   followingNumber,
   followerNumber,
   recipeNumber,
 }) => {
+  const navigation = useNavigation();
   return (
     <MyInfoContainer>
-      <MyInfoItem>
+      <MyInfoItem onPress={() => navigation.navigate('Following')}>
         <MyInfoTitleLabel>팔로잉</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followingNumber}</MyInfoNumberLabel>
       </MyInfoItem>
-      <MyInfoItem>
+      <MyInfoItem onPress={() => navigation.navigate('Follower')}>
         <MyInfoTitleLabel>팔로워</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followerNumber}</MyInfoNumberLabel>
       </MyInfoItem>
-      <MyInfoItem>
-        <MyInfoTitleLabel>나의레시피</MyInfoTitleLabel>
+      <MyInfoItem onPress={() => navigation.navigate('MyRecipe')}>
+        <MyInfoTitleLabel>나의 레시피</MyInfoTitleLabel>
         <MyInfoNumberLabel>{recipeNumber}</MyInfoNumberLabel>
       </MyInfoItem>
     </MyInfoContainer>
@@ -25,7 +27,7 @@ const FollowingComponent = ({
 };
 
 const MyInfoContainer = styled.View`
-  width: 100%;
+  width: 90%;
   height: auto;
   flex-direction: row;
   justify-content: space-evenly;

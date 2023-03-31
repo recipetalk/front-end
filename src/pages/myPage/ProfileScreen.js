@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import DetailProfileWithDescription from '../../components/atoms/profile/DetailProfileWithDescription';
 import {Image, View} from 'react-native';
+import {RecipeAndTrimmingComponent} from '../../components/templates/mypage/RecipeAndTrimmingComponent';
 
 const ProfileScreen = ({navigation}) => {
   return (
@@ -20,10 +21,11 @@ const ProfileScreen = ({navigation}) => {
               resizeMode={'contain'}
             />
           </HeaderTouchButton>
-          <HeaderLabel>마이페이지</HeaderLabel>
+          <HeaderLabel>사용자아이디0000</HeaderLabel>
         </View>
       </Header>
       <VerticalBar height={'1px'} />
+
       <InnerContainer>
         <DetailProfileWithDescription
           navigation={navigation}
@@ -33,6 +35,7 @@ const ProfileScreen = ({navigation}) => {
           }
           isMine={true}
         />
+        <RecipeAndTrimmingComponent />
       </InnerContainer>
     </Container>
   );

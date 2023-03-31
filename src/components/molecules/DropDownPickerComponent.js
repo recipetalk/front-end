@@ -2,6 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import styled from 'styled-components/native';
+import {StyleSheet} from 'react-native';
 
 const DropDownPickerComponent = props => {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,7 @@ const DropDownPickerComponent = props => {
       setOpen={setOpen}
       setValue={setValue}
       setItems={setItems}
+      minHeight={props.minHeight}
     />
   );
 };
@@ -28,5 +30,9 @@ const DropDownPickerComponent = props => {
 const CustomDropDownPicker = styled(DropDownPicker)`
   width: ${props => props.width};
   margin-right: 7px;
+  ${props =>
+    props.minHeight !== undefined
+      ? 'min-height : ' + props.minHeight + ' ;'
+      : undefined}
 `;
 export default DropDownPickerComponent;

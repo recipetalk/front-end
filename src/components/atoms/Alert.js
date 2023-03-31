@@ -19,5 +19,5 @@ const Box = styled.View`
   border-radius: 14px;
   background-color: #ffffff;
   position: absolute;
-  top: ${Dimensions.get('window').height / 3}px;
+  top: ${Dimensions.get('window').height / 3.5}px;
 `;

@@ -7,10 +7,10 @@
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import LoginScreen from './src/pages/LoginScreen';
 import {store} from './src/store/config';
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import {Provider} from 'react-redux';
 import SignupIdScreen from './src/pages/signup/SignupIdScreen';
 import SignupNicknameScreen from './src/pages/signup/SignupNicknameScreen';
 import SignupPasswordScreen from './src/pages/signup/SignupPasswordScreen';
@@ -30,12 +30,14 @@ import SequenceDetailDescriptionScreen from './src/pages/SequenceDetailDescripti
 import SetTimerPage from './src/pages/timer/SetTimerPage';
 import SignupStartScreen from './src/pages/signup/SignupStartScreen';
 import messaging from '@react-native-firebase/messaging';
-import {loadLoginFromStorage} from './src/services/domain/AutoLogin';
-import {jsonAPI} from './src/services/connect/API';
-import {
-  saveJwtAccessTokenToStorage,
-  saveJwtRefreshToStorage,
-} from './src/services/domain/JwtToken';
+import {MyRecipeScreen} from './src/pages/myPage/MyRecipeScreen';
+import {MyPrepScreen} from './src/pages/myPage/MyPrepScreen';
+import {MyBookmarkScreen} from './src/pages/myPage/MyBookmarkScreen';
+import {MyLikeScreen} from './src/pages/myPage/MyLikeScreen';
+import {EditProfileScreen} from './src/pages/myPage/EditProfileScreen';
+import {FollowerScreen} from './src/pages/myPage/FollowerScreen';
+import {FollowingScreen} from './src/pages/myPage/FollowingScreen';
+import {BlockUserScreen} from './src/pages/myPage/BlockUserScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -223,6 +225,46 @@ function App() {
           <Stack.Screen
             name="SetTimerPage"
             component={SetTimerPage}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MyRecipe"
+            component={MyRecipeScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MyPrep"
+            component={MyPrepScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MyBookmark"
+            component={MyBookmarkScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MyLike"
+            component={MyLikeScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfileScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Follower"
+            component={FollowerScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Following"
+            component={FollowingScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="BlockUser"
+            component={BlockUserScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

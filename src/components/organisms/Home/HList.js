@@ -21,7 +21,6 @@ const Thumbnail = styled.View`
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 8px;
-  margin-right: 12px;
 `;
 
 const Title = styled.Text`
