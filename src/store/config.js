@@ -4,6 +4,7 @@ import FirstFilterIsClickedReducer from './RecipeHome/FirstFilterClicked';
 import SecondFilterIsClickedReducer from './RecipeHome/SecondFilterClicked';
 import ClickedToRecipeDetail from './RecipeHome/ClickedToRecipeDetail';
 import IngredientsSlice from './Ingredients/IngredientsSlice';
+import PrepSlice from './Ingredients/PrepSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     secondFilterClicked: SecondFilterIsClickedReducer,
     clickedToBoardDetail: ClickedToRecipeDetail,
     ingredients: IngredientsSlice,
+    prep: PrepSlice,
   },
   enhancers: [reactotron.createEnhancer()], //
 });

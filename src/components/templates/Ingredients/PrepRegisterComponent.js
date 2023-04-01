@@ -1,11 +1,34 @@
-import React from 'react';
-import {ScrollView, View} from 'react-native';
+import React, {useState} from 'react';
+import {ScrollView} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {addEmptyPrep, addPrep} from '../../../store/Ingredients/PrepSlice';
 import Line from '../../atoms/Line';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
+import PrepOrderItem from '../../organisms/Ingredients/PrepOrderItem';
 
 const PrepRegisterComponent = () => {
+  const dispatch = useDispatch();
+  const prepResult = useSelector(state => state.prep);
+  const [prepInfo, setPrepInfo] = useState({
+    title: '',
+    desc: '',
+  });
+
+  const addEmptyPrepOrder = () => {
+    dispatch(addEmptyPrep());
+  };
+
+  const addPrepOrder = () => {
+    dispatch(
+      addPrep({
+        titie: prepInfo.title,
+        desc: prepInfo.desc,
+      }),
+    );
+  };
+
   return (
     <>
       <IngredientsHeader title="손질법" isTitleOnly={true} />
@@ -13,58 +36,33 @@ const PrepRegisterComponent = () => {
         <IngredientsInfo isEdit={true} />
 
         <PrepIntro>
-          <Title>제목</Title>
+          <TitleInput
+            placeholder={'제목'}
+            multiline={true}
+            value={prepInfo.title}
+            onChangeText={res => setPrepInfo({...prepInfo, title: res})}
+          />
           <PrepInput
-            placeholder="나만의 손질법을 소개해주세요.
-        예) 자취 8년차 언제 먹어도 질리지 않는 맛있는 된장찌개!"
+            placeholder={`나만의 손질법을 소개해주세요.
+예) 자취 8년차 언제 먹어도 질리지 않는 맛있는 된장찌개!`}
+            multiline={true}
+            value={prepInfo.desc}
+            onChangeText={res => setPrepInfo({...prepInfo, desc: res})}
           />
         </PrepIntro>
         <Line />
 
         <PrepOrderContainer>
           <OrderTitle>손질 순서</OrderTitle>
-          {[1, 2, 3, 4].map(i => {
-            return (
-              <PrepOrderItem key={i}>
-                <PrepOrderNum>
-                  <PrepOrderNumText>{i}</PrepOrderNumText>
-                </PrepOrderNum>
-                <PrepOrderInfo>
-                  <PrepOrderHeader>
-                    <PrepOrderContent>
-                      <PrepOrderContentText>
-                        {'예) 준비된 양념으로 고기를 조물조물 재워둡니다.'}
-                      </PrepOrderContentText>
-                    </PrepOrderContent>
-
-                    <PrepOrderCancel
-                      source={require('../../../assets/images/Cancel.png')}
-                    />
-                  </PrepOrderHeader>
-                  <PrepOrderAddImage>
-                    {[1, 2, 3].map(i => {
-                      return (
-                        <View key={i}>
-                          <AddImageItem />
-                          <AddImgView>
-                            <AddImg
-                              source={require('../../../assets/images/Add_g.png')}
-                            />
-                          </AddImgView>
-                        </View>
-                      );
-                    })}
-                  </PrepOrderAddImage>
-                </PrepOrderInfo>
-              </PrepOrderItem>
-            );
+          {prepResult.map((item, index) => {
+            return <PrepOrderItem item={item} key={index} index={item.id} />;
           })}
         </PrepOrderContainer>
         <Line />
 
         <AddPrepOrder>
           <AddPrepOrderText>손질 순서 추가</AddPrepOrderText>
-          <TouchContainer>
+          <TouchContainer onPress={addEmptyPrepOrder}>
             <AddImage source={require('../../../assets/images/Add_o.png')} />
           </TouchContainer>
         </AddPrepOrder>
@@ -74,7 +72,7 @@ const PrepRegisterComponent = () => {
           <CancelBtn>
             <CancelText>취소</CancelText>
           </CancelBtn>
-          <SaveBtn>
+          <SaveBtn onPress={addPrepOrder}>
             <SaveText>저장</SaveText>
           </SaveBtn>
         </BtnContainer>
@@ -96,12 +94,16 @@ const Title = styled.Text`
   color: #a4a4a4;
   margin-bottom: 10px;
 `;
+const TitleInput = styled.TextInput`
+  width: 100%;
+  margin-bottom: 10px;
+  font-family: 'Pretendard Variable';
+`;
 
 const PrepInput = styled.TextInput`
   width: 100%;
   height: 100px;
-  border: 1px solid black;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   font-family: 'Pretendard Variable';
 `;
 
@@ -182,84 +184,4 @@ const SaveText = styled.Text`
   font-family: 'Pretendard Variable';
 `;
 
-const PrepOrderItem = styled.View`
-  display: flex;
-  flex-direction: row;
-  height: 140px;
-  margin: 15px;
-`;
-const PrepOrderNum = styled.View`
-  width: 22px;
-  height: 22px;
-  background-color: #f09311;
-  border-radius: 50px;
-  justify-content: center;
-  margin-right: 15px;
-  top: 65px;
-`;
-
-const PrepOrderNumText = styled.Text`
-  text-align: center;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  font-family: 'Pretendard Variable';
-
-  color: #ffffff;
-`;
-const PrepOrderInfo = styled.View`
-  display: flex;
-  flex-direction: column;
-  width: 310px;
-  height: 100%;
-  border: 1px solid #d8d8d8;
-  border-radius: 8px;
-`;
-const PrepOrderHeader = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px;
-`;
-const PrepOrderContent = styled.View`
-  width: 200px;
-  height: 38px;
-`;
-
-const PrepOrderContentText = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  font-family: 'Pretendard Variable';
-  color: #a0a0a0;
-`;
-const PrepOrderCancel = styled.Image`
-  width: 22px;
-  height: 22px;
-`;
-const PrepOrderAddImage = styled.View`
-  display: flex;
-  flex-direction: row;
-  background-color: white;
-  padding: 0 10px;
-  gap: 10px;
-`;
-
-const AddImageItem = styled.View`
-  width: 65px;
-  height: 65px;
-  background-color: #ededed;
-  border-radius: 8px;
-`;
-
-const AddImgView = styled.TouchableOpacity`
-  width: 65px;
-  height: 65px;
-  border-radius: 4px;
-  position: absolute;
-  justify-content: center;
-`;
-const AddImg = styled.Image`
-  margin: auto;
-`;
 export default PrepRegisterComponent;

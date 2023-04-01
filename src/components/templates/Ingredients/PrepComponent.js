@@ -20,7 +20,7 @@ const PrepComponent = () => {
           <TitleHighlightText>마늘</TitleHighlightText>
           <TitleText> 손질법</TitleText>
         </Header>
-        {[1, 2, 3, 4, 5].map((v, i) => {
+        {/* {[1, 2, 3, 4, 5].map((v, i) => {
           return (
             <TouchContainer
               key={i}
@@ -28,7 +28,7 @@ const PrepComponent = () => {
               <DList />
             </TouchContainer>
           );
-        })}
+        })} */}
       </ScrollViewContainer>
     </PrepComponentContainer>
   );
@@ -39,7 +39,7 @@ const PrepComponentContainer = styled.SafeAreaView``;
 const Header = styled.View`
   display: flex;
   flex-direction: row;
-  padding: 18px 0 0 18px;
+  padding: 18px 0 18px 18px;
   background-color: #ffffff;
 `;
 
