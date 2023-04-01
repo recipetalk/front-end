@@ -6,17 +6,26 @@ import {
   deleteIngredients,
 } from '../../../store/Ingredients/IngredientsSlice';
 import {useDispatch} from 'react-redux';
+import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
+import {View} from 'react-native';
 
 const DirectlyRegisterIngredients = props => {
   const dispatch = useDispatch();
   const [isAddChecked, setIsAddChecked] = useState(props.item.isChecked);
+  const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
+    props.item.status,
+  );
 
   const [ingredientsInfo, setIngredientsInfo] = useState({
     name: props.item.name,
-    status: props.item.status,
     expirationDate: props.item.expirationDate,
     amount: props.item.amount,
   });
+
+  const statusPlaceholder = [
+    {placeholder: '상태', label: '생것', value: '생것'},
+    {placeholder: '상태', label: '익힌것', value: '익힌것'},
+  ];
 
   const addThisIngredients = newValue => {
     setIsAddChecked(newValue);
@@ -26,10 +35,21 @@ const DirectlyRegisterIngredients = props => {
         addIngredients({
           id: props.item.id,
           name: ingredientsInfo.name,
-          status: ingredientsInfo.status,
+          status: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
           amount: ingredientsInfo.amount,
           isChecked: true,
+        }),
+      );
+    } else {
+      dispatch(
+        addIngredients({
+          id: props.item.id,
+          name: ingredientsInfo.name,
+          status: ingredientsStatusInfo,
+          expirationDate: ingredientsInfo.expirationDate,
+          amount: ingredientsInfo.amount,
+          isChecked: false,
         }),
       );
     }
@@ -72,19 +92,20 @@ const DirectlyRegisterIngredients = props => {
         />
       </IngredientNameContainer>
 
-      <IngredientStatusContainer>
+      <IngredientStatusDropBoxContainer>
         <IngredientStatusText>상태 입력</IngredientStatusText>
-        <IngredientStatusInput
-          placeholder="  예) 1개 "
-          value={ingredientsInfo.status}
-          onChangeText={res =>
-            setIngredientsInfo({...ingredientsInfo, status: res})
-          }
-        />
-      </IngredientStatusContainer>
+        <View>
+          <DropDownPickerComponent
+            width="260px"
+            items={statusPlaceholder}
+            state={ingredientsStatusInfo}
+            setState={setIngredientsStatusInfo}
+          />
+        </View>
+      </IngredientStatusDropBoxContainer>
 
       <IngredientStatusContainer>
-        <IngredientStatusText>유통 기한</IngredientStatusText>
+        <IngredientStatusText>소비 기한</IngredientStatusText>
         <IngredientStatusInput
           placeholder="  예) 1개 "
           value={ingredientsInfo.expirationDate}
@@ -172,9 +193,16 @@ const IngredientNameInput = styled.TextInput`
 `;
 
 const IngredientStatusContainer = styled.View`
-  height: 80px;
   display: flex;
   flex-direction: row;
+  margin-bottom: 10px;
+`;
+
+const IngredientStatusDropBoxContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  z-index: 2;
 `;
 
 const IngredientStatusInput = styled.TextInput`

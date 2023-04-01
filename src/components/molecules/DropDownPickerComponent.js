@@ -5,17 +5,18 @@ import styled from 'styled-components/native';
 
 const DropDownPickerComponent = props => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
 
   return (
     <CustomDropDownPicker
       width={props.width}
       open={open}
-      value={value}
+      value={props.state}
       items={props.items}
       placeholder={props.items[0].placeholder}
       setOpen={setOpen}
-      setValue={setValue}
+      setValue={props.setState}
+      listMode="SCROLLVIEW"
+      placeholderStyle={{color: 'gray'}}
     />
   );
 };
@@ -23,5 +24,6 @@ const DropDownPickerComponent = props => {
 const CustomDropDownPicker = styled(DropDownPicker)`
   width: ${props => props.width};
   margin-right: 7px;
+  border: #d8d8d8;
 `;
 export default DropDownPickerComponent;

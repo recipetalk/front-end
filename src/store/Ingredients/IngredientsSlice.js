@@ -30,7 +30,7 @@ const IngredientsSlice = createSlice({
               status: action.payload.status,
               expirationDate: action.payload.expirationDate,
               amount: action.payload.amount,
-              isChecked: true,
+              isChecked: action.payload.isChecked,
             }
           : item,
       );

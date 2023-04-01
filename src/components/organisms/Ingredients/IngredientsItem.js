@@ -32,7 +32,7 @@ const IngredientsItem = props => {
 
       <ExpirationInfo>
         <ExpirationInfoText>
-          유통기한 : {props.item.expirationDate}까지
+          소비기한 : {props.item.expirationDate}까지
         </ExpirationInfoText>
       </ExpirationInfo>
     </IngredientsItemContainer>
@@ -59,7 +59,7 @@ const IngredientsItem = props => {
       </IngredientsItemETCInfo>
 
       <ExpirationInfo>
-        <ExpirationInfoText>유통기한 : 2023 / 10 / 10까지</ExpirationInfoText>
+        <ExpirationInfoText>소비기한 : 2023 / 10 / 10까지</ExpirationInfoText>
       </ExpirationInfo>
     </IngredientsItemContainer>
   );

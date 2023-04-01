@@ -27,8 +27,10 @@ const RecentlyRegisteredIngredients = props => {
             <EmptyItemText>아직 등록된 식재료가 없어요!</EmptyItemText>
           </EmptyItemContainer>
         ) : (
-          props.items.map((item, i) => {
-            return <IngredientsItem item={item} key={i} />;
+          props.items.map((item, index) => {
+            if (item.isChecked) {
+              return <IngredientsItem item={item} key={index} />;
+            }
           })
         )}
       </>
