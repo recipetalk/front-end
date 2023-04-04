@@ -7,7 +7,6 @@ import {Platform} from 'react-native';
 import FocusedTextInputBorder from '../components/atoms/FocusedTextInputBorder';
 import {jsonAPI} from '../services/connect/API';
 import {
-  deleteLoginToStorage,
   loadLoginFromStorage,
   saveLoginToStorage,
 } from '../services/domain/AutoLogin';
@@ -146,7 +145,7 @@ export default function LoginScreen({navigation}) {
             value={password}
           />
           <FindLoginPasswordContainer>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.push('FindId')}>
               <FindLabel>아이디</FindLabel>
             </TouchableOpacity>
             <FindLabel>/</FindLabel>
