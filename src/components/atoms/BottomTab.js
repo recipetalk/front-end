@@ -12,6 +12,7 @@ import PrepScreen from '../../pages/Ingredients/PrepScreen';
 import PrepDetailScreen from '../../pages/Ingredients/PrepDetailScreen';
 import EfficacyEditScreen from '../../pages/Ingredients/EfficacyEditScreen';
 import RecipeDetailStackNavigator from '../../navigations/RecipeDetailStackNavigator';
+import {Image, Platform, View} from 'react-native';
 
 const RecipeStackNavigator = () => {
   const RecipeStack = createNativeStackNavigator();
@@ -72,26 +73,76 @@ const IngredientsStackNavigator = () => {
   );
 };
 
+const ReceiptIcon = focused => {
+  return (
+    <View
+      style={{
+        width: 76.8,
+        height: 76.8,
+        borderRadius: 180,
+        backgroundColor: '#ffffff',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <View
+        style={{
+          width: 61.44,
+          height: 61.44,
+          borderRadius: 180,
+          backgroundColor: '#F09311',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Image
+          source={require('../../assets/images/Receipt.png')}
+          style={{width: 30.72, height: 30.72}}
+        />
+      </View>
+    </View>
+  );
+};
+
 const BottomTab = () => {
   const Tab = createBottomTabNavigator();
 
-  useEffect(() => {
-    // 여기에 FCM 등록 알고리즘 필요
-    console.log('bottomTab rendering: ');
-  }, []);
-
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        tabBarActiveTintColor: '#f09311',
+        tabBarInactiveTintColor: '#a4a4a4',
+        tabBarLabelStyle: {
+          fontFamily: 'Pretendard Variable',
+          fontSize: 11.52,
+          fontWeight: 500,
+          paddingBottom: Platform.OS === 'ios' ? 1 : 15,
+        },
+        tabBarStyle: {
+          paddingTop: 5,
+          height: Platform.OS === 'ios' ? 80 : 67.2,
+        },
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           title: '홈',
           headerShown: false,
-        }}
-        screenOptions={{
-          tabBarActiveTintColor: '#fb8c00',
-          tabBarShowLabel: false,
+          tabBarIcon: ({focused, color, size}) => {
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('../../assets/images/HomeActive.png')
+                    : require('../../assets/images/Home.png')
+                }
+                style={{
+                  width: 23.04,
+                  height: 23.04,
+                }}
+              />
+            );
+          },
         }}
       />
       <Tab.Screen
@@ -100,14 +151,32 @@ const BottomTab = () => {
         options={{
           title: '레시피',
           headerShown: false,
+          tabBarIcon: ({focused, color, size}) => {
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('../../assets/images/RecipeActive.png')
+                    : require('../../assets/images/Recipe.png')
+                }
+                style={{
+                  width: 23.04,
+                  height: 23.04,
+                }}
+              />
+            );
+          },
         }}
       />
       <Tab.Screen
         name="Receipt"
         component={ReceiptScreen}
         options={{
-          title: '영수증',
+          title: '',
           headerShown: false,
+          tabBarIcon: ({focused, color, size}) => {
+            return <ReceiptIcon />;
+          },
         }}
       />
       <Tab.Screen
@@ -116,6 +185,21 @@ const BottomTab = () => {
         options={{
           title: '식재료',
           headerShown: false,
+          tabBarIcon: ({focused, color, size}) => {
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('../../assets/images/IngredientsActive.png')
+                    : require('../../assets/images/Ingredients.png')
+                }
+                style={{
+                  width: 23.04,
+                  height: 23.04,
+                }}
+              />
+            );
+          },
         }}
       />
       <Tab.Screen
@@ -124,6 +208,21 @@ const BottomTab = () => {
         options={{
           title: 'My',
           headerShown: false,
+          tabBarIcon: ({focused, color, size}) => {
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('../../assets/images/MypageActive.png')
+                    : require('../../assets/images/Mypage.png')
+                }
+                style={{
+                  width: 23.04,
+                  height: 23.04,
+                }}
+              />
+            );
+          },
         }}
       />
     </Tab.Navigator>
