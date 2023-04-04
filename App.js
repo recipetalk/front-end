@@ -38,6 +38,8 @@ import {EditProfileScreen} from './src/pages/myPage/EditProfileScreen';
 import {FollowerScreen} from './src/pages/myPage/FollowerScreen';
 import {FollowingScreen} from './src/pages/myPage/FollowingScreen';
 import {BlockUserScreen} from './src/pages/myPage/BlockUserScreen';
+import FindIdScreen from './src/pages/login/find/FindIdScreen';
+import ReturnIdScreen from './src/pages/login/find/ReturnIdScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -128,6 +130,16 @@ function LoginStackNavigator() {
       <LoginStack.Screen
         name="SimpleLogin"
         component={SimpleLoginScreen}
+        options={{headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="FindId"
+        component={FindIdScreen}
+        options={{headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="ReturnId"
+        component={ReturnIdScreen}
         options={{headerShown: false}}
       />
     </LoginStack.Navigator>
