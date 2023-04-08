@@ -1,8 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import {Modal} from 'react-native';
 
 export default function AlertBackground(props) {
-  return <BackgroundContainer>{props.children}</BackgroundContainer>;
+  return (
+    <Modal transparent={true}>
+      <BackgroundContainer>{props.children}</BackgroundContainer>
+    </Modal>
+  );
 }
 
 const BackgroundContainer = styled.View`
@@ -10,6 +15,5 @@ const BackgroundContainer = styled.View`
   height: 120%;
   background: rgba(0, 0, 0, 0.5);
   position: absolute;
-
   align-items: center;
 `;

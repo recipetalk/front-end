@@ -100,8 +100,8 @@ const SetTimerPage = ({navigation, route}) => {
         <StartButton
           color={'#f5f5f5'}
           onPress={() => {
-            route.params.setStart(true);
             navigation.goBack();
+            route.params.setStart(true);
           }}>
           <ButtonLabel color={'#202020'}>시작</ButtonLabel>
         </StartButton>

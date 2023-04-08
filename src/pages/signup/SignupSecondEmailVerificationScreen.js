@@ -38,6 +38,16 @@ export default function SignupSecondEmailVerificationScreen({navigation}) {
     });
     return unsubscribe;
   });
+  messaging().setBackgroundMessageHandler(async remoteMessage => {
+    if (remoteMessage.notification.body === '이메일 인증이 완료되었습니다.') {
+      jsonAPI
+        .post('/auth/signup', globalSignUp)
+        .then(() => navigation.reset({routes: [{name: 'SignupFinish'}]}))
+        .catch(err => console.log(err.response));
+    } else {
+      setVisibleAlert(true);
+    }
+  });
   return (
     <SignupIdScreenContainer>
       <TouchableContainer onPress={() => navigation.pop()}>

@@ -1,9 +1,19 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import SequenceDetailDescription from '../components/atoms/board/SequenceDetailDescription';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  AppState,
+  BackHandler,
+  Image,
+  NativeModules,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import * as Progress from 'react-native-progress';
-import {current} from '@reduxjs/toolkit';
+import BackgroundTimer from 'react-native-background-timer';
+import AlertYesNoButton from '../components/molecules/AlertYesNoButton';
 
 const SequenceDetailDescriptionScreen = ({navigation}) => {
   const [isClickedTimer, clickedTimer] = useState(false);
@@ -13,38 +23,122 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
   const [min, setMin] = useState('00');
   const [sec, setSec] = useState('00');
   const [oneMore, setOneMore] = useState(true);
-  const [endTime, setEndTime] = useState(null);
   const [remainingTime, setRemainingTime] = useState(null);
   const [estimatedEndTime, setEstimatedEndTime] = useState(null);
   const [init, setInit] = useState(true);
+  const [backgroundTime, setBackgroundTime] = useState(0);
+  const appState = useRef(AppState.currentState);
+  const [state, setState] = useState(appState.current);
+
+  const [isAlert, setAlert] = useState(false);
+
+  const Timer = NativeModules.Timer;
+
+  //뒤로가기 핸들러
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
+      backAction(),
+    );
+
+    return () => backHandler.remove();
+  });
+
+  const backAction = () => {
+    if (isStartTimer) {
+      setAlert(true);
+      return true;
+    } else {
+      navigation.pop();
+      return false;
+    }
+  };
 
   useEffect(() => {
-    let intervalId = null;
     if (isStartTimer && oneMore) {
       const currentTime = new Date().getTime();
       const duration =
         Number.parseInt(hour) * 60 * 60 +
         Number.parseInt(min) * 60 +
         Number.parseInt(sec);
-      setRemainingTime(remainingTime => duration * 1000);
-      setEstimatedEndTime(estimatedEndTime => currentTime + duration * 1000);
+      setRemainingTime(() => duration * 1000);
+      setEstimatedEndTime(() => currentTime + duration * 1000);
       setOneMore(() => false);
     }
-    if (isStartTimer) {
-      intervalId = setInterval(() => {
-        setRemainingTime(remainingTime =>
-          remainingTime > 0 ? remainingTime - 1000 : 0,
-        );
-        if (remainingTime === 0) {
-          startTimer(false);
-          cancelTimer();
-        }
-      }, 1000);
+
+    if (isStartTimer && remainingTime === 0) {
+      cancelTimer();
     }
-    return () => {
-      clearInterval(intervalId);
-    };
   }, [isStartTimer, remainingTime]);
+
+  const duration = () => {
+    const num =
+      Number.parseInt(hour) * 60 * 60 +
+      Number.parseInt(min) * 60 +
+      Number.parseInt(sec);
+    return num > 0 ? num : 1;
+  };
+
+  // startTimer 수정되면 시작하기. 알림 컨트롤러.
+  useEffect(() => {
+    if (isStartTimer) {
+      if (Platform.OS === 'ios') {
+      } else {
+        Timer.showNotification(
+          getFormattedTime(Date.now() + duration() * 1000),
+        );
+        //예약 알림 필요
+        Timer.setReserveAlarm(duration() * 1000);
+      }
+      startAction();
+    }
+  }, [isStartTimer]);
+
+  useEffect(() => {
+    const handleAppStateChange = nextAppState => {
+      console.log('AppState : ', nextAppState);
+      setState(nextAppState);
+      AppState.currentState = nextAppState;
+    };
+    const eventHandler = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+    return () => eventHandler.remove();
+  });
+
+  //백그라운드 탐지
+  useEffect(() => {
+    if (isStartTimer) {
+      if (state.match(/background/)) {
+        setBackgroundTime(() => Date.now());
+        BackgroundTimer.stopBackgroundTimer();
+      } else {
+        console.log(state);
+        const delay = Math.round((Date.now() - backgroundTime) / 1000) * 1000;
+        setRemainingTime(remainingTime => remainingTime - delay);
+        setEstimatedEndTime(estimatedEndTime => estimatedEndTime - delay);
+        startAction();
+      }
+    }
+  }, [state]);
+
+  useEffect(() => {});
+
+  const startAction = () => {
+    BackgroundTimer.runBackgroundTimer(() => {
+      setRemainingTime(remainingTime => {
+        return remainingTime > 0 ? remainingTime - 1000 : 0;
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (isClickedStartTimer) {
+      setTimeout(() => {
+        clickedStartTimer(false);
+      }, 6000);
+    }
+  }, [isClickedStartTimer]);
 
   const pauseTimer = () => {
     setEstimatedEndTime(() => Date.now() + remainingTime);
@@ -53,6 +147,9 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
     setSec(secondsLeft);
     setInit(false);
     startTimer(false);
+    Timer.deleteTimerNotification();
+    Timer.deleteAlarm();
+    BackgroundTimer.stopBackgroundTimer();
   };
 
   const cancelTimer = () => {
@@ -63,10 +160,10 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
     setMin('00');
     setSec('00');
     setOneMore(true);
-    setEndTime(null);
     setRemainingTime(null);
     setEstimatedEndTime(null);
     setInit(true);
+    BackgroundTimer.stopBackgroundTimer();
   };
 
   const hoursLeft = Math.floor(remainingTime / 3600 / 1000);
@@ -101,7 +198,14 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
   return (
     <SequenceDetailDescriptionContainer>
       <Header>
-        <TouchableButton onPress={() => navigation.pop()}>
+        <TouchableButton
+          onPress={() => {
+            if (isStartTimer) {
+              setAlert(true);
+            } else {
+              navigation.pop();
+            }
+          }}>
           <Image
             style={{
               width: 8.5,
@@ -218,14 +322,7 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
         ) : (
           <BarView onPress={() => clickedStartTimer(true)}>
             <Progress.Bar
-              progress={
-                1 -
-                remainingTime /
-                  1000 /
-                  (Number.parseInt(hour) * 60 * 60 +
-                    Number.parseInt(min) * 60 +
-                    Number.parseInt(sec))
-              }
+              progress={1 - remainingTime / 1000 / duration()}
               width={null}
               height={44}
               color={'rgba(240, 147, 17, 0.9)'}
@@ -248,6 +345,19 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
             </BarLabelBox>
           </BarView>
         )
+      ) : undefined}
+      {isAlert ? (
+        <AlertYesNoButton
+          setAlert={setAlert}
+          yesButtonText={'나가기'}
+          title={'타이머가 켜져있어요!'}
+          text={'정말 나가시겠어요?\n\n나가시면 타이머가 꺼집니다!'}
+          onPress={() => {
+            pauseTimer();
+            cancelTimer();
+            navigation.pop();
+          }}
+        />
       ) : undefined}
     </SequenceDetailDescriptionContainer>
   );
