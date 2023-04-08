@@ -38,13 +38,12 @@ public class TimerModule extends ReactContextBaseJavaModule {
     public static final String CHANNEL_ID = "my_channel_id";
     public static final String CHANNEL_NAME = "My Channel Name";
     private  final ReactApplicationContext reactContext;
-    private AlarmReceiver receiver;
+
     public TimerModule(@Nullable ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
         Log.d(TIMER_CLASS, "초기화");
-        receiver = new AlarmReceiver();
-        reactContext.registerReceiver(receiver, new IntentFilter());
+        reactContext.registerReceiver(AlarmReceiver.alarmReceiver, new IntentFilter());
 
     }
 
@@ -54,30 +53,12 @@ public class TimerModule extends ReactContextBaseJavaModule {
         return TIMER_CLASS;
     }
 
-
-    @ReactMethod
-    public void requestPermission() {
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            AlarmManager alarmManager = (AlarmManager) reactContext.getSystemService(Context.ALARM_SERVICE);
-            if(alarmManager.canScheduleExactAlarms() == false){
-                Toast.makeText(reactContext, "권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(reactContext, "권한이 승인되었습니다.", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-
-
-    }
-
-
     @ReactMethod
     public void showNotification(String endTime) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getReactApplicationContext());
         Intent reactIntent = new Intent(getReactApplicationContext(), MainActivity.class);
         PendingIntent reactPandingIntent = PendingIntent.getActivity(getReactApplicationContext(), 0, reactIntent, PendingIntent.FLAG_IMMUTABLE);
-
+        Toast.makeText(reactContext, "타이머 시작!", Toast.LENGTH_SHORT).show();
         //안드로이드 오레오 대응
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
@@ -93,11 +74,8 @@ public class TimerModule extends ReactContextBaseJavaModule {
                 .setContentIntent(reactPandingIntent)
                 .setOngoing(true);
 
-
-
         int notificationId = 1;
         notificationManager.notify(notificationId, builder.build());
-
 
     }
 
@@ -108,25 +86,20 @@ public class TimerModule extends ReactContextBaseJavaModule {
         //예약 알림 설정
         AlarmManager alarmManager = (AlarmManager) getReactApplicationContext().getSystemService(Context.ALARM_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            Toast.makeText(reactContext, new Date(SystemClock.elapsedRealtime() + Math.round(alarmTime)).toString(), Toast.LENGTH_SHORT).show();
-            alarmManager.set(AlarmManager.RTC_WAKEUP, Math.round(alarmTime)-1000, reactPandingIntent);
+            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + Math.round(alarmTime), reactPandingIntent);
         }else{
-            Toast.makeText(reactContext, "예약알림 전송2", Toast.LENGTH_SHORT).show();
             alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + Math.round(alarmTime), reactPandingIntent);
         }
-
     }
+
 
     @ReactMethod
     public void deleteTimerNotification() {
-        Intent reactIntent = new Intent(getReactApplicationContext(), MainActivity.class);
-        PendingIntent reactPandingIntent = PendingIntent.getActivity(getReactApplicationContext(), 0, reactIntent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getReactApplicationContext());
         int notificationId = 1;
         notificationManager.cancel(notificationId);
-
+        Toast.makeText(reactContext, "타이머 해제!", Toast.LENGTH_SHORT).show();
     }
 
     @ReactMethod
@@ -136,5 +109,6 @@ public class TimerModule extends ReactContextBaseJavaModule {
         PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(getReactApplicationContext(), 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.cancel(alarmPendingIntent);
     }
+
 
 }

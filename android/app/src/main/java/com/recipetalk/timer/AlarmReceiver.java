@@ -22,7 +22,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public static final String CHANNEL_ID = "my_channel_id";
     public static final String CHANNEL_NAME = "My Channel Name";
-
+    public static final AlarmReceiver alarmReceiver = new AlarmReceiver();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -47,8 +47,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setOngoing(false)
                 .setAutoCancel(true)
                 ;
-
-
 
         int notificationId = 1;
         notificationManager.notify(notificationId, builder.build());

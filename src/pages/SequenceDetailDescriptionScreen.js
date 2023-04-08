@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import SequenceDetailDescription from '../components/atoms/board/SequenceDetailDescription';
 import {
   AppState,
+  BackHandler,
   Image,
   NativeModules,
   Platform,
@@ -12,6 +13,7 @@ import {
 } from 'react-native';
 import * as Progress from 'react-native-progress';
 import BackgroundTimer from 'react-native-background-timer';
+import AlertYesNoButton from '../components/molecules/AlertYesNoButton';
 
 const SequenceDetailDescriptionScreen = ({navigation}) => {
   const [isClickedTimer, clickedTimer] = useState(false);
@@ -27,7 +29,29 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
   const [backgroundTime, setBackgroundTime] = useState(0);
   const appState = useRef(AppState.currentState);
   const [state, setState] = useState(appState.current);
+
+  const [isAlert, setAlert] = useState(false);
+
   const Timer = NativeModules.Timer;
+
+  //뒤로가기 핸들러
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
+      backAction(),
+    );
+
+    return () => backHandler.remove();
+  });
+
+  const backAction = () => {
+    if (isStartTimer) {
+      setAlert(true);
+      return true;
+    } else {
+      navigation.pop();
+      return false;
+    }
+  };
 
   useEffect(() => {
     if (isStartTimer && oneMore) {
@@ -63,7 +87,7 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
           getFormattedTime(Date.now() + duration() * 1000),
         );
         //예약 알림 필요
-        Timer.setReserveAlarm(Date.now() + duration() * 1000);
+        Timer.setReserveAlarm(duration() * 1000);
       }
       startAction();
     }
@@ -177,7 +201,7 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
         <TouchableButton
           onPress={() => {
             if (isStartTimer) {
-
+              setAlert(true);
             } else {
               navigation.pop();
             }
@@ -321,6 +345,19 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
             </BarLabelBox>
           </BarView>
         )
+      ) : undefined}
+      {isAlert ? (
+        <AlertYesNoButton
+          setAlert={setAlert}
+          yesButtonText={'나가기'}
+          title={'타이머가 켜져있어요!'}
+          text={'정말 나가시겠어요?\n\n나가시면 타이머가 꺼집니다!'}
+          onPress={() => {
+            pauseTimer();
+            cancelTimer();
+            navigation.pop();
+          }}
+        />
       ) : undefined}
     </SequenceDetailDescriptionContainer>
   );

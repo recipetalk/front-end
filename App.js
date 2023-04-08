@@ -150,10 +150,8 @@ function LoginStackNavigator() {
 
 function App() {
   const Stack = createNativeStackNavigator();
-  const Timer = NativeModules.Timer;
   useEffect(() => {
     fcmSet();
-    Timer.requestPermission();
   }, []);
 
   const fcmSet = async () => {
