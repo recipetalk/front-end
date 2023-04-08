@@ -7,7 +7,7 @@
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import LoginScreen from './src/pages/LoginScreen';
 import {store} from './src/store/config';
 import {Provider} from 'react-redux';
@@ -40,6 +40,8 @@ import {FollowingScreen} from './src/pages/myPage/FollowingScreen';
 import {BlockUserScreen} from './src/pages/myPage/BlockUserScreen';
 import FindIdScreen from './src/pages/login/find/FindIdScreen';
 import ReturnIdScreen from './src/pages/login/find/ReturnIdScreen';
+import {AppState, PermissionsAndroid} from 'react-native';
+import {NativeModules} from 'react-native';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -148,9 +150,10 @@ function LoginStackNavigator() {
 
 function App() {
   const Stack = createNativeStackNavigator();
-
+  const Timer = NativeModules.Timer;
   useEffect(() => {
     fcmSet();
+    Timer.requestPermission();
   }, []);
 
   const fcmSet = async () => {

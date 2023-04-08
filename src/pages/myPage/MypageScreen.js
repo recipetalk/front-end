@@ -10,12 +10,12 @@ import {
 
 const MypageScreen = ({navigation}) => {
   const [alert, setAlert] = useState(false);
-  let user;
   const logoutFunction = async () => {
     let user = await loadLoginFromStorage();
     await saveLoginToStorage(user.username, user.password, false);
     await navigation.reset({routes: [{name: 'Login'}]});
   };
+
   return (
     <MypageScreenContainer>
       <MypageHeader navigation={navigation} />
