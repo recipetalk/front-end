@@ -9,7 +9,15 @@ const PrepOrderItem = props => {
   const [resText, setResText] = useState('');
 
   const deletePreOrder = () => {
-    dispatch(deletePrep(props.item.id));
+    dispatch(deletePrep(props.item.idtrimmingSeq));
+  };
+
+  const onChangeHandler = res => {
+    setResText(res);
+    props.setItemData({
+      trimmingSeq: props.item.trimmingSeq,
+      description: resText,
+    });
   };
 
   return (
@@ -24,7 +32,8 @@ const PrepOrderItem = props => {
               placeholder={'예) 준비된 양념으로 고기를 조물조물 재워둡니다.'}
               multiline={true}
               value={resText}
-              onChangeText={res => setResText(res)}
+              onEndEditing={props.endHandler}
+              onChangeText={onChangeHandler}
             />
           </PrepOrderContent>
 

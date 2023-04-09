@@ -10,32 +10,35 @@ const PrepSlice = createSlice({
       return [
         ...previousState,
         {
-          id: nextId++,
-          title: '',
-          desc: '',
-          descImg: '',
+          trimmingSeq: nextId++,
+          description: '',
+          img: '',
         },
       ];
     },
 
     addPrep: (previousState, action) => {
       return previousState.map(item =>
-        item.id === action.payload.id
+        item.trimmingSeq === action.payload.trimmingSeq
           ? {
-              id: action.payload.id,
-              title: action.payload.title,
-              desc: action.payload.desc,
-              descImg: '',
+              trimmingSeq: action.payload.trimmingSeq,
+              description: action.payload.description,
+              img: action.payload.img,
             }
           : item,
       );
     },
 
+    registerPrep: (previousState, action) => {
+      console.log(`final data ${JSON.stringify(action.payload)}`);
+    },
+
     deletePrep: (previousState, action) => {
-      return previousState.filter(item => item.id !== action.payload);
+      return previousState.filter(item => item.trimmingSeq !== action.payload);
     },
   },
 });
 
-export const {addEmptyPrep, addPrep, deletePrep} = PrepSlice.actions;
+export const {addEmptyPrep, addPrep, registerPrep, deletePrep} =
+  PrepSlice.actions;
 export default PrepSlice.reducer;

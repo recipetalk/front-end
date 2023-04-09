@@ -66,6 +66,9 @@ const RegisterMyIngredientsComponent = () => {
 
             <TouchContainer
               onPress={() => {
+                if (checkIsChecked() === 0) {
+                  return;
+                }
                 setIsPressed(prev => !prev);
               }}>
               <IngredientRegisterButton

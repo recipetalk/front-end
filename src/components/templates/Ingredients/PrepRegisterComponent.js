@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {addRowIngredientTrimming} from '../../../services/Ingredients';
 import {addEmptyPrep, addPrep} from '../../../store/Ingredients/PrepSlice';
 import Line from '../../atoms/Line';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
@@ -11,22 +12,62 @@ import PrepOrderItem from '../../organisms/Ingredients/PrepOrderItem';
 const PrepRegisterComponent = () => {
   const dispatch = useDispatch();
   const prepResult = useSelector(state => state.prep);
+  console.log(`prepResult is ${JSON.stringify(prepResult)}`);
   const [prepInfo, setPrepInfo] = useState({
     title: '',
     desc: '',
+    img: '',
   });
 
+  const [itemData, setItemData] = useState({});
+  const [itemList, setItemList] = useState([]);
+
   const addEmptyPrepOrder = () => {
+    if (prepResult.length !== 0) {
+      // input 값 state 저장하도록 해주는 함수
+      addPrepOrder();
+    }
+
     dispatch(addEmptyPrep());
+  };
+  const endHandler = () => {
+    setItemList([...itemList, itemData]);
   };
 
   const addPrepOrder = () => {
     dispatch(
       addPrep({
-        titie: prepInfo.title,
-        desc: prepInfo.desc,
+        trimmingSeq: itemData.trimmingSeq,
+        description: itemData.description,
+        img: itemData.img,
       }),
     );
+  };
+
+  // 모든 데이터 저장하는 함수
+  const registerPrepOrder = () => {
+    // addPrepOrder();
+
+    // dispatch(
+    //   registerPrep({
+    //     title: prepInfo.title,
+    //     desc: prepInfo.desc,
+    //     descImg: '',
+    //     prepOrderList: prepResult,
+    //   }),
+    // );
+
+    addRowIngredientTrimming(itemList)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+    // addIngredientTrimming({
+    //   ingredientId: 1,
+    //   title: prepInfo.title,
+    //   desc: prepInfo.desc,
+    //   img: '',
+    // }).then(res => {
+    //   console.log('!!', res.data);
+    // });
   };
 
   return (
@@ -55,7 +96,15 @@ const PrepRegisterComponent = () => {
         <PrepOrderContainer>
           <OrderTitle>손질 순서</OrderTitle>
           {prepResult.map((item, index) => {
-            return <PrepOrderItem item={item} key={index} index={item.id} />;
+            return (
+              <PrepOrderItem
+                item={item}
+                key={index}
+                index={item.trimmingSeq}
+                endHandler={endHandler}
+                setItemData={setItemData}
+              />
+            );
           })}
         </PrepOrderContainer>
         <Line />
@@ -72,7 +121,7 @@ const PrepRegisterComponent = () => {
           <CancelBtn>
             <CancelText>취소</CancelText>
           </CancelBtn>
-          <SaveBtn onPress={addPrepOrder}>
+          <SaveBtn onPress={registerPrepOrder}>
             <SaveText>저장</SaveText>
           </SaveBtn>
         </BtnContainer>
