@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import SimpleProfileWithDescription from '../profile/SimpleProfileWithDescription';
-import Hashtag from './hashtag/Hashtag';
 import LikeAndCommentNum from './LikeAndComment/LikeAndCommentNum';
 import RecipeQuantityLabel from './RecipeQuantityLabel';
 import ExpandableText from './ExpandableText';
 import PrepOrderComponent from '../../organisms/PrepOrderComponent';
 import {Platform, View} from 'react-native';
 import {IngredientList} from '../../organisms/Recipe/IngredientList';
-import {useNavigation} from '@react-navigation/native';
+import {CommentListComponent} from '../../templates/board/CommentListComponent';
 
 const Ingredients = [
   {
@@ -48,12 +47,22 @@ const Ingredients = [
   },
 ];
 
-export default function RecipeDetailDescription() {
-  const navigation = useNavigation();
+export default function RecipeDetailDescription({
+  navigation,
+  setChecked,
+  parentComment,
+  setParentComment,
+}) {
   const [isFirst, setFirst] = useState(false);
   const [isSecond, setSecond] = useState(false);
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (isFirst || isSecond) {
+      setChecked(false);
+    } else {
+      setChecked(true);
+    }
+  }, [isFirst, isSecond]);
 
   return (
     <RecipeDetailDescriptionContainer>
@@ -125,6 +134,9 @@ export default function RecipeDetailDescription() {
             return <PrepOrderComponent num={i} key={i} />;
           })}
         </PrepOrderContainer>
+      ) : undefined}
+      {!isSecond && !isFirst ? (
+        <CommentListComponent navigation={navigation} isReply={false} />
       ) : undefined}
     </RecipeDetailDescriptionContainer>
   );
