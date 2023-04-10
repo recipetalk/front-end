@@ -6,18 +6,22 @@ import FocusedTextInputBorder from '../../components/atoms/FocusedTextInputBorde
 import equals from '../../services/object/equals';
 import {jsonAPI} from '../../services/connect/API';
 import AlertYesButton from '../../components/molecules/AlertYesButton';
+import {useDispatch, useSelector} from 'react-redux';
+import {setId} from '../../store/signup/Signup';
 
 export default function SignupIdScreen({navigation}) {
-  const [id, setId] = useState('');
+  const idGlobal = useSelector(state => state.signUp.value.username);
+  const dispatch = useDispatch();
+  const [localId, setLocalId] = useState(idGlobal);
   const [isAccess, setAccess] = useState(false);
   const [accessId, setAccessId] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
   const getIsValidId = async () =>
     jsonAPI
-      .get('/auth/signup/' + id)
+      .get('/auth/signup/' + localId)
       .then(response => {
         setAccess(true);
-        setAccessId(id);
+        setAccessId(localId);
         setVisibleAlert(true);
       })
       .catch(err => {
@@ -41,15 +45,15 @@ export default function SignupIdScreen({navigation}) {
         <LoginLabel>아이디</LoginLabel>
         <DuplicationAndTextInputContainer>
           <View style={{width: '76%'}}>
-            <FocusedTextInputBorder setData={setId} value={id} />
+            <FocusedTextInputBorder setData={setLocalId} value={localId} />
           </View>
           <ActiveButton
             width="80px"
             height="48px"
             border_radius="8px"
-            LabelInfo={!equals(id, accessId) ? '중복확인' : '확인완료'}
+            LabelInfo={!equals(localId, accessId) ? '중복확인' : '확인완료'}
             LabelSize="14px"
-            isActive={id.length >= 1 && !equals(id, accessId)}
+            isActive={localId.length >= 1 && !equals(localId, accessId)}
             onPress={getIsValidId}
           />
         </DuplicationAndTextInputContainer>
@@ -62,8 +66,11 @@ export default function SignupIdScreen({navigation}) {
           border_radius="25px"
           LabelInfo="다음"
           LabelSize="17px"
-          onPress={() => navigation.push('SignupNickname')}
-          isActive={isAccess && equals(id, accessId)}
+          onPress={() => {
+            dispatch(setId(localId));
+            navigation.push('SignupNickname');
+          }}
+          isActive={isAccess && equals(localId, accessId)}
         />
       </NextButtonContainer>
       {visibleAlert && isAccess ? (
@@ -85,7 +92,7 @@ const Description = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
-  color: black;
+  color: #333333;
   font-family: 'Pretendard Variable';
 `;
 

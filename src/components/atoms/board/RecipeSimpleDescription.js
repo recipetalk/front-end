@@ -69,11 +69,9 @@ export default function RecipeSimpleDescription({
     justify-content: space-between;
   `;
 
-  const gotoDetailRecipe = () => {};
-
   return (
     <RecipeSimpleDescriptionContainer>
-      <TouchContainer onPress={() => navigation.push('RecipeDetail')}>
+      <TouchContainer onPress={() => navigation.push('RecipeDetailScreen')}>
         <ThumbnailImg />
         <ViewAndCreatedDateLabelContainer>
           <RecipeQuantityLabel quantity={quantity} />

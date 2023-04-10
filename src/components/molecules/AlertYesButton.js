@@ -25,6 +25,7 @@ const VerticalBar = styled.View`
 
 const Inner = styled.View`
   gap: 10px;
+  width: 90%;
   margin-top: 20px;
   margin-bottom: 20px;
 `;

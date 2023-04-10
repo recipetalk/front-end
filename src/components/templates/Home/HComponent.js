@@ -45,5 +45,6 @@ const HListView = styled.View`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: space-between;
 `;
 export default HComponent;

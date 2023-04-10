@@ -16,14 +16,6 @@ const ExpandableText = ({text}) => {
     displayText = isExpanded ? text : text.slice(0, maxLength);
   }
 
-  const Description = styled.Text`
-    color: #666666;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    font-family: 'Pretendard Variable';
-  `;
-
   return (
     <View>
       <Description numberOfLines={isExpanded ? undefined : 10}>
@@ -32,7 +24,7 @@ const ExpandableText = ({text}) => {
       {text.length > maxLength && (
         <TouchableOpacity
           onPress={toggleExpanded}
-          style={{marginTop: 30, marginBottom: 30, width: 40, height: 40}}>
+          style={{marginTop: 30, marginBottom: 30}}>
           <Text style={{color: '#A0A0A0'}}>
             {isExpanded ? '접기' : '펼치기'}
           </Text>
@@ -41,5 +33,13 @@ const ExpandableText = ({text}) => {
     </View>
   );
 };
+
+const Description = styled.Text`
+  color: #666666;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: 'Pretendard Variable';
+`;
 
 export default ExpandableText;

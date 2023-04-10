@@ -8,28 +8,6 @@ import {setFirstClicked} from '../../../store/RecipeHome/FirstFilterClicked';
 import {setSecondClicked} from '../../../store/RecipeHome/SecondFilterClicked';
 
 const SearchWithFilterHeader = () => {
-  const SearchHeaderContainer =
-    Platform.OS === 'ios'
-      ? styled.SafeAreaView`
-          background: #f5f5f5;
-          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-          z-index: 1;
-        `
-      : styled.View`
-          background: #f5f5f5;
-          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-          z-index: 1;
-        `;
-
-  const SearchInputContainer = styled.View`
-    width: 90%;
-    margin: 0 auto;
-  `;
-
-  const HorizontalScrollContainer = styled.ScrollView`
-    margin-left: 20px;
-  `;
-
   const firstClicked = useSelector(state => state.firstFilterClicked.value);
   const secondClicked = useSelector(state => state.secondFilterClicked.value);
 
@@ -81,13 +59,6 @@ const SearchWithFilterHeader = () => {
     },
   ];
 
-  const VerticalBar = styled.View`
-    border: 1px solid #d8d8d8;
-    height: 30px;
-    margin-left: 7px;
-    margin-right: 15px;
-  `;
-
   return (
     <SearchHeaderContainer>
       <SearchInputContainer>
@@ -123,5 +94,34 @@ const SearchWithFilterHeader = () => {
     </SearchHeaderContainer>
   );
 };
+
+const VerticalBar = styled.View`
+  border: 1px solid #d8d8d8;
+  height: 30px;
+  margin-left: 7px;
+  margin-right: 15px;
+`;
+
+const SearchHeaderContainer =
+  Platform.OS === 'ios'
+    ? styled.SafeAreaView`
+        background: #f5f5f5;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+        z-index: 1;
+      `
+    : styled.View`
+        background: #f5f5f5;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+        z-index: 1;
+      `;
+
+const SearchInputContainer = styled.View`
+  width: 90%;
+  margin: 0 auto;
+`;
+
+const HorizontalScrollContainer = styled.ScrollView`
+  margin-left: 20px;
+`;
 
 export default SearchWithFilterHeader;

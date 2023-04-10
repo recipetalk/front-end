@@ -7,7 +7,7 @@
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import LoginScreen from './src/pages/LoginScreen';
 import {store} from './src/store/config';
 import {Provider} from 'react-redux';
@@ -29,6 +29,21 @@ import ProfileScreen from './src/pages/myPage/ProfileScreen';
 import SequenceDetailDescriptionScreen from './src/pages/SequenceDetailDescriptionScreen';
 import SetTimerPage from './src/pages/timer/SetTimerPage';
 import SignupStartScreen from './src/pages/signup/SignupStartScreen';
+import messaging from '@react-native-firebase/messaging';
+import {MyRecipeScreen} from './src/pages/myPage/MyRecipeScreen';
+import {MyPrepScreen} from './src/pages/myPage/MyPrepScreen';
+import {MyBookmarkScreen} from './src/pages/myPage/MyBookmarkScreen';
+import {MyLikeScreen} from './src/pages/myPage/MyLikeScreen';
+import {EditProfileScreen} from './src/pages/myPage/EditProfileScreen';
+import {FollowerScreen} from './src/pages/myPage/FollowerScreen';
+import {FollowingScreen} from './src/pages/myPage/FollowingScreen';
+import {BlockUserScreen} from './src/pages/myPage/BlockUserScreen';
+import FindIdScreen from './src/pages/login/find/FindIdScreen';
+import ReturnIdScreen from './src/pages/login/find/ReturnIdScreen';
+import {AppState, PermissionsAndroid} from 'react-native';
+import {NativeModules} from 'react-native';
+import {ReplyCommentScreen} from './src/pages/ReplyCommentScreen';
+import {addRowIngredientTrimming} from './src/services/MyPage';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -121,12 +136,36 @@ function LoginStackNavigator() {
         component={SimpleLoginScreen}
         options={{headerShown: false}}
       />
+      <LoginStack.Screen
+        name="FindId"
+        component={FindIdScreen}
+        options={{headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="ReturnId"
+        component={ReturnIdScreen}
+        options={{headerShown: false}}
+      />
     </LoginStack.Navigator>
   );
 }
 
 function App() {
   const Stack = createNativeStackNavigator();
+  useEffect(() => {
+    fcmSet();
+  }, []);
+
+  const fcmSet = async () => {
+    const enabled = await messaging().hasPermission();
+    if (enabled) {
+      const fcmToken = await messaging().getToken();
+      console.log('fcmToken : ' + fcmToken);
+    } else {
+      console.log('disable');
+      await messaging().requestPermission();
+    }
+  };
 
   // return (
   //   <NavigationContainer>
@@ -201,6 +240,51 @@ function App() {
           <Stack.Screen
             name="SetTimerPage"
             component={SetTimerPage}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MyRecipe"
+            component={MyRecipeScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MyPrep"
+            component={MyPrepScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MyBookmark"
+            component={MyBookmarkScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="MyLike"
+            component={MyLikeScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfileScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Follower"
+            component={FollowerScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Following"
+            component={FollowingScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="BlockUser"
+            component={BlockUserScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ReplyComment"
+            component={ReplyCommentScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

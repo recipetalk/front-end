@@ -6,18 +6,22 @@ import FocusedTextInputBorder from '../../components/atoms/FocusedTextInputBorde
 import equals from '../../services/object/equals';
 import {jsonAPI} from '../../services/connect/API';
 import AlertYesButton from '../../components/molecules/AlertYesButton';
+import {useDispatch, useSelector} from 'react-redux';
+import {setNickname} from '../../store/signup/Signup';
 
 export default function SignupNicknameScreen({navigation}) {
-  const [nickname, setNickname] = useState('');
+  const globalNickname = useSelector(state => state.signUp.value.nickname);
+  const dispatch = useDispatch();
+  const [localNickname, setLocalNickname] = useState(globalNickname);
   const [isAccess, setAccess] = useState(false);
   const [accessNickname, setAccessNickname] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
   const getIsValidNickname = async () =>
     jsonAPI
-      .get('/auth/signup/nickname' + nickname)
+      .get('/auth/signup/nickname/' + localNickname)
       .then(response => {
         setAccess(true);
-        setAccessNickname(nickname);
+        setAccessNickname(localNickname);
         setVisibleAlert(true);
       })
       .catch(err => {
@@ -41,17 +45,23 @@ export default function SignupNicknameScreen({navigation}) {
         <LoginLabel>닉네임</LoginLabel>
         <DuplicationAndTextInputContainer>
           <View style={{width: '76%'}}>
-            <FocusedTextInputBorder setData={setNickname} value={nickname} />
+            <FocusedTextInputBorder
+              setData={setLocalNickname}
+              value={localNickname}
+            />
           </View>
           <ActiveButton
             width="80px"
             height="48px"
             border_radius="8px"
             LabelInfo={
-              !equals(nickname, accessNickname) ? '중복확인' : '확인완료'
+              !equals(localNickname, accessNickname) ? '중복확인' : '확인완료'
             }
             LabelSize="14px"
-            isActive={nickname.length >= 1 && !equals(nickname, accessNickname)}
+            isActive={
+              localNickname.length >= 1 &&
+              !equals(localNickname, accessNickname)
+            }
             onPress={getIsValidNickname}
           />
         </DuplicationAndTextInputContainer>
@@ -64,8 +74,11 @@ export default function SignupNicknameScreen({navigation}) {
           border_radius="25px"
           LabelInfo="다음"
           LabelSize="17px"
-          onPress={() => navigation.push('SignupPassword')}
-          isActive={isAccess && equals(nickname, accessNickname)}
+          onPress={() => {
+            dispatch(setNickname(localNickname));
+            navigation.push('SignupPassword');
+          }}
+          isActive={isAccess && equals(localNickname, accessNickname)}
         />
       </NextButtonContainer>
       {visibleAlert && isAccess ? (
@@ -87,7 +100,7 @@ const Description = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
-  color: black;
+  color: #333333;
   font-family: 'Pretendard Variable';
 `;
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, StyleSheet, TextInput} from 'react-native';
 
@@ -6,6 +6,31 @@ const SetTimerPage = ({navigation, route}) => {
   const [isHighlighted1, setHighlighted1] = useState(false);
   const [isHighlighted2, setHighlighted2] = useState(false);
   const [isHighlighted3, setHighlighted3] = useState(false);
+  const [hour, setHour] = useState(0);
+  const [min, setMin] = useState(0);
+  const [sec, setSec] = useState(0);
+
+  useEffect(() => {
+    if (hour >= 24) {
+      setHour(23);
+      route.params.setHour(23);
+    }
+  }, [hour]);
+
+  useEffect(() => {
+    if (min >= 60) {
+      setMin(59);
+      route.params.setMinute(59);
+    }
+  }, [min]);
+
+  useEffect(() => {
+    if (sec >= 60) {
+      setSec(59);
+      route.params.setSecond(59);
+    }
+  }, [sec]);
+
   return (
     <Container>
       <Header>
@@ -28,9 +53,15 @@ const SetTimerPage = ({navigation, route}) => {
               onFocus={() => setHighlighted1(true)}
               onBlur={() => setHighlighted1(false)}
               style={[styles.textInput, isHighlighted1 && styles.isHighlighted]}
-              defaultValue={'00'}
               keyboardType={'number-pad'}
-              onChangeText={route.params.setHour}
+              onChangeText={text => {
+                setHour(text);
+                route.params.setHour(text);
+              }}
+              defaultValue={'00'}
+              inputMode={'decimal'}
+              maxLength={2}
+              value={hour}
             />
           </TextInnerPart>
           <Colon>:</Colon>
@@ -43,7 +74,13 @@ const SetTimerPage = ({navigation, route}) => {
               defaultValue={'00'}
               autoFocus={true}
               keyboardType={'number-pad'}
-              onChangeText={route.params.setMinute}
+              onChangeText={text => {
+                setMin(text);
+                route.params.setMinute(text);
+              }}
+              maxLength={2}
+              inputMode={'decimal'}
+              value={min}
             />
           </TextInnerPart>
           <Colon>:</Colon>
@@ -55,15 +92,30 @@ const SetTimerPage = ({navigation, route}) => {
               style={[styles.textInput, isHighlighted3 && styles.isHighlighted]}
               defaultValue={'00'}
               keyboardType={'number-pad'}
-              onChangeText={route.params.setSecond}
+              onChangeText={text => {
+                route.params.setSecond(text);
+                setSec(text);
+              }}
+              maxLength={2}
+              inputMode={'decimal'}
+              value={sec}
             />
           </TextInnerPart>
         </TextBoxPart>
         <StartButton
           color={'#f5f5f5'}
           onPress={() => {
+            if (sec === '') {
+              route.params.setSecond(0);
+            }
+            if (min === '') {
+              route.params.setMinute(0);
+            }
+            if (hour === '') {
+              route.params.setHour(0);
+            }
+            navigation.goBack();
             route.params.setStart(true);
-            navigation.pop();
           }}>
           <ButtonLabel color={'#202020'}>시작</ButtonLabel>
         </StartButton>

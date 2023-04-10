@@ -8,7 +8,7 @@ export default function SloganText() {
     align-items: flex-start;
     gap: 10px;
 
-    width: 73%;
+    width: 90%;
     margin-left: 16px;
   `;
 
@@ -18,7 +18,7 @@ export default function SloganText() {
     font-size: 30px;
     line-height: 41px;
     font-family: 'Pretendard Variable';
-    color: black;
+    color: #333333;
   `;
 
   const SecondSlogan = styled.Text`
@@ -28,13 +28,13 @@ export default function SloganText() {
     line-height: 41px;
     margin-top: -10px;
     font-family: 'Pretendard Variable';
-    color: black;
+    color: #333333;
   `;
 
   const ThirdSlogan = styled.Text`
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
     font-family: 'Pretendard Variable';
     margin-top: 15px;
     color: #666666;

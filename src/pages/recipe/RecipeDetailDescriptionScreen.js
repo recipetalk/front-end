@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {Image, Platform, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import RecipeDetailDescription from '../../components/atoms/board/RecipeDetailDescription';
+import {CommentWriteComponent} from '../../components/organisms/comment/CommentWriteComponent';
 
 const RecipeDetailDescriptionScreen = ({navigation}) => {
+  const CommentListRef = useRef();
+  const [Checked, setChecked] = useState(true);
+  const [parentComment, setParentComment] = useState('');
   return (
     <RecipeDetailDescriptionContainer>
       <Header>
@@ -17,7 +21,18 @@ const RecipeDetailDescriptionScreen = ({navigation}) => {
           />
         </TouchableOpacity>
       </Header>
-      <RecipeDetailDescription />
+      <RecipeDetailDescription
+        CommentListRef={CommentListRef}
+        setChecked={setChecked}
+        parentComment={parentComment}
+        setParentComment={setParentComment}
+      />
+      {Checked ? (
+        <CommentWriteComponent
+          value={parentComment}
+          setValue={setParentComment}
+        />
+      ) : undefined}
     </RecipeDetailDescriptionContainer>
   );
 };
