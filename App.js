@@ -42,6 +42,8 @@ import FindIdScreen from './src/pages/login/find/FindIdScreen';
 import ReturnIdScreen from './src/pages/login/find/ReturnIdScreen';
 import {AppState, PermissionsAndroid} from 'react-native';
 import {NativeModules} from 'react-native';
+import {ReplyCommentScreen} from './src/pages/ReplyCommentScreen';
+import {addRowIngredientTrimming} from './src/services/MyPage';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -278,6 +280,11 @@ function App() {
           <Stack.Screen
             name="BlockUser"
             component={BlockUserScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ReplyComment"
+            component={ReplyCommentScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>

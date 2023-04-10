@@ -122,13 +122,11 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
     }
   }, [state]);
 
-  useEffect(() => {});
-
   const startAction = () => {
     BackgroundTimer.runBackgroundTimer(() => {
-      setRemainingTime(remainingTime => {
-        return remainingTime > 0 ? remainingTime - 1000 : 0;
-      });
+      setRemainingTime(remainingTime =>
+        remainingTime > 0 ? remainingTime - 1000 : 0,
+      );
     }, 1000);
   };
 
@@ -147,9 +145,16 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
     setSec(secondsLeft);
     setInit(false);
     startTimer(false);
-    Timer.deleteTimerNotification();
-    Timer.deleteAlarm();
+    deleteAlarm();
     BackgroundTimer.stopBackgroundTimer();
+  };
+
+  const deleteAlarm = () => {
+    if (Platform.OS === 'android') {
+      Timer.deleteAlarm();
+      Timer.deleteTimerNotification();
+    } else {
+    }
   };
 
   const cancelTimer = () => {
@@ -311,7 +316,12 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
               <TimerLabel>{getFormattedTime(estimatedEndTime)}</TimerLabel>
             </TimerLabelBox>
             <View style={{flexDirection: 'row', gap: 50}}>
-              <StartButton color={'#f5f5f5'} onPress={cancelTimer}>
+              <StartButton
+                color={'#f5f5f5'}
+                onPress={() => {
+                  deleteAlarm();
+                  cancelTimer();
+                }}>
                 <ButtonLabel color={'#202020'}>삭제</ButtonLabel>
               </StartButton>
               <StartButton color={'#202020'} onPress={pauseTimer}>

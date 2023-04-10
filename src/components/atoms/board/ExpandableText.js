@@ -24,7 +24,7 @@ const ExpandableText = ({text}) => {
       {text.length > maxLength && (
         <TouchableOpacity
           onPress={toggleExpanded}
-          style={{marginTop: 30, marginBottom: 30, width: 40, height: 40}}>
+          style={{marginTop: 30, marginBottom: 30}}>
           <Text style={{color: '#A0A0A0'}}>
             {isExpanded ? '접기' : '펼치기'}
           </Text>

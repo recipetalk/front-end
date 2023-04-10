@@ -10,7 +10,12 @@ const SetTimerPage = ({navigation, route}) => {
   const [min, setMin] = useState(0);
   const [sec, setSec] = useState(0);
 
-  useEffect(() => {}, [hour]);
+  useEffect(() => {
+    if (hour >= 24) {
+      setHour(23);
+      route.params.setHour(23);
+    }
+  }, [hour]);
 
   useEffect(() => {
     if (min >= 60) {
@@ -100,6 +105,15 @@ const SetTimerPage = ({navigation, route}) => {
         <StartButton
           color={'#f5f5f5'}
           onPress={() => {
+            if (sec === '') {
+              route.params.setSecond(0);
+            }
+            if (min === '') {
+              route.params.setMinute(0);
+            }
+            if (hour === '') {
+              route.params.setHour(0);
+            }
             navigation.goBack();
             route.params.setStart(true);
           }}>

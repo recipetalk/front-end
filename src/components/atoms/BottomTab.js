@@ -23,11 +23,6 @@ const RecipeStackNavigator = () => {
         component={RecipeScreen}
         options={{headerShown: false}}
       />
-      <RecipeStack.Screen
-        name="RecipeDetail"
-        component={RecipeDetailStackNavigator}
-        options={{headerShown: false}}
-      />
     </RecipeStack.Navigator>
   );
 };
