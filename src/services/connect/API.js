@@ -8,7 +8,7 @@ export const jsonAPI = axios.create({
 });
 
 const multiPartAPI = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'http://kitcapstone.iptime.org:8080',
   headers: {
     'Content-Type': 'multipart/form-data',
   },
