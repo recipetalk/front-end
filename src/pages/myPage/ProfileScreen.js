@@ -4,7 +4,7 @@ import DetailProfileWithDescription from '../../components/atoms/profile/DetailP
 import {Image, View} from 'react-native';
 import {RecipeAndTrimmingComponent} from '../../components/templates/mypage/RecipeAndTrimmingComponent';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({navigation, route}) => {
   return (
     <Container>
       <Header>

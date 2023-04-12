@@ -1,9 +1,25 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
 import {View} from 'react-native';
+import {getFollowing} from '../../services/MyPage';
 
-export const FollowerScreen = ({navigation}) => {
+export const FollowerScreen = ({navigation, route}) => {
+  const [follower, setFollower] = useState([]);
+  const [paging, setPaging] = useState({});
+  useEffect(() => {
+    const init = async () => {
+      await getFollowing(route.params.username, '0')
+        .then(res => {
+          const json = JSON.parse(res.request._response);
+          setPaging(json.pageable);
+          setFollower(() => json.content);
+        })
+        .catch(err => console.log(err));
+    };
+    init();
+  }, [route.params.username]);
+
   const dummy = [
     {
       username: 'hi',

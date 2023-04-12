@@ -6,15 +6,18 @@ const FollowingComponent = ({
   followingNumber,
   followerNumber,
   recipeNumber,
+  username,
 }) => {
   const navigation = useNavigation();
   return (
     <MyInfoContainer>
-      <MyInfoItem onPress={() => navigation.navigate('Following')}>
+      <MyInfoItem
+        onPress={() => navigation.navigate('Following', {username: username})}>
         <MyInfoTitleLabel>팔로잉</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followingNumber}</MyInfoNumberLabel>
       </MyInfoItem>
-      <MyInfoItem onPress={() => navigation.navigate('Follower')}>
+      <MyInfoItem
+        onPress={() => navigation.navigate('Follower', {username: username})}>
         <MyInfoTitleLabel>팔로워</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followerNumber}</MyInfoNumberLabel>
       </MyInfoItem>

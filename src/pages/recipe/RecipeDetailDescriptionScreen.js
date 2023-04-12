@@ -3,7 +3,7 @@ import {Image, Platform, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import RecipeDetailDescription from '../../components/atoms/board/RecipeDetailDescription';
 
-const RecipeDetailDescriptionScreen = ({navigation}) => {
+const RecipeDetailDescriptionScreen = ({navigation, route}) => {
   return (
     <RecipeDetailDescriptionContainer>
       <Header>

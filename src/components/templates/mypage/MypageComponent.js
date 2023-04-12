@@ -1,20 +1,42 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {getProfile} from '../../../services/MyPage';
 import SimpleProfileWithDescription from '../../atoms/profile/SimpleProfileWithDescription';
 import FollowingComponent from '../../organisms/mypage/FollowingComponent';
 import NavigatePartContainerComponent from '../../organisms/mypage/NavigatePartContainerComponent';
+import {RefreshControl} from 'react-native';
+import {loadLoginFromStorage} from '../../../services/domain/AutoLogin';
 
 const MypageComponent = ({navigation, setAlert}) => {
   const [profile, setProfile] = useState({});
-
+  const [refreshing, setRefreshing] = useState(false);
+  const [loadUsername, setLoadUsername] = useState();
   useEffect(() => {
-    // TODO : 아이디 리덕스에 저장 후? 가져오기?
-    getProfile('khj745700').then(res => {
-      setProfile(JSON.parse(res.request._response));
-    });
+    const init = async () => {
+      // TODO : 아이디 리덕스에 저장 후? 가져오기?
+      const getDataFromStorage = (await loadLoginFromStorage()).username;
+      await setLoadUsername(getDataFromStorage);
+
+      await getProfile(getDataFromStorage).then(res => {
+        setProfile(JSON.parse(res.request._response));
+      });
+    };
+    init();
   }, []);
 
+  const getData = useCallback(() => {
+    setRefreshing(true);
+    getProfile(loadUsername)
+      .then(res => {
+        setProfile(JSON.parse(res.request._response));
+        setTimeout(() => setRefreshing(false), 1000);
+      })
+      .catch(err => {
+        setTimeout(() => {
+          setRefreshing(false);
+        }, 1000);
+      });
+  }, [loadUsername]);
   // editProfile({nickname: 'test111',username: 'test',description: 'test333',profileImg: '',}).then(res => console.log(res.request));
   // getFollowUser('khj745700').then(res => { console.log(JSON.parse(res.request._response)); });
   // followUser().then(res => console.log(res.request.status));
@@ -23,7 +45,10 @@ const MypageComponent = ({navigation, setAlert}) => {
   // getBlockUser().then(res => console.log(res));
 
   return (
-    <InnerContainer>
+    <InnerContainer
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={getData} />
+      }>
       <VerticalBar height={'2px'} />
       <InfoContainer>
         <SimpleProfileWithDescription
@@ -33,9 +58,10 @@ const MypageComponent = ({navigation, setAlert}) => {
           isMine={true}
         />
         <FollowingComponent
-          followingNumber={profile.followNum}
-          followerNumber={profile.followNum}
-          recipeNumber={profile.followNum}
+          followingNumber={profile.followingNum}
+          followerNumber={profile.followerNum}
+          recipeNumber={profile.recipeNum}
+          username={loadUsername}
         />
       </InfoContainer>
       <VerticalBar height={'2px'} />

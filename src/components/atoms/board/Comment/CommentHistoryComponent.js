@@ -2,20 +2,24 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {Image, Text} from 'react-native';
 
-const CommentHistoryComponent = ({navigation}) => {
+const CommentHistoryComponent = ({navigation, item}) => {
   return (
     <Container>
       <InnerContainer>
         <DatePart>
-          <Label>2023.10.22</Label>
-          <Label>, 수정됨</Label>
+          <Label>{calanderPrint(item.createdDate)}</Label>
+          {item.isModified ? <Label>, 수정됨</Label> : undefined}
         </DatePart>
         <TitlePart>
           <TitleLabel ellipsizeMode={'tail'} numberOfLines={1}>
-            [찌개요리] 8년차 된장찌개 맛있게 끓이는 방법
+            {item.title}
           </TitleLabel>
           <NavigationContainer
-            onPress={() => navigation.push('RecipeDetailScreen')}>
+            onPress={() =>
+              navigation.navigate(determineNavigation(item.boardSort), {
+                boardId: item.boardId,
+              })
+            }>
             <Image
               source={require('../../../../assets/images/More_b.png')}
               style={{width: 12, height: 12}}
@@ -24,15 +28,34 @@ const CommentHistoryComponent = ({navigation}) => {
           </NavigationContainer>
         </TitlePart>
         <DescriptionPart>
-          <Description>
-            밥해먹을게 생각나지않아서 오늘은 이거다!!생각하고 했는데 다들
-            맛있다면서 잘먹네요 기분좋게 맛있게 한끼 클리어했습니다 감사합니다^^
-          </Description>
+          <Description>{item.description}</Description>
         </DescriptionPart>
       </InnerContainer>
+      <HorizontalBar />
     </Container>
   );
 };
+
+const determineNavigation = boardSort => {
+  if (boardSort === 'RECIPE') {
+    return 'RecipeDetailScreen';
+  } else if (boardSort === 'TRIMMING') {
+    return 'PrepDetail';
+  } else if (boardSort === 'DESCRIPTION') {
+    return 'Efficacy';
+  }
+};
+
+const calanderPrint = time => {
+  return time.split('T')[0].replaceAll('-', '.');
+};
+
+const HorizontalBar = styled.View`
+  width: 100%;
+  height: 1px;
+  background: #e1e1e1;
+  margin-top: 20px;
+`;
 
 const Container = styled.View`
   width: 100%;
@@ -42,8 +65,7 @@ const Container = styled.View`
   background: #ffffff;
   padding-bottom: 5px;
   margin-bottom: 1px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
 `;
 
 const InnerContainer = styled.View`

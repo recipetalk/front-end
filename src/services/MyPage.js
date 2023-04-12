@@ -14,6 +14,24 @@ export const getProfile = async username => {
   return await jsonAPI.get(url, config);
 };
 
+export const getCommentHistory = async page => {
+  const url = `/api/user/comment?page=${page}`;
+
+  return await jsonAPI.get(url, config);
+};
+
+export const getFollowing = async (username, page) => {
+  const url = `/api/user/following/${username}?page=${page}`;
+
+  return await jsonAPI.get(url, config);
+};
+
+export const getFollower = async (username, page) => {
+  const url = `/api/user/follower/${username}?page=${page}`;
+
+  return await url.get(url, config);
+};
+
 // 프로필 수정
 export const editProfile = async ({
   nickname,
