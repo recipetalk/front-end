@@ -43,6 +43,10 @@ import ReturnIdScreen from './src/pages/login/find/ReturnIdScreen';
 import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
 import EfficacyScreen from './src/pages/Ingredients/EfficacyScreen';
 import EfficacyEditScreen from './src/pages/Ingredients/EfficacyEditScreen';
+import {AppState, PermissionsAndroid} from 'react-native';
+import {NativeModules} from 'react-native';
+import {ReplyCommentScreen} from './src/pages/ReplyCommentScreen';
+import {addRowIngredientTrimming} from './src/services/MyPage';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -279,6 +283,11 @@ function App() {
           <Stack.Screen
             name="BlockUser"
             component={BlockUserScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="ReplyComment"
+            component={ReplyCommentScreen}
             options={{headerShown: false}}
           />
           <Stack.Screen
