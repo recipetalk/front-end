@@ -80,15 +80,15 @@ export default function SimpleProfileWithDescription({
   //TODO : IMG URI 체킹할 방법 알아내야함.
   return (
     <SimpleProfile>
-      <ProfileTouchableContainer>
+      <ProfileTouchableContainer
+        onPress={() => navigation.push('ProfileScreen', {username: username})}>
         <ProfileImg source={{uri: profileURI}} />
         <Nickname>{nickname}</Nickname>
         <Description numberOfLines={1} ellipsizeMode={'tail'}>
           {description}
         </Description>
       </ProfileTouchableContainer>
-      <FollowingTouchableContainer
-        onPress={() => navigation.push('ProfileScreen', {username: username})}>
+      <FollowingTouchableContainer>
         <Following>{'팔로잉'}</Following>
       </FollowingTouchableContainer>
     </SimpleProfile>
