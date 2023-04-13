@@ -12,16 +12,16 @@ const FollowingComponent = ({
   return (
     <MyInfoContainer>
       <MyInfoItem
-        onPress={() => navigation.navigate('Following', {username: username})}>
+        onPress={() => navigation.push('Following', {username: username})}>
         <MyInfoTitleLabel>팔로잉</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followingNumber}</MyInfoNumberLabel>
       </MyInfoItem>
       <MyInfoItem
-        onPress={() => navigation.navigate('Follower', {username: username})}>
+        onPress={() => navigation.push('Follower', {username: username})}>
         <MyInfoTitleLabel>팔로워</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followerNumber}</MyInfoNumberLabel>
       </MyInfoItem>
-      <MyInfoItem onPress={() => navigation.navigate('MyRecipe')}>
+      <MyInfoItem onPress={() => navigation.push('MyRecipe')}>
         <MyInfoTitleLabel>나의 레시피</MyInfoTitleLabel>
         <MyInfoNumberLabel>{recipeNumber}</MyInfoNumberLabel>
       </MyInfoItem>

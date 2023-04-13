@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Image, View} from 'react-native';
+import {Image, Platform, View} from 'react-native';
 
 export const NavigationHeader = ({navigation, title}) => {
   return (
@@ -40,7 +40,7 @@ const Header = styled.View`
 
 const HeaderLabel = styled.Text`
   color: #333333;
-  font-style: normal;
+  ${() => (Platform.OS === 'ios' ? 'font-style: normal;' : undefined)}
   font-weight: 500;
   font-size: 18px;
   font-family: 'Pretendard Variable';

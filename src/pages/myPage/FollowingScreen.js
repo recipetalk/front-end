@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
-import {FlatList, Text, View} from 'react-native';
+import {FlatList, Platform, Text, View} from 'react-native';
 import {getFollowing} from '../../services/MyPage';
 import {useNavigation} from '@react-navigation/native';
 
@@ -10,6 +10,8 @@ export const FollowingScreen = ({navigation, route}) => {
   const [isLast, setLast] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [pagingNum, setPagingNum] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+
   useEffect(() => {
     getFollowing(route.params.username, pagingNum)
       .then(res => {
@@ -17,6 +19,7 @@ export const FollowingScreen = ({navigation, route}) => {
         setLast(() => json.last);
         setFollowing(json.content);
         setPagingNum(pagingNum => pagingNum++);
+        setTotalCount(json.totalElements);
       })
       .catch(err => console.log(err));
   }, []);
@@ -60,9 +63,22 @@ export const FollowingScreen = ({navigation, route}) => {
         navigation={navigation}
       />
       <HorizontalBar />
-      {following.length === 0 ? (
+      {totalCount === 0 ? (
         <InnerContainer>
-          <Text>팔로잉 하는 유저가 없습니다.</Text>
+          <Text
+            style={{
+              color: '#333333',
+              fontFamily: 'Pretendard Variable',
+              fontSize: 14,
+              fontWeight: 500,
+              ...Platform.select({
+                ios: {
+                  fontStyle: 'normal',
+                },
+              }),
+            }}>
+            팔로잉 하는 유저가 없습니다.
+          </Text>
         </InnerContainer>
       ) : (
         <FlatList
@@ -113,6 +129,7 @@ const InnerContainer = styled.View`
 
 const Profile = ({username, description, profileURI, nickname}) => {
   const navigation = useNavigation();
+  const [isFollowing, setFollowing] = useState(true);
   const ProfileImg =
     profileURI !== undefined
       ? styled.Image`
@@ -131,7 +148,10 @@ const Profile = ({username, description, profileURI, nickname}) => {
     <SimpleProfile>
       <ProfileTouchableContainer
         onPress={() =>
-          navigation.navigate('ProfileScreen', {username: username})
+          navigation.push('ProfileScreen', {
+            username: username,
+            setFollowing: setFollowing,
+          })
         }>
         <ProfileImg source={{uri: profileURI}} />
         <Nickname>{nickname}</Nickname>
@@ -140,7 +160,7 @@ const Profile = ({username, description, profileURI, nickname}) => {
         </Description>
       </ProfileTouchableContainer>
       <FollowingTouchableContainer>
-        <Following>{'팔로잉취소'}</Following>
+        <Following>{isFollowing ? '팔로잉취소' : '팔로잉'}</Following>
       </FollowingTouchableContainer>
     </SimpleProfile>
   );

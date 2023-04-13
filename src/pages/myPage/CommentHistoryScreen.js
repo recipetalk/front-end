@@ -9,6 +9,7 @@ const CommentHistoryScreen = ({navigation}) => {
   const [isLast, setLast] = useState(false);
   const [pageNum, setPageNum] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+
   useEffect(() => {
     const config = async () => {
       await getCommentHistory(pageNum)
@@ -41,7 +42,11 @@ const CommentHistoryScreen = ({navigation}) => {
           <TitleLabel>덧글 작성 내역</TitleLabel>
         </View>
       </TitlePart>
-      <HorizontalBar />
+      <HorizontalBar height={5} />
+      <TotalCountBox>
+        <TotalCountLabel>내가 쓴 댓글 {totalCount}개</TotalCountLabel>
+      </TotalCountBox>
+      <HorizontalBar height={1} />
       <FlatList
         data={commentHistory}
         renderItem={({item}) => (
@@ -51,10 +56,24 @@ const CommentHistoryScreen = ({navigation}) => {
     </Container>
   );
 };
+const TotalCountBox = styled.View`
+  width: 100%;
+  height: 58px;
+  justify-content: center;
+  padding-left: 5%;
+`;
+
+const TotalCountLabel = styled.Text`
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  color: #333333;
+`;
 
 const HorizontalBar = styled.View`
   width: 100%;
-  height: 5px;
+  height: ${props => props.height}px;
   background: #e1e1e1;
 `;
 

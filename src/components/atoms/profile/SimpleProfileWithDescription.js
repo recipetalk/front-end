@@ -6,7 +6,6 @@ export default function SimpleProfileWithDescription({
   nickname,
   description,
   profileURI,
-  isMine,
   navigation,
 }) {
   const SimpleProfile = styled.View`
@@ -16,13 +15,9 @@ export default function SimpleProfileWithDescription({
     margin: auto auto;
   `;
 
-  const ProfileTouchableContainer = isMine
-    ? styled.View`
-        width: 70%;
-      `
-    : styled.TouchableOpacity`
-        width: 70%;
-      `;
+  const ProfileTouchableContainer = styled.TouchableOpacity`
+    width: 70%;
+  `;
 
   const ProfileImg =
     profileURI !== undefined
@@ -93,8 +88,8 @@ export default function SimpleProfileWithDescription({
         </Description>
       </ProfileTouchableContainer>
       <FollowingTouchableContainer
-        onPress={isMine ? () => navigation.push('ProfileScreen') : undefined}>
-        <Following>{isMine ? '프로필' : '소식받기'}</Following>
+        onPress={() => navigation.push('ProfileScreen', {username: username})}>
+        <Following>{'팔로잉'}</Following>
       </FollowingTouchableContainer>
     </SimpleProfile>
   );

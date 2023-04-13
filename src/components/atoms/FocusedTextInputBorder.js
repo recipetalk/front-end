@@ -19,6 +19,7 @@ export default function FocusedTextInputBorder({
       clearButtonMode={'while-editing'}
       onChangeText={text => setData(text)}
       value={value}
+      autoCapitalize="none"
     />
   );
 }

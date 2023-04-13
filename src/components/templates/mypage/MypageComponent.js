@@ -44,6 +44,21 @@ const MypageComponent = ({navigation, setAlert}) => {
   // blockUser({blockUsername:"test"}).then(res => console.log(res));
   // getBlockUser().then(res => console.log(res));
 
+  const ProfileImg =
+    profile.profileURI !== undefined
+      ? styled.Image`
+          border-radius: 13.873px;
+          background-color: #e5e5e5;
+          width: 46px;
+          height: 46px;
+        `
+      : styled.View`
+          border-radius: 13.873px;
+          background-color: #e5e5e5;
+          width: 46px;
+          height: 46px;
+        `;
+
   return (
     <InnerContainer
       refreshControl={
@@ -51,12 +66,21 @@ const MypageComponent = ({navigation, setAlert}) => {
       }>
       <VerticalBar height={'2px'} />
       <InfoContainer>
-        <SimpleProfileWithDescription
-          nickname={profile.nickname}
-          description={profile.description}
-          navigation={navigation}
-          isMine={true}
-        />
+        <SimpleProfile>
+          <ProfileTouchableContainer>
+            <ProfileImg source={{uri: profile.profileURI}} />
+            <Nickname>{profile.nickname}</Nickname>
+            <Description numberOfLines={1} ellipsizeMode={'tail'}>
+              {profile.description}
+            </Description>
+          </ProfileTouchableContainer>
+          <FollowingTouchableContainer
+            onPress={() =>
+              navigation.push('ProfileScreen', {username: loadUsername})
+            }>
+            <Following>{'프로필'}</Following>
+          </FollowingTouchableContainer>
+        </SimpleProfile>
         <FollowingComponent
           followingNumber={profile.followingNum}
           followerNumber={profile.followerNum}
@@ -89,6 +113,60 @@ const InfoContainer = styled.View`
 const InnerContainer = styled.ScrollView`
   background: #ffffff;
   width: 100%;
+`;
+
+const SimpleProfile = styled.View`
+  width: 90%;
+  height: 46px;
+
+  margin: auto auto;
+`;
+
+const ProfileTouchableContainer = styled.View`
+  width: 70%;
+`;
+
+const Nickname = styled.Text`
+  position: absolute;
+  height: 19px;
+  left: 60px;
+  top: 3px;
+  font-family: 'Pretendard Variable';
+  color: #333333;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+`;
+
+const Description = styled.Text`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px;
+  gap: 10px;
+  font-family: 'Pretendard Variable';
+  color: #acacac;
+  position: absolute;
+  left: 60px;
+  top: 25px;
+`;
+
+const FollowingTouchableContainer = styled.TouchableOpacity`
+  position: absolute;
+  top: 33%;
+  right: 0px;
+`;
+
+const Following = styled.Text`
+  color: #f09311;
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+
+  text-align: right;
 `;
 
 export default MypageComponent;

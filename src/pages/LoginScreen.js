@@ -135,6 +135,7 @@ export default function LoginScreen({navigation}) {
             placeholderTextColor="#a4a4a4"
             setData={setId}
             value={username}
+            autoCapitalize="none"
           />
           <LoginLabel>비밀번호</LoginLabel>
           <FocusedTextInputBorder
@@ -143,6 +144,7 @@ export default function LoginScreen({navigation}) {
             placeholderTextColor="#a4a4a4"
             setData={setPassword}
             value={password}
+            autoCapitalize="none"
           />
           <FindLoginPasswordContainer>
             <TouchableOpacity onPress={() => navigation.push('FindId')}>
