@@ -40,7 +40,7 @@ export const requestRegisterBlockedUser = async username => {
 };
 
 export const requestRemoveBlockUser = async username => {
-  const url = '/api/user/block/${username}';
+  const url = `/api/user/block/${username}`;
 
   return await jsonAPI.delete(url, config);
 };

@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
 import {FlatList, Text, View} from 'react-native';
-import {getBlockedUser, getFollower} from '../../services/MyPage';
+import {
+  getBlockedUser,
+  getFollower,
+  requestRegisterBlockedUser,
+  requestRemoveBlockUser,
+} from '../../services/MyPage';
 
 export const BlockUserScreen = ({navigation}) => {
   const [totalCount, setTotalCount] = useState(0);
@@ -78,6 +83,7 @@ export const BlockUserScreen = ({navigation}) => {
           renderItem={renderItem}
           keyExtractor={_ => _.username}
           onRefresh={onRefresh}
+          refreshing={refresh}
           onEndReached={() => {
             if (!isLast) {
               request();
@@ -116,7 +122,16 @@ const InnerContainer = styled.View`
   height: 100%;
 `;
 
-const Profile = ({username, description, profileURI, nickname}) => {
+const Profile = ({username, profileURI, nickname}) => {
+  const [isBlocked, setBlocked] = useState(true);
+  const requestDelete = async () => {
+    await requestRemoveBlockUser(username)
+      .then(res => setBlocked(false))
+      .catch(err => console.log(err.response));
+  };
+  const requestRegister = async () => {
+    await requestRegisterBlockedUser(username).then(res => setBlocked(true));
+  };
   const ProfileImg =
     profileURI !== undefined
       ? styled.Image`
@@ -136,12 +151,16 @@ const Profile = ({username, description, profileURI, nickname}) => {
       <ProfileTouchableContainer>
         <ProfileImg source={{uri: profileURI}} />
         <Nickname>{nickname}</Nickname>
-        <Description numberOfLines={1} ellipsizeMode={'tail'}>
-          {description}
-        </Description>
       </ProfileTouchableContainer>
-      <FollowingTouchableContainer>
-        <Following>{'차단해제'}</Following>
+      <FollowingTouchableContainer
+        onPress={() => {
+          if (isBlocked) {
+            requestDelete();
+          } else {
+            requestRegister();
+          }
+        }}>
+        <Following>{isBlocked ? '차단해제' : '차단'}</Following>
       </FollowingTouchableContainer>
     </SimpleProfile>
   );
@@ -160,7 +179,7 @@ const SimpleProfile = styled.View`
   margin: auto auto;
 `;
 
-const ProfileTouchableContainer = styled.TouchableOpacity`
+const ProfileTouchableContainer = styled.View`
   width: 70%;
 `;
 
