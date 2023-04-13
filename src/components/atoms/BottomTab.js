@@ -42,26 +42,9 @@ const IngredientsStackNavigator = () => {
         component={IngredientsScreen}
         options={{headerShown: false}}
       />
-
-      <IngredientsStack.Screen
-        name="Efficacy"
-        component={EfficacyScreen}
-        options={{headerShown: false}}
-      />
-      <IngredientsStack.Screen
-        name="EfficacyEdit"
-        component={EfficacyEditScreen}
-        options={{headerShown: false}}
-      />
       <IngredientsStack.Screen
         name="Prep"
         component={PrepScreen}
-        options={{headerShown: false}}
-      />
-
-      <IngredientsStack.Screen
-        name="PrepDetail"
-        component={PrepDetailScreen}
         options={{headerShown: false}}
       />
     </IngredientsStack.Navigator>
@@ -115,6 +98,19 @@ const BottomTab = () => {
         tabBarStyle: {
           paddingTop: 5,
           height: Platform.OS === 'ios' ? 80 : 67.2,
+          ...Platform.select({
+            ios: {
+              shadowColor: 'rgba(0,0,0)',
+              shadowOpacity: 0.23,
+              shadowOffset: {
+                width: 0,
+                height: -9.6,
+              },
+            },
+            android: {
+              elevation: 19,
+            },
+          }),
         },
       }}>
       <Tab.Screen

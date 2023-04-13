@@ -40,6 +40,9 @@ import {FollowingScreen} from './src/pages/myPage/FollowingScreen';
 import {BlockUserScreen} from './src/pages/myPage/BlockUserScreen';
 import FindIdScreen from './src/pages/login/find/FindIdScreen';
 import ReturnIdScreen from './src/pages/login/find/ReturnIdScreen';
+import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
+import EfficacyScreen from './src/pages/Ingredients/EfficacyScreen';
+import EfficacyEditScreen from './src/pages/Ingredients/EfficacyEditScreen';
 import {AppState, PermissionsAndroid} from 'react-native';
 import {NativeModules} from 'react-native';
 import {ReplyCommentScreen} from './src/pages/ReplyCommentScreen';
@@ -285,6 +288,21 @@ function App() {
           <Stack.Screen
             name="ReplyComment"
             component={ReplyCommentScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="PrepDetail"
+            component={PrepDetailScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Efficacy"
+            component={EfficacyScreen}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="EfficacyEdit"
+            component={EfficacyEditScreen}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
