@@ -5,7 +5,7 @@ const IngredientsInfo = props => {
   return (
     <IngredientsInfoContainer>
       <IngredientsInfoSection>
-        <IngredientsName>마늘</IngredientsName>
+        <IngredientsName>{props.ingredientName}</IngredientsName>
         <IngredientsCategory>분류: 향신료 | 채소</IngredientsCategory>
       </IngredientsInfoSection>
       {props.isEdit ? (

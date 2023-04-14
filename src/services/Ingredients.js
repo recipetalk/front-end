@@ -46,4 +46,9 @@ export const getTest = async ingredientId => {
 };
 // 식재료 손질법 상세 조회 | get | /api/board/ingredient/{ingredientId}/trimming/{trimmingId}
 
-// 효능 조회 | get | /api/board/ingredient/{ingredientId}/description/details
+// 효능 조회
+export const getEfficacy = async ingredientId => {
+  const url = `/api/board/ingredient/${ingredientId}/description/details`;
+
+  return await jsonAPI.get(url, config);
+};
