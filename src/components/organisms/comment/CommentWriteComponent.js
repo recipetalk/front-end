@@ -1,14 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
-import {Image, Platform, TouchableOpacity} from 'react-native';
+import {
+  Alert,
+  Image,
+  Platform,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import {registerComment} from '../../../services/Comment';
+import {useNavigation} from '@react-navigation/native';
+import {useToast} from 'react-native-toast-notifications';
 
 export const CommentWriteComponent = ({
-  value,
-  setValue,
-  enterAction,
+  boardId,
+  parentCommentId,
   isAbsolute = true,
+  onRefresh,
 }) => {
   const [canSend, setCanSend] = useState(false);
+  const [value, setValue] = useState('');
+  const navigation = useNavigation();
+  const toast = useToast();
 
   useEffect(() => {
     if (value.length > 0) {
@@ -18,11 +30,23 @@ export const CommentWriteComponent = ({
     }
   }, [value]);
 
+  const textInputRef = useRef();
+
+  const request = () => {
+    registerComment(boardId, value, parentCommentId).then(res => {
+      onRefresh();
+      setValue('');
+      textInputRef.current.blur();
+      setTimeout(() => toast.show('덧글이 정상적으로 등록되었습니다.'), 300);
+    });
+  };
+
   return (
     <Container isAbsolute={isAbsolute}>
       <CommentPart>
         <UserImage />
         <InputBox
+          ref={textInputRef}
           multiline
           value={value}
           onChangeText={text => setValue(text)}
@@ -31,7 +55,8 @@ export const CommentWriteComponent = ({
           placeholderTextColor={'#666666'}
         />
       </CommentPart>
-      <TouchableOpacity disabled={canSend}>
+
+      <TouchableOpacity disabled={!canSend} onPress={() => request()}>
         {canSend ? (
           <Image
             style={{width: 24, height: 24}}
@@ -52,15 +77,18 @@ const Container = styled.View`
   width: 100%;
   min-height: 50px;
   max-height: 100px;
-  ${props => (props.isAbsolute ? '  position: absolute;' : undefined)}
+  ${props =>
+    props.isAbsolute ? '  position: absolute;' : '  position: relative;'}
   bottom: 0px;
   background: #ffffff;
-  ${props => (props.isAbsolute ? '  border: 1px solid #e1e1e1;' : undefined)}
+  border-top-color: #e1e1e1;
+  border-top-width: 1px;
+  border-top-style: solid;
   padding-left: 5%;
   padding-right: 13%;
   padding-top: 5px;
   ${() =>
-    Platform.OS === 'ios' ? 'padding-bottom: 35px;' : 'padding-bottom: 5px;'}
+    Platform.OS === 'ios' ? 'padding-bottom: 5px;' : 'padding-bottom: 5px;'}
   align-items: center;
   justify-content: space-between;
   flex-direction: row;

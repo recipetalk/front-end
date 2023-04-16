@@ -1,20 +1,23 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {CommentComponent} from '../../organisms/comment/CommentComponent';
+import {getChildComment, getParentComment} from '../../../services/Comment';
+import {loadLoginFromStorage} from '../../../services/domain/AutoLogin';
 
-export const CommentListComponent = ({isReply}) => {
-  const data = [
-    {
-      id: 1,
-      username: '홍길동',
-      nickname: '홍길동',
-      description:
-        '간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요',
-      existChild: true,
-      details: isReply,
-      created_date: '2022.11.30',
-    },
-  ];
+export const CommentListComponent = ({
+  isReply,
+  boardId,
+  comment,
+  onRefresh,
+}) => {
+  const [loadUsername, setLoadUsername] = useState('');
+  useEffect(() => {
+    const setUsername = async () => {
+      const load = (await loadLoginFromStorage()).username;
+      setLoadUsername(load);
+    };
+    setUsername();
+  }, []);
 
   return (
     <Container>
@@ -24,14 +27,17 @@ export const CommentListComponent = ({isReply}) => {
           <CountLabel>{'545'}개의 댓글</CountLabel>
         </LabelPart>
       )}
-      {data.map(item => (
+      {comment.map(item => (
         <CommentComponent
-          created_date={item.created_date}
-          nickname={item.nickname}
-          username={item.username}
-          existChild={item.existChild}
+          created_date={item.createdDate}
+          profile={item.userProfile}
+          existChild={item.childExist}
           description={item.description}
           details={item.details}
+          isMine={loadUsername === item.userProfile.username}
+          commentId={item.commentId}
+          boardId={boardId}
+          onRefresh={onRefresh}
         />
       ))}
     </Container>

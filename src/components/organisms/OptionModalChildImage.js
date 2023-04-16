@@ -30,11 +30,11 @@ export const OptionModalChildImage = props => {
       {isClicked ? (
         <OptionModal
           items={props.items}
-          scrollable={false}
           width={150}
           setOpened={setClicked}
           x={x}
           y={y}
+          setCheckedItem={props.setCheckedItem}
         />
       ) : undefined}
     </View>

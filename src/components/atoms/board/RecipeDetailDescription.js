@@ -5,7 +5,7 @@ import LikeAndCommentNum from './LikeAndComment/LikeAndCommentNum';
 import RecipeQuantityLabel from './RecipeQuantityLabel';
 import ExpandableText from './ExpandableText';
 import PrepOrderComponent from '../../organisms/PrepOrderComponent';
-import {Platform, View} from 'react-native';
+import {Platform, RefreshControl, View} from 'react-native';
 import {IngredientList} from '../../organisms/Recipe/IngredientList';
 import {CommentListComponent} from '../../templates/board/CommentListComponent';
 
@@ -50,8 +50,10 @@ const Ingredients = [
 export default function RecipeDetailDescription({
   navigation,
   setChecked,
-  parentComment,
-  setParentComment,
+  commentRefresh,
+  comment,
+  setComment,
+  onRefresh,
 }) {
   const [isFirst, setFirst] = useState(false);
   const [isSecond, setSecond] = useState(false);
@@ -65,7 +67,13 @@ export default function RecipeDetailDescription({
   }, [isFirst, isSecond]);
 
   return (
-    <RecipeDetailDescriptionContainer>
+    <RecipeDetailDescriptionContainer
+      refreshControl={
+        <RefreshControl
+          refreshing={commentRefresh}
+          onRefresh={() => onRefresh()}
+        />
+      }>
       <ThumbnailImg />
       <SimpleProfileWithDescriptionContainer>
         <SimpleProfileWithDescription
@@ -136,7 +144,13 @@ export default function RecipeDetailDescription({
         </PrepOrderContainer>
       ) : undefined}
       {!isSecond && !isFirst ? (
-        <CommentListComponent navigation={navigation} isReply={false} />
+        <CommentListComponent
+          isReply={false}
+          boardId={1}
+          comment={comment}
+          setComment={setComment}
+          onRefresh={onRefresh}
+        />
       ) : undefined}
     </RecipeDetailDescriptionContainer>
   );

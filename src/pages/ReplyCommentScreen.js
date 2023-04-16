@@ -1,13 +1,68 @@
 import styled from 'styled-components/native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationHeader} from '../components/organisms/mypage/NavigationHeader';
 import {CommentComponent} from '../components/organisms/comment/CommentComponent';
-import {CommentListComponent} from '../components/templates/board/CommentListComponent';
 import {CommentWriteComponent} from '../components/organisms/comment/CommentWriteComponent';
-import {View} from 'react-native';
+import {ActivityIndicator, FlatList} from 'react-native';
+import {getChildComment} from '../services/Comment';
+import {loadLoginFromStorage} from '../services/domain/AutoLogin';
 
 export const ReplyCommentScreen = ({navigation, route}) => {
-  const [writeComment, setWriteComment] = useState('');
+  const [commentRefresh, setCommentRefresh] = useState(false);
+  const [comment, setComment] = useState([]);
+  const [pagingNum, setPagingNum] = useState(0);
+  const [last, setLast] = useState(true);
+  const [loadUsername, setLoadUsername] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const setUsername = async () => {
+      const load = (await loadLoginFromStorage()).username;
+      setLoadUsername(load);
+    };
+    setLoading(() => true);
+    setUsername();
+    getChildComment(route.params.boardId, route.params.parentCommentId, 0).then(
+      res => {
+        const data = JSON.parse(res.request._response);
+        setComment(data.content);
+        setPagingNum(1);
+        setLast(data.last);
+        setLoading(() => false);
+      },
+    );
+  }, []);
+
+  const request = () => {
+    setLoading(true);
+    getChildComment(
+      route.params.boardId,
+      route.params.parentCommentId,
+      pagingNum,
+    ).then(res => {
+      const data = JSON.parse(res.request._response);
+      setComment(comment => comment.concat(data.content));
+      setPagingNum(pagingNum => pagingNum++);
+      setLast(data.last);
+      setLoading(false);
+    });
+  };
+
+  const onRefresh = async () => {
+    setCommentRefresh(true);
+    await getChildComment(
+      route.params.boardId,
+      route.params.parentCommentId,
+      0,
+    ).then(res => {
+      const data = JSON.parse(res.request._response);
+      setComment(() => data.content);
+      setPagingNum(() => 1);
+      setLast(data.last);
+      setCommentRefresh(false);
+    });
+  };
+
   return (
     <Container>
       <NavigationHeader title={'전체댓글'} navigation={navigation} />
@@ -16,28 +71,68 @@ export const ReplyCommentScreen = ({navigation, route}) => {
           created_date={route.params.created_date}
           existChild={false}
           description={route.params.description}
-          nickname={route.params.nickname}
-          username={route.params.username}
+          profile={route.params.profile}
           details={true}
         />
       </ParentComment>
-      <View style={{paddingLeft: '2%', backgroundColor: 'white'}}>
-        <CommentWriteComponent
-          value={writeComment}
-          setValue={setWriteComment}
-          isAbsolute={false}
-        />
-      </View>
-      <ChildPart>
-        <CommentListComponent isReply={true} />
-      </ChildPart>
+      <HorizontalBar />
+      <FlatList
+        style={{
+          backgroundColor: 'white',
+          paddingLeft: '7%',
+          paddingRight: '7%',
+          marginTop: '5%',
+          height: '100%',
+        }}
+        keyExtractor={_ => _.commentId}
+        onRefresh={onRefresh}
+        refreshing={commentRefresh}
+        onEndReached={() => {
+          if (loading) {
+            return;
+          }
+          if (!last) {
+            request();
+          }
+        }}
+        onEndReachedThreshold={0.6}
+        data={comment}
+        renderItem={({item}) => (
+          <CommentComponent
+            created_date={item.createdDate}
+            profile={item.userProfile}
+            existChild={item.childExist}
+            description={item.description}
+            details={true}
+            isMine={loadUsername === item.userProfile.username}
+            commentId={item.commentId}
+            boardId={route.params.boardId}
+            onRefresh={onRefresh}
+          />
+        )}
+        ListFooterComponent={loading && <ActivityIndicator />}
+      />
+      <CommentWriteComponent
+        isAbsolute={false}
+        boardId={route.params.boardId}
+        parentCommentId={route.params.parentCommentId}
+        onRefresh={onRefresh}
+      />
     </Container>
   );
 };
 
+const HorizontalBar = styled.View`
+  width: 100%;
+  height: 1px;
+  background: #e1e1e1;
+`;
+
 const Container = styled.SafeAreaView`
   width: 100%;
   height: 100%;
+  background: white;
+  position: relative;
 `;
 
 const ParentComment = styled.View`
@@ -46,9 +141,10 @@ const ParentComment = styled.View`
   padding-right: 5%;
   padding-top: 10px;
   padding-bottom: 15px;
+  background: #f5f5f5;
 `;
 
-const ChildPart = styled.View`
+const ChildPart = styled.ScrollView`
   width: 100%;
   height: 100%;
   padding-left: 3%;
