@@ -33,7 +33,7 @@ export const FollowerScreen = ({navigation, route}) => {
         if (follower.length === 0) {
           setFollower(json.content);
         } else {
-          setFollower(data => [data, ...json.content]);
+          setFollower(data => data.concat(json.content));
         }
         setPagingNum(pagingNum => pagingNum++);
       })
@@ -153,9 +153,6 @@ const Profile = ({username, description, profileURI, nickname}) => {
           {description}
         </Description>
       </ProfileTouchableContainer>
-      <FollowingTouchableContainer>
-        <Following>{'삭제'}</Following>
-      </FollowingTouchableContainer>
     </SimpleProfile>
   );
 };

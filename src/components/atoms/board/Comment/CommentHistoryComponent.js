@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import {Image, Text} from 'react-native';
+import {CalanderPrint} from '../../../../utils/CalanderPrint';
 
 const CommentHistoryComponent = ({navigation, item}) => {
   return (
     <Container>
       <InnerContainer>
         <DatePart>
-          <Label>{calanderPrint(item.createdDate)}</Label>
-          {item.isModified ? <Label>, 수정됨</Label> : undefined}
+          <Label>{CalanderPrint(item.createdDate)}</Label>
         </DatePart>
         <TitlePart>
           <TitleLabel ellipsizeMode={'tail'} numberOfLines={1}>
@@ -46,9 +46,6 @@ const determineNavigation = boardSort => {
   }
 };
 
-const calanderPrint = time => {
-  return time.split('T')[0].replaceAll('-', '.');
-};
 
 const HorizontalBar = styled.View`
   width: 100%;

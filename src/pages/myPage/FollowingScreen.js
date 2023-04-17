@@ -32,7 +32,7 @@ export const FollowingScreen = ({navigation, route}) => {
         if (following.length === 0) {
           setFollowing(json.content);
         } else {
-          setFollowing(data => [data, ...json.content]);
+          setFollowing(data => data.concat(json.content));
         }
         setPagingNum(pagingNum => pagingNum++);
       })
@@ -159,9 +159,6 @@ const Profile = ({username, description, profileURI, nickname}) => {
           {description}
         </Description>
       </ProfileTouchableContainer>
-      <FollowingTouchableContainer>
-        <Following>{isFollowing ? '팔로잉취소' : '팔로잉'}</Following>
-      </FollowingTouchableContainer>
     </SimpleProfile>
   );
 };
