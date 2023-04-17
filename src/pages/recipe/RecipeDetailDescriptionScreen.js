@@ -12,6 +12,7 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
   const [comment, setComment] = useState([]);
   const [commentPagingNum, setCommentPagingNum] = useState(0);
   const [isLast, setLast] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     getParentComment(boardId, commentPagingNum).then(res => {
@@ -30,6 +31,17 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
       setCommentPagingNum(() => 1);
       setLast(() => data.last);
       setCommentRefresh(false);
+    });
+  };
+
+  const onRequest = async () => {
+    setLoading(() => true);
+    await getParentComment(1, commentPagingNum).then(res => {
+      const data = JSON.parse(res.request._response);
+      setComment(comment => comment.concat(data.content));
+      setCommentPagingNum(num => num + 1);
+      setLast(() => data.last);
+      setLoading(() => false);
     });
   };
 
@@ -56,6 +68,9 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
         comment={comment}
         setComment={setComment}
         onRefresh={onRefresh}
+        onRequest={onRequest}
+        isLast={isLast}
+        isLoading={isLoading}
       />
       {Checked ? (
         <CommentWriteComponent

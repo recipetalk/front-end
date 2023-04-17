@@ -4,6 +4,7 @@ import RadioButton from '../../components/atoms/board/RadioButton';
 import DropDownPickerComponent from '../../components/molecules/DropDownPickerComponent';
 import HList from '../../components/organisms/Home/HList';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
+import {FlatList} from 'react-native';
 
 export const MyRecipeScreen = ({navigation}) => {
   const [firstClicked, setFirstClicked] = useState({id: 1, title: '최신'});
@@ -53,27 +54,40 @@ export const MyRecipeScreen = ({navigation}) => {
               width="110px"
               items={oneItem}
               minHeight={'25px'}
+              zIndex={1000}
+              zIndexInverse={3000}
             />
-          </DropdownContainer>
-          <DropdownContainer>
             <DropDownPickerComponent
               width="85px"
               items={twoItem}
               minHeight={'25px'}
+              zIndex={2000}
+              zIndexInverse={2000}
             />
           </DropdownContainer>
         </FilterPart>
         <HListView>
-          {dummy.map((v, i) => {
-            return <HList key={i} value={v} />;
-          })}
+          <FlatList
+            contentContainerStyle={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+            }}
+            data={dummy}
+            renderItem={({item, i}) => {
+              return <HList key={i} value={item} />;
+            }}
+          />
         </HListView>
       </InnerContainer>
     </Container>
   );
 };
 
-const DropdownContainer = styled.View``;
+const DropdownContainer = styled.View`
+  flex-direction: row;
+  gap: 10px;
+`;
 
 const Container = styled.SafeAreaView`
   width: 100%;
@@ -81,7 +95,7 @@ const Container = styled.SafeAreaView`
   background: white;
 `;
 
-const InnerContainer = styled.ScrollView`
+const InnerContainer = styled.View`
   padding-left: 5%;
   padding-right: 5%;
   width: 100%;
@@ -91,7 +105,7 @@ const InnerContainer = styled.ScrollView`
 const HListView = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
-
+  z-index: -1;
   justify-content: space-between;
 `;
 

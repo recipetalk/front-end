@@ -5,7 +5,7 @@ import LikeAndCommentNum from './LikeAndComment/LikeAndCommentNum';
 import RecipeQuantityLabel from './RecipeQuantityLabel';
 import ExpandableText from './ExpandableText';
 import PrepOrderComponent from '../../organisms/PrepOrderComponent';
-import {Platform, RefreshControl, View} from 'react-native';
+import {FlatList, Platform, RefreshControl, View} from 'react-native';
 import {IngredientList} from '../../organisms/Recipe/IngredientList';
 import {CommentListComponent} from '../../templates/board/CommentListComponent';
 
@@ -54,6 +54,9 @@ export default function RecipeDetailDescription({
   comment,
   setComment,
   onRefresh,
+  onRequest,
+  isLoading,
+  isLast,
 }) {
   const [isFirst, setFirst] = useState(false);
   const [isSecond, setSecond] = useState(false);
@@ -150,6 +153,10 @@ export default function RecipeDetailDescription({
           comment={comment}
           setComment={setComment}
           onRefresh={onRefresh}
+          isLast={isLast}
+          onRequest={onRequest}
+          isLoading={isLoading}
+          commentRefresh={commentRefresh}
         />
       ) : undefined}
     </RecipeDetailDescriptionContainer>
@@ -208,9 +215,17 @@ const NavigationLabel = styled.Text`
   color: ${props => (props.value ? '#F09311' : '#333333')};
 `;
 
-const RecipeDetailDescriptionContainer = styled.ScrollView`
-  height: 100%;
-`;
+const RecipeDetailDescriptionContainer = props => {
+  return (
+    <FlatList
+      data={[]}
+      renderItem={null}
+      ListEmptyComponent={null}
+      keyExtractor={() => {}}
+      ListHeaderComponent={<>{props.children}</>}
+    />
+  );
+};
 
 const ThumbnailImg = styled.View`
   height: 360px;

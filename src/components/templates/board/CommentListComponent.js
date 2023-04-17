@@ -1,14 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {CommentComponent} from '../../organisms/comment/CommentComponent';
-import {getChildComment, getParentComment} from '../../../services/Comment';
 import {loadLoginFromStorage} from '../../../services/domain/AutoLogin';
+import {FlatList} from 'react-native';
 
 export const CommentListComponent = ({
   isReply,
   boardId,
   comment,
   onRefresh,
+  onRequest,
+  isLoading,
+  isLast,
+  commentRefresh,
 }) => {
   const [loadUsername, setLoadUsername] = useState('');
   useEffect(() => {
@@ -27,19 +31,31 @@ export const CommentListComponent = ({
           <CountLabel>{'545'}개의 댓글</CountLabel>
         </LabelPart>
       )}
-      {comment.map(item => (
-        <CommentComponent
-          created_date={item.createdDate}
-          profile={item.userProfile}
-          existChild={item.childExist}
-          description={item.description}
-          details={item.details}
-          isMine={loadUsername === item.userProfile.username}
-          commentId={item.commentId}
-          boardId={boardId}
-          onRefresh={onRefresh}
-        />
-      ))}
+
+      <FlatList
+        data={comment}
+        refreshing={commentRefresh}
+        onRefresh={onRefresh}
+        onEndReachedThreshold={0.6}
+        keyExtractor={_ => _.commentId}
+        onEndReached={() => {
+          if (isLoading) {
+            return;
+          }
+          if (!isLast) {
+            onRequest();
+          }
+        }}
+        renderItem={({item}) => (
+          <CommentComponent
+            comment={item}
+            isMine={loadUsername === item.userProfile.username}
+            boardId={boardId}
+            onRefresh={onRefresh}
+            existChild={item.childExist}
+          />
+        )}
+      />
     </Container>
   );
 };

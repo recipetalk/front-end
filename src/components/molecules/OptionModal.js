@@ -11,6 +11,7 @@ export const OptionModal = ({
   x,
   y,
   height = 'auto',
+  scrollable= false,
 }) => {
   const [isClicked, setClicked] = useState(false);
   const [item, checkItem] = useState(defaultItem);
@@ -28,6 +29,7 @@ export const OptionModal = ({
           y={y}
           data={items}
           height={height}
+          scrollEnabled={scrollable}
           renderItem={({item}) => (
             <Item>
               <TouchableOpacity

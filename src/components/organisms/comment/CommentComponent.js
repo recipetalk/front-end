@@ -7,32 +7,27 @@ import {OptionModalChildImage} from '../OptionModalChildImage';
 import {CalanderPrint} from '../../../utils/CalanderPrint';
 import AlertYesNoButton from '../../molecules/AlertYesNoButton';
 import {removeComment} from '../../../services/Comment';
-import toast from 'react-native-toast-notifications/src/toast';
 import {useToast} from 'react-native-toast-notifications';
 
 export const CommentComponent = ({
-  profile,
-  created_date,
-  existChild,
-  description,
   details = false,
   isMine,
-  commentId,
   boardId,
   onRefresh,
+  comment,
+  existChild,
 }) => {
   const navigation = useNavigation();
-  const [checkedItem, setCheckedItem] = useState({
-    label: '',
-    value: '',
-    onPress: () => {},
-  });
+  const [checkedItem, setCheckedItem] = useState(undefined);
   const [isAlert, setAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
+  const [alertText, setAlertText] = useState('');
   const toast = useToast();
 
   useEffect(() => {
-    checkedItem.onPress();
+    if (checkedItem !== undefined) {
+      checkedItem.onPress();
+    }
   }, [checkedItem]);
 
   const items = !details
@@ -42,10 +37,10 @@ export const CommentComponent = ({
           value: 'commentReply',
           onPress: () =>
             navigation.push('ReplyComment', {
-              profile: profile,
-              created_date: created_date,
-              description: description,
-              parentCommentId: commentId,
+              profile: comment.profile,
+              created_date: comment.created_date,
+              description: comment.description,
+              parentCommentId: comment.commentId,
               boardId: boardId,
             }),
         },
@@ -85,49 +80,77 @@ export const CommentComponent = ({
         },
       ];
 
-  const isMines = [
-    {
-      label: '댓글 삭제하기',
-      value: 'delete',
-      onPress: () => {
-        setAlert(true);
-        setAlertTitle('정말 삭제하시겠습니까?');
-      },
-    },
-  ];
+  const isMines = !details
+    ? [
+        {
+          label: '댓글 삭제하기',
+          value: 'delete',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 삭제하시겠습니까?');
+            setAlertText('삭제하면 복구가 불가능합니다.');
+          },
+        },
+        {
+          label: '대댓글 작성하기',
+          value: 'commentReply',
+          onPress: () =>
+            navigation.push('ReplyComment', {
+              profile: comment.userProfile,
+              created_date: comment.createdDate,
+              description: comment.description,
+              parentCommentId: comment.commentId,
+              boardId: boardId,
+            }),
+        },
+      ]
+    : [
+        {
+          label: '댓글 삭제하기',
+          value: 'delete',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 삭제하시겠습니까?');
+            setAlertText('삭제하면 복구가 불가능합니다.');
+          },
+        },
+      ];
 
   return (
     <Container>
       <TouchableOpacity
+        disabled={comment.userProfile.username === null}
         onPress={() =>
-          navigation.push('ProfileScreen', {username: profile.username})
+          navigation.push('ProfileScreen', {
+            username: comment.userProfile.username,
+          })
         }>
         <UserImage />
       </TouchableOpacity>
       <CommentPart>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <NicknameAndCreatedDatePart>
-            <Nickname>{profile.nickname}</Nickname>
+            <Nickname>{comment.userProfile.nickname}</Nickname>
             <Nickname> · </Nickname>
-            <Nickname>{CalanderPrint(created_date)}</Nickname>
+            <Nickname>{CalanderPrint(comment.createdDate)}</Nickname>
           </NicknameAndCreatedDatePart>
-          <OptionModalChildImage
-            items={isMine ? isMines : items}
-            setCheckedItem={setCheckedItem}>
-            <Image source={require('../../../assets/images/More.png')} />
-          </OptionModalChildImage>
+          {comment.userProfile.username === null ? undefined : (
+            <OptionModalChildImage
+              items={isMine ? isMines : items}
+              setCheckedItem={setCheckedItem}>
+              <Image source={require('../../../assets/images/More.png')} />
+            </OptionModalChildImage>
+          )}
         </View>
         <Description numberOfLines={details ? 0 : 4} ellipsizeMode={'tail'}>
-          {description}
+          {comment.description}
         </Description>
         {existChild ? (
           <GoToReplyPart
             onPress={() =>
               navigation.push('ReplyComment', {
-                profile: profile,
-                created_date: created_date,
-                description: description,
-                parentCommentId: commentId,
+                comment: comment,
+                parentCommentId: comment.commentId,
                 boardId: boardId,
               })
             }>
@@ -140,21 +163,21 @@ export const CommentComponent = ({
           title={alertTitle}
           setAlert={setAlert}
           yesButtonText={checkedItem.label}
+          text={alertText}
           onPress={() => {
             if (checkedItem.value === 'delete') {
-              removeComment(boardId, commentId)
+              removeComment(boardId, comment.commentId)
                 .then(res => {
                   setAlert(() => false);
-                  setTimeout(toast.show('댓글이 삭제되었습니다.'), 300);
+                  setTimeout(() => toast.show('댓글이 삭제되었습니다.'), 300);
                   onRefresh();
                 })
                 .catch(err => toast.show('댓글이 삭제되지 않았습니다.'));
             } else if (checkedItem.value === 'report') {
-              console.log('삭제 시퀀스');
+              console.log('신고 시퀀스');
             } else if (checkedItem.value === 'userBlock') {
               console.log('차단 시퀀스');
             }
-
           }}
         />
       ) : undefined}
@@ -203,6 +226,7 @@ const Nickname = styled.Text`
 
 const GoToReplyPart = styled.TouchableOpacity`
   margin-top: 10px;
+  width: 90px;
 `;
 
 const ReplyLabel = styled.Text`

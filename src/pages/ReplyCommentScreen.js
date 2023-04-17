@@ -68,10 +68,8 @@ export const ReplyCommentScreen = ({navigation, route}) => {
       <NavigationHeader title={'전체댓글'} navigation={navigation} />
       <ParentComment>
         <CommentComponent
-          created_date={route.params.created_date}
           existChild={false}
-          description={route.params.description}
-          profile={route.params.profile}
+          comment={route.params.comment}
           details={true}
         />
       </ParentComment>
@@ -99,25 +97,23 @@ export const ReplyCommentScreen = ({navigation, route}) => {
         data={comment}
         renderItem={({item}) => (
           <CommentComponent
-            created_date={item.createdDate}
-            profile={item.userProfile}
-            existChild={item.childExist}
-            description={item.description}
+            comment={item}
             details={true}
             isMine={loadUsername === item.userProfile.username}
-            commentId={item.commentId}
             boardId={route.params.boardId}
             onRefresh={onRefresh}
           />
         )}
         ListFooterComponent={loading && <ActivityIndicator />}
       />
-      <CommentWriteComponent
-        isAbsolute={false}
-        boardId={route.params.boardId}
-        parentCommentId={route.params.parentCommentId}
-        onRefresh={onRefresh}
-      />
+      {route.params.comment.userProfile.username !== null ? (
+        <CommentWriteComponent
+          isAbsolute={false}
+          boardId={route.params.boardId}
+          parentCommentId={route.params.parentCommentId}
+          onRefresh={onRefresh}
+        />
+      ) : undefined}
     </Container>
   );
 };
