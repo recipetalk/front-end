@@ -2,21 +2,18 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 
-const PrepOrderComponent = ({num}) => {
+const PrepOrderComponent = props => {
+  console.log('11', props);
   const navigation = useNavigation();
 
   return (
     <PrepOrderItem>
       <NumberPart>
-        <NumberText>{num}</NumberText>
+        <NumberText>{props.value.trimmingSeq}</NumberText>
       </NumberPart>
       <InfoPart>
-        <TextPart>
-          {`2인분기준으로조리했으며 계랑은 밥숟가락과
-종이컵입니다. 2인분기준으로조리했으며 계랑은 밥숟가락과 종이컵입니다. 2인분기준으로조리했으며 계랑은 밥숟가락과 종이컵입니다.`}
-        </TextPart>
-
-        <ImagePart />
+        <TextPart>{props.value.description}</TextPart>
+        <ImagePart source={{url: `${props.value.imgUri}`}} />
         <TouchContainer onPress={() => navigation.push('SequenceDetailScreen')}>
           <MorePart>
             <MoreImg source={require('../../assets/images/Find_g.png')} />
@@ -71,7 +68,7 @@ const TextPart = styled.Text`
   color: #666666;
 `;
 
-const ImagePart = styled.View`
+const ImagePart = styled.Image`
   width: 310px;
   height: 140px;
   background-color: gray;

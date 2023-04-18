@@ -5,13 +5,13 @@ import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
 
 const EfficacyComponent = () => {
-  const [info, setInfo] = useState({});
+  const [efficacyInfo, setEfficacyInfo] = useState({});
 
   useEffect(() => {
     // TODO :: ingredientId 동적으로
     getEfficacy(1)
       .then(res => {
-        setInfo(res.data);
+        setEfficacyInfo(res.data);
       })
       .catch(error => console.error(error));
   }, []);
@@ -24,10 +24,13 @@ const EfficacyComponent = () => {
         btnTextValue=""
         screen="EfficacyEdit"
       />
-      <IngredientsInfo ingredientName={info.ingredientName} isEdit={false} />
+      <IngredientsInfo
+        ingredientName={efficacyInfo.ingredientName}
+        isEdit={false}
+      />
       <EfficacyInfoContainer>
         <EfficacyTitleText>효능</EfficacyTitleText>
-        <EfficacyContentText>{info.description}</EfficacyContentText>
+        <EfficacyContentText>{efficacyInfo.description}</EfficacyContentText>
       </EfficacyInfoContainer>
     </>
   );

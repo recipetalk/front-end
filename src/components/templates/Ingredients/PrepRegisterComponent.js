@@ -6,13 +6,14 @@ import {addRowIngredientTrimming} from '../../../services/Ingredients';
 import {addEmptyPrep, addPrep} from '../../../store/Ingredients/PrepSlice';
 import Line from '../../atoms/Line';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
-import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
+import PrepIntro from '../../organisms/Ingredients/PrepIntro';
 import PrepOrderItem from '../../organisms/Ingredients/PrepOrderItem';
 
 const PrepRegisterComponent = () => {
   const dispatch = useDispatch();
   const prepResult = useSelector(state => state.prep);
   console.log(`prepResult is ${JSON.stringify(prepResult)}`);
+
   const [prepInfo, setPrepInfo] = useState({
     title: '',
     desc: '',
@@ -30,6 +31,7 @@ const PrepRegisterComponent = () => {
 
     dispatch(addEmptyPrep());
   };
+
   const endHandler = () => {
     setItemList([...itemList, itemData]);
   };
@@ -59,7 +61,7 @@ const PrepRegisterComponent = () => {
 
     addRowIngredientTrimming(itemList)
       .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .catch(err => console.log(err.response));
     // addIngredientTrimming({
     //   ingredientId: 1,
     //   title: prepInfo.title,
@@ -74,23 +76,7 @@ const PrepRegisterComponent = () => {
     <>
       <IngredientsHeader title="손질법" isTitleOnly={true} />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <IngredientsInfo isEdit={true} />
-
-        <PrepIntro>
-          <TitleInput
-            placeholder={'제목'}
-            multiline={true}
-            value={prepInfo.title}
-            onChangeText={res => setPrepInfo({...prepInfo, title: res})}
-          />
-          <PrepInput
-            placeholder={`나만의 손질법을 소개해주세요.
-예) 자취 8년차 언제 먹어도 질리지 않는 맛있는 된장찌개!`}
-            multiline={true}
-            value={prepInfo.desc}
-            onChangeText={res => setPrepInfo({...prepInfo, desc: res})}
-          />
-        </PrepIntro>
+        <PrepIntro state={prepInfo} setState={setPrepInfo} />
         <Line />
 
         <PrepOrderContainer>
@@ -129,32 +115,6 @@ const PrepRegisterComponent = () => {
     </>
   );
 };
-
-const PrepIntro = styled.View`
-  padding: 18px;
-`;
-
-const Title = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  font-family: 'Pretendard Variable';
-
-  color: #a4a4a4;
-  margin-bottom: 10px;
-`;
-const TitleInput = styled.TextInput`
-  width: 100%;
-  margin-bottom: 10px;
-  font-family: 'Pretendard Variable';
-`;
-
-const PrepInput = styled.TextInput`
-  width: 100%;
-  height: 100px;
-  margin-bottom: 20px;
-  font-family: 'Pretendard Variable';
-`;
 
 const PrepOrderContainer = styled.View`
   margin-bottom: 20px;

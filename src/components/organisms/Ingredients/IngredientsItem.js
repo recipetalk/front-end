@@ -2,9 +2,21 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
+import {OptionModalChildImage} from '../OptionModalChildImage';
 
 const IngredientsItem = props => {
   const navigation = useNavigation();
+
+  const items = [
+    {
+      label: '수정',
+      value: 'update',
+    },
+    {
+      label: '재료 삭제',
+      value: 'delete',
+    },
+  ];
 
   return props.item !== undefined ? (
     <IngredientsItemContainer>
@@ -16,7 +28,9 @@ const IngredientsItem = props => {
           </Amount>
         </IngredientsItemInfo>
         <TouchContainer>
-          <Image source={require('../../../assets/images/More.png')} />
+          <OptionModalChildImage items={items}>
+            <Image source={require('../../../assets/images/More.png')} />
+          </OptionModalChildImage>
         </TouchContainer>
       </Header>
 

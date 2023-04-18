@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
+import {getEfficacy, getIngredientsPrep} from '../../../services/Ingredients';
 import Line from '../../atoms/Line';
 import DList from '../../organisms/Home/DList';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
@@ -8,27 +9,47 @@ import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
 
 const PrepComponent = () => {
   const navigation = useNavigation();
+  const [efficacyInfo, setEfficacyInfo] = useState({});
+  const [ingredientsPrepInfo, setIngredientsPrepInfo] = useState([]);
+
+  useEffect(() => {
+    // TODO :: ingredientId 동적으로
+    getEfficacy(1)
+      .then(res => {
+        setEfficacyInfo(res.data);
+      })
+      .catch(error => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    getIngredientsPrep(1)
+      .then(res => setIngredientsPrepInfo(res.data.content))
+      .catch(error => console.error(error.response));
+  }, []);
 
   return (
     <PrepComponentContainer>
       <IngredientsHeader title="손질법" />
-      <IngredientsInfo />
+      <IngredientsInfo
+        ingredientName={efficacyInfo.ingredientName}
+        isEdit={false}
+      />
 
       <ScrollViewContainer showsVerticalScrollIndicator={false}>
         <Line />
         <Header>
-          <TitleHighlightText>마늘</TitleHighlightText>
+          <TitleHighlightText>{efficacyInfo.ingredientName}</TitleHighlightText>
           <TitleText> 손질법</TitleText>
         </Header>
-        {/* {[1, 2, 3, 4, 5].map((v, i) => {
+        {ingredientsPrepInfo.map((item, index) => {
           return (
             <TouchContainer
-              key={i}
+              key={index}
               onPress={() => navigation.navigate('PrepDetail')}>
-              <DList />
+              <DList value={item} />
             </TouchContainer>
           );
-        })} */}
+        })}
       </ScrollViewContainer>
     </PrepComponentContainer>
   );

@@ -11,6 +11,33 @@ import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
 import PrepOrderComponent from '../../organisms/PrepOrderComponent';
 
 const PrepDetailComponent = () => {
+  const dummy = {
+    description: '식재료 손질법 설명',
+    trimmingRows: [
+      {
+        description: '식재료 손질순서 1번에 대한 1번 사진 설명',
+        imgUri:
+          'https://recipe-prod-s3.s3.ap-northeast-2.amazonaws.com/img/ingredient/trimming/row/0f9cac8c-078a-49b2-8929-daa9bc384dc0forImg.jpg',
+        trimmingSeq: 1,
+        trimmingSubSeq: 1,
+      },
+      {
+        description: '식재료 손질순서 1번에 대한 2번 사진 설명',
+        imgUri:
+          'https://recipe-prod-s3.s3.ap-northeast-2.amazonaws.com/img/ingredient/trimming/row/6bcdcf11-834a-4516-85d7-863bd862e200forImg.jpg',
+        trimmingSeq: 1,
+        trimmingSubSeq: 2,
+      },
+      {
+        description: '식재료 손질순서 2번에 대한 1번 사진 설명',
+        imgUri:
+          'https://recipe-prod-s3.s3.ap-northeast-2.amazonaws.com/img/ingredient/trimming/row/129dafac-9b5d-426e-9a47-b8ace32b5d0bforImg.jpg',
+        trimmingSeq: 2,
+        trimmingSubSeq: 1,
+      },
+    ],
+  };
+
   return (
     <>
       <IngredientsHeader
@@ -52,8 +79,9 @@ const PrepDetailComponent = () => {
 
         <PrepOrderContainer>
           <PrepOrderTitle>손질 순서</PrepOrderTitle>
-          {[1, 2, 3, 4, 5].map(i => {
-            return <PrepOrderComponent num={i} key={i} />;
+
+          {dummy.trimmingRows.map((item, index) => {
+            return <PrepOrderComponent value={item} key={index} />;
           })}
         </PrepOrderContainer>
       </ScrollView>

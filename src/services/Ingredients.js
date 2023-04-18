@@ -20,14 +20,13 @@ export const addIngredientTrimming = async ingredientInfo => {
   return await multiPartAPI.post(url, body, config);
 };
 
-// 식재료 손질법 행 등록 | post | /api/board/ingredient/{ingredientId}/trimming/{trimmingId}
+// 식재료 손질법 행 등록
 export const addRowIngredientTrimming = async itemList => {
-  const url = '/api/board/ingredient/1/trimming/2';
+  const url = '/api/board/ingredient/1/trimming/1';
 
   const body = new FormData();
-  body.append('dtos', {
-    dtos: itemList,
-  });
+  body.append('description', '1111');
+  body.append('trimmingSeq', '2222');
 
   return await multiPartAPI.post(url, body, config);
 };
@@ -38,11 +37,11 @@ export const addRowIngredientTrimming = async itemList => {
 
 // 식재료 손질법 삭제 | delete
 
-// 식재료 통한 식재료 손질법 조회 | get | /api/board/ingredient/{ingredientId}/trimming
-export const getTest = async ingredientId => {
-  const url = `/api/board/ingredient/${ingredientId}/trimming`;
+// 식재료 통한 식재료 손질법 조회
+export const getIngredientsPrep = async ingredientId => {
+  const url = `/api/board/ingredient/${ingredientId}/trimming?page=0`;
 
-  return await jsonAPI.post(url, config);
+  return await jsonAPI.get(url, config);
 };
 // 식재료 손질법 상세 조회 | get | /api/board/ingredient/{ingredientId}/trimming/{trimmingId}
 
