@@ -11,6 +11,7 @@ import {
 const MypageScreen = ({navigation}) => {
   const [alert, setAlert] = useState(false);
   const logoutFunction = async () => {
+    setAlert(() => false);
     let user = await loadLoginFromStorage();
     await saveLoginToStorage(user.username, user.password, false);
     await navigation.reset({routes: [{name: 'Login'}]});

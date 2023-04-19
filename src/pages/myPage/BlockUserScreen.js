@@ -1,61 +1,112 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
-import {View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
+import {
+  getBlockedUser,
+  getFollower,
+  requestRegisterBlockedUser,
+  requestRemoveBlockUser,
+} from '../../services/MyPage';
 
 export const BlockUserScreen = ({navigation}) => {
-  const dummy = [
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-  ];
+  const [totalCount, setTotalCount] = useState(0);
+  const [blockedUser, setBlockedUser] = useState([]);
+  const [pagingNum, setPagingNum] = useState(0);
+  const [isLast, setLast] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    getBlockedUser(pagingNum)
+      .then(res => {
+        const json = JSON.parse(res.request._response);
+        console.log(json);
+        setPagingNum(pagingNum => pagingNum++);
+        setLast(json.last);
+        setBlockedUser(json.content);
+        setTotalCount(json.totalElements);
+      })
+      .catch(err => err.console.log(err));
+  }, []);
+
+  const request = async () => {
+    await getBlockedUser(pagingNum)
+      .then(res => {
+        const json = JSON.parse(res.request._response);
+        setLast(() => json.last);
+        if (blockedUser.length === 0) {
+          setBlockedUser(json.content);
+        } else {
+          setBlockedUser(data => [data, ...json.content]);
+        }
+        setPagingNum(pagingNum => pagingNum++);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const onRefresh = async () => {
+    if (!refresh) {
+      setRefresh(() => true);
+      setPagingNum(() => 0);
+      await getBlockedUser(pagingNum)
+        .then(res => {
+          const json = JSON.parse(res.request._response);
+          setLast(() => json.last);
+          setBlockedUser(json.content);
+          setPagingNum(pagingNum => pagingNum++);
+        })
+        .catch(err => console.log(err));
+      setTimeout(() => setRefresh(false), 1000);
+    }
+  };
+
   return (
     <Container>
       <NavigationHeader title={'차단 사용자 목록'} navigation={navigation} />
       <HorizontalBar />
-      <InnerContainer>
-        {dummy.map((k, v) => {
-          return (
-            <View style={{gap: 10, paddingTop: 10}}>
-              <Profile
-                username={k.username}
-                description={k.description}
-                profileURI={k.profileURI}
-                nickname={k.nickname}
-              />
-              <HorizontalBar />
-            </View>
-          );
-        })}
-      </InnerContainer>
+      {totalCount === 0 ? (
+        <InnerContainer>
+          <Text
+            style={{
+              fontStyle: 'normal',
+              fontFamily: 'Pretendard Variable',
+              fontSize: 14,
+              fontWeight: 500,
+              color: '#333333',
+            }}>
+            차단한 사용자가 없습니다.
+          </Text>
+        </InnerContainer>
+      ) : (
+        <FlatList
+          data={blockedUser}
+          renderItem={renderItem}
+          keyExtractor={_ => _.username}
+          onRefresh={onRefresh}
+          refreshing={refresh}
+          onEndReached={() => {
+            if (!isLast) {
+              request();
+            }
+          }}
+          onEndReachedThreshold={0.6}
+        />
+      )}
     </Container>
+  );
+};
+
+const renderItem = ({item}) => {
+  return (
+    <View style={{gap: 10, paddingTop: 10}}>
+      <Profile
+        username={item.username}
+        description={item.description}
+        profileURI={item.profileURI}
+        nickname={item.nickname}
+      />
+      <HorizontalBar />
+    </View>
   );
 };
 
@@ -65,9 +116,22 @@ const Container = styled.SafeAreaView`
   background: white;
 `;
 
-const InnerContainer = styled.ScrollView``;
+const InnerContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
 
-const Profile = ({username, description, profileURI, nickname}) => {
+const Profile = ({username, profileURI, nickname}) => {
+  const [isBlocked, setBlocked] = useState(true);
+  const requestDelete = async () => {
+    await requestRemoveBlockUser(username)
+      .then(res => setBlocked(false))
+      .catch(err => console.log(err.response));
+  };
+  const requestRegister = async () => {
+    await requestRegisterBlockedUser(username).then(res => setBlocked(true));
+  };
   const ProfileImg =
     profileURI !== undefined
       ? styled.Image`
@@ -87,12 +151,16 @@ const Profile = ({username, description, profileURI, nickname}) => {
       <ProfileTouchableContainer>
         <ProfileImg source={{uri: profileURI}} />
         <Nickname>{nickname}</Nickname>
-        <Description numberOfLines={1} ellipsizeMode={'tail'}>
-          {description}
-        </Description>
       </ProfileTouchableContainer>
-      <FollowingTouchableContainer>
-        <Following>{'차단해제'}</Following>
+      <FollowingTouchableContainer
+        onPress={() => {
+          if (isBlocked) {
+            requestDelete();
+          } else {
+            requestRegister();
+          }
+        }}>
+        <Following>{isBlocked ? '차단해제' : '차단'}</Following>
       </FollowingTouchableContainer>
     </SimpleProfile>
   );
@@ -111,7 +179,7 @@ const SimpleProfile = styled.View`
   margin: auto auto;
 `;
 
-const ProfileTouchableContainer = styled.TouchableOpacity`
+const ProfileTouchableContainer = styled.View`
   width: 70%;
 `;
 

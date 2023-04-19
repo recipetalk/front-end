@@ -1,20 +1,27 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {CommentComponent} from '../../organisms/comment/CommentComponent';
+import {loadLoginFromStorage} from '../../../services/domain/AutoLogin';
+import {FlatList} from 'react-native';
 
-export const CommentListComponent = ({isReply}) => {
-  const data = [
-    {
-      id: 1,
-      username: '홍길동',
-      nickname: '홍길동',
-      description:
-        '간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요간리뷰를 4정도 보여줄래요',
-      existChild: true,
-      details: isReply,
-      created_date: '2022.11.30',
-    },
-  ];
+export const CommentListComponent = ({
+  isReply,
+  boardId,
+  comment,
+  onRefresh,
+  onRequest,
+  isLoading,
+  isLast,
+  commentRefresh,
+}) => {
+  const [loadUsername, setLoadUsername] = useState('');
+  useEffect(() => {
+    const setUsername = async () => {
+      const load = (await loadLoginFromStorage()).username;
+      setLoadUsername(load);
+    };
+    setUsername();
+  }, []);
 
   return (
     <Container>
@@ -24,16 +31,31 @@ export const CommentListComponent = ({isReply}) => {
           <CountLabel>{'545'}개의 댓글</CountLabel>
         </LabelPart>
       )}
-      {data.map(item => (
-        <CommentComponent
-          created_date={item.created_date}
-          nickname={item.nickname}
-          username={item.username}
-          existChild={item.existChild}
-          description={item.description}
-          details={item.details}
-        />
-      ))}
+
+      <FlatList
+        data={comment}
+        refreshing={commentRefresh}
+        onRefresh={onRefresh}
+        onEndReachedThreshold={0.6}
+        keyExtractor={_ => _.commentId}
+        onEndReached={() => {
+          if (isLoading) {
+            return;
+          }
+          if (!isLast) {
+            onRequest();
+          }
+        }}
+        renderItem={({item}) => (
+          <CommentComponent
+            comment={item}
+            isMine={loadUsername === item.userProfile.username}
+            boardId={boardId}
+            onRefresh={onRefresh}
+            existChild={item.childExist}
+          />
+        )}
+      />
     </Container>
   );
 };

@@ -1,10 +1,27 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import DetailProfileWithDescription from '../../components/atoms/profile/DetailProfileWithDescription';
 import {Image, View} from 'react-native';
 import {RecipeAndTrimmingComponent} from '../../components/templates/mypage/RecipeAndTrimmingComponent';
+import {getProfile} from '../../services/MyPage';
+import {loadLoginFromStorage} from '../../services/domain/AutoLogin';
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreen = ({navigation, route}) => {
+  const [profile, setProfile] = useState({});
+  const [loadUsername, setUsername] = useState('');
+  const getUsername = async () => {
+    const getUsernameInStorage = (await loadLoginFromStorage()).username;
+    console.log(getUsernameInStorage);
+    setUsername(() => getUsernameInStorage);
+  };
+  useEffect(() => {
+    getProfile(route.params.username).then(res => {
+      const data = JSON.parse(res.request._response);
+      setProfile(data);
+    });
+    getUsername();
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -21,7 +38,7 @@ const ProfileScreen = ({navigation}) => {
               resizeMode={'contain'}
             />
           </HeaderTouchButton>
-          <HeaderLabel>사용자아이디0000</HeaderLabel>
+          <HeaderLabel>{profile.nickname}</HeaderLabel>
         </View>
       </Header>
       <VerticalBar height={'1px'} />
@@ -29,11 +46,9 @@ const ProfileScreen = ({navigation}) => {
       <InnerContainer>
         <DetailProfileWithDescription
           navigation={navigation}
-          nickname={'사용자아이디0000'}
-          description={
-            '4아이 엄마~^^ 소개합니다. 나의 레시피 1줄까지만 쓰게할까 테스트문구 테스트'
-          }
-          isMine={true}
+          profile={profile}
+          isMine={loadUsername === profile.username}
+          setFollow={route.params.setFollowing}
         />
         <RecipeAndTrimmingComponent />
       </InnerContainer>

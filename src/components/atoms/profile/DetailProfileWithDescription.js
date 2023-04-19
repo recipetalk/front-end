@@ -1,20 +1,59 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import FollowingComponent from '../../organisms/mypage/FollowingComponent';
+import {
+  getSingleFollowing,
+  requestRegisterFollowing,
+  requestRemoveFollowing,
+} from '../../../services/MyPage';
 
 export default function DetailProfileWithDescription({
-  username,
-  nickname,
-  description,
-  profileURI,
+  profile,
   isMine,
   navigation,
+  setFollow, // FollowingScreen에서 온 state.
 }) {
   const [isFollowing, setFollowing] = useState(false);
+  const [isRendering, setRendering] = useState(false);
+
+  useEffect(() => {
+    if (!isMine && profile.username) {
+      setRendering(() => true);
+      getSingleFollowing(profile.username)
+        .then(res => {
+          const json = JSON.parse(res.request._response);
+          setFollowing(json.isFollowing);
+          if (setFollow !== undefined) {
+            setFollow(json.isFollowing);
+          }
+          setRendering(() => false);
+        })
+        .catch(err => console.log(err.response));
+    }
+  }, [isMine, profile.username]);
+
+  const requestFollowing = () => {
+    requestRegisterFollowing(profile.username).then(res => {
+      setFollowing(true);
+      setFollow(true);
+    });
+  };
+
+  const requestCancelFollowing = () => {
+    requestRemoveFollowing(profile.username)
+      .then(res => {
+        setFollowing(false);
+        if (setFollow !== undefined) {
+          setFollow(false);
+        }
+      })
+      .catch(err => console.log(err.response));
+  };
+
   const ProfileImg =
-    profileURI !== undefined
+    profile.profileURI !== undefined
       ? styled.Image`
           border-radius: 13.873px;
           background-color: #e5e5e5;
@@ -41,36 +80,60 @@ export default function DetailProfileWithDescription({
             justifyContent: 'center',
           }}>
           <FollowingComponent
-            followingNumber={123}
-            followerNumber={'1K'}
-            recipeNumber={22}
+            followingNumber={profile.followingNum}
+            followerNumber={profile.followerNum}
+            recipeNumber={profile.recipeNum}
+            username={profile.username}
           />
         </View>
       </View>
 
-      <Nickname>{nickname}</Nickname>
-      <Description numberOfLines={2}>{description}</Description>
+      <Nickname>{profile.nickname}</Nickname>
+      <Description numberOfLines={2}>{profile.description}</Description>
       {isMine ? (
         <CustomButton
           onPress={() => navigation.push('EditProfile')}
+          isRendering={false}
           isActive={false}
           nonActive={true}
           labelTitle={'프로필 수정'}
         />
+      ) : isRendering ? (
+        <CustomButton
+          isRendering={isRendering}
+          isActive={!isRendering}
+          nonActive={isRendering}
+          labelTitle={'불러오는중'}
+        />
       ) : (
         <CustomButton
+          onPress={() => {
+            if (isFollowing) {
+              requestCancelFollowing();
+            } else {
+              requestFollowing();
+            }
+          }}
+          isRendering={false}
           isActive={!isFollowing}
           nonActive={isFollowing}
-          labelTitle={isFollowing ? '이웃 취소' : '이웃 추가'}
+          labelTitle={isFollowing ? '팔로잉 취소' : '팔로잉'}
         />
       )}
     </ProfileContainer>
   );
 }
 
-const CustomButton = ({isActive, nonActive, labelTitle, onPress}) => {
+const CustomButton = ({
+  isRendering,
+  isActive,
+  nonActive,
+  labelTitle,
+  onPress,
+}) => {
   return (
     <TouchableOpacity
+      disabled={isRendering}
       onPress={onPress}
       style={[
         styles.default,

@@ -1,80 +1,186 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {OptionModal} from '../../molecules/OptionModal';
-import {err} from 'react-native-svg/lib/typescript/xml';
+
 import {OptionModalChildImage} from '../OptionModalChildImage';
+import {CalanderPrint} from '../../../utils/CalanderPrint';
+import AlertYesNoButton from '../../molecules/AlertYesNoButton';
+import {removeComment} from '../../../services/Comment';
+import {useToast} from 'react-native-toast-notifications';
 
 export const CommentComponent = ({
-  username,
-  nickname,
-  created_date,
-  existChild,
-  description,
   details = false,
   isMine,
+  boardId,
+  onRefresh,
+  comment,
+  existChild,
 }) => {
   const navigation = useNavigation();
-  const [isClicked, setClicked] = useState(false);
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-  const optionRef = useRef();
-  const items = [
-    {
-      label: '댓글 신고하기',
-      value: 'report',
-    },
-    {
-      label: '작성자 차단하기',
-      value: 'userBlock',
-    },
-  ];
+  const [checkedItem, setCheckedItem] = useState(undefined);
+  const [isAlert, setAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertText, setAlertText] = useState('');
+  const toast = useToast();
 
-  const isMines = [
-    {
-      label: '댓글 수정하기',
-      value: 'update',
-    },
-    {
-      label: '댓글 삭제하기',
-      value: 'delete',
-    },
-  ];
+  useEffect(() => {
+    if (checkedItem !== undefined) {
+      checkedItem.onPress();
+    }
+  }, [checkedItem]);
+
+  const items = !details
+    ? [
+        {
+          label: '대댓글 작성하기',
+          value: 'commentReply',
+          onPress: () =>
+            navigation.push('ReplyComment', {
+              profile: comment.profile,
+              created_date: comment.created_date,
+              description: comment.description,
+              parentCommentId: comment.commentId,
+              boardId: boardId,
+            }),
+        },
+        {
+          label: '댓글 신고하기',
+          value: 'report',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 신고하시겠습니까?');
+          },
+        },
+        {
+          label: '작성자 차단하기',
+          value: 'userBlock',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 차단하시겠습니까?');
+          },
+        },
+      ]
+    : [
+        {
+          label: '댓글 신고하기',
+          value: 'report',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 신고하사겠습니까?');
+          },
+        },
+        {
+          label: '작성자 차단하기',
+          value: 'userBlock',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 차단하시겠습니까?');
+          },
+        },
+      ];
+
+  const isMines = !details
+    ? [
+        {
+          label: '댓글 삭제하기',
+          value: 'delete',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 삭제하시겠습니까?');
+            setAlertText('삭제하면 복구가 불가능합니다.');
+          },
+        },
+        {
+          label: '대댓글 작성하기',
+          value: 'commentReply',
+          onPress: () =>
+            navigation.push('ReplyComment', {
+              profile: comment.userProfile,
+              created_date: comment.createdDate,
+              description: comment.description,
+              parentCommentId: comment.commentId,
+              boardId: boardId,
+            }),
+        },
+      ]
+    : [
+        {
+          label: '댓글 삭제하기',
+          value: 'delete',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 삭제하시겠습니까?');
+            setAlertText('삭제하면 복구가 불가능합니다.');
+          },
+        },
+      ];
 
   return (
     <Container>
-      <TouchableOpacity onPress={() => navigation.push('ProfileScreen')}>
+      <TouchableOpacity
+        disabled={comment.userProfile.username === null}
+        onPress={() =>
+          navigation.push('ProfileScreen', {
+            username: comment.userProfile.username,
+          })
+        }>
         <UserImage />
       </TouchableOpacity>
       <CommentPart>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <NicknameAndCreatedDatePart>
-            <Nickname>{nickname}</Nickname>
+            <Nickname>{comment.userProfile.nickname}</Nickname>
             <Nickname> · </Nickname>
-            <Nickname>{created_date}</Nickname>
+            <Nickname>{CalanderPrint(comment.createdDate)}</Nickname>
           </NicknameAndCreatedDatePart>
-          <OptionModalChildImage items={isMine ? isMines : items}>
-            <Image source={require('../../../assets/images/More.png')} />
-          </OptionModalChildImage>
+          {comment.userProfile.username === null ? undefined : (
+            <OptionModalChildImage
+              items={isMine ? isMines : items}
+              setCheckedItem={setCheckedItem}>
+              <Image source={require('../../../assets/images/More.png')} />
+            </OptionModalChildImage>
+          )}
         </View>
         <Description numberOfLines={details ? 0 : 4} ellipsizeMode={'tail'}>
-          {description}
+          {comment.description}
         </Description>
         {existChild ? (
           <GoToReplyPart
             onPress={() =>
               navigation.push('ReplyComment', {
-                username: username,
-                nickname: nickname,
-                created_date: created_date,
-                description: description,
+                comment: comment,
+                parentCommentId: comment.commentId,
+                boardId: boardId,
               })
             }>
-            <ReplyLabel>답글 {'48'}개</ReplyLabel>
+            <ReplyLabel>대댓글 보기</ReplyLabel>
           </GoToReplyPart>
         ) : undefined}
       </CommentPart>
+      {isAlert ? (
+        <AlertYesNoButton
+          title={alertTitle}
+          setAlert={setAlert}
+          yesButtonText={checkedItem.label}
+          text={alertText}
+          onPress={() => {
+            if (checkedItem.value === 'delete') {
+              removeComment(boardId, comment.commentId)
+                .then(res => {
+                  setAlert(() => false);
+                  setTimeout(() => toast.show('댓글이 삭제되었습니다.'), 300);
+                  onRefresh();
+                })
+                .catch(err => toast.show('댓글이 삭제되지 않았습니다.'));
+            } else if (checkedItem.value === 'report') {
+              console.log('신고 시퀀스');
+            } else if (checkedItem.value === 'userBlock') {
+              console.log('차단 시퀀스');
+            }
+          }}
+        />
+      ) : undefined}
     </Container>
   );
 };
@@ -83,6 +189,7 @@ const Container = styled.View`
   width: 100%;
   flex-direction: row;
   gap: 8px;
+  margin: 10px 0;
 `;
 
 const UserImage = styled.View`
@@ -119,6 +226,7 @@ const Nickname = styled.Text`
 
 const GoToReplyPart = styled.TouchableOpacity`
   margin-top: 10px;
+  width: 90px;
 `;
 
 const ReplyLabel = styled.Text`

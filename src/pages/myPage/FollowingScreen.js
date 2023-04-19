@@ -1,41 +1,61 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
-import {View} from 'react-native';
+import {FlatList, Platform, Text, View} from 'react-native';
+import {getFollowing} from '../../services/MyPage';
+import {useNavigation} from '@react-navigation/native';
 
-export const FollowingScreen = ({navigation}) => {
-  const dummy = [
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-    {
-      username: 'hi',
-      description: 'test',
-      profileURI: undefined,
-      nickname: 'hihihi',
-    },
-  ];
+export const FollowingScreen = ({navigation, route}) => {
+  const [following, setFollowing] = useState([]);
+  const [isLast, setLast] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [pagingNum, setPagingNum] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+
+  useEffect(() => {
+    getFollowing(route.params.username, pagingNum)
+      .then(res => {
+        const json = JSON.parse(res.request._response);
+        setLast(() => json.last);
+        setFollowing(json.content);
+        setPagingNum(pagingNum => pagingNum++);
+        setTotalCount(json.totalElements);
+      })
+      .catch(err => console.log(err));
+  }, []);
+
+  const request = async () => {
+    await getFollowing(route.params.username, pagingNum)
+      .then(res => {
+        const json = JSON.parse(res.request._response);
+        setLast(() => json.last);
+        if (following.length === 0) {
+          setFollowing(json.content);
+        } else {
+          setFollowing(data => data.concat(json.content));
+        }
+        setPagingNum(pagingNum => pagingNum++);
+      })
+      .catch(err => console.log(err));
+  };
+
+  const onRefresh = async () => {
+    if (!refresh) {
+      console.log('어디서 돌까?');
+      setRefresh(() => true);
+      setPagingNum(() => 0);
+      await getFollowing(route.params.username, pagingNum)
+        .then(res => {
+          const json = JSON.parse(res.request._response);
+          setLast(() => json.last);
+          setFollowing(json.content);
+          setPagingNum(pagingNum => pagingNum++);
+        })
+        .catch(err => console.log(err));
+      setTimeout(() => setRefresh(false), 1000);
+    }
+  };
+
   return (
     <Container>
       <NavigationHeader
@@ -43,22 +63,54 @@ export const FollowingScreen = ({navigation}) => {
         navigation={navigation}
       />
       <HorizontalBar />
-      <InnerContainer>
-        {dummy.map((k, v) => {
-          return (
-            <View style={{gap: 10, paddingTop: 10}}>
-              <Profile
-                username={k.username}
-                description={k.description}
-                profileURI={k.profileURI}
-                nickname={k.nickname}
-              />
-              <HorizontalBar />
-            </View>
-          );
-        })}
-      </InnerContainer>
+      {totalCount === 0 ? (
+        <InnerContainer>
+          <Text
+            style={{
+              color: '#333333',
+              fontFamily: 'Pretendard Variable',
+              fontSize: 14,
+              fontWeight: 500,
+              ...Platform.select({
+                ios: {
+                  fontStyle: 'normal',
+                },
+              }),
+            }}>
+            팔로잉 하는 유저가 없습니다.
+          </Text>
+        </InnerContainer>
+      ) : (
+        <FlatList
+          data={following}
+          renderItem={renderItem}
+          keyExtractor={_ => _.username}
+          onRefresh={onRefresh}
+          refreshing={refresh}
+          onEndReached={() => {
+            if (!isLast) {
+              request();
+            }
+          }}
+          onEndReachedThreshold={0.6}
+          //onEndReached={}
+        />
+      )}
     </Container>
+  );
+};
+
+const renderItem = ({item}) => {
+  return (
+    <View style={{gap: 10, paddingTop: 10}}>
+      <Profile
+        username={item.username}
+        description={item.description}
+        profileURI={item.profileURI}
+        nickname={item.nickname}
+      />
+      <HorizontalBar />
+    </View>
   );
 };
 
@@ -68,9 +120,16 @@ const Container = styled.SafeAreaView`
   background: white;
 `;
 
-const InnerContainer = styled.ScrollView``;
+const InnerContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+`;
 
 const Profile = ({username, description, profileURI, nickname}) => {
+  const navigation = useNavigation();
+  const [isFollowing, setFollowing] = useState(true);
   const ProfileImg =
     profileURI !== undefined
       ? styled.Image`
@@ -87,16 +146,19 @@ const Profile = ({username, description, profileURI, nickname}) => {
         `;
   return (
     <SimpleProfile>
-      <ProfileTouchableContainer>
+      <ProfileTouchableContainer
+        onPress={() =>
+          navigation.push('ProfileScreen', {
+            username: username,
+            setFollowing: setFollowing,
+          })
+        }>
         <ProfileImg source={{uri: profileURI}} />
         <Nickname>{nickname}</Nickname>
         <Description numberOfLines={1} ellipsizeMode={'tail'}>
           {description}
         </Description>
       </ProfileTouchableContainer>
-      <FollowingTouchableContainer>
-        <Following>{'팔로잉취소'}</Following>
-      </FollowingTouchableContainer>
     </SimpleProfile>
   );
 };

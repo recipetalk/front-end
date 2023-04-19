@@ -40,10 +40,14 @@ import {FollowingScreen} from './src/pages/myPage/FollowingScreen';
 import {BlockUserScreen} from './src/pages/myPage/BlockUserScreen';
 import FindIdScreen from './src/pages/login/find/FindIdScreen';
 import ReturnIdScreen from './src/pages/login/find/ReturnIdScreen';
+import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
+import EfficacyScreen from './src/pages/Ingredients/EfficacyScreen';
+import EfficacyEditScreen from './src/pages/Ingredients/EfficacyEditScreen';
 import {AppState, PermissionsAndroid} from 'react-native';
 import {NativeModules} from 'react-native';
 import {ReplyCommentScreen} from './src/pages/ReplyCommentScreen';
 import {addRowIngredientTrimming} from './src/services/MyPage';
+import {ToastProvider} from 'react-native-toast-notifications';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -195,100 +199,125 @@ function App() {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Login"
-            component={LoginStackNavigator}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Home"
-            component={BottomTab}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="PrepRegister"
-            component={PrepRegisterScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="RecipeEdit"
-            component={RecipeEditStackNavigator}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="CommentHistory"
-            component={CommentHistoryScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="RecipeDetailScreen"
-            component={RecipeDetailStackNavigator}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ProfileScreen"
-            component={ProfileScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SequenceDetailScreen"
-            component={SequenceDetailDescriptionScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="SetTimerPage"
-            component={SetTimerPage}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="MyRecipe"
-            component={MyRecipeScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="MyPrep"
-            component={MyPrepScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="MyBookmark"
-            component={MyBookmarkScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="MyLike"
-            component={MyLikeScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="EditProfile"
-            component={EditProfileScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Follower"
-            component={FollowerScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Following"
-            component={FollowingScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="BlockUser"
-            component={BlockUserScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="ReplyComment"
-            component={ReplyCommentScreen}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ToastProvider
+        swipeEnabled={false}
+        offset={100}
+        duration={4000}
+        textStyle={{
+          fontFamily: 'Pretendard Variable',
+          fontStyle: 'normal',
+          fontWeight: '500',
+        }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={LoginStackNavigator}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Home"
+              component={BottomTab}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="PrepEdit"
+              component={PrepEditScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RecipeEdit"
+              component={RecipeEditStackNavigator}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="CommentHistory"
+              component={CommentHistoryScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RecipeDetailScreen"
+              component={RecipeDetailStackNavigator}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="SequenceDetailScreen"
+              component={SequenceDetailDescriptionScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="SetTimerPage"
+              component={SetTimerPage}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="MyRecipe"
+              component={MyRecipeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="MyPrep"
+              component={MyPrepScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="MyBookmark"
+              component={MyBookmarkScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="MyLike"
+              component={MyLikeScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfileScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Follower"
+              component={FollowerScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Following"
+              component={FollowingScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="BlockUser"
+              component={BlockUserScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="ReplyComment"
+              component={ReplyCommentScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="PrepDetail"
+              component={PrepDetailScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Efficacy"
+              component={EfficacyScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="EfficacyEdit"
+              component={EfficacyEditScreen}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ToastProvider>
     </Provider>
   );
 }

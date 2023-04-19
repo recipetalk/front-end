@@ -1,15 +1,54 @@
-import React, {useRef, useState} from 'react';
-import {Image, Platform, TouchableOpacity} from 'react-native';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
+import {Image, TouchableOpacity, View} from 'react-native';
 import styled from 'styled-components/native';
 import RecipeDetailDescription from '../../components/atoms/board/RecipeDetailDescription';
 import {CommentWriteComponent} from '../../components/organisms/comment/CommentWriteComponent';
+import {getChildComment, getParentComment} from '../../services/Comment';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-const RecipeDetailDescriptionScreen = ({navigation}) => {
-  const CommentListRef = useRef();
+const RecipeDetailDescriptionScreen = ({navigation, route}) => {
   const [Checked, setChecked] = useState(true);
-  const [parentComment, setParentComment] = useState('');
+  const [commentRefresh, setCommentRefresh] = useState(false);
+  const [comment, setComment] = useState([]);
+  const [commentPagingNum, setCommentPagingNum] = useState(0);
+  const [isLast, setLast] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+
+  useEffect(() => {
+    getParentComment(boardId, commentPagingNum).then(res => {
+      const data = JSON.parse(res.request._response);
+      setComment(data.content);
+      setCommentPagingNum(pagingNum => pagingNum++);
+      setLast(data.last);
+    });
+  }, []);
+
+  const onRefresh = async () => {
+    setCommentRefresh(true);
+    await getParentComment(1, 0).then(res => {
+      const data = JSON.parse(res.request._response);
+      setComment(() => data.content);
+      setCommentPagingNum(() => 1);
+      setLast(() => data.last);
+      setCommentRefresh(false);
+    });
+  };
+
+  const onRequest = async () => {
+    setLoading(() => true);
+    await getParentComment(1, commentPagingNum).then(res => {
+      const data = JSON.parse(res.request._response);
+      setComment(comment => comment.concat(data.content));
+      setCommentPagingNum(num => num + 1);
+      setLast(() => data.last);
+      setLoading(() => false);
+    });
+  };
+
+  const boardId = 1;
   return (
-    <RecipeDetailDescriptionContainer>
+    <>
+      <RecipeDetailDescriptionContainer edges={['top']} />
       <Header>
         <TouchableOpacity
           style={{padding: 9, width: 15, height: 15}}
@@ -22,31 +61,38 @@ const RecipeDetailDescriptionScreen = ({navigation}) => {
         </TouchableOpacity>
       </Header>
       <RecipeDetailDescription
-        CommentListRef={CommentListRef}
         setChecked={setChecked}
-        parentComment={parentComment}
-        setParentComment={setParentComment}
+        boardId={1}
+        recipeId={1}
+        commentRefresh={commentRefresh}
+        comment={comment}
+        setComment={setComment}
+        onRefresh={onRefresh}
+        onRequest={onRequest}
+        isLast={isLast}
+        isLoading={isLoading}
       />
       {Checked ? (
         <CommentWriteComponent
-          value={parentComment}
-          setValue={setParentComment}
+          boardId={boardId}
+          setCommentRefresh={setCommentRefresh}
+          onRefresh={onRefresh}
+          isAbsolute={false}
         />
       ) : undefined}
-    </RecipeDetailDescriptionContainer>
+
+      <SafeAreaView
+        edges={['bottom']}
+        style={{flex: 1, backgroundColor: 'white', position: 'relative'}}
+      />
+    </>
   );
 };
 
-const RecipeDetailDescriptionContainer =
-  Platform.OS === 'ios'
-    ? styled.SafeAreaView`
-        height: 100%;
-        margin-bottom: 125px;
-      `
-    : styled.View`
-        height: 100%;
-        margin-bottom: 125px;
-      `;
+const RecipeDetailDescriptionContainer = styled.SafeAreaView`
+  width: 100%;
+  background: #f09311;
+`;
 
 const Header = styled.View`
   width: 100%;
