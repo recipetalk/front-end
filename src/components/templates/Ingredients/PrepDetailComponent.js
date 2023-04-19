@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
+import {getEfficacy} from '../../../services/Ingredients';
 import ExpandableText from '../../atoms/board/ExpandableText';
 import Line from '../../atoms/Line';
 import SimpleProfileWithDescription from '../../atoms/profile/SimpleProfileWithDescription';
@@ -38,6 +39,17 @@ const PrepDetailComponent = () => {
     ],
   };
 
+  const [efficacyInfo, setEfficacyInfo] = useState({});
+
+  useEffect(() => {
+    // TODO :: ingredientId 동적으로
+    getEfficacy(1)
+      .then(res => {
+        setEfficacyInfo(res.data);
+      })
+      .catch(error => console.error(error));
+  }, []);
+
   return (
     <>
       <IngredientsHeader
@@ -46,7 +58,7 @@ const PrepDetailComponent = () => {
         btnTextValue="수정"
         screen="PrepRegister"
       />
-      <IngredientsInfo />
+      <IngredientsInfo ingredientName={efficacyInfo.ingredientName} />
       <Line />
 
       <ScrollView showsVerticalScrollIndicator={false}>

@@ -2,7 +2,10 @@ import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
-import {addRowIngredientTrimming} from '../../../services/Ingredients';
+import {
+  addIngredientTrimming,
+  addRowIngredientTrimming,
+} from '../../../services/Ingredients';
 import {addEmptyPrep, addPrep} from '../../../store/Ingredients/PrepSlice';
 import Line from '../../atoms/Line';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
@@ -48,28 +51,24 @@ const PrepRegisterComponent = () => {
 
   // 모든 데이터 저장하는 함수
   const registerPrepOrder = () => {
-    // addPrepOrder();
+    addIngredientTrimming({
+      ingredientId: 1,
+      title: prepInfo.title,
+      desc: prepInfo.desc,
+      img: '',
+    })
+      .then(res => {
+        console.log('res is ', res.data);
+      })
+      .catch(error => {
+        console.error(error.response);
+      });
 
-    // dispatch(
-    //   registerPrep({
-    //     title: prepInfo.title,
-    //     desc: prepInfo.desc,
-    //     descImg: '',
-    //     prepOrderList: prepResult,
-    //   }),
-    // );
-
-    addRowIngredientTrimming(itemList)
-      .then(res => console.log(res))
-      .catch(err => console.log(err.response));
-    // addIngredientTrimming({
-    //   ingredientId: 1,
-    //   title: prepInfo.title,
-    //   desc: prepInfo.desc,
-    //   img: '',
-    // }).then(res => {
-    //   console.log('!!', res.data);
-    // });
+    itemList.map((item, i) => {
+      addRowIngredientTrimming({ingredientId: 1, trimmingId: 4, itemList: item})
+        .then(res => console.log(res.status))
+        .catch(err => console.log(err.response));
+    });
   };
 
   return (
