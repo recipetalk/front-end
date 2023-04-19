@@ -17,7 +17,7 @@ import SignupPasswordScreen from './src/pages/signup/SignupPasswordScreen';
 import SignupFirstEmailVerificationScreen from './src/pages/signup/SignupFirstEmailVerificationScreen';
 import BottomTab from './src/components/atoms/BottomTab';
 import SimpleLoginScreen from './src/pages/SimpleLoginScreen';
-import PrepEditScreen from './src/pages/Ingredients/PrepEditScreen';
+import PrepRegisterScreen from './src/pages/Ingredients/PrepRegisterScreen';
 import RecipeEditFirstScreen from './src/pages/recipe/RecipeEditFirstScreen';
 import RecipeEditSecondScreen from './src/pages/recipe/RecipeEditSecondScreen';
 import RecipeEditThirdScreen from './src/pages/recipe/RecipeEditThirdScreen';

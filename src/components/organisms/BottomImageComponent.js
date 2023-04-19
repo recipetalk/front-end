@@ -8,13 +8,13 @@ const BottomImageComponent = props => {
       <Default>
         <LikePart>
           <LikeImg source={require('../../assets/images/LikeFalse.png')} />
-          <Text>100</Text>
+          <Text>{props.value?.likeCount}</Text>
         </LikePart>
         <CommentPart>
           <CommentImg
             source={require('../../assets/images/BoardComment.png')}
           />
-          <Text>100</Text>
+          <Text>{props.value?.commentCount}</Text>
         </CommentPart>
       </Default>
 

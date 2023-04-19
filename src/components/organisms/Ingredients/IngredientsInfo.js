@@ -4,10 +4,10 @@ import styled from 'styled-components/native';
 const IngredientsInfo = props => {
   return (
     <IngredientsInfoContainer>
-      <TextView>
-        <Name>마늘</Name>
-        <Category>분류: 향신료 | 채소</Category>
-      </TextView>
+      <IngredientsInfoSection>
+        <IngredientsName>{props.ingredientName}</IngredientsName>
+        <IngredientsCategory>분류: 향신료 | 채소</IngredientsCategory>
+      </IngredientsInfoSection>
       {props.isEdit ? (
         <>
           <ImageView />
@@ -30,11 +30,11 @@ const IngredientsInfoContainer = styled.View`
   background-color: #ffffff;
 `;
 
-const TextView = styled.View`
+const IngredientsInfoSection = styled.View`
   justify-content: center;
 `;
 
-const Name = styled.Text`
+const IngredientsName = styled.Text`
   font-style: normal;
   font-weight: 500;
   font-size: 34px;
@@ -44,7 +44,7 @@ const Name = styled.Text`
   margin-bottom: 10px;
 `;
 
-const Category = styled.Text`
+const IngredientsCategory = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

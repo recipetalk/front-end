@@ -2,33 +2,79 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
+import {OptionModalChildImage} from '../OptionModalChildImage';
 
-const IngredientsItem = () => {
+const IngredientsItem = props => {
   const navigation = useNavigation();
 
-  return (
+  const items = [
+    {
+      label: '수정',
+      value: 'update',
+    },
+    {
+      label: '재료 삭제',
+      value: 'delete',
+    },
+  ];
+
+  return props.item !== undefined ? (
     <IngredientsItemContainer>
       <Header>
-        <RegisterInfo>
-          <Name>마늘</Name>
-          <Amount>생것 | 200g</Amount>
-        </RegisterInfo>
-        <MoreButton>
-          <Image source={require('../../../assets/images/More.png')} />
-        </MoreButton>
+        <IngredientsItemInfo>
+          <Name>{props.item.name}</Name>
+          <Amount>
+            {props.item.status} | {props.item.amount}
+          </Amount>
+        </IngredientsItemInfo>
+        <TouchContainer>
+          <OptionModalChildImage items={items}>
+            <Image source={require('../../../assets/images/More.png')} />
+          </OptionModalChildImage>
+        </TouchContainer>
       </Header>
-      <IngredientsInfo>
-        <EfficacyBtn onPress={() => navigation.navigate('Efficacy')}>
+
+      <IngredientsItemETCInfo>
+        <TouchContainer onPress={() => navigation.navigate('Efficacy')}>
           <EfficacyText>효능 및 정보</EfficacyText>
-        </EfficacyBtn>
+        </TouchContainer>
         <Text> | </Text>
-        <PrepBtn onPress={() => navigation.navigate('Prep')}>
+        <TouchContainer onPress={() => navigation.navigate('Prep')}>
           <PrepText>손질법 보기</PrepText>
-        </PrepBtn>
-      </IngredientsInfo>
-      <Expiration>
-        <ExpirationText>유통기한 : 2023 / 02 / 28 까지</ExpirationText>
-      </Expiration>
+        </TouchContainer>
+      </IngredientsItemETCInfo>
+
+      <ExpirationInfo>
+        <ExpirationInfoText>
+          소비기한 : {props.item.expirationDate}까지
+        </ExpirationInfoText>
+      </ExpirationInfo>
+    </IngredientsItemContainer>
+  ) : (
+    <IngredientsItemContainer>
+      <Header>
+        <IngredientsItemInfo>
+          <Name>마늘</Name>
+          <Amount>생것 | 100개</Amount>
+        </IngredientsItemInfo>
+        <TouchContainer>
+          <Image source={require('../../../assets/images/More.png')} />
+        </TouchContainer>
+      </Header>
+
+      <IngredientsItemETCInfo>
+        <TouchContainer onPress={() => navigation.navigate('Efficacy')}>
+          <EfficacyText>효능 및 정보</EfficacyText>
+        </TouchContainer>
+        <Text> | </Text>
+        <TouchContainer onPress={() => navigation.navigate('Prep')}>
+          <PrepText>손질법 보기</PrepText>
+        </TouchContainer>
+      </IngredientsItemETCInfo>
+
+      <ExpirationInfo>
+        <ExpirationInfoText>소비기한 : 2023 / 10 / 10까지</ExpirationInfoText>
+      </ExpirationInfo>
     </IngredientsItemContainer>
   );
 };
@@ -47,9 +93,9 @@ const Header = styled.View`
   padding: 10px;
 `;
 
-const MoreButton = styled.TouchableOpacity``;
+const TouchContainer = styled.TouchableOpacity``;
 
-const RegisterInfo = styled.View`
+const IngredientsItemInfo = styled.View`
   display: flex;
   flex-direction: row;
 `;
@@ -75,14 +121,13 @@ const Amount = styled.Text`
   color: #666666;
 `;
 
-const IngredientsInfo = styled.View`
+const IngredientsItemETCInfo = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin-top: 15px;
 `;
 
-const EfficacyBtn = styled.TouchableOpacity``;
 const EfficacyText = styled.Text`
   font-style: normal;
   font-weight: 600;
@@ -93,7 +138,7 @@ const EfficacyText = styled.Text`
 
   color: #666666;
 `;
-const PrepBtn = styled.TouchableOpacity``;
+
 const PrepText = styled.Text`
   font-style: normal;
   font-weight: 600;
@@ -103,7 +148,7 @@ const PrepText = styled.Text`
 
   color: #666666;
 `;
-const Expiration = styled.View`
+const ExpirationInfo = styled.View`
   width: 340px;
   height: 30px;
   padding: 5px 10px;
@@ -114,7 +159,7 @@ const Expiration = styled.View`
   margin: auto;
 `;
 
-const ExpirationText = styled.Text`
+const ExpirationInfoText = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 16px;

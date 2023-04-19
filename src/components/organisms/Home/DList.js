@@ -8,10 +8,9 @@ const DList = props => {
       <ImagePart />
 
       <InfoPart>
-        <UserID>사용자아이디0000</UserID>
-        <Titie>자취8년차 부대찌개 레시피 공...</Titie>
-        <Content>레시피 설명 길어지면 이렇게 …</Content>
-        <BottomImageComponent isBookmark={false} />
+        <Titie>{props.value.title}</Titie>
+        <UserID>{props.value.nickname}</UserID>
+        <BottomImageComponent value={props.value} isBookmark={false} />
       </InfoPart>
     </DListContainer>
   );
@@ -50,7 +49,7 @@ const UserID = styled.Text`
   font-family: 'Pretendard Variable';
 
   color: #acacac;
-  margin-bottom: 10px;
+  margin-bottom: 35px;
 `;
 
 const Titie = styled.Text`

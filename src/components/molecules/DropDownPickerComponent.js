@@ -6,11 +6,6 @@ import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 
 const DropDownPickerComponent = props => {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    {label: 'Apple', value: 'apple'},
-    {label: 'Banana', value: 'banana'},
-  ]);
 
   return (
     <Container width={props.width} open={open}>
@@ -49,5 +44,6 @@ const CustomDropDownPicker = styled(DropDownPicker)`
     props.minHeight !== undefined
       ? 'min-height : ' + props.minHeight + ' ;'
       : undefined}
+  border: #d8d8d8;
 `;
 export default DropDownPickerComponent;

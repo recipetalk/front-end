@@ -1,63 +1,33 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {Image} from 'react-native';
 import styled from 'styled-components/native';
-import Line from '../../components/atoms/Line';
-import DList from '../../components/organisms/Home/DList';
-import IngredientsHeader from '../../components/organisms/Ingredients/IngredientsHeader';
-import IngredientsInfo from '../../components/organisms/Ingredients/IngredientsInfo';
+import PrepComponent from '../../components/templates/Ingredients/PrepComponent';
 
 const PrepScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <PrepScreenContainer>
-      <IngredientsHeader title="손질법" />
-      <IngredientsInfo />
-
-      <ScrollViewContainer showsVerticalScrollIndicator={false}>
-        <Line />
-        <Header>
-          <TitleHighlight>마늘</TitleHighlight>
-          <Title> 손질법</Title>
-        </Header>
-        {[1, 2, 3, 4, 5].map((v, i) => {
-          return (
-            <Test key={i} onPress={() => navigation.navigate('PrepDetail')}>
-              <DList />
-            </Test>
-          );
-        })}
-      </ScrollViewContainer>
-    </PrepScreenContainer>
+    <>
+      <PrepComponent />
+      <PrepRegisterButton onPress={() => navigation.push('PrepRegister')}>
+        <Image source={require('../../assets/images/ggggector.png')} />
+      </PrepRegisterButton>
+    </>
   );
 };
 
-const PrepScreenContainer = styled.SafeAreaView``;
+const PrepRegisterButton = styled.TouchableOpacity`
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background: #333333;
+  border-radius: 100px;
+  right: 20px;
+  bottom: 20px;
 
-const Header = styled.View`
-  display: flex;
-  flex-direction: row;
-  padding: 18px 0 0 18px;
-  background-color: #ffffff;
-`;
-const TitleHighlight = styled.Text`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 20px;
-  font-family: 'Pretendard Variable';
-  color: #f09311;
-`;
-const Title = styled.Text`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 20px;
-  font-family: 'Pretendard Variable';
-  color: #333333;
+  align-items: center;
+  justify-content: center;
 `;
 
-const ScrollViewContainer = styled.ScrollView`
-  margin-bottom: 160px;
-`;
-
-const Test = styled.TouchableOpacity``;
 export default PrepScreen;
