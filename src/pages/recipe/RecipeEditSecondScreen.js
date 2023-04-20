@@ -1,9 +1,54 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import Title from '../../components/atoms/board/recipe/edit/Title';
-import {Image, TouchableOpacity} from 'react-native';
+import {FlatList, Image, TouchableOpacity} from 'react-native';
 
 const RecipeEditSecondScreen = ({navigation}) => {
+  const [ingredients, setIngredients] = useState([
+    {
+      id: 1,
+      ingredientName: null,
+      ingredientId: null,
+      quantity: null,
+    },
+    {
+      id: 2,
+      ingredientName: null,
+      ingredientId: null,
+      quantity: null,
+    },
+    {
+      id: 3,
+      ingredientName: null,
+      ingredientId: null,
+      quantity: null,
+    },
+  ]);
+
+  const onChangeText = (index, property) => e => {
+    let newArr = [...ingredients];
+
+    newArr[index][property] = e.nativeEvent.text;
+    console.log(newArr[index][property]);
+    setIngredients(newArr);
+  };
+
+  const addComponent = () => {
+    let newArr = [...ingredients];
+
+    newArr.concat([
+      {
+        id: newArr.length,
+        ingredientName: null,
+        ingredientId: null,
+        quantity: null,
+      },
+    ]);
+
+    console.log(newArr);
+    setIngredients(newArr);
+  };
+
   return (
     <RecipeEditScreenContainer>
       <Title
@@ -15,32 +60,38 @@ const RecipeEditSecondScreen = ({navigation}) => {
       <PrepOrderContainer>
         <OrderTitle>재료</OrderTitle>
         <TextInputListContainer>
-          {[1, 2, 3, 4, 5].map(i => {
-            return (
+          <FlatList
+            keyExtractor={_ => _.id}
+            data={ingredients}
+            renderItem={({item, index}) => (
               <TextInputLowContainer>
                 <TextInputContainer>
                   <TextInputBox
                     placeholder="당근"
                     placeholderTextColor="#a4a4a4"
+                    value={item.ingredientName}
+                    onChange={onChangeText(index, 'ingredientName')}
                   />
                   <VerticalBar />
                   <TextInputBox
                     placeholder="예)1스푼"
                     placeholderTextColor="#a4a4a4"
+                    value={item.quantity}
+                    onChange={onChangeText(index, 'quantity')}
                   />
                 </TextInputContainer>
                 <TouchableOpacity>
                   <Image source={require('../../assets/images/Cancel.png')} />
                 </TouchableOpacity>
               </TextInputLowContainer>
-            );
-          })}
+            )}
+          />
         </TextInputListContainer>
       </PrepOrderContainer>
       <HorizontalBar height={'1px'} />
       <AddPrepOrder>
         <AddPrepOrderText>재료 추가</AddPrepOrderText>
-        <TouchContainer>
+        <TouchContainer onPress={addComponent}>
           <AddImage source={require('../../assets/images/Add_o.png')} />
         </TouchContainer>
       </AddPrepOrder>
@@ -150,7 +201,7 @@ const TextInputLowContainer = styled.View`
   margin-bottom: 15px;
 `;
 
-const TextInputListContainer = styled.ScrollView`
+const TextInputListContainer = styled.View`
   display: flex;
   flex-direction: column;
 `;

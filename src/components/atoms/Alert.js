@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import AlertBackground from './board/background/AlertBackground';
-import {Dimensions} from 'react-native';
+import {Dimensions, TouchableWithoutFeedback} from 'react-native';
 
 export default function Alert(props) {
   return (
-    <AlertBackground>
-      <Box>{props.children}</Box>
+    <AlertBackground setAlert={props.setAlert}>
+      <TouchableWithoutFeedback>
+        <Box>{props.children}</Box>
+      </TouchableWithoutFeedback>
     </AlertBackground>
   );
 }

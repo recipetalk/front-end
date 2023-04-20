@@ -119,7 +119,7 @@ export const CommentComponent = ({
   return (
     <Container>
       <TouchableOpacity
-        disabled={comment.userProfile.username === null}
+        disabled={comment.userProfile.username === undefined}
         onPress={() =>
           navigation.push('ProfileScreen', {
             username: comment.userProfile.username,
@@ -134,7 +134,7 @@ export const CommentComponent = ({
             <Nickname> · </Nickname>
             <Nickname>{CalanderPrint(comment.createdDate)}</Nickname>
           </NicknameAndCreatedDatePart>
-          {comment.userProfile.username === null ? undefined : (
+          {comment.userProfile.username === undefined ? undefined : (
             <OptionModalChildImage
               items={isMine ? isMines : items}
               setCheckedItem={setCheckedItem}>

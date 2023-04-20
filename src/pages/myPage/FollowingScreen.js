@@ -21,7 +21,7 @@ export const FollowingScreen = ({navigation, route}) => {
         setPagingNum(pagingNum => pagingNum++);
         setTotalCount(json.totalElements);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err.response));
   }, []);
 
   const request = async () => {

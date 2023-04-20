@@ -4,7 +4,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import styled from 'styled-components/native';
 import {Image} from 'react-native';
 
-const DropDownPickerComponent = ({
+const ModalDropDownPickerComponent = ({
   width,
   value,
   setValue,
@@ -27,17 +27,49 @@ const DropDownPickerComponent = ({
         setValue={setValue}
         minHeight={minHeight}
         dropDownDirection="BOTTOM"
+        modalTitle={placeholder}
         selectedItemContainerStyle={{backgroundColor: '#e5e5e5'}}
+        placeholderStyle={{color: '#a0a0a0'}}
         props={{
           backgroundColor: 'white',
         }}
-        zIndex={zIndex}
-        zIndexInverse={zIndexInverse}
-        containerstyle={{
-          width: '100%',
+        listMode="MODAL"
+        modalProps={{
+          animationType: 'fade',
+          presentationStyle: null,
+          transparent: true,
+          style: {
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+        }}
+        modalContentContainerStyle={{
+          width: '50%',
+          height: '50%',
+          backgroundColor: 'white',
+          position: 'absolute',
+          left: '25%',
+          top: '25%',
+          borderRadius: 8,
+        }}
+        searchContainerStyle={{
+          borderBottomColor: '#f09311',
+          borderBottomWidth: 2,
+        }}
+        modalTitleStyle={{
+          fontStyle: 'normal',
+          fontFamily: 'Pretendard Variable',
+          fontWeight: 500,
         }}
         ArrowDownIconComponent={TriangleDownIcon}
         ArrowUpIconComponent={TriangleUpIcon}
+        zIndex={zIndex}
+        zIndexInverse={zIndexInverse}
+        containerStyle={{
+          borderColor: null,
+          border: null,
+          borderWidth: null,
+        }}
       />
     </Container>
   );
@@ -75,4 +107,4 @@ const CustomDropDownPicker = styled(DropDownPicker)`
       : undefined}
   border: 1px solid #d8d8d8;
 `;
-export default DropDownPickerComponent;
+export default ModalDropDownPickerComponent;
