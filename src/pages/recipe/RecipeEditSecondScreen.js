@@ -52,6 +52,7 @@ const RecipeEditSecondScreen = ({navigation}) => {
   return (
     <RecipeEditScreenContainer>
       <Title
+          enabled={true}
         navigation={navigation}
         totalStep={3}
         nowStep={2}

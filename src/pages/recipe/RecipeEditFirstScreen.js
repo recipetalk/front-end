@@ -32,9 +32,11 @@ const RecipeEditFirstScreen = ({navigation}) => {
     if (
       title.trim() !== '' &&
       description.trim() !== '' &&
-      (firstCategoryValue !== null || secondCategoryValue !== null)
+      firstCategoryValue !== null
     ) {
       setEnabled(true);
+    } else {
+      setEnabled(false);
     }
   }, [title, description, firstCategoryValue, secondCategoryValue]);
 
