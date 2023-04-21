@@ -315,6 +315,9 @@ const TouchableBox = styled.TouchableOpacity`
   width: 90px;
   height: 98px;
   justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0;
 `;
 
 const Description = styled.Text`
@@ -344,7 +347,7 @@ const ThumbnailImageEditContainer = styled.View`
   align-items: center;
   padding-left: 10px;
   padding-right: 10px;
-
+    
   gap: 15px;
 `;
 
