@@ -1,62 +1,138 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import {View} from 'react-native';
+import {FlatList, Image, TouchableOpacity, View} from 'react-native';
 import Title from '../../components/atoms/board/recipe/edit/Title';
+import {ImageAndCameraFun} from '../../components/atoms/functions/ImageAndCameraFun';
+import {useToast} from 'react-native-toast-notifications';
 
 const RecipeEditThirdScreen = ({navigation}) => {
+  const toast = useToast();
+  const [isAlert, setAlert] = useState(false);
+  const [rows, setRows] = useState([
+    {
+      id: 1,
+      description: '',
+      photo: {uri: ''},
+    },
+  ]);
+
+  const [index, setIndex] = useState(null);
+
+  const addComponent = () => {
+    let newArr = [...rows];
+
+    newArr.push({
+      id: newArr[newArr.length - 1].id + 1,
+      description: null,
+      photo: {uri: ''},
+    });
+    setRows(newArr);
+  };
+
+  const dataUpdateTextHandler = (index, property) => e => {
+    let newArr = [...rows];
+
+    newArr[index][property] = e.nativeEvent.text;
+    console.log(newArr[index][property]);
+    setRows(newArr);
+  };
+
+  const dataUpdatePhoto = index => value => {
+    let newArr = [...rows];
+
+    newArr[index].photo = value;
+    console.log(value);
+    setRows(newArr);
+  };
+
+  const deleteItem = index => () => {
+    let newArr = rows.filter((row, itemIndex) => index !== itemIndex);
+
+    setRows(newArr);
+  };
+
   return (
     <RecipeEditThirdScreenContainer>
+      <ImageAndCameraFun
+        toast={toast}
+        setAlert={setAlert}
+        isAlert={isAlert}
+        setPhoto={dataUpdatePhoto(index)}
+      />
       <Title
         totalStep={3}
         nowStep={3}
         navigation={navigation}
         nextNavigation={'RecipeScreen'}
       />
-      <PrepOrderContainer>
-        <OrderTitle>손질 순서</OrderTitle>
-        {[1, 2, 3, 4].map(i => {
-          return (
-            <PrepOrderItem key={i}>
+
+      <OrderTitle>손질 순서</OrderTitle>
+      <FlatList
+        data={rows}
+        renderItem={({item, index}) => (
+          <View
+            style={{
+              paddingLeft: '5%',
+              paddingRight: '5%',
+              marginBottom: 10,
+              flexDirection: 'row',
+            }}>
+            <PrepOrderItem>
               <PrepOrderNum>
-                <PrepOrderNumText>{i}</PrepOrderNumText>
+                <PrepOrderNumText>{index + 1}</PrepOrderNumText>
               </PrepOrderNum>
               <PrepOrderInfo>
-                <PrepOrderHeader>
-                  <PrepOrderContent>
-                    <PrepOrderContentText>
-                      {'예) 준비된 양념으로 고기를 조물조물 재워둡니다.'}
-                    </PrepOrderContentText>
-                  </PrepOrderContent>
-
-                  <PrepOrderCancel
-                    source={require('../../assets/images/Cancel.png')}
-                  />
-                </PrepOrderHeader>
-                <PrepOrderAddImage>
-                  {[1, 2, 3].map(i => {
-                    return (
-                      <View key={i}>
-                        <AddImageItem />
-                        <AddImgView>
-                          <AddImg
-                            source={require('../../assets/images/Add_g.png')}
-                          />
-                        </AddImgView>
-                      </View>
-                    );
-                  })}
-                </PrepOrderAddImage>
+                {item.photo.uri === '' ? (
+                  <ImageSelectBox
+                    onPress={() => {
+                      setAlert(true);
+                      setIndex(index);
+                    }}>
+                    <Image
+                      source={require('../../assets/images/_격리_모드.png')}
+                    />
+                  </ImageSelectBox>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setAlert(true);
+                      setIndex(index);
+                    }}>
+                    <Image
+                      style={{width: 98, height: 98, borderRadius: 8}}
+                      source={{uri: item.photo.uri}}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                )}
+                <PrepOrderContentTextInput
+                  multiline={true}
+                  scrollEnabled={false}
+                  value={item.description}
+                  onChange={dataUpdateTextHandler(index, 'description')}
+                  placeholder={'예) 준비된 양념으로 고기를 조물조물 재워둡니다'}
+                  placeholderTextColor={'#a0a0a0'}
+                />
               </PrepOrderInfo>
             </PrepOrderItem>
-          );
-        })}
-      </PrepOrderContainer>
-      <AddPrepOrder>
-        <AddPrepOrderText>요리 순서 추가</AddPrepOrderText>
-        <TouchContainer>
-          <AddImage source={require('../../assets/images/Add_o.png')} />
-        </TouchContainer>
-      </AddPrepOrder>
+            <View style={{position: 'absolute', right: 10, top: 5}}>
+              <TouchableOpacity onPress={deleteItem(index)}>
+                <PrepOrderCancel
+                  source={require('../../assets/images/Cancel.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        ListFooterComponent={
+          <AddPrepOrder>
+            <AddPrepOrderText>요리 순서 추가</AddPrepOrderText>
+            <TouchContainer onPress={addComponent}>
+              <AddImage source={require('../../assets/images/Add_o.png')} />
+            </TouchContainer>
+          </AddPrepOrder>
+        }
+      />
     </RecipeEditThirdScreenContainer>
   );
 };
@@ -83,8 +159,6 @@ const RecipeEditThirdScreenContainer = styled.SafeAreaView`
   background: #ffffff;
 `;
 
-const PrepOrderContainer = styled.ScrollView``;
-
 const OrderTitle = styled.Text`
   font-style: normal;
   font-weight: 500;
@@ -98,8 +172,7 @@ const OrderTitle = styled.Text`
 const PrepOrderItem = styled.View`
   display: flex;
   flex-direction: row;
-  height: 140px;
-  margin: 15px;
+  width: 85%;
 `;
 const PrepOrderNum = styled.View`
   width: 22px;
@@ -122,68 +195,44 @@ const PrepOrderNumText = styled.Text`
 `;
 
 const PrepOrderInfo = styled.View`
-  display: flex;
-  flex-direction: column;
-  width: 310px;
+  width: 100%;
   height: 100%;
   border: 1px solid #d8d8d8;
   border-radius: 8px;
-`;
-
-const PrepOrderHeader = styled.View`
-  display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  padding: 10px;
-`;
-const PrepOrderContent = styled.View`
-  width: 200px;
-  height: 38px;
+  padding: 5%;
+  gap: 10px;
+  align-items: center;
 `;
 
-const PrepOrderContentText = styled.Text`
+
+const PrepOrderContentTextInput = styled.TextInput`
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   font-family: 'Pretendard Variable';
-
-  color: #a0a0a0;
+  flex: 1;
+  color: #666666;
 `;
 const PrepOrderCancel = styled.Image`
   width: 22px;
   height: 22px;
 `;
-const PrepOrderAddImage = styled.View`
-  display: flex;
-  flex-direction: row;
-  background: white;
-  padding: 0 10px;
-  gap: 10px;
-`;
-
-const AddImageItem = styled.View`
-  width: 65px;
-  height: 65px;
-  background: #ededed;
-  border-radius: 8px;
-`;
-
-const AddImgView = styled.TouchableOpacity`
-  width: 65px;
-  height: 65px;
-  border-radius: 4px;
-  position: absolute;
-  justify-content: center;
-`;
-
-const AddImg = styled.Image`
-  margin: auto;
-`;
 
 const TouchContainer = styled.TouchableOpacity``;
+
 const AddImage = styled.Image`
   width: 20px;
   height: 20px;
+`;
+
+const ImageSelectBox = styled.TouchableOpacity`
+  width: 98px;
+  height: 98px;
+  background: #ededed;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
 `;
 
 export default RecipeEditThirdScreen;

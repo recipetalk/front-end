@@ -36,23 +36,27 @@ const RecipeEditSecondScreen = ({navigation}) => {
   const addComponent = () => {
     let newArr = [...ingredients];
 
-    newArr.concat([
-      {
-        id: newArr.length,
-        ingredientName: null,
-        ingredientId: null,
-        quantity: null,
-      },
-    ]);
+    newArr.push({
+      id: newArr[newArr.length - 1].id + 1,
+      ingredientName: null,
+      ingredientId: null,
+      quantity: null,
+    });
 
     console.log(newArr);
+    setIngredients(newArr);
+  };
+
+  const deleteItem = index => () => {
+    let newArr = ingredients.filter((row, itemIndex) => index !== itemIndex);
+
     setIngredients(newArr);
   };
 
   return (
     <RecipeEditScreenContainer>
       <Title
-          enabled={true}
+        enabled={true}
         navigation={navigation}
         totalStep={3}
         nowStep={2}
@@ -81,7 +85,7 @@ const RecipeEditSecondScreen = ({navigation}) => {
                     onChange={onChangeText(index, 'quantity')}
                   />
                 </TextInputContainer>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={deleteItem(index)}>
                   <Image source={require('../../assets/images/Cancel.png')} />
                 </TouchableOpacity>
               </TextInputLowContainer>

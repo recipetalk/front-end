@@ -22,7 +22,7 @@ export const ImageAndCameraFun = props => {
                 if (response.didCancel) {
                   return null;
                 } else {
-                  props.setPhoto(() => response.assets[0]);
+                  props.setPhoto(response.assets[0]);
                   props.toast.show('사진이 정상적으로 등록되었습니다!');
                 }
               },
@@ -36,7 +36,7 @@ export const ImageAndCameraFun = props => {
                 return null;
               } else {
                 console.log(response.assets[0]);
-                props.setPhoto(() => response.assets[0]);
+                props.setPhoto(response.assets[0]);
                 props.toast.show('사진이 정상적으로 등록되었습니다!');
               }
               props.setAlert(false);
