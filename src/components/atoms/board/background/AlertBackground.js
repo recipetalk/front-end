@@ -5,12 +5,16 @@ import {Modal} from 'react-native';
 export default function AlertBackground(props) {
   return (
     <Modal transparent={true}>
-      <BackgroundContainer>{props.children}</BackgroundContainer>
+      <BackgroundContainer
+        onPress={() => props.setAlert(false)}
+        activeOpacity={0}>
+        {props.children}
+      </BackgroundContainer>
     </Modal>
   );
 }
 
-const BackgroundContainer = styled.View`
+const BackgroundContainer = styled.TouchableOpacity`
   width: 100%;
   height: 120%;
   background: rgba(0, 0, 0, 0.5);

@@ -1,0 +1,18 @@
+export const RecipeSortList = [
+  {value: '찌개_탕_전골', label: '찌개 탕 전골'},
+  {value: '조림', label: '조림'},
+  {value: '반찬', label: '반찬'},
+  {value: '중식', label: '중식'},
+  {value: '튀김', label: '튀김'},
+  {value: '일식', label: '일식'},
+  {value: '초밥', label: '초밥'},
+  {value: '분식', label: '분식'},
+  {value: '백반_죽', label: '백반 죽'},
+  {value: '패스트푸드', label: '패스트푸드'},
+  {value: '면', label: '면'},
+  {value: '고기', label: '고기'},
+  {value: '안주', label: '안주'},
+  {value: '디저트', label: '디저트'},
+  {value: '음료', label: '음료'},
+  {value: '기타', label: '기타'},
+];

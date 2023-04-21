@@ -3,11 +3,13 @@ import styled from 'styled-components/native';
 import Alert from '../atoms/Alert';
 import {View} from 'react-native';
 
-export default function AlertYesNoButton({
+export default function AlertTwoChooseButton({
   title,
   text,
-  onPress,
-  yesButtonText,
+  firstPress,
+  firstButtonText,
+  secondPress,
+  secondButtonText,
   setAlert,
 }) {
   return (
@@ -18,15 +20,12 @@ export default function AlertYesNoButton({
       </Inner>
       <VerticalBar />
       <View style={{flexDirection: 'row'}}>
-        <Button
-          onPress={() => {
-            setAlert(false);
-          }}>
-          <NoButtonLabel>취소</NoButtonLabel>
+        <Button onPress={firstPress}>
+          <YesButtonLabel>{firstButtonText}</YesButtonLabel>
         </Button>
         <HorizontalBar />
-        <Button onPress={onPress}>
-          <YesButtonLabel>{yesButtonText}</YesButtonLabel>
+        <Button onPress={secondPress}>
+          <YesButtonLabel>{secondButtonText}</YesButtonLabel>
         </Button>
       </View>
     </Alert>

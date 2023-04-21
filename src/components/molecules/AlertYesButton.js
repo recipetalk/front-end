@@ -4,7 +4,7 @@ import Alert from '../atoms/Alert';
 
 export default function AlertYesButton({title, text, onPress}) {
   return (
-    <Alert>
+    <Alert setAlert={onPress}>
       <Inner>
         <TitlePart>{title}</TitlePart>
         {text !== undefined ? <TextPart>{text}</TextPart> : undefined}
