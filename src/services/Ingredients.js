@@ -23,11 +23,10 @@ export const addIngredientTrimming = async ingredientInfo => {
 // 식재료 손질법 행 등록
 export const addRowIngredientTrimming = async rowIngredientInfo => {
   const url = `/api/board/ingredient/${rowIngredientInfo.ingredientId}/trimming/${rowIngredientInfo.trimmingId}`;
-
   const body = new FormData();
 
   body.append('description', rowIngredientInfo.itemList.description);
-  body.append('trimmingSeq', rowIngredientInfo.itemList.trimmingSeq);
+  body.append('trimmingSeq', rowIngredientInfo.itemList.id);
 
   return await multiPartAPI.post(url, body, config);
 };

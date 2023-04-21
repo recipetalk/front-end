@@ -221,7 +221,7 @@ function App() {
               options={{headerShown: false}}
             />
             <Stack.Screen
-              name="PrepEdit"
+              name="PrepRegister"
               component={PrepRegisterScreen}
               options={{headerShown: false}}
             />

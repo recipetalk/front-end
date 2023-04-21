@@ -44,15 +44,6 @@ const PrepIntroContainer = styled.View`
   padding: 18px;
 `;
 
-const Title = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  font-family: 'Pretendard Variable';
-
-  color: #a4a4a4;
-  margin-bottom: 10px;
-`;
 const TitleInput = styled.TextInput`
   width: 100%;
   margin-bottom: 10px;
@@ -61,8 +52,8 @@ const TitleInput = styled.TextInput`
 
 const PrepInput = styled.TextInput`
   width: 100%;
-  height: 100px;
-  margin-bottom: 20px;
+  height: 50px;
+
   font-family: 'Pretendard Variable';
 `;
 export default PrepIntro;
