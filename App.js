@@ -48,6 +48,7 @@ import {NativeModules} from 'react-native';
 import {ReplyCommentScreen} from './src/pages/ReplyCommentScreen';
 import {addRowIngredientTrimming} from './src/services/MyPage';
 import {ToastProvider} from 'react-native-toast-notifications';
+import RegisterMyIngredientsScreen from './src/pages/Ingredients/RegisterMyIngredientsScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -313,6 +314,11 @@ function App() {
             <Stack.Screen
               name="EfficacyEdit"
               component={EfficacyEditScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="RegisterMyIngredients"
+              component={RegisterMyIngredientsScreen}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

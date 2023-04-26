@@ -1,9 +1,12 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Platform, Text} from 'react-native';
 import styled from 'styled-components/native';
 import IngredientsHeader from '../components/organisms/Ingredients/IngredientsHeader';
 
 const ReceiptScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <ReciptScreenContainer>
       <IngredientsHeader
@@ -13,7 +16,7 @@ const ReceiptScreen = () => {
         isTransparent={true}
         screen=""
       />
-      <Btn>
+      <Btn onPress={() => navigation.navigate('RegisterMyIngredients')}>
         <Text>이동</Text>
       </Btn>
     </ReciptScreenContainer>
