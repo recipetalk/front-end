@@ -1,11 +1,15 @@
 import styled from 'styled-components/native';
 import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {clear} from '../../store/signup/Signup';
 
-export default function SignupFinishScreen({navigation}) {
-  const globalNickname = useSelector(state => state.signUp.value.nickname);
+export default function SignupFinishScreen({navigation, route}) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(clear());
+  }, []);
 
   return (
     <SignupIdScreenContainer>
@@ -16,9 +20,7 @@ export default function SignupFinishScreen({navigation}) {
       <DescriptionContainer>
         <View style={{flexDirection: 'row'}}>
           <SecondSlogan>반가워요 </SecondSlogan>
-          <SecondSlogan style={{color: '#f09311'}}>
-            {globalNickname}
-          </SecondSlogan>
+          <SecondSlogan style={{color: '#f09311'}}>{route.params.nickname}</SecondSlogan>
           <SecondSlogan>님!</SecondSlogan>
         </View>
 

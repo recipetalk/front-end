@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
@@ -16,7 +16,10 @@ export default function SignupNicknameScreen({navigation}) {
   const [isAccess, setAccess] = useState(false);
   const [accessNickname, setAccessNickname] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
-  const getIsValidNickname = async () =>
+  const textRef = useRef();
+
+  const getIsValidNickname = async () => {
+    textRef.current.blur();
     jsonAPI
       .get('/auth/signup/nickname/' + localNickname)
       .then(response => {
@@ -29,6 +32,7 @@ export default function SignupNicknameScreen({navigation}) {
         setAccessNickname(null);
         setVisibleAlert(true);
       });
+  };
 
   return (
     <SignupIdScreenContainer>
@@ -46,6 +50,7 @@ export default function SignupNicknameScreen({navigation}) {
         <DuplicationAndTextInputContainer>
           <View style={{width: '76%'}}>
             <FocusedTextInputBorder
+              useRef={textRef}
               setData={setLocalNickname}
               value={localNickname}
             />

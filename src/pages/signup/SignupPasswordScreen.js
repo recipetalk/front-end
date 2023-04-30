@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, Platform} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
@@ -15,6 +15,7 @@ export default function SignupPasswordScreen({navigation}) {
   const [checkPassword, setCheckPassword] = useState(globalPassword);
   const [isValidPassword, setNotValidPassword] = useState('');
   const [isEqualPassword, setEqualPassword] = useState(true);
+
   useEffect(() => {
     if (PasswordValidator(localPassword)) {
       setNotValidPassword('ok');
@@ -59,7 +60,7 @@ export default function SignupPasswordScreen({navigation}) {
         />
         {isValidPassword === 'no' && (
           <ValidateLabel>
-            영문, 숫자, 특수문자를 모두 포함해 주세요!
+            영문, 숫자, 특수문자를 포함한 8글자 이상으로 작성해주세요!
           </ValidateLabel>
         )}
         <LoginLabel>비밀번호 확인</LoginLabel>

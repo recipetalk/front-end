@@ -64,7 +64,6 @@ const MypageComponent = ({navigation, setAlert}) => {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={getData} />
       }>
-      <VerticalBar height={'2px'} />
       <InfoContainer>
         <SimpleProfile>
           <ProfileTouchableContainer>

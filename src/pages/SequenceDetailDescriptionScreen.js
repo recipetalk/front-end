@@ -109,14 +109,17 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
   //백그라운드 탐지
   useEffect(() => {
     if (isStartTimer) {
-      if (state.match(/background/)) {
+      if (state.match(/background/) || state.match(/inactive/)) {
         setBackgroundTime(() => Date.now());
         BackgroundTimer.stopBackgroundTimer();
+        console.log(backgroundTime);
       } else {
         console.log(state);
         const delay = Math.round((Date.now() - backgroundTime) / 1000) * 1000;
         setRemainingTime(remainingTime => remainingTime - delay);
         setEstimatedEndTime(estimatedEndTime => estimatedEndTime - delay);
+        console.log(backgroundTime);
+        console.log(isStartTimer);
         startAction();
       }
     }

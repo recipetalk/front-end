@@ -15,6 +15,10 @@ import {
   saveJwtRefreshToStorage,
 } from '../services/domain/JwtToken';
 import AlertYesButton from '../components/molecules/AlertYesButton';
+import {RequestFcmConnect} from '../services/fcm/FcmConnect';
+import messaging from '@react-native-firebase/messaging';
+import {useDispatch} from 'react-redux';
+import {clear} from '../store/signup/Signup';
 
 export default function LoginScreen({navigation}) {
   const [autologinChecked, setAutologinChecked] = useState(false);
@@ -22,9 +26,11 @@ export default function LoginScreen({navigation}) {
   const [password, setPassword] = useState('');
   const [visibleAlert, setVisibleAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function init() {
+      dispatch(clear());
       const loadLoginData = await loadLoginFromStorage();
       console.log(loadLoginData);
       setId(loadLoginData.username);
@@ -40,9 +46,13 @@ export default function LoginScreen({navigation}) {
           .then(async res => {
             await saveJwtRefreshToStorage(res.headers['refresh-token']);
             await saveJwtAccessTokenToStorage(res.headers.authorization);
+            const getToken = await messaging().getToken();
+            console.log(getToken);
+            await RequestFcmConnect(getToken, true).catch();
             navigation.reset({routes: [{name: 'Home'}]});
           })
           .catch(err => {
+            console.log(err);
             if (err.response.data === 'Invalid Username or Password') {
               setVisibleAlert(true);
               console.log(err.response);
@@ -68,11 +78,14 @@ export default function LoginScreen({navigation}) {
         await saveLoginToStorage(username, password, autologinChecked);
         await saveJwtAccessTokenToStorage(res.headers.authorization);
         await saveJwtRefreshToStorage(res.headers['refresh-token']);
+        const getToken = await messaging().getToken();
 
+        await RequestFcmConnect(getToken, true).catch();
         console.log(res.status);
         navigation.reset({routes: [{name: 'Home'}]});
       })
       .catch(err => {
+        console.log(err);
         if (err.response.data === 'Invalid Username or Password') {
           setVisibleAlert(true);
           console.log(err.response);
