@@ -10,7 +10,8 @@ import {jsonAPI} from '../../services/connect/API';
 export default function SignupSecondEmailVerificationScreen({navigation}) {
   const [visibleAlert, setVisibleAlert] = useState(false);
   const globalSignUp = useSelector(state => state.signUp.value);
-
+  const [isActive, setActive] = useState(true);
+  const globalNickname = useSelector(state => state.signUp.value.nickname);
   const sendEmailAndConnectAndNextNavigation = async () =>
     jsonAPI
       .get('/auth/verify/' + globalSignUp.email)
@@ -27,27 +28,44 @@ export default function SignupSecondEmailVerificationScreen({navigation}) {
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      if (remoteMessage.notification.body === 'ok') {
+      console.log('foreground alert');
+      console.log(remoteMessage);
+      if (remoteMessage.data.body === '이메일 인증이 완료되었습니다.') {
         jsonAPI
           .post('/auth/signup', globalSignUp)
-          .then(() => navigation.navigate('SignupFinish'))
+          .then(() =>
+            navigation.reset({
+              routes: [
+                {name: 'SignupFinish', params: {nickname: globalNickname}},
+              ],
+            }),
+          )
           .catch(err => console.log(err.response));
       } else {
         setVisibleAlert(true);
       }
     });
-    return unsubscribe;
-  });
-  messaging().setBackgroundMessageHandler(async remoteMessage => {
-    if (remoteMessage.notification.body === '이메일 인증이 완료되었습니다.') {
-      jsonAPI
-        .post('/auth/signup', globalSignUp)
-        .then(() => navigation.reset({routes: [{name: 'SignupFinish'}]}))
-        .catch(err => console.log(err.response));
-    } else {
-      setVisibleAlert(true);
+    if (Platform.OS === 'android') {
+      messaging().setBackgroundMessageHandler(async remoteMessage => {
+        setActive(() => false);
+        console.log('background alert');
+        console.log(remoteMessage);
+        jsonAPI
+          .post('/auth/signup', globalSignUp)
+          .then(() =>
+            navigation.reset({
+              routes: [
+                {name: 'SignupFinish', params: {nickname: globalNickname}},
+              ],
+            }),
+          )
+          .catch(err => console.log(err.response));
+      });
     }
-  });
+    setActive(true);
+    return unsubscribe;
+  }, []);
+
   return (
     <SignupIdScreenContainer>
       <TouchableContainer onPress={() => navigation.pop()}>
@@ -56,7 +74,8 @@ export default function SignupSecondEmailVerificationScreen({navigation}) {
       <DescriptionContainer>
         <FirstDescription>거의다 왔어요!</FirstDescription>
         <Description>이메일이 오지 않았나요?</Description>
-        <Description>재전송 버튼을 눌러주세요!</Description>
+        <Description>재전송 버튼을 눌러주세요!{'\n'}</Description>
+        <Description>인증이 되었다면 잠시만 기다려주세요!</Description>
       </DescriptionContainer>
 
       <NextButtonContainer>
@@ -66,7 +85,7 @@ export default function SignupSecondEmailVerificationScreen({navigation}) {
           border_radius="25px"
           LabelInfo="재전송"
           LabelSize="17px"
-          isActive={true}
+          isActive={isActive}
           onPress={() => {
             sendEmailAndConnectAndNextNavigation();
           }}

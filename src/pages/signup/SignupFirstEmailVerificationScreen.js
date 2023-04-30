@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {jsonAPI} from '../../services/connect/API';
 import AlertYesButton from '../../components/molecules/AlertYesButton';
 import equals from '../../services/object/equals';
@@ -19,10 +19,12 @@ export default function SignupFirstEmailVerificationScreen({navigation}) {
   const [isValidEmail, setValidEmail] = useState('');
   const [accessEmail, setAccessEmail] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
-  const getIsValidEmail = async () =>
+  const textRef = useRef();
+  const getIsValidEmail = async () => {
     jsonAPI
       .get('/auth/signup/email/' + localEmail)
       .then(response => {
+        textRef.current.blur();
         setAccess(true);
         setAccessEmail(localEmail);
         setVisibleAlert(true);
@@ -33,7 +35,7 @@ export default function SignupFirstEmailVerificationScreen({navigation}) {
         setAccessEmail(null);
         setVisibleAlert(true);
       });
-
+  };
   const sendEmailAndConnectAndNextNavigation = async navigation =>
     jsonAPI
       .get('/auth/verify/' + localEmail)
@@ -47,7 +49,7 @@ export default function SignupFirstEmailVerificationScreen({navigation}) {
           .then(navigation.push('SignupEmailSecond'))
           .catch(err => console.log(err.response.data));
       })
-      .catch(err => console.log(err.response.data));
+      .catch(err => console.log(err));
 
   useEffect(() => {
     if (EmailValidator(localEmail)) {
@@ -77,6 +79,7 @@ export default function SignupFirstEmailVerificationScreen({navigation}) {
         <DuplicationAndTextInputContainer>
           <View style={{width: '76%'}}>
             <FocusedTextInputBorder
+              useRef={textRef}
               style={isValidEmail === 'no' && {borderColor: '#ff665c'}}
               placeholder="이메일을 입력해주세요"
               value={localEmail}

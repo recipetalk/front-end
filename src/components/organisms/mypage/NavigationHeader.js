@@ -36,6 +36,8 @@ const Header = styled.View`
   height: 50px;
 
   justify-content: center;
+  border-bottom-width: 1px;
+  border-bottom-color: #e5e5e5;
 `;
 
 const HeaderLabel = styled.Text`

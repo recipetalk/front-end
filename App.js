@@ -5,12 +5,9 @@
  * @format
  */
 
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useEffect, useRef} from 'react';
+import React, {createRef, useEffect, useRef} from 'react';
 import LoginScreen from './src/pages/LoginScreen';
-import {store} from './src/store/config';
-import {Provider} from 'react-redux';
 import SignupIdScreen from './src/pages/signup/SignupIdScreen';
 import SignupNicknameScreen from './src/pages/signup/SignupNicknameScreen';
 import SignupPasswordScreen from './src/pages/signup/SignupPasswordScreen';
@@ -43,11 +40,12 @@ import ReturnIdScreen from './src/pages/login/find/ReturnIdScreen';
 import PrepDetailScreen from './src/pages/Ingredients/PrepDetailScreen';
 import EfficacyScreen from './src/pages/Ingredients/EfficacyScreen';
 import EfficacyEditScreen from './src/pages/Ingredients/EfficacyEditScreen';
-import {AppState, PermissionsAndroid} from 'react-native';
-import {NativeModules} from 'react-native';
 import {ReplyCommentScreen} from './src/pages/ReplyCommentScreen';
-import {addRowIngredientTrimming} from './src/services/MyPage';
-import {ToastProvider} from 'react-native-toast-notifications';
+import {NotificationScreen} from './src/pages/NotificationScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import notifee, {EventType} from '@notifee/react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {exist, notExist} from './src/store/notification/NotificationStateSlice';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -156,12 +154,15 @@ function LoginStackNavigator() {
 
 function App() {
   const Stack = createNativeStackNavigator();
+  const navigation = createRef();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     fcmSet();
   }, []);
 
   const fcmSet = async () => {
-    const enabled = await messaging().hasPermission();
+    const enabled = await messaging().requestPermission();
     if (enabled) {
       const fcmToken = await messaging().getToken();
       console.log('fcmToken : ' + fcmToken);
@@ -170,6 +171,55 @@ function App() {
       await messaging().requestPermission();
     }
   };
+  const onDisplayNotification = async ({title = '', body = ''}) => {
+    const channelId = await notifee.createChannel({
+      id: 'recipeTalk',
+      name: '포그라운드알림',
+    });
+
+    await notifee.displayNotification({
+      title,
+      body,
+      android: {
+        channelId,
+        smallIcon: 'ic_launcher',
+      },
+    });
+  };
+  useEffect(() => {
+    messaging().onMessage(async remoteMessage => {
+      const title = remoteMessage?.notification?.title;
+      const body = remoteMessage?.notification?.body;
+      if (remoteMessage?.notification !== undefined) {
+        dispatch(exist());
+        await onDisplayNotification({title, body});
+      }
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then(async remoteMessage => {});
+
+    messaging().onNotificationOpenedApp(async () => {
+      await navigation.current.navigate('Notification');
+    });
+
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      const title = remoteMessage?.notification?.title;
+      const body = remoteMessage?.notification?.body;
+      if (remoteMessage?.notification !== undefined) {
+        dispatch(exist());
+        await onDisplayNotification({title, body});
+      }
+    });
+
+    return notifee.onForegroundEvent(({type, detail}) => {
+      if (type === EventType.PRESS) {
+        navigation.current.navigate('Notification');
+        dispatch(notExist());
+      }
+    });
+  }, []);
 
   // return (
   //   <NavigationContainer>
@@ -198,127 +248,120 @@ function App() {
   // );
 
   return (
-    <Provider store={store}>
-      <ToastProvider
-        swipeEnabled={false}
-        offset={100}
-        duration={4000}
-        textStyle={{
-          fontFamily: 'Pretendard Variable',
-          fontStyle: 'normal',
-          fontWeight: '500',
-        }}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Login"
-              component={LoginStackNavigator}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Home"
-              component={BottomTab}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="PrepEdit"
-              component={PrepRegisterScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="RecipeEdit"
-              component={RecipeEditStackNavigator}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="CommentHistory"
-              component={CommentHistoryScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="RecipeDetailScreen"
-              component={RecipeDetailStackNavigator}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="ProfileScreen"
-              component={ProfileScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SequenceDetailScreen"
-              component={SequenceDetailDescriptionScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="SetTimerPage"
-              component={SetTimerPage}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="MyRecipe"
-              component={MyRecipeScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="MyPrep"
-              component={MyPrepScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="MyBookmark"
-              component={MyBookmarkScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="MyLike"
-              component={MyLikeScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="EditProfile"
-              component={EditProfileScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Follower"
-              component={FollowerScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Following"
-              component={FollowingScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="BlockUser"
-              component={BlockUserScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="ReplyComment"
-              component={ReplyCommentScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="PrepDetail"
-              component={PrepDetailScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Efficacy"
-              component={EfficacyScreen}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="EfficacyEdit"
-              component={EfficacyEditScreen}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ToastProvider>
-    </Provider>
+    <NavigationContainer ref={navigation}>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginStackNavigator}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={BottomTab}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PrepEdit"
+          component={PrepRegisterScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RecipeEdit"
+          component={RecipeEditStackNavigator}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CommentHistory"
+          component={CommentHistoryScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RecipeDetailScreen"
+          component={RecipeDetailStackNavigator}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SequenceDetailScreen"
+          component={SequenceDetailDescriptionScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="SetTimerPage"
+          component={SetTimerPage}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MyRecipe"
+          component={MyRecipeScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MyPrep"
+          component={MyPrepScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MyBookmark"
+          component={MyBookmarkScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="MyLike"
+          component={MyLikeScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfileScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Follower"
+          component={FollowerScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Following"
+          component={FollowingScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="BlockUser"
+          component={BlockUserScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ReplyComment"
+          component={ReplyCommentScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="PrepDetail"
+          component={PrepDetailScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Efficacy"
+          component={EfficacyScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="EfficacyEdit"
+          component={EfficacyEditScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={NotificationScreen}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
