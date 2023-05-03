@@ -7,6 +7,7 @@ import {Image} from 'react-native';
 
 const IngredientsComponent = () => {
   const navigation = useNavigation();
+
   return (
     <IngredientsComponentContainer>
       <IngredientsHeader
@@ -15,7 +16,8 @@ const IngredientsComponent = () => {
         btnTextValue=""
       />
       <ViewAllMyIngredients />
-      <PrepRegisterButton onPress={() => navigation.push('PrepRegister')}>
+      <PrepRegisterButton
+        onPress={() => navigation.push('RegisterMyIngredients')}>
         <Image source={require('../../../assets/images/ggggector.png')} />
       </PrepRegisterButton>
     </IngredientsComponentContainer>
@@ -24,6 +26,7 @@ const IngredientsComponent = () => {
 
 const IngredientsComponentContainer = styled.View`
   margin-bottom: 300px;
+  height: 720px;
 `;
 
 const PrepRegisterButton = styled.TouchableOpacity`

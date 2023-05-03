@@ -8,40 +8,10 @@ import IngredientsItem from './IngredientsItem';
 
 const ViewAllMyIngredients = () => {
   const ingredientsList = useSelector(state => state.ingredients);
-  const dummy = [
-    {
-      id: 1,
-      name: '1',
-      status: '1',
-      expirationDate: '1',
-      amount: '1',
-      isChecked: false,
-    },
-    {
-      id: 2,
-      name: '2',
-      status: '2',
-      expirationDate: '2',
-      amount: '2',
-      isChecked: false,
-    },
-    {
-      id: 3,
-      name: '3',
-      status: '3',
-      expirationDate: '3',
-      amount: '3',
-      isChecked: false,
-    },
-    {
-      id: 4,
-      name: '4',
-      status: '4',
-      expirationDate: '4',
-      amount: '4',
-      isChecked: false,
-    },
-  ];
+
+  const [oneItemState, setOneItemState] = useState();
+  const [twoItemState, setTwoItemState] = useState();
+  const [threeItemState, setThreeItemState] = useState();
 
   const oneItem = [
     {placeholder: '등록일', label: '최신순', value: '최신순'},
@@ -54,32 +24,50 @@ const ViewAllMyIngredients = () => {
   const threeItem = [
     {
       placeholder: '소비기한',
-      label: '가까운 순서 보기(임박)',
-      value: '가까운 순서 보기(임박)',
+      label: '가까운 순서보기(임박)',
+      value: '가까운 순서보기(임박)',
     },
     {
       placeholder: '소비기한',
-      label: '여유로운 순서 보기(여유)',
-      value: '여유로운 순서 보기(여유)',
+      label: '여유로운 순서보기(여유)',
+      value: '여유로운 순서보기(여유)',
     },
   ];
   return (
     <>
       <DropDownPickerContainer>
         <View>
-          <DropDownPickerComponent width="90px" items={oneItem} />
+          <DropDownPickerComponent
+            width="80px"
+            items={oneItem}
+            value={oneItemState}
+            placeholder="등록일"
+            setValue={setOneItemState}
+          />
         </View>
         <View>
-          <DropDownPickerComponent width="90px" items={twoItem} />
+          <DropDownPickerComponent
+            width="100px"
+            items={twoItem}
+            value={twoItemState}
+            placeholder="가나다"
+            setValue={setTwoItemState}
+          />
         </View>
         <View>
-          <DropDownPickerComponent width="160px" items={threeItem} />
+          <DropDownPickerComponent
+            width="170px"
+            items={threeItem}
+            value={threeItemState}
+            placeholder="소비기한(임박)"
+            setValue={setThreeItemState}
+          />
         </View>
       </DropDownPickerContainer>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <MyIngredientsTitle>나의 식재료</MyIngredientsTitle>
-        {dummy.map((item, i) => {
+        {ingredientsList.map((item, i) => {
           return <IngredientsItem key={i} item={item} />;
         })}
       </ScrollView>

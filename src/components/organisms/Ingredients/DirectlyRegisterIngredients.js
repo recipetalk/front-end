@@ -8,18 +8,19 @@ import {
 import {useDispatch} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import {View} from 'react-native';
+import {getSearchIngredient} from '../../../services/Ingredients';
 
 const DirectlyRegisterIngredients = props => {
   const dispatch = useDispatch();
   const [isAddChecked, setIsAddChecked] = useState(props.item.isChecked);
   const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
-    props.item.status,
+    props.item.ingredientState,
   );
 
   const [ingredientsInfo, setIngredientsInfo] = useState({
-    name: props.item.name,
+    ingredientName: props.item.name,
     expirationDate: props.item.expirationDate,
-    amount: props.item.amount,
+    quantity: props.item.amount,
   });
 
   const statusPlaceholder = [
@@ -33,22 +34,22 @@ const DirectlyRegisterIngredients = props => {
     if (newValue) {
       dispatch(
         addIngredients({
-          id: props.item.id,
-          name: ingredientsInfo.name,
-          status: ingredientsStatusInfo,
+          ingredientId: props.item.ingredientId,
+          ingredientName: ingredientsInfo.ingredientName,
+          ingredientState: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
-          amount: ingredientsInfo.amount,
+          quantity: ingredientsInfo.quantity,
           isChecked: true,
         }),
       );
     } else {
       dispatch(
         addIngredients({
-          id: props.item.id,
-          name: ingredientsInfo.name,
-          status: ingredientsStatusInfo,
+          ingredientId: props.item.ingredientId,
+          ingredientName: ingredientsInfo.ingredientName,
+          ingredientState: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
-          amount: ingredientsInfo.amount,
+          quantity: ingredientsInfo.quantity,
           isChecked: false,
         }),
       );
@@ -56,7 +57,13 @@ const DirectlyRegisterIngredients = props => {
   };
 
   const deleteThisIngredients = () => {
-    dispatch(deleteIngredients(props.item.id));
+    dispatch(deleteIngredients(props.item.ingredientId));
+  };
+
+  const test = res => {
+    console.log('res !!', res);
+    setIngredientsInfo({...ingredientsInfo, name: res});
+    getSearchIngredient(res).then(result => console.log(result.data));
   };
 
   return (
@@ -86,9 +93,7 @@ const DirectlyRegisterIngredients = props => {
         <IngredientNameInput
           placeholder="  예) 감자  "
           value={ingredientsInfo.name}
-          onChangeText={res =>
-            setIngredientsInfo({...ingredientsInfo, name: res})
-          }
+          onChangeText={test}
         />
       </IngredientNameContainer>
 
@@ -98,8 +103,9 @@ const DirectlyRegisterIngredients = props => {
           <DropDownPickerComponent
             width="260px"
             items={statusPlaceholder}
-            state={ingredientsStatusInfo}
-            setState={setIngredientsStatusInfo}
+            value={ingredientsStatusInfo}
+            placeholder=" 예) 생 것"
+            setValue={setIngredientsStatusInfo}
           />
         </View>
       </IngredientStatusDropBoxContainer>
