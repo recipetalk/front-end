@@ -46,6 +46,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import notifee, {EventType} from '@notifee/react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {exist, notExist} from './src/store/notification/NotificationStateSlice';
+import {
+  isNotificationHasNew,
+  setNotificationHasNew,
+} from './src/services/domain/NotificationHasNew';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -162,7 +166,11 @@ function App() {
   }, []);
 
   const fcmSet = async () => {
-    const enabled = await messaging().requestPermission();
+    const enabled = await messaging().requestPermission({
+      sound: true,
+      badge: true,
+      alert: true,
+    });
     if (enabled) {
       const fcmToken = await messaging().getToken();
       console.log('fcmToken : ' + fcmToken);
@@ -171,6 +179,14 @@ function App() {
       await messaging().requestPermission();
     }
   };
+
+  const setBackgroundNotiOption = async () => {
+    const hasNew = await isNotificationHasNew();
+    if (hasNew) {
+      dispatch(exist());
+    }
+  };
+
   const onDisplayNotification = async ({title = '', body = ''}) => {
     const channelId = await notifee.createChannel({
       id: 'recipeTalk',
@@ -192,31 +208,36 @@ function App() {
       const body = remoteMessage?.notification?.body;
       if (remoteMessage?.notification !== undefined) {
         dispatch(exist());
+
         await onDisplayNotification({title, body});
       }
     });
 
     messaging()
       .getInitialNotification()
-      .then(async remoteMessage => {});
+      .then(async remoteMessage => {
+        dispatch(exist());
+      });
 
     messaging().onNotificationOpenedApp(async () => {
       await navigation.current.navigate('Notification');
     });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      const title = remoteMessage?.notification?.title;
-      const body = remoteMessage?.notification?.body;
       if (remoteMessage?.notification !== undefined) {
         dispatch(exist());
-        await onDisplayNotification({title, body});
       }
     });
 
     return notifee.onForegroundEvent(({type, detail}) => {
+      //타이머 알림 제외. 함부로 수정하면 안됨. 수정할땐 김현진이 호출할 것.
+      if (detail.notification.body === '타이머가 다됬어요!') {
+        return;
+      }
       if (type === EventType.PRESS) {
         navigation.current.navigate('Notification');
         dispatch(notExist());
+        setNotificationHasNew(false);
       }
     });
   }, []);

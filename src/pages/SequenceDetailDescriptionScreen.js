@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import SequenceDetailDescription from '../components/atoms/board/SequenceDetailDescription';
 import {
@@ -14,6 +14,8 @@ import {
 import * as Progress from 'react-native-progress';
 import BackgroundTimer from 'react-native-background-timer';
 import AlertYesNoButton from '../components/molecules/AlertYesNoButton';
+import notifee from '@notifee/react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 const SequenceDetailDescriptionScreen = ({navigation}) => {
   const [isClickedTimer, clickedTimer] = useState(false);
@@ -29,10 +31,11 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
   const [backgroundTime, setBackgroundTime] = useState(0);
   const appState = useRef(AppState.currentState);
   const [state, setState] = useState(appState.current);
-
+  const [intervalId, setIntervalId] = useState(null);
   const [isAlert, setAlert] = useState(false);
 
   const Timer = NativeModules.Timer;
+  const TimerModule = NativeModules.TimerModule;
 
   //뒤로가기 핸들러
   useEffect(() => {
@@ -67,6 +70,9 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
 
     if (isStartTimer && remainingTime === 0) {
       cancelTimer();
+      if (Platform.OS === 'ios') {
+        TimerModule.endTimerActivity();
+      }
     }
   }, [isStartTimer, remainingTime]);
 
@@ -81,7 +87,13 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
   // startTimer 수정되면 시작하기. 알림 컨트롤러.
   useEffect(() => {
     if (isStartTimer) {
+      if (hour == 0 && min == 0 && sec == 0) {
+        return;
+      }
       if (Platform.OS === 'ios') {
+        notifee.setBadgeCount(1);
+        TimerModule.startTimerActivity(duration());
+        TimerModule.registerReservedNotification(duration());
       } else {
         Timer.showNotification(
           getFormattedTime(Date.now() + duration() * 1000),
@@ -89,6 +101,7 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
         //예약 알림 필요
         Timer.setReserveAlarm(duration() * 1000);
       }
+      console.log('나야?');
       startAction();
     }
   }, [isStartTimer]);
@@ -111,26 +124,38 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
     if (isStartTimer) {
       if (state.match(/background/) || state.match(/inactive/)) {
         setBackgroundTime(() => Date.now());
-        BackgroundTimer.stopBackgroundTimer();
+        clearInterval(intervalId);
+        setIntervalId(null);
         console.log(backgroundTime);
       } else {
         console.log(state);
         const delay = Math.round((Date.now() - backgroundTime) / 1000) * 1000;
-        setRemainingTime(remainingTime => remainingTime - delay);
+        setRemainingTime(remainingTime => {
+          TimerModule.updateTimerActivity((remainingTime - delay) / 1000);
+          return remainingTime - delay;
+        });
         setEstimatedEndTime(estimatedEndTime => estimatedEndTime - delay);
         console.log(backgroundTime);
         console.log(isStartTimer);
+        console.log('여기서 한번더?');
         startAction();
+        TimerModule.removeReservedNotification();
+        TimerModule.registerReservedNotification(duration());
       }
     }
   }, [state]);
 
   const startAction = () => {
-    BackgroundTimer.runBackgroundTimer(() => {
-      setRemainingTime(remainingTime =>
-        remainingTime > 0 ? remainingTime - 1000 : 0,
+    if (intervalId === null) {
+      console.log('나 도는중');
+      setIntervalId(() =>
+        setInterval(() => {
+          setRemainingTime(remainingTime =>
+            remainingTime > 0 ? remainingTime - 1000 : 0,
+          );
+        }, 1000),
       );
-    }, 1000);
+    }
   };
 
   useEffect(() => {
@@ -149,7 +174,8 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
     setInit(false);
     startTimer(false);
     deleteAlarm();
-    BackgroundTimer.stopBackgroundTimer();
+    clearInterval(intervalId);
+    setIntervalId(null);
   };
 
   const deleteAlarm = () => {
@@ -157,21 +183,26 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
       Timer.deleteAlarm();
       Timer.deleteTimerNotification();
     } else {
+      notifee.setBadgeCount(0);
+      TimerModule.endTimerActivity();
+      TimerModule.removeReservedNotification();
     }
   };
 
   const cancelTimer = () => {
-    clickedTimer(false);
-    startTimer(false);
-    clickedStartTimer(false);
-    setHour('00');
-    setMin('00');
-    setSec('00');
-    setOneMore(true);
-    setRemainingTime(null);
-    setEstimatedEndTime(null);
-    setInit(true);
-    BackgroundTimer.stopBackgroundTimer();
+    clickedTimer(() => false);
+    startTimer(() => false);
+    clickedStartTimer(() => false);
+    setHour(() => '00');
+    setMin(() => '00');
+    setSec(() => '00');
+    setOneMore(() => true);
+    setRemainingTime(() => null);
+    setEstimatedEndTime(() => null);
+    setBackgroundTime(() => 0);
+    setInit(() => true);
+    clearInterval(intervalId);
+    setIntervalId(() => null);
   };
 
   const hoursLeft = Math.floor(remainingTime / 3600 / 1000);
