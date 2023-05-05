@@ -12,6 +12,9 @@ import {
 import {NotificationSortList} from '../category/notification/NotificationSortList';
 import CreatedDateLabel from '../components/atoms/CreatedDateLabel';
 import {getNotifications} from '../services/Notification';
+import {useDispatch} from 'react-redux';
+import {notExist} from '../store/notification/NotificationStateSlice';
+import {setNotificationHasNew} from '../services/domain/NotificationHasNew';
 
 //  {
 //       id: 1,
@@ -65,9 +68,12 @@ export const NotificationScreen = () => {
   const [last, setLast] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   useFocusEffect(
     useCallback(() => {
       setLoading(true);
+      dispatch(notExist());
+      setNotificationHasNew(false);
       getNotifications(0)
         .then(res => {
           const data = JSON.parse(res.request._response);
@@ -167,7 +173,12 @@ const getIconUri = notificationSort => {
 
 const renderItem = (item, navigation) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={determineNavigationWithNotiSort(
+        item.notificationSort,
+        item.navigations,
+        navigation,
+      )}>
       <NotiContainer isOpened={item.isOpened}>
         <IconBackground sort={item.notificationSort}>
           <Icon
@@ -190,6 +201,39 @@ const renderItem = (item, navigation) => {
       </NotiContainer>
     </TouchableOpacity>
   );
+};
+
+const determineNavigationWithNotiSort = (
+  notificationSort,
+  navigations,
+  navigation,
+) => {
+  if (notificationSort === 'COMMENT') {
+    return () => {
+      navigation.push(determineNavigation(navigations.boardSort), navigations);
+    };
+  } else if (notificationSort === 'CHILD_COMMENT') {
+    return async () => {
+      await navigation.push(determineNavigation(navigations.boardSort), {
+        boardId: navigations.boardId,
+      });
+      //TODO : Parent Comment 가져오는 로직 필요
+    };
+  } else if (notificationSort === 'FOLLOWING') {
+    return () => {
+      navigation.push('ProfileScreen', {username: navigations.username});
+    };
+  }
+};
+
+const determineNavigation = boardSort => {
+  if (boardSort === 'RECIPE') {
+    return 'RecipeDetailScreen';
+  } else if (boardSort === 'TRIMMING') {
+    return 'PrepDetail';
+  } else if (boardSort === 'DESCRIPTION') {
+    return 'Efficacy';
+  }
 };
 
 const Description = styled.Text`
