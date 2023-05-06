@@ -3,7 +3,7 @@ import {jsonAPI, multiPartAPI} from './connect/API';
 const config = {
   headers: {
     Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4MjE3NzcwNCwidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.GBhX0BBqh2zrNeBkMx-ceSUtqN5K4nP0JNPv5BvQsio',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NDg0NDk3OCwidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.ClzN1WqTe2DGGkUPxW6ZJit5EO0blcKtbHmjzYTF3Zg',
   },
 };
 
@@ -48,6 +48,13 @@ export const getIngredientsPrep = async ingredientId => {
 // 효능 조회
 export const getEfficacy = async ingredientId => {
   const url = `/api/board/ingredient/${ingredientId}/description/details`;
+
+  return await jsonAPI.get(url, config);
+};
+
+// 입력한 이름을 포함하는 식재료 이름 조회 get
+export const getSearchIngredient = async searchValue => {
+  const url = `/api/ingredient/search/${searchValue}`;
 
   return await jsonAPI.get(url, config);
 };

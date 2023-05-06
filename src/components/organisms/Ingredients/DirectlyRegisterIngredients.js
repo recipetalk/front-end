@@ -7,12 +7,15 @@ import {
 } from '../../../store/Ingredients/IngredientsSlice';
 import {useDispatch} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
-import {View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {getSearchIngredient} from '../../../services/Ingredients';
+import {Text} from 'react-native';
 
 const DirectlyRegisterIngredients = props => {
   const dispatch = useDispatch();
   const [isAddChecked, setIsAddChecked] = useState(props.item.isChecked);
+  const [isResultLength, setIsResultLength] = useState(0);
+  const [searchResult, setSearchResult] = useState([]);
   const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
     props.item.ingredientState,
   );
@@ -60,10 +63,33 @@ const DirectlyRegisterIngredients = props => {
     dispatch(deleteIngredients(props.item.ingredientId));
   };
 
-  const test = res => {
-    console.log('res !!', res);
+  const changeText = res => {
+    if (res.length === 0) {
+      setIsResultLength(0);
+    } else {
+      setIsResultLength(res.length);
+    }
+
     setIngredientsInfo({...ingredientsInfo, name: res});
-    getSearchIngredient(res).then(result => console.log(result.data));
+    getSearchIngredient(res).then(result => setSearchResult(result.data));
+  };
+
+  const renderItem = ({item}) => {
+    return (
+      <View
+        style={{
+          width: '100%',
+          height: 50,
+          zIndex: 9999,
+        }}>
+        <TouchContainer
+          onPress={() =>
+            setIngredientsInfo({...ingredientsInfo, name: item.ingredientName})
+          }>
+          <Text>{item.ingredientName}</Text>
+        </TouchContainer>
+      </View>
+    );
   };
 
   return (
@@ -93,8 +119,15 @@ const DirectlyRegisterIngredients = props => {
         <IngredientNameInput
           placeholder="  예) 감자  "
           value={ingredientsInfo.name}
-          onChangeText={test}
+          onChangeText={changeText}
         />
+        {isResultLength === 0 ? null : (
+          <FlatList
+            data={searchResult}
+            renderItem={renderItem}
+            keyExtractor={(_, index) => index.toString()}
+          />
+        )}
       </IngredientNameContainer>
 
       <IngredientStatusDropBoxContainer>
@@ -185,7 +218,7 @@ const IngredientName = styled.Text`
 
 const IngredientNameContainer = styled.View`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-bottom: 18px;
 `;
 

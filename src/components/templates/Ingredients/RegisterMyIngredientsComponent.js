@@ -3,6 +3,7 @@ import React from 'react';
 import {ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {registerIngredient} from '../../../services/Ingredients';
 import {addEmptyIngredients} from '../../../store/Ingredients/IngredientsSlice';
 import Line from '../../atoms/Line';
 import DirectlyRegisterIngredients from '../../organisms/Ingredients/DirectlyRegisterIngredients';
@@ -66,6 +67,9 @@ const RegisterMyIngredientsComponent = () => {
               if (checkIsChecked() === 0) {
                 return;
               }
+              registerIngredient()
+                .then(res => console.log(res.data))
+                .catch(error => console.error(error.response));
               navigation.goBack();
             }}>
             <IngredientRegisterButton
