@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
@@ -16,6 +16,9 @@ export default function SignupIdScreen({navigation}) {
   const [isAccess, setAccess] = useState(false);
   const [accessId, setAccessId] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
+
+  const textRef = useRef();
+
   const getIsValidId = async () =>
     jsonAPI
       .get('/auth/signup/' + localId)
@@ -23,6 +26,7 @@ export default function SignupIdScreen({navigation}) {
         setAccess(true);
         setAccessId(localId);
         setVisibleAlert(true);
+        textRef.current.blur();
       })
       .catch(err => {
         setAccess(false);
@@ -45,7 +49,7 @@ export default function SignupIdScreen({navigation}) {
         <LoginLabel>아이디</LoginLabel>
         <DuplicationAndTextInputContainer>
           <View style={{width: '76%'}}>
-            <FocusedTextInputBorder setData={setLocalId} value={localId} />
+            <FocusedTextInputBorder useRef={textRef} setData={setLocalId} value={localId} />
           </View>
           <ActiveButton
             width="80px"

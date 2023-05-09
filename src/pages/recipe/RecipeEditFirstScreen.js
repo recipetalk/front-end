@@ -347,7 +347,6 @@ const ThumbnailImageEditContainer = styled.View`
   align-items: center;
   padding-left: 10px;
   padding-right: 10px;
-    
   gap: 15px;
 `;
 

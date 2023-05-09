@@ -1,24 +1,44 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Image, View} from 'react-native';
+import {Image, TouchableOpacity, View} from 'react-native';
+import {useSelector} from 'react-redux';
 
 const MypageHeader = ({navigation}) => {
+  const notificationState = useSelector(state => state.notificationState.value);
   return (
     <Header>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 20,
-          paddingLeft: 10,
+          paddingLeft: '5%',
+          paddingRight: '5%',
+          justifyContent: 'space-between',
         }}>
-        <HeaderTouchButton onPress={() => navigation.pop()}>
-          <Image
-            source={require('../../../assets/images/Back.png')}
-            resizeMode={'contain'}
-          />
-        </HeaderTouchButton>
-        <HeaderLabel>마이페이지</HeaderLabel>
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+          <HeaderTouchButton onPress={() => navigation.pop()}>
+            <Image
+              source={require('../../../assets/images/Back.png')}
+              resizeMode={'contain'}
+            />
+          </HeaderTouchButton>
+          <HeaderLabel>마이페이지</HeaderLabel>
+        </View>
+        <TouchableOpacity onPress={() => navigation.push('Notification')}>
+          {notificationState.hasNew ? (
+            <Image
+              style={{width: 22}}
+              source={require('../../../assets/images/Bell_Active_b.png')}
+              resizeMode={'contain'}
+            />
+          ) : (
+            <Image
+              style={{width: 22}}
+              source={require('../../../assets/images/Bell_NonActive_b.png')}
+              resizeMode={'contain'}
+            />
+          )}
+        </TouchableOpacity>
       </View>
     </Header>
   );
@@ -35,7 +55,9 @@ const Header = styled.View`
   background: #ffffff;
   width: 100%;
   height: 50px;
-
+  border-bottom-width: 1px;
+  border-bottom-color: #f5f5f5;
+  border-bottom-style: solid;
   justify-content: center;
 `;
 

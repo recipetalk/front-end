@@ -7,10 +7,12 @@ export default function FocusedTextInputBorder({
   setData,
   value,
   style,
+  useRef,
 }) {
   const [isHighlighted, setIsHighlighted] = useState(false);
   return (
     <TextInput
+      ref={useRef}
       style={[styles.textInput, isHighlighted && styles.isHighlighted, style]}
       onFocus={() => setIsHighlighted(true)}
       onBlur={() => setIsHighlighted(false)}

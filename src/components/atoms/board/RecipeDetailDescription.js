@@ -8,6 +8,7 @@ import PrepOrderComponent from '../../organisms/PrepOrderComponent';
 import {FlatList, Platform, RefreshControl, View} from 'react-native';
 import {IngredientList} from '../../organisms/Recipe/IngredientList';
 import {CommentListComponent} from '../../templates/board/CommentListComponent';
+import RecipeOrderComponent from '../../organisms/RecipeOrderComponent';
 
 const Ingredients = [
   {
@@ -142,7 +143,7 @@ export default function RecipeDetailDescription({
         <PrepOrderContainer>
           <OrderTitle>조리 순서</OrderTitle>
           {[1, 2, 3, 4, 5].map(i => {
-            return <PrepOrderComponent num={i} key={i} />;
+            return <RecipeOrderComponent num={i} key={i} />;
           })}
         </PrepOrderContainer>
       ) : undefined}

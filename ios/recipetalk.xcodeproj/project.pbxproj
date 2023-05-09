@@ -14,7 +14,17 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9E2C721A4BE21FC4F7885700 /* Pods_recipetalk_recipetalkTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEDCE1085EE32B75E24CAC1 /* Pods_recipetalk_recipetalkTests.framework */; };
 		B0DA4714103524D02AFB3A30 /* Pods_recipetalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA8FD2DACC0C728ACBBEFA2C /* Pods_recipetalk.framework */; };
-		B33223E829D1592C00AEF497 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B33223E729D1592B00AEF497 /* GoogleService-Info.plist */; };
+		B3100FDA29F6747500B0EA5F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3100FD929F6747500B0EA5F /* GoogleService-Info.plist */; };
+		B369F6A92A02071700F16AF5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B369F6A82A02071600F16AF5 /* WidgetKit.framework */; };
+		B369F6AB2A02071700F16AF5 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B369F6AA2A02071700F16AF5 /* SwiftUI.framework */; };
+		B369F6B02A02071700F16AF5 /* TimerLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B369F6AF2A02071700F16AF5 /* TimerLiveActivity.swift */; };
+		B369F6B42A02071700F16AF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B369F6B32A02071700F16AF5 /* Assets.xcassets */; };
+		B369F6B82A02071700F16AF5 /* TimerExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B369F6A72A02071600F16AF5 /* TimerExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B369F6BF2A02089B00F16AF5 /* TimerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B369F6BE2A02089B00F16AF5 /* TimerModule.swift */; };
+		B369F6C02A02089B00F16AF5 /* TimerModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B369F6BE2A02089B00F16AF5 /* TimerModule.swift */; };
+		B369F6C72A020D4300F16AF5 /* TimerModuleBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B369F6C62A020D4300F16AF5 /* TimerModuleBridge.m */; };
+		B369F6C92A020ED200F16AF5 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B369F6C82A020ED200F16AF5 /* TimerAttributes.swift */; };
+		B369F6CA2A020EDA00F16AF5 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B369F6C82A020ED200F16AF5 /* TimerAttributes.swift */; };
 		FA39E13B892546BAAD446578 /* PretendardVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B77C8B859B04E2B9DEE25D3 /* PretendardVariable.ttf */; };
 /* End PBXBuildFile section */
 
@@ -26,7 +36,28 @@
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = recipetalk;
 		};
+		B369F6B62A02071700F16AF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B369F6A62A02071600F16AF5;
+			remoteInfo = TimerExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B369F6B92A02071700F16AF5 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B369F6B82A02071700F16AF5 /* TimerExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* recipetalkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = recipetalkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,7 +74,19 @@
 		681F102B4162F39EA3C9E04F /* Pods-recipetalk-recipetalkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-recipetalk-recipetalkTests.debug.xcconfig"; path = "Target Support Files/Pods-recipetalk-recipetalkTests/Pods-recipetalk-recipetalkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = recipetalk/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B77C8B859B04E2B9DEE25D3 /* PretendardVariable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PretendardVariable.ttf; path = ../src/assets/fonts/PretendardVariable.ttf; sourceTree = "<group>"; };
-		B33223E729D1592B00AEF497 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B30B330729F6694400847B6A /* recipetalkRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = recipetalkRelease.entitlements; path = recipetalk/recipetalkRelease.entitlements; sourceTree = "<group>"; };
+		B3100FD929F6747500B0EA5F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B357158329F3F0CC00A50C10 /* recipetalk.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = recipetalk.entitlements; path = recipetalk/recipetalk.entitlements; sourceTree = "<group>"; };
+		B369F6A72A02071600F16AF5 /* TimerExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B369F6A82A02071600F16AF5 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B369F6AA2A02071700F16AF5 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		B369F6AF2A02071700F16AF5 /* TimerLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerLiveActivity.swift; sourceTree = "<group>"; };
+		B369F6B32A02071700F16AF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B369F6B52A02071700F16AF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B369F6BD2A02089B00F16AF5 /* recipetalk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "recipetalk-Bridging-Header.h"; sourceTree = "<group>"; };
+		B369F6BE2A02089B00F16AF5 /* TimerModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModule.swift; sourceTree = "<group>"; };
+		B369F6C62A020D4300F16AF5 /* TimerModuleBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimerModuleBridge.m; sourceTree = "<group>"; };
+		B369F6C82A020ED200F16AF5 /* TimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAttributes.swift; sourceTree = "<group>"; };
 		C8202A9E298C088700A77053 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		C8202A9F298C088800A77053 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		C8202AA0298C088800A77053 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -83,6 +126,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B369F6A42A02071600F16AF5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B369F6AB2A02071700F16AF5 /* SwiftUI.framework in Frameworks */,
+				B369F6A92A02071700F16AF5 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -114,12 +166,18 @@
 		13B07FAE1A68108700A75B9A /* recipetalk */ = {
 			isa = PBXGroup;
 			children = (
+				B30B330729F6694400847B6A /* recipetalkRelease.entitlements */,
+				B357158329F3F0CC00A50C10 /* recipetalk.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				B369F6BE2A02089B00F16AF5 /* TimerModule.swift */,
+				B369F6BD2A02089B00F16AF5 /* recipetalk-Bridging-Header.h */,
+				B369F6C62A020D4300F16AF5 /* TimerModuleBridge.m */,
+				B369F6C82A020ED200F16AF5 /* TimerAttributes.swift */,
 			);
 			name = recipetalk;
 			sourceTree = "<group>";
@@ -130,6 +188,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				EA8FD2DACC0C728ACBBEFA2C /* Pods_recipetalk.framework */,
 				FBEDCE1085EE32B75E24CAC1 /* Pods_recipetalk_recipetalkTests.framework */,
+				B369F6A82A02071600F16AF5 /* WidgetKit.framework */,
+				B369F6AA2A02071700F16AF5 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -144,11 +204,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				B33223E729D1592B00AEF497 /* GoogleService-Info.plist */,
+				B3100FD929F6747500B0EA5F /* GoogleService-Info.plist */,
 				C8202A9D298C07FB00A77053 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* recipetalk */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* recipetalkTests */,
+				B369F6AC2A02071700F16AF5 /* Timer */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -164,8 +225,19 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* recipetalk.app */,
 				00E356EE1AD99517003FC87E /* recipetalkTests.xctest */,
+				B369F6A72A02071600F16AF5 /* TimerExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B369F6AC2A02071700F16AF5 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				B369F6AF2A02071700F16AF5 /* TimerLiveActivity.swift */,
+				B369F6B32A02071700F16AF5 /* Assets.xcassets */,
+				B369F6B52A02071700F16AF5 /* Info.plist */,
+			);
+			path = Timer;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -239,15 +311,34 @@
 				10BF68011CE9C12B99E56828 /* [CP] Embed Pods Frameworks */,
 				71B03F297E5C89FF6AB938E3 /* [CP] Copy Pods Resources */,
 				C2A2FFD070747214122967E8 /* [CP-User] [RNFB] Core Configuration */,
+				B369F6B92A02071700F16AF5 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B369F6B72A02071700F16AF5 /* PBXTargetDependency */,
 			);
 			name = recipetalk;
 			productName = recipetalk;
 			productReference = 13B07F961A680F5B00A75B9A /* recipetalk.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B369F6A62A02071600F16AF5 /* TimerExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B369F6BC2A02071700F16AF5 /* Build configuration list for PBXNativeTarget "TimerExtension" */;
+			buildPhases = (
+				B369F6A32A02071600F16AF5 /* Sources */,
+				B369F6A42A02071600F16AF5 /* Frameworks */,
+				B369F6A52A02071600F16AF5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TimerExtension;
+			productName = TimerExtension;
+			productReference = B369F6A72A02071600F16AF5 /* TimerExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -255,14 +346,20 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1430;
+					};
+					B369F6A62A02071600F16AF5 = {
+						CreatedOnToolsVersion = 14.3;
+						LastSwiftMigration = 1430;
 					};
 				};
 			};
@@ -281,6 +378,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* recipetalk */,
 				00E356ED1AD99517003FC87E /* recipetalkTests */,
+				B369F6A62A02071600F16AF5 /* TimerExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -298,9 +396,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				B33223E829D1592C00AEF497 /* GoogleService-Info.plist in Resources */,
+				B3100FDA29F6747500B0EA5F /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				FA39E13B892546BAAD446578 /* PretendardVariable.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B369F6A52A02071600F16AF5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B369F6B42A02071700F16AF5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,7 +589,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				B369F6BF2A02089B00F16AF5 /* TimerModule.swift in Sources */,
+				B369F6C72A020D4300F16AF5 /* TimerModuleBridge.m in Sources */,
+				B369F6C92A020ED200F16AF5 /* TimerAttributes.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B369F6A32A02071600F16AF5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B369F6B02A02071700F16AF5 /* TimerLiveActivity.swift in Sources */,
+				B369F6C02A02089B00F16AF5 /* TimerModule.swift in Sources */,
+				B369F6CA2A020EDA00F16AF5 /* TimerAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +614,11 @@
 			target = 13B07F861A680F5B00A75B9A /* recipetalk */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
+		B369F6B72A02071700F16AF5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B369F6A62A02071600F16AF5 /* TimerExtension */;
+			targetProxy = B369F6B62A02071700F16AF5 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -502,6 +626,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 681F102B4162F39EA3C9E04F /* Pods-recipetalk-recipetalkTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -529,6 +654,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 06EA05A42ADF73352F8C695F /* Pods-recipetalk-recipetalkTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = recipetalkTests/Info.plist;
@@ -553,11 +679,17 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 34667A837F76BC8B4B24A678 /* Pods-recipetalk.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = recipetalk/recipetalk.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KNMZ97SHT8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = recipetalk/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "레시피톡";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -568,8 +700,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.recipetalk;
 				PRODUCT_NAME = recipetalk;
+				SWIFT_OBJC_BRIDGING_HEADER = "recipetalk-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -580,10 +713,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EF9509EEDC0E60115346814F /* Pods-recipetalk.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = recipetalk/recipetalkRelease.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KNMZ97SHT8;
 				INFOPLIST_FILE = recipetalk/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "레시피톡";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -594,8 +733,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.recipetalk;
 				PRODUCT_NAME = recipetalk;
+				SWIFT_OBJC_BRIDGING_HEADER = "recipetalk-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -650,7 +790,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -715,7 +855,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -734,7 +874,90 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B369F6BA2A02071700F16AF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = KNMZ97SHT8;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Timer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Timer;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.recipetalk.Timer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B369F6BB2A02071700F16AF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KNMZ97SHT8;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Timer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Timer;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.recipetalk.Timer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -764,6 +987,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B369F6BC2A02071700F16AF5 /* Build configuration list for PBXNativeTarget "TimerExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B369F6BA2A02071700F16AF5 /* Debug */,
+				B369F6BB2A02071700F16AF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
