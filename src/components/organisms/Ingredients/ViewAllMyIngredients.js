@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {getMyIngredientPage} from '../../../services/Ingredients';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import IngredientsItem from './IngredientsItem';
 
 const ViewAllMyIngredients = () => {
-  const ingredientsList = useSelector(state => state.ingredients);
+  const [myIngredients, setMyIngredients] = useState([]);
 
   const [oneItemState, setOneItemState] = useState();
   const [twoItemState, setTwoItemState] = useState();
@@ -33,6 +33,13 @@ const ViewAllMyIngredients = () => {
       value: '여유로운 순서보기(여유)',
     },
   ];
+
+  useEffect(() => {
+    getMyIngredientPage()
+      .then(res => setMyIngredients(res.data.content))
+      .catch(error => console.error(error.response));
+  }, []);
+
   return (
     <>
       <DropDownPickerContainer>
@@ -67,7 +74,7 @@ const ViewAllMyIngredients = () => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <MyIngredientsTitle>나의 식재료</MyIngredientsTitle>
-        {ingredientsList.map((item, i) => {
+        {myIngredients.map((item, i) => {
           return <IngredientsItem key={i} item={item} />;
         })}
       </ScrollView>

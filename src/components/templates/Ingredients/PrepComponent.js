@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {getEfficacy, getIngredientsPrep} from '../../../services/Ingredients';
@@ -8,7 +8,9 @@ import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
 
 const PrepComponent = () => {
+  const router = useRoute();
   const navigation = useNavigation();
+
   const [efficacyInfo, setEfficacyInfo] = useState({});
   const [ingredientsPrepInfo, setIngredientsPrepInfo] = useState([]);
 
@@ -25,7 +27,7 @@ const PrepComponent = () => {
     getIngredientsPrep(1)
       .then(res => setIngredientsPrepInfo(res.data.content))
       .catch(error => console.error(error.response));
-  }, []);
+  }, [router.params.testID]);
 
   return (
     <PrepComponentContainer>

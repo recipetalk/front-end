@@ -67,9 +67,33 @@ const RegisterMyIngredientsComponent = () => {
               if (checkIsChecked() === 0) {
                 return;
               }
-              registerIngredient()
-                .then(res => console.log(res.data))
-                .catch(error => console.error(error.response));
+
+              let newArr = [];
+              ingredientsList.map(item => {
+                newArr.push({
+                  expirationDate: item.expirationDate,
+                  ingredientId: item.ingredientId,
+                  ingredientName: item.ingredientName,
+                  ingredientState: item.ingredientState,
+                  quantity: item.quantity,
+                });
+              });
+
+              console.log(
+                'RegisterMyIngredientsComponent newArr is : ',
+                newArr,
+              );
+
+              registerIngredient(newArr)
+                .then(res =>
+                  console.log('RegisterMyIngredientsComponent res is :', res),
+                )
+                .catch(error =>
+                  console.error(
+                    'RegisterMyIngredientsComponent error is ',
+                    error.response,
+                  ),
+                );
               navigation.goBack();
             }}>
             <IngredientRegisterButton

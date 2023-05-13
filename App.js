@@ -50,6 +50,7 @@ import {
   isNotificationHasNew,
   setNotificationHasNew,
 } from './src/services/domain/NotificationHasNew';
+import RegisterMyIngredientsScreen from './src/pages/Ingredients/RegisterMyIngredientsScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -282,7 +283,7 @@ function App() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="PrepEdit"
+          name="PrepRegister"
           component={PrepRegisterScreen}
           options={{headerShown: false}}
         />
@@ -379,6 +380,11 @@ function App() {
         <Stack.Screen
           name="Notification"
           component={NotificationScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RegisterMyIngredients"
+          component={RegisterMyIngredientsScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

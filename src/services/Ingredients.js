@@ -3,7 +3,7 @@ import {jsonAPI, multiPartAPI} from './connect/API';
 const config = {
   headers: {
     Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NDg0NDk3OCwidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.ClzN1WqTe2DGGkUPxW6ZJit5EO0blcKtbHmjzYTF3Zg',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NjQ4NjQ5NSwidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.H87eLa-E3ANgBOerI6rFvVDHnYmn18KIQpqI-atykts',
   },
 };
 
@@ -55,6 +55,25 @@ export const getEfficacy = async ingredientId => {
 // 입력한 이름을 포함하는 식재료 이름 조회 get
 export const getSearchIngredient = async searchValue => {
   const url = `/api/ingredient/search/${searchValue}`;
+  return await jsonAPI.get(url, config);
+};
+
+export const registerIngredient = async ingredientsList => {
+  const url = '/api/user/ingredient';
+  console.log('data is :::', ingredientsList);
+
+  return await jsonAPI.post(url, ingredientsList, config);
+};
+
+// 내가 소유한 식재료 조회(페이지)
+export const getMyIngredientPage = async () => {
+  const url = '/api/user/ingredient?page=0&sort=new';
 
   return await jsonAPI.get(url, config);
+};
+
+export const deleteIngredient = async id => {
+  const url = `/api/user/ingredient/${id}`;
+
+  return await jsonAPI.delete(url, config);
 };

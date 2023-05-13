@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import Checkbox from '@react-native-community/checkbox';
 import {
@@ -23,7 +23,7 @@ const DirectlyRegisterIngredients = props => {
   const [ingredientsInfo, setIngredientsInfo] = useState({
     ingredientName: props.item.name,
     expirationDate: props.item.expirationDate,
-    quantity: props.item.amount,
+    quantity: props.item.quantity,
   });
 
   const statusPlaceholder = [
@@ -31,6 +31,7 @@ const DirectlyRegisterIngredients = props => {
     {placeholder: '상태', label: '익힌것', value: '익힌것'},
   ];
 
+  console.log('DirectlyRegisterIngredients log is ', ingredientsInfo.quantity);
   const addThisIngredients = newValue => {
     setIsAddChecked(newValue);
 
@@ -70,9 +71,19 @@ const DirectlyRegisterIngredients = props => {
       setIsResultLength(res.length);
     }
 
-    setIngredientsInfo({...ingredientsInfo, name: res});
-    getSearchIngredient(res).then(result => setSearchResult(result.data));
+    setIngredientsInfo({...ingredientsInfo, ingredientName: res});
   };
+
+  useEffect(() => {
+    let id = setTimeout(() => {
+      console.log(ingredientsInfo.ingredientName);
+      getSearchIngredient(ingredientsInfo.ingredientName).then(result =>
+        setSearchResult(result.data),
+      );
+    }, 600);
+
+    return () => clearTimeout(id);
+  }, [ingredientsInfo.ingredientName]);
 
   const renderItem = ({item}) => {
     return (
@@ -84,7 +95,10 @@ const DirectlyRegisterIngredients = props => {
         }}>
         <TouchContainer
           onPress={() =>
-            setIngredientsInfo({...ingredientsInfo, name: item.ingredientName})
+            setIngredientsInfo({
+              ...ingredientsInfo,
+              ingredientName: item.ingredientName,
+            })
           }>
           <Text>{item.ingredientName}</Text>
         </TouchContainer>
@@ -118,7 +132,7 @@ const DirectlyRegisterIngredients = props => {
       <IngredientNameContainer>
         <IngredientNameInput
           placeholder="  예) 감자  "
-          value={ingredientsInfo.name}
+          value={ingredientsInfo.ingredientName}
           onChangeText={changeText}
         />
         {isResultLength === 0 ? null : (
@@ -158,9 +172,9 @@ const DirectlyRegisterIngredients = props => {
         <IngredientStatusText>수량 입력</IngredientStatusText>
         <IngredientStatusInput
           placeholder="  예) 1개 "
-          value={ingredientsInfo.amount}
+          value={ingredientsInfo.quantity}
           onChangeText={res =>
-            setIngredientsInfo({...ingredientsInfo, amount: res})
+            setIngredientsInfo({...ingredientsInfo, quantity: res})
           }
         />
       </IngredientStatusContainer>
