@@ -8,6 +8,7 @@ export default function FocusedTextInputBorder({
   value,
   style,
   useRef,
+  type= undefined,
 }) {
   const [isHighlighted, setIsHighlighted] = useState(false);
   return (
@@ -22,6 +23,7 @@ export default function FocusedTextInputBorder({
       onChangeText={text => setData(text)}
       value={value}
       autoCapitalize="none"
+      keyboardType={type}
     />
   );
 }

@@ -16,9 +16,12 @@ const CommentHistoryComponent = ({navigation, item}) => {
           </TitleLabel>
           <NavigationContainer
             onPress={() =>
-              navigation.navigate(determineNavigation(item.boardSort), {
-                boardId: item.boardId,
-              })
+              determineNavigation(
+                item.boardSort,
+                item.parentCommentId,
+                item.boardId,
+                navigation,
+              )
             }>
             <Image
               source={require('../../../../assets/images/More_b.png')}
@@ -36,16 +39,26 @@ const CommentHistoryComponent = ({navigation, item}) => {
   );
 };
 
-const determineNavigation = boardSort => {
+const determineNavigation = async (
+  boardSort,
+  parentCommentId,
+  boardId,
+  navigation,
+) => {
   if (boardSort === 'RECIPE') {
-    return 'RecipeDetailScreen';
+    await navigation.navigate('RecipeDetailScreen', {boardId: boardId});
   } else if (boardSort === 'TRIMMING') {
-    return 'PrepDetail';
+    await navigation.navigate('PrepDetail', {boardId: boardId});
   } else if (boardSort === 'DESCRIPTION') {
-    return 'Efficacy';
+    await navigation.navigate('Efficacy', {boardId: boardId});
+  }
+  if (parentCommentId !== undefined) {
+    await navigation.push('ReplyComment', {
+      boardId: boardId,
+      parentCommentId: parentCommentId,
+    });
   }
 };
-
 
 const HorizontalBar = styled.View`
   width: 100%;

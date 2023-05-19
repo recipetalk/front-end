@@ -8,15 +8,76 @@ import equals from '../../services/object/equals';
 import {jsonAPI} from '../../services/connect/API';
 import AlertYesButton from '../../components/molecules/AlertYesButton';
 import AlertWithdraw from '../../components/molecules/AlertWithdraw';
+import {
+  loadProfileToStorage,
+  saveProfileToStorage,
+} from '../../services/repository/Profile';
+import {ImageAndCameraFun} from '../../components/atoms/functions/ImageAndCameraFun';
+import {useToast} from 'react-native-toast-notifications';
+import {editProfile, getMyProfile} from '../../services/MyPage';
 
 export const EditProfileScreen = ({navigation}) => {
   const [accessNickname, setAccessNickname] = useState('');
   const [localNickname, setLocalNickname] = useState('');
-  const [description, setDescription] = useState('');
-  const [isAccess, setAccess] = useState(false);
+  const [localDescription, setLocalDescription] = useState('');
+  const [accessDescription, setAccessDescription] = useState(null);
+  const [isAccess, setAccess] = useState(true);
   const [visibleAlert, setVisibleAlert] = useState(false);
   const [isTryWithdraw, setTryWithdraw] = useState(false);
   const [isHighlight, setHighlight] = useState(false);
+  const [loadPhoto, setLoadPhoto] = useState(null);
+  const [cachePhoto, setCachePhoto] = useState({uri: null});
+  const [isAlert, setAlert] = useState(false);
+  const [isSendable, setSendable] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (localNickname !== accessNickname) {
+      setAccess(false);
+    } else {
+      setAccess(true);
+    }
+  }, [localNickname]);
+
+  useEffect(() => {
+    console.log(!isAccess, cachePhoto.uri !== null, accessDescription !== null);
+    if (!isAccess) {
+      setSendable(false);
+      return;
+    }
+    setSendable(cachePhoto.uri !== null || accessDescription !== null);
+  }, [localNickname, isAccess, cachePhoto.uri, accessDescription]);
+
+  const init = async () => {
+    const loadProfile = await loadProfileToStorage();
+    setLocalNickname(loadProfile.nickname);
+    setAccessNickname(loadProfile.nickname);
+    setAccess(true);
+    setLocalDescription(loadProfile.description);
+    setLoadPhoto(loadProfile.profileImageURI);
+    console.log(loadProfile.profileImageURI);
+  };
+
+  const sendData = () => {
+    editProfile(accessNickname, accessDescription, cachePhoto)
+      .then(() =>
+        getMyProfile().then(res => {
+          const data = JSON.parse(res.request._response);
+          console.log(data);
+          saveProfileToStorage(
+            data.nickname,
+            data.description,
+            data.profileImageURI,
+          );
+          navigation.goBack();
+        }),
+      )
+      .catch(err => console.log(err.response));
+  };
 
   const getIsValidNickname = async () =>
     jsonAPI
@@ -32,16 +93,14 @@ export const EditProfileScreen = ({navigation}) => {
         setVisibleAlert(true);
       });
 
-  useEffect(() => {
-    if (localNickname !== accessNickname) {
-      setAccess(false);
-    } else {
-      setAccess(true);
-    }
-  }, [localNickname]);
-
   return (
     <Container>
+      <ImageAndCameraFun
+        isAlert={isAlert}
+        setAlert={setAlert}
+        setPhoto={setCachePhoto}
+        toast={toast}
+      />
       <View style={{position: 'relative', width: '100%'}}>
         <NavigationHeader navigation={navigation} title={'프로필 수정'} />
         <TouchableOpacity
@@ -50,28 +109,50 @@ export const EditProfileScreen = ({navigation}) => {
             right: '5%',
             height: '100%',
             justifyContent: 'center',
-          }}>
-          <SaveLabel isAccess={isAccess}>완료</SaveLabel>
+          }}
+          disabled={!isSendable}
+          onPress={() => sendData()}>
+          <SaveLabel isAccess={isSendable}>완료</SaveLabel>
         </TouchableOpacity>
       </View>
       <HorizontalBar />
 
-
-      <ImageBox>
-        <ImageUpdate>
-          <Image
-            style={{width: 24, height: 24}}
-            source={require('../../assets/images/ProfileImgUpdate.png')}
-          />
-        </ImageUpdate>
-      </ImageBox>
-
+      {cachePhoto?.uri != null ? (
+        <ImageBox
+          imageStyle={{borderRadius: 27.444}}
+          source={{uri: cachePhoto.uri}}
+          resizeMode="cover">
+          <ImageUpdate onPress={() => setAlert(true)}>
+            <Image
+              style={{width: 24, height: 24}}
+              source={require('../../assets/images/ProfileImgUpdate.png')}
+            />
+          </ImageUpdate>
+        </ImageBox>
+      ) : loadPhoto !== null ? (
+        <ImageBox source={{uri: loadPhoto}} imageStyle={{borderRadius: 27.444}}>
+          <ImageUpdate onPress={() => setAlert(true)}>
+            <Image
+              style={{width: 24, height: 24}}
+              source={require('../../assets/images/ProfileImgUpdate.png')}
+            />
+          </ImageUpdate>
+        </ImageBox>
+      ) : (
+        <ImageBox>
+          <ImageUpdate onPress={() => setAlert(true)}>
+            <Image
+              style={{width: 24, height: 24}}
+              source={require('../../assets/images/ProfileImgUpdate.png')}
+            />
+          </ImageUpdate>
+        </ImageBox>
+      )}
 
       <NicknamePart>
         <View>
           <NicknameLabel>닉네임</NicknameLabel>
         </View>
-
 
         <View style={{width: '100%', flexDirection: 'row', gap: 10}}>
           <View style={{width: '76%'}}>
@@ -102,7 +183,7 @@ export const EditProfileScreen = ({navigation}) => {
       <NicknamePart>
         <NicknameLabel>자기소개</NicknameLabel>
         <DescriptionTextInput
-          placeholder={description}
+          placeholder={localDescription}
           placeholderTextColor="#a4a4a4"
           multiline={true}
           scrollEnabled={false}
@@ -110,13 +191,13 @@ export const EditProfileScreen = ({navigation}) => {
           onBlur={() => setHighlight(false)}
           isHighlight={isHighlight}
           onChangeText={text => {
-            setDescription(() => text);
+            setAccessDescription(text);
           }}
-          value={description}
+          value={accessDescription}
           numberOfLines={2}
         />
         <View style={{flexDirection: 'row-reverse'}}>
-          <TouchableOpacity onPress={() => setDescription(() => '')}>
+          <TouchableOpacity onPress={() => setAccessDescription(() => null)}>
             <ClearLabel>지우기</ClearLabel>
           </TouchableOpacity>
         </View>
@@ -126,8 +207,6 @@ export const EditProfileScreen = ({navigation}) => {
           <WidthdrawLabel>회원 탈퇴하기</WidthdrawLabel>
         </TouchableOpacity>
       </NicknamePart>
-
-
 
       {visibleAlert && isAccess ? (
         <AlertYesButton
@@ -167,7 +246,7 @@ const HorizontalBar = styled.View`
   background: #e1e1e1;
 `;
 
-const ImageBox = styled.View`
+const ImageBox = styled.ImageBackground`
   width: 90px;
   height: 90px;
   margin-top: 50px;

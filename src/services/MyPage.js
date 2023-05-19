@@ -1,9 +1,9 @@
-import {jsonAPI} from './connect/API';
+import {jsonAPI, multiPartAPI} from './connect/API';
 
 const config = {
   headers: {
     Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4Mzg4MDg3MywidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.T85g3E3LYQB_xsigXVsdsqN-MbY1yNX90qNOEmCyd70',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NjUyOTcwMywidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.uJM2fdN95TOvgQ5IA9DD12X9jg74TDuocx9TRji0SV8',
   },
 };
 
@@ -12,6 +12,37 @@ export const getProfile = async username => {
   const url = `/api/user/profile/${username}`;
 
   return await jsonAPI.get(url, config);
+};
+
+export const getMyProfile = async () => {
+  const url = '/api/user/profile';
+
+  return await jsonAPI.get(url, config);
+};
+
+export const editProfile = async (nickname, description, profileImg) => {
+  const url = '/api/user/profile';
+
+  const formdata = new FormData();
+
+  if (nickname != null) {
+    await formdata.append('nickname', nickname);
+  }
+
+  if (profileImg.uri !== null) {
+    var photo = {
+      uri: profileImg.uri,
+      type: 'multipart/form-data',
+      name: profileImg.fileName,
+    };
+    await formdata.append('profileImg', photo);
+  }
+
+  if (description != null) {
+    await formdata.append('description', description);
+  }
+
+  return await multiPartAPI.patch(url, formdata, config);
 };
 
 export const getCommentHistory = async page => {
@@ -69,20 +100,16 @@ export const getFollower = async (username, page) => {
   return await jsonAPI.get(url, config);
 };
 
-// 프로필 수정
-export const editProfile = async ({
-  nickname,
-  username,
-  description,
-  profileImg,
-}) => {
-  const url = '/api/user/profile';
+export const getBoardLikeList = async pageNum => {
+  const url = `/api/user/BoardLike?page=${pageNum}`;
 
-  return await jsonAPI.patch(
-    url,
-    {nickname, username, description, profileImg},
-    config,
-  );
+  return await jsonAPI.get(url, config);
+};
+
+export const getBoardBookmarkList = async (pageNum, sortType) => {
+  const url = `/api/user/bookmark/boardList?page=${pageNum}&sortType=${sortType}`;
+
+  return await jsonAPI.get(url, config);
 };
 
 // 회원 탈퇴

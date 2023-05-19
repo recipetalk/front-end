@@ -6,7 +6,7 @@ import AlertYesNoButton from '../../components/molecules/AlertYesNoButton';
 import {
   loadLoginFromStorage,
   saveLoginToStorage,
-} from '../../services/domain/AutoLogin';
+} from '../../services/repository/AutoLogin';
 
 const MypageScreen = ({navigation}) => {
   const [alert, setAlert] = useState(false);
@@ -37,6 +37,7 @@ const MypageScreen = ({navigation}) => {
 const MypageScreenContainer = styled.SafeAreaView`
   width: 100%;
   height: 100%;
+  background: white;
 `;
 
 export default MypageScreen;

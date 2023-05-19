@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Platform, TouchableOpacity} from 'react-native';
+import {Image, Platform, TouchableOpacity, View} from 'react-native';
 import styled from 'styled-components/native';
 import SearchWithFilterHeader from '../components/organisms/RecipeHome/SearchWithFilterHeader';
 import RecentRecipeComponent from '../components/organisms/RecipeHome/RecentRecipeComponent';

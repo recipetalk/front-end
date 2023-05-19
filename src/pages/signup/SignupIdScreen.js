@@ -49,7 +49,11 @@ export default function SignupIdScreen({navigation}) {
         <LoginLabel>아이디</LoginLabel>
         <DuplicationAndTextInputContainer>
           <View style={{width: '76%'}}>
-            <FocusedTextInputBorder useRef={textRef} setData={setLocalId} value={localId} />
+            <FocusedTextInputBorder
+              useRef={textRef}
+              setData={setLocalId}
+              value={localId}
+            />
           </View>
           <ActiveButton
             width="80px"

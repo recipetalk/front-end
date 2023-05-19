@@ -1,35 +1,96 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import RadioButton from '../../components/atoms/board/RadioButton';
-import DropDownPickerComponent from '../../components/molecules/DropDownPickerComponent';
 import HList from '../../components/organisms/Home/HList';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
-import {FlatList} from 'react-native';
+import {FlatList, TouchableWithoutFeedback} from 'react-native';
+import ModalDropDownPickerComponent from '../../components/molecules/ModalDropDownPickerComponent';
+import {RecipeSortList} from '../../category/recipe/RecipeSortList';
+import {RecipeSituationList} from '../../category/recipe/RecipeSituationList';
+import {getDynamicRecipes} from '../../services/recipe/Recipe';
+import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
+import {determinePageEnd} from '../../utils/determinePageEnd';
+import {request} from 'axios';
 
 export const MyRecipeScreen = ({navigation}) => {
-  const [firstClicked, setFirstClicked] = useState({id: 1, title: '최신'});
-  const dummy = [1, 2, 3, 4, 5];
+  const [firstClicked, setFirstClicked] = useState({id: 1});
+  const [firstCategoryValue, setFirstCategoryValue] = useState(null);
+  const [secondCategoryValue, setSecondCategoryValue] = useState(null);
+  const [recipe, setRecipe] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(20);
+  const [last, setLast] = useState(false);
+  const [isRefresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
   const firstFilter = [
     {
       id: 1,
-      onPress: () => setFirstClicked({id: 1, title: '최신'}),
+      onPress: () => setFirstClicked({id: 1}),
       title: '최신',
+      value: 'NEW',
     },
     {
       id: 2,
-      onPress: () => setFirstClicked({id: 2, title: '인기'}),
+      onPress: () => setFirstClicked({id: 2}),
       title: '인기',
+      value: 'POPULAR',
     },
   ];
-  const oneItem = [
-    {placeholder: '카테고리', label: '최신순', value: '최신순'},
-    {placeholder: '카테고리', label: '과거순', value: '과거순'},
-  ];
 
-  const twoItem = [
-    {placeholder: '메뉴', label: '오름차순', value: '오름차순'},
-    {placeholder: '메뉴', label: '내림차순', value: '내림차순'},
-  ];
+  useEffect(() => {
+    init();
+  }, [firstClicked, firstCategoryValue, secondCategoryValue]);
+
+  const init = async () => {
+    await setLoading(() => true);
+    const username = (await loadLoginFromStorage()).username;
+    await getDynamicRecipes(
+      null,
+      firstFilter[firstClicked.id - 1].value,
+      firstCategoryValue,
+      secondCategoryValue,
+      offset,
+      limit,
+      username,
+    )
+      .then(res => {
+        const data = JSON.parse(res.request._response);
+        setRecipe(() => data);
+        setLast(() => determinePageEnd(data.length, limit));
+        setOffset(() => 20);
+        console.log(data);
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+    await setLoading(() => false);
+  };
+
+  const onRefresh = async () => {
+    await setRefresh(true);
+    await init().then(() => setRefresh(false));
+  };
+
+  const onRequest = async () => {
+    await setLoading(() => true);
+    const username = (await loadLoginFromStorage()).username;
+    await getDynamicRecipes(
+      null,
+      firstFilter[firstClicked.id - 1].value,
+      firstCategoryValue,
+      secondCategoryValue,
+      offset,
+      limit,
+      username,
+    ).then(res => {
+      const data = JSON.parse(res.request._response);
+      setRecipe(recipes => recipes.concat(data));
+      setLast(() => determinePageEnd(data.length, limit));
+      setOffset(offset => offset + limit);
+      console.log(recipe);
+    });
+    setLoading(() => false);
+  };
 
   return (
     <Container>
@@ -49,45 +110,55 @@ export const MyRecipeScreen = ({navigation}) => {
             />
           ))}
           <VerticalBar />
-          <DropdownContainer>
-            <DropDownPickerComponent
-              width="110px"
-              items={oneItem}
-              minHeight={'25px'}
-              zIndex={1000}
-              zIndexInverse={3000}
-            />
-            <DropDownPickerComponent
-              width="85px"
-              items={twoItem}
-              minHeight={'25px'}
-              zIndex={2000}
-              zIndexInverse={2000}
-            />
-          </DropdownContainer>
+          <CategorySelectorContainer>
+            <TouchableWithoutFeedback>
+              <ModalDropDownPickerComponent
+                value={firstCategoryValue}
+                setValue={setFirstCategoryValue}
+                items={RecipeSortList}
+                placeholder={'종류별'}
+                minHeight={'31px'}
+                width={'100px'}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback>
+              <ModalDropDownPickerComponent
+                value={secondCategoryValue}
+                setValue={setSecondCategoryValue}
+                items={RecipeSituationList}
+                placeholder={'상황별'}
+                minHeight={'31px'}
+                width={'100px'}
+              />
+            </TouchableWithoutFeedback>
+          </CategorySelectorContainer>
         </FilterPart>
-        <HListView>
-          <FlatList
-            contentContainerStyle={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
-            }}
-            data={dummy}
-            renderItem={({item, i}) => {
-              return <HList key={i} value={item} />;
-            }}
-          />
-        </HListView>
+
+        <FlatList
+          numColumns={2}
+          contentContainerStyle={{height: 'auto', paddingBottom: '20%'}}
+          columnWrapperStyle={{justifyContent: 'space-between'}}
+          data={recipe}
+          renderItem={({item}) => {
+            return <HList value={item} />;
+          }}
+          keyExtractor={_ => _?.board?.boardId}
+          onRefresh={onRefresh}
+          refreshing={isRefresh}
+          onEndReached={() => {
+            if (loading) {
+              return;
+            }
+            if (!last) {
+              onRequest();
+            }
+          }}
+          onEndReachedThreshold={0.6}
+        />
       </InnerContainer>
     </Container>
   );
 };
-
-const DropdownContainer = styled.View`
-  flex-direction: row;
-  gap: 10px;
-`;
 
 const Container = styled.SafeAreaView`
   width: 100%;
@@ -126,4 +197,10 @@ const HorizontalBar = styled.View`
   width: 100%;
   height: 1px;
   background: #e1e1e1;
+`;
+const CategorySelectorContainer = styled.View`
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  z-index: 100;
 `;

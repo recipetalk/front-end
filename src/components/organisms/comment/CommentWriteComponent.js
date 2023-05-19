@@ -10,6 +10,7 @@ import {
 import {registerComment} from '../../../services/Comment';
 import {useNavigation} from '@react-navigation/native';
 import {useToast} from 'react-native-toast-notifications';
+import {loadProfileToStorage} from '../../../services/repository/Profile';
 
 export const CommentWriteComponent = ({
   boardId,
@@ -21,6 +22,16 @@ export const CommentWriteComponent = ({
   const [value, setValue] = useState('');
   const navigation = useNavigation();
   const toast = useToast();
+  const [loadProfile, setLoadProfile] = useState(null);
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
+    const loadProfileInfo = await loadProfileToStorage();
+    setLoadProfile(loadProfileInfo);
+  };
 
   useEffect(() => {
     if (value.length > 0) {
@@ -41,10 +52,27 @@ export const CommentWriteComponent = ({
     });
   };
 
+  const UserImage =
+    loadProfile?.profileImageURI !== null
+      ? styled.Image`
+          width: 23px;
+          height: 23px;
+          border-radius: 23px;
+          background: #a4a4a4;
+          margin-top: 0px;
+        `
+      : styled.View`
+          width: 23px;
+          height: 23px;
+          border-radius: 23px;
+          background: #a4a4a4;
+          margin-top: 0px;
+        `;
+
   return (
     <Container isAbsolute={isAbsolute}>
       <CommentPart>
-        <UserImage />
+        <UserImage source={{uri: loadProfile?.profileImageURI}} />
         <InputBox
           ref={textInputRef}
           multiline
@@ -105,13 +133,6 @@ const CommentPart = styled.View`
   padding-bottom: 5px;
   justify-content: center;
   flex-direction: row;
-`;
-const UserImage = styled.View`
-  width: 23px;
-  height: 23px;
-  border-radius: 23px;
-  background: #a4a4a4;
-  margin-top: 0px;
 `;
 
 const InputBox = styled.TextInput`
