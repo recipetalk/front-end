@@ -7,7 +7,7 @@ import {
 } from '../../../store/Ingredients/IngredientsSlice';
 import {useDispatch} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
-import {FlatList, View} from 'react-native';
+import {View} from 'react-native';
 import {getSearchIngredient} from '../../../services/Ingredients';
 import {Text} from 'react-native';
 
@@ -21,7 +21,7 @@ const DirectlyRegisterIngredients = props => {
   );
 
   const [ingredientsInfo, setIngredientsInfo] = useState({
-    ingredientName: props.item.name,
+    ingredientName: props.item.ingredientName,
     expirationDate: props.item.expirationDate,
     quantity: props.item.quantity,
   });
@@ -31,7 +31,6 @@ const DirectlyRegisterIngredients = props => {
     {placeholder: '상태', label: '익힌것', value: '익힌것'},
   ];
 
-  console.log('DirectlyRegisterIngredients log is ', ingredientsInfo.quantity);
   const addThisIngredients = newValue => {
     setIsAddChecked(newValue);
 
@@ -89,9 +88,8 @@ const DirectlyRegisterIngredients = props => {
     return (
       <View
         style={{
+          padding: 10,
           width: '100%',
-          height: 50,
-          zIndex: 9999,
         }}>
         <TouchContainer
           onPress={() =>
@@ -100,7 +98,7 @@ const DirectlyRegisterIngredients = props => {
               ingredientName: item.ingredientName,
             })
           }>
-          <Text>{item.ingredientName}</Text>
+          <Text style={{fontSize: 20}}>{item.ingredientName}</Text>
         </TouchContainer>
       </View>
     );
@@ -127,7 +125,6 @@ const DirectlyRegisterIngredients = props => {
           <DeleteIngredientsText>재료 삭제</DeleteIngredientsText>
         </TouchContainer>
       </CheckBoxViewContainer>
-
       <IngredientName>식재료 명</IngredientName>
       <IngredientNameContainer>
         <IngredientNameInput
@@ -136,7 +133,8 @@ const DirectlyRegisterIngredients = props => {
           onChangeText={changeText}
         />
         {isResultLength === 0 ? null : (
-          <FlatList
+          <CustomFlatList
+            horizontal={true}
             data={searchResult}
             renderItem={renderItem}
             keyExtractor={(_, index) => index.toString()}
@@ -277,4 +275,10 @@ const IngredientStatusText = styled.Text`
 `;
 
 const TouchContainer = styled.TouchableOpacity``;
+
+const CustomFlatList = styled.FlatList`
+  height: 50px;
+  background-color: white;
+  border-radius: 20;
+`;
 export default DirectlyRegisterIngredients;

@@ -21,7 +21,8 @@ const IngredientsItem = props => {
       label: '수정',
       value: 'update',
       onPress: () => {
-        console.log('수정!!', props.item.ingredientId);
+        console.log('수정!!');
+        navigation.navigate('IngredientsEdit');
       },
     },
     {

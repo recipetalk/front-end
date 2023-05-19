@@ -54,20 +54,19 @@ export const getEfficacy = async ingredientId => {
 
 // 입력한 이름을 포함하는 식재료 이름 조회 get
 export const getSearchIngredient = async searchValue => {
-  const url = `/api/ingredient/search/${searchValue}`;
+  const url = `/api/ingredient/${searchValue}`;
   return await jsonAPI.get(url, config);
 };
 
 export const registerIngredient = async ingredientsList => {
   const url = '/api/user/ingredient';
-  console.log('data is :::', ingredientsList);
 
   return await jsonAPI.post(url, ingredientsList, config);
 };
 
 // 내가 소유한 식재료 조회(페이지)
-export const getMyIngredientPage = async () => {
-  const url = '/api/user/ingredient?page=0&sort=new';
+export const getMyIngredientPage = async type => {
+  const url = `/api/user/ingredient?page=0&sort=${type}`;
 
   return await jsonAPI.get(url, config);
 };
@@ -76,4 +75,16 @@ export const deleteIngredient = async id => {
   const url = `/api/user/ingredient/${id}`;
 
   return await jsonAPI.delete(url, config);
+};
+
+export const editIngredient = async id => {
+  const url = `/api/user/ingredient/${id}`;
+
+  const data = {
+    state: '다짐',
+    quantity: '1봉',
+    expirationDate: '2027-05-01',
+  };
+
+  return await jsonAPI.patch(url, data, config);
 };

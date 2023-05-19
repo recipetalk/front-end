@@ -51,6 +51,7 @@ import {
   setNotificationHasNew,
 } from './src/services/domain/NotificationHasNew';
 import RegisterMyIngredientsScreen from './src/pages/Ingredients/RegisterMyIngredientsScreen';
+import IngredientsEditScreen from './src/pages/Ingredients/IngredientsEditScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -385,6 +386,11 @@ function App() {
         <Stack.Screen
           name="RegisterMyIngredients"
           component={RegisterMyIngredientsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="IngredientsEdit"
+          component={IngredientsEditScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
