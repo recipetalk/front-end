@@ -9,22 +9,44 @@ const CommentHistoryScreen = ({navigation}) => {
   const [isLast, setLast] = useState(false);
   const [pageNum, setPageNum] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-
+  const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     const config = async () => {
-      await getCommentHistory(pageNum)
+      await getCommentHistory(0)
         .then(res => {
           const data = JSON.parse(res.request._response);
-          console.log(data.content);
           setCommentHistory(data.content);
           setLast(data.last);
           setTotalCount(data.totalElements);
-          setPageNum(num => num++);
+          setPageNum(1);
         })
         .catch(err => console.log(err.response));
     };
     config();
   }, []);
+
+  const request = async () => {
+    await getCommentHistory(pageNum).then(res => {
+      const json = JSON.parse(res.request._response);
+      setLast(() => json.last);
+      setCommentHistory(data => data.concat(json.content));
+      setPageNum(pageNum => pageNum + 1);
+    });
+  };
+
+  const onRefresh = async () => {
+    if (!refresh) {
+      setRefresh(() => true);
+      setPageNum(0);
+      await getCommentHistory(0).then(res => {
+        const json = JSON.parse(res.request._response);
+        setLast(json.last);
+        setCommentHistory(json.content);
+        setPageNum(1);
+      });
+    }
+    setTimeout(() => setRefresh(false), 1000);
+  };
 
   return (
     <Container>
@@ -49,6 +71,15 @@ const CommentHistoryScreen = ({navigation}) => {
       <HorizontalBar height={1} />
       <FlatList
         data={commentHistory}
+        keyExtractor={_ => _.commentId}
+        onRefresh={onRefresh}
+        refreshing={refresh}
+        onEndReached={() => {
+          if (!isLast) {
+            request();
+          }
+        }}
+        onEndReachedThreshold={0.6}
         renderItem={({item}) => (
           <CommentHistoryComponent navigation={navigation} item={item} />
         )}

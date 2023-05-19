@@ -71,13 +71,7 @@ export default function RecipeDetailDescription({
   }, [isFirst, isSecond]);
 
   return (
-    <RecipeDetailDescriptionContainer
-      refreshControl={
-        <RefreshControl
-          refreshing={commentRefresh}
-          onRefresh={() => onRefresh()}
-        />
-      }>
+    <RecipeDetailDescriptionContainer>
       <ThumbnailImg />
       <SimpleProfileWithDescriptionContainer>
         <SimpleProfileWithDescription

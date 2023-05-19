@@ -37,9 +37,6 @@ export const CommentComponent = ({
           value: 'commentReply',
           onPress: () =>
             navigation.push('ReplyComment', {
-              profile: comment.profile,
-              created_date: comment.created_date,
-              description: comment.description,
               parentCommentId: comment.commentId,
               boardId: boardId,
             }),
@@ -116,25 +113,42 @@ export const CommentComponent = ({
         },
       ];
 
+  const UserImage =
+    comment?.userProfile?.profileImageURI !== null
+      ? styled.Image`
+          width: 23px;
+          height: 23px;
+          border-radius: 23px;
+          background: #a4a4a4;
+          margin-top: 0px;
+        `
+      : styled.View`
+          width: 23px;
+          height: 23px;
+          border-radius: 23px;
+          background: #a4a4a4;
+          margin-top: 0px;
+        `;
+
   return (
     <Container>
       <TouchableOpacity
-        disabled={comment.userProfile.username === undefined}
+        disabled={comment?.userProfile?.username === undefined}
         onPress={() =>
           navigation.push('ProfileScreen', {
-            username: comment.userProfile.username,
+            username: comment?.userProfile?.username,
           })
         }>
-        <UserImage />
+        <UserImage source={{uri: comment?.userProfile?.profileImageURI}} />
       </TouchableOpacity>
       <CommentPart>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
           <NicknameAndCreatedDatePart>
-            <Nickname>{comment.userProfile.nickname}</Nickname>
+            <Nickname>{comment?.userProfile?.nickname}</Nickname>
             <Nickname> · </Nickname>
-            <Nickname>{CalanderPrint(comment.createdDate)}</Nickname>
+            <Nickname>{CalanderPrint(comment?.createdDate)}</Nickname>
           </NicknameAndCreatedDatePart>
-          {comment.userProfile.username === undefined ? undefined : (
+          {comment?.userProfile?.username === undefined ? undefined : (
             <OptionModalChildImage
               items={isMine ? isMines : items}
               setCheckedItem={setCheckedItem}>
@@ -143,7 +157,7 @@ export const CommentComponent = ({
           )}
         </View>
         <Description numberOfLines={details ? 0 : 4} ellipsizeMode={'tail'}>
-          {comment.description}
+          {comment?.description}
         </Description>
         {existChild ? (
           <GoToReplyPart
@@ -190,13 +204,6 @@ const Container = styled.View`
   flex-direction: row;
   gap: 8px;
   margin: 10px 0;
-`;
-
-const UserImage = styled.View`
-  width: 23px;
-  height: 23px;
-  border-radius: 23px;
-  background: #a4a4a4;
 `;
 
 const Description = styled.Text`

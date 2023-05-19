@@ -53,7 +53,7 @@ export default function DetailProfileWithDescription({
   };
 
   const ProfileImg =
-    profile.profileURI !== undefined
+    profile?.profileImg !== null
       ? styled.Image`
           border-radius: 13.873px;
           background-color: #e5e5e5;
@@ -72,7 +72,7 @@ export default function DetailProfileWithDescription({
   return (
     <ProfileContainer>
       <View style={{flexDirection: 'row', width: '100%'}}>
-        <ProfileImg />
+        <ProfileImg source={{uri: profile.profileImg}} />
         <View
           style={{
             width: '85%',

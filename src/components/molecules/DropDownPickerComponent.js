@@ -65,6 +65,7 @@ const TriangleUpIcon = () => {
 
 const Container = styled.View`
   width: ${props => props.width};
+  z-index: 1000;
 `;
 
 const CustomDropDownPicker = styled(DropDownPicker)`

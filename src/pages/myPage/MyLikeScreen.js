@@ -1,33 +1,106 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import RadioButton from '../../components/atoms/board/RadioButton';
 import DropDownPickerComponent from '../../components/molecules/DropDownPickerComponent';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
 import DList from '../../components/organisms/Home/DList';
-import {TouchableOpacity} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native';
+import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
+import {getDynamicRecipes} from '../../services/recipe/Recipe';
+import {determinePageEnd} from '../../utils/determinePageEnd';
+import {getBoardLikeList} from '../../services/MyPage';
+import HList from '../../components/organisms/Home/HList';
+import {toggleBoardLikeAction} from '../../services/BoardLike';
 
 export const MyLikeScreen = ({navigation}) => {
-  const dummy = [1, 2, 3, 4, 5];
+  const [boardLike, setBoardLike] = useState([]);
+  const [page, setPage] = useState(0);
+  const [last, setLast] = useState(false);
+  const [isRefresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
+    setLoading(() => true);
+    await getBoardLikeList(0)
+      .then(res => {
+        const data = JSON.parse(res.request._response);
+        setBoardLike(() => data.content);
+        setLast(() => data.last);
+        setPage(() => 1);
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+    setLoading(() => false);
+  };
+
+  const onRefresh = async () => {
+    await setRefresh(true);
+    await init().then(() => setRefresh(false));
+  };
+
+  const onRequest = async () => {
+    await setLoading(() => true);
+    await getBoardLikeList(page).then(res => {
+      const data = JSON.parse(res.request._response);
+      setBoardLike(boardLikes => boardLikes.concat(data.content));
+      setLast(() => data.last);
+      setPage(page => page + 1);
+    });
+    setLoading(() => false);
+  };
 
   return (
-    <Container>
+    <>
+      <Container edges={['top']} />
       <NavigationHeader navigation={navigation} title={'나의 좋아요'} />
       <HorizontalBar />
-      <InnerContainer>
-        {dummy.map((v, i) => {
-          return <CustomDList key={v} value={i} />;
-        })}
-      </InnerContainer>
-    </Container>
+      <FlatList
+        style={{backgroundColor: 'white'}}
+        data={boardLike}
+        renderItem={({item}) => {
+          return <CustomDList value={item} />;
+        }}
+        keyExtractor={_ => _.boardId}
+        onRefresh={onRefresh}
+        refreshing={isRefresh}
+        onEndReached={() => {
+          if (loading) {
+            return;
+          }
+          if (!last) {
+            onRequest();
+          }
+        }}
+        onEndReachedThreshold={0.6}
+      />
+    </>
   );
 };
 
-const CustomDList = ({key, value}) => {
+const CustomDList = ({value}) => {
+  const [isLiked, setLiked] = useState(value?.isLiked);
+
+  const onRequest = async () => {
+    toggleBoardLikeAction(value?.boardId).then(res => {
+      const data = JSON.parse(res.request._response);
+      setLiked(data.isLiked);
+    });
+  };
+
   return (
     <CustomDListContainer>
-      <DList key={key} value={value} />
-      <TouchableOpacity>
-        <LikeImage source={require('../../assets/images/LikeTrue.png')} />
+      <DList value={value} />
+      <TouchableOpacity onPress={() => onRequest()}>
+        {isLiked ? (
+          <LikeImage source={require('../../assets/images/LikeTrue.png')} />
+        ) : (
+          <LikeImage source={require('../../assets/images/LikeFalse.png')} />
+        )}
       </TouchableOpacity>
     </CustomDListContainer>
   );
@@ -47,14 +120,7 @@ const LikeImage = styled.Image`
 `;
 
 const Container = styled.SafeAreaView`
-  width: 100%;
-  height: 100%;
   background: white;
-`;
-
-const InnerContainer = styled.ScrollView`
-  width: 100%;
-  height: 100%;
 `;
 
 const HorizontalBar = styled.View`

@@ -3,7 +3,7 @@ import {jsonAPI, multiPartAPI} from './connect/API';
 const config = {
   headers: {
     Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4MjE3NzcwNCwidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.GBhX0BBqh2zrNeBkMx-ceSUtqN5K4nP0JNPv5BvQsio',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NjUyOTcwMywidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.uJM2fdN95TOvgQ5IA9DD12X9jg74TDuocx9TRji0SV8',
   },
 };
 
@@ -49,6 +49,12 @@ export const getIngredientsPrep = async ingredientId => {
 // 효능 조회
 export const getEfficacy = async ingredientId => {
   const url = `/api/board/ingredient/${ingredientId}/description/details`;
+
+  return await jsonAPI.get(url, config);
+};
+
+export const getIngredientPrepByUsername = async (username, sortType, offset, limit) => {
+  let url = `/api/board/ingredient/trimming/username/${username}?sortType=${sortType}&offset=${offset}&limit=${limit}`;
 
   return await jsonAPI.get(url, config);
 };

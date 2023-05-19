@@ -16,12 +16,6 @@ const MypageHeader = ({navigation}) => {
           justifyContent: 'space-between',
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-          <HeaderTouchButton onPress={() => navigation.pop()}>
-            <Image
-              source={require('../../../assets/images/Back.png')}
-              resizeMode={'contain'}
-            />
-          </HeaderTouchButton>
           <HeaderLabel>마이페이지</HeaderLabel>
         </View>
         <TouchableOpacity onPress={() => navigation.push('Notification')}>

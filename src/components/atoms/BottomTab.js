@@ -13,6 +13,8 @@ import PrepDetailScreen from '../../pages/Ingredients/PrepDetailScreen';
 import EfficacyEditScreen from '../../pages/Ingredients/EfficacyEditScreen';
 import RecipeDetailStackNavigator from '../../navigations/RecipeDetailStackNavigator';
 import {Image, Platform, View} from 'react-native';
+import {getMyProfile} from '../../services/MyPage';
+import {saveProfileToStorage} from '../../services/repository/Profile';
 
 const RecipeStackNavigator = () => {
   const RecipeStack = createNativeStackNavigator();
@@ -82,6 +84,23 @@ const ReceiptIcon = focused => {
 
 const BottomTab = () => {
   const Tab = createBottomTabNavigator();
+  useEffect(() => {
+    requestInitProfileInfo();
+  }, []);
+
+  const requestInitProfileInfo = () => {
+    getMyProfile()
+      .then(async res => {
+        const data = JSON.parse(res.request._response);
+        console.log(data);
+        saveProfileToStorage(
+          data.nickname,
+          data.description,
+          data.profileImageURI,
+        );
+      })
+      .catch(err => {});
+  };
 
   return (
     <Tab.Navigator

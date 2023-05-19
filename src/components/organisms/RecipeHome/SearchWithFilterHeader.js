@@ -1,15 +1,18 @@
-import React from 'react';
-import {Platform} from 'react-native';
+import React, {useState} from 'react';
+import {Platform, TouchableWithoutFeedback} from 'react-native';
 import styled from 'styled-components/native';
 import SearchInput from '../../atoms/SearchInput';
 import RadioButton from '../../atoms/board/RadioButton';
 import {useSelector, useDispatch} from 'react-redux';
 import {setFirstClicked} from '../../../store/RecipeHome/FirstFilterClicked';
-import {setSecondClicked} from '../../../store/RecipeHome/SecondFilterClicked';
+import ModalDropDownPickerComponent from '../../molecules/ModalDropDownPickerComponent';
+import {RecipeSortList} from '../../../category/recipe/RecipeSortList';
+import {RecipeSituationList} from '../../../category/recipe/RecipeSituationList';
 
 const SearchWithFilterHeader = () => {
   const firstClicked = useSelector(state => state.firstFilterClicked.value);
-  const secondClicked = useSelector(state => state.secondFilterClicked.value);
+  const [firstCategoryValue, setFirstCategoryValue] = useState(null);
+  const [secondCategoryValue, setSecondCategoryValue] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -31,34 +34,6 @@ const SearchWithFilterHeader = () => {
     },
   ];
 
-  const secondFilter = [
-    {
-      id: 1,
-      onPress: () => dispatch(setSecondClicked({id: 1, title: '한식'})),
-      title: '한식',
-    },
-    {
-      id: 2,
-      onPress: () => dispatch(setSecondClicked({id: 2, title: '건강'})),
-      title: '건강',
-    },
-    {
-      id: 3,
-      onPress: () => dispatch(setSecondClicked({id: 3, title: '건강'})),
-      title: '건강',
-    },
-    {
-      id: 4,
-      onPress: () => dispatch(setSecondClicked({id: 4, title: '건강'})),
-      title: '건강',
-    },
-    {
-      id: 5,
-      onPress: () => dispatch(setSecondClicked({id: 5, title: '건강'})),
-      title: '건강',
-    },
-  ];
-
   return (
     <SearchHeaderContainer>
       <SearchInputContainer>
@@ -77,19 +52,28 @@ const SearchWithFilterHeader = () => {
           />
         ))}
         <VerticalBar />
-        {secondFilter.map(value => (
-          <RadioButton
-            onPress={value.onPress}
-            backgroundColor={'#FFFFFF'}
-            clickedBackgroundColor={'#FFFFFF'}
-            textColor={'#333333'}
-            clickedTextColor={'#F09311'}
-            clickedNumber={secondClicked.id}
-            item={value}
-            borderColor={'#D8D8D8'}
-            clickedBorderColor={'#F09311'}
-          />
-        ))}
+        <CategorySelectorContainer>
+          <TouchableWithoutFeedback>
+            <ModalDropDownPickerComponent
+              value={firstCategoryValue}
+              setValue={setFirstCategoryValue}
+              items={RecipeSortList}
+              placeholder={'종류별'}
+              minHeight={'31px'}
+              width={'100px'}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <ModalDropDownPickerComponent
+              value={secondCategoryValue}
+              setValue={setSecondCategoryValue}
+              items={RecipeSituationList}
+              placeholder={'상황별'}
+              minHeight={'31px'}
+              width={'100px'}
+            />
+          </TouchableWithoutFeedback>
+        </CategorySelectorContainer>
       </HorizontalScrollContainer>
     </SearchHeaderContainer>
   );
@@ -102,18 +86,11 @@ const VerticalBar = styled.View`
   margin-right: 15px;
 `;
 
-const SearchHeaderContainer =
-  Platform.OS === 'ios'
-    ? styled.SafeAreaView`
-        background: #f5f5f5;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-        z-index: 1;
-      `
-    : styled.View`
-        background: #f5f5f5;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
-        z-index: 1;
-      `;
+const SearchHeaderContainer = styled.SafeAreaView`
+  background: #f5f5f5;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+`;
 
 const SearchInputContainer = styled.View`
   width: 90%;
@@ -122,6 +99,12 @@ const SearchInputContainer = styled.View`
 
 const HorizontalScrollContainer = styled.ScrollView`
   margin-left: 20px;
+`;
+
+const CategorySelectorContainer = styled.View`
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
 `;
 
 export default SearchWithFilterHeader;

@@ -1,34 +1,89 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import RadioButton from '../../components/atoms/board/RadioButton';
-import DropDownPickerComponent from '../../components/molecules/DropDownPickerComponent';
 import HList from '../../components/organisms/Home/HList';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
+import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
+import {getDynamicRecipes} from '../../services/recipe/Recipe';
+import {determinePageEnd} from '../../utils/determinePageEnd';
+import {getIngredientPrepByUsername} from '../../services/Ingredients';
+import {FlatList} from 'react-native';
 
 export const MyPrepScreen = ({navigation}) => {
-  const [firstClicked, setFirstClicked] = useState({id: 1, title: '최신'});
+  const [firstClicked, setFirstClicked] = useState({id: 1});
+  const [prep, setPrep] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(20);
+  const [last, setLast] = useState(false);
+  const [isRefresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dummy = [1, 2, 3, 4, 5];
   const firstFilter = [
     {
       id: 1,
-      onPress: () => setFirstClicked({id: 1, title: '최신'}),
+      onPress: () => setFirstClicked({id: 1}),
       title: '최신',
+      value: 'NEW',
     },
     {
       id: 2,
-      onPress: () => setFirstClicked({id: 2, title: '인기'}),
+      onPress: () => setFirstClicked({id: 2}),
       title: '인기',
+      value: 'POPULAR',
     },
   ];
-  const oneItem = [
-    {placeholder: '카테고리', label: '최신순', value: '최신순'},
-    {placeholder: '카테고리', label: '과거순', value: '과거순'},
-  ];
 
-  const twoItem = [
-    {placeholder: '메뉴', label: '오름차순', value: '오름차순'},
-    {placeholder: '메뉴', label: '내림차순', value: '내림차순'},
-  ];
+  useEffect(() => {
+    init();
+  }, [firstClicked]);
+
+  const init = async () => {
+    const username = (await loadLoginFromStorage()).username;
+    console.log(
+      firstFilter[firstClicked.id - 1].value,
+      offset,
+      limit,
+      username,
+    );
+    await getIngredientPrepByUsername(
+      username,
+      firstFilter[firstClicked.id - 1].value,
+      offset,
+      limit,
+    )
+      .then(res => {
+        const data = JSON.parse(res.request._response);
+        setPrep(() => data);
+        setLast(() => determinePageEnd(data.length, limit));
+        setOffset(() => 0);
+        data.forEach(res => console.log(res));
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  };
+
+  const onRefresh = async () => {
+    await setRefresh(true);
+    await init().then(() => setRefresh(false));
+  };
+
+  const onRequest = async () => {
+    await setLoading(() => true);
+    const username = (await loadLoginFromStorage()).username;
+    await getDynamicRecipes(
+      username,
+      firstFilter[firstClicked.id].value,
+      offset,
+      limit,
+    ).then(res => {
+      const data = JSON.parse(res.request._response);
+      setPrep(recipes => recipes.concat(data));
+      setLast(() => determinePageEnd(data.length, limit));
+      setOffset(() => offset + limit);
+    });
+    await setLoading(() => false);
+  };
 
   return (
     <Container>
@@ -47,33 +102,31 @@ export const MyPrepScreen = ({navigation}) => {
               item={value}
             />
           ))}
-          <VerticalBar />
-          <DropdownContainer>
-            <DropDownPickerComponent
-              width="110px"
-              items={oneItem}
-              minHeight={'25px'}
-            />
-          </DropdownContainer>
-          <DropdownContainer>
-            <DropDownPickerComponent
-              width="85px"
-              items={twoItem}
-              minHeight={'25px'}
-            />
-          </DropdownContainer>
         </FilterPart>
         <HListView>
-          {dummy.map((v, i) => {
-            return <HList key={i} value={v} />;
-          })}
+          <FlatList
+            numColumns={2}
+            contentContainerStyle={{height: 'auto', paddingBottom: '20%'}}
+            columnWrapperStyle={{justifyContent: 'space-between'}}
+            data={prep}
+            renderItem={({item}) => {
+              return <HList value={item} />;
+            }}
+            keyExtractor={_ => _.board.boardId}
+            onRefresh={onRefresh}
+            refreshing={isRefresh}
+            onEndReached={() => {
+              if (last) {
+                onRequest();
+              }
+            }}
+            onEndReachedThreshold={0.6}
+          />
         </HListView>
       </InnerContainer>
     </Container>
   );
 };
-
-const DropdownContainer = styled.View``;
 
 const Container = styled.SafeAreaView`
   width: 100%;
@@ -81,7 +134,7 @@ const Container = styled.SafeAreaView`
   background: white;
 `;
 
-const InnerContainer = styled.ScrollView`
+const InnerContainer = styled.View`
   padding-left: 5%;
   padding-right: 5%;
   width: 100%;
@@ -95,12 +148,6 @@ const HListView = styled.View`
   justify-content: space-between;
 `;
 
-const VerticalBar = styled.View`
-  border: 1px solid #d8d8d8;
-  height: 30px;
-  margin-left: 5px;
-  margin-right: 10px;
-`;
 const FilterPart = styled.View`
   width: auto;
   height: auto;

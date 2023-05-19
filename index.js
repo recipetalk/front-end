@@ -7,7 +7,7 @@ import {name as appName} from './app.json';
 import {AppWrapper} from './AppWrapper';
 import AppFake from './AppFake';
 import messaging from '@react-native-firebase/messaging';
-import {setNotificationHasNew} from './src/services/domain/NotificationHasNew';
+import {setNotificationHasNew} from './src/services/repository/NotificationHasNew';
 
 if (Platform.OS === 'ios') {
   messaging().setBackgroundMessageHandler(async messaging => {

@@ -49,7 +49,11 @@ import {exist, notExist} from './src/store/notification/NotificationStateSlice';
 import {
   isNotificationHasNew,
   setNotificationHasNew,
-} from './src/services/domain/NotificationHasNew';
+} from './src/services/repository/NotificationHasNew';
+import FindPasswordScreen from './src/pages/login/find/FindPasswordScreen';
+import PasswordEmailVerificationScreen from './src/pages/login/find/PasswordEmailVerificationScreen';
+import PasswordModifyScreen from './src/pages/login/find/PasswordModifyScreen';
+import EndPasswordScreen from './src/pages/login/find/EndPasswordScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -150,6 +154,26 @@ function LoginStackNavigator() {
       <LoginStack.Screen
         name="ReturnId"
         component={ReturnIdScreen}
+        options={{headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="FindPassword"
+        component={FindPasswordScreen}
+        options={{headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="VerificationPasswordEmail"
+        component={PasswordEmailVerificationScreen}
+        options={{headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="PasswordModify"
+        component={PasswordModifyScreen}
+        options={{headerShown: false}}
+      />
+      <LoginStack.Screen
+        name="EndPassword"
+        component={EndPasswordScreen}
         options={{headerShown: false}}
       />
     </LoginStack.Navigator>

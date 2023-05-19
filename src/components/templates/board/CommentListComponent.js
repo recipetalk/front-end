@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {CommentComponent} from '../../organisms/comment/CommentComponent';
-import {loadLoginFromStorage} from '../../../services/domain/AutoLogin';
+import {loadLoginFromStorage} from '../../../services/repository/AutoLogin';
 import {FlatList} from 'react-native';
 
 export const CommentListComponent = ({
@@ -37,7 +37,7 @@ export const CommentListComponent = ({
         refreshing={commentRefresh}
         onRefresh={onRefresh}
         onEndReachedThreshold={0.6}
-        keyExtractor={_ => _.commentId}
+        keyExtractor={_ => _?.commentId}
         onEndReached={() => {
           if (isLoading) {
             return;
@@ -47,19 +47,24 @@ export const CommentListComponent = ({
           }
         }}
         renderItem={({item}) => (
-          <CommentComponent
-            comment={item}
-            isMine={loadUsername === item.userProfile.username}
-            boardId={boardId}
-            onRefresh={onRefresh}
-            existChild={item.childExist}
-          />
+          <>
+            <CommentComponent
+              comment={item}
+              isMine={loadUsername === item.userProfile.username}
+              boardId={boardId}
+              onRefresh={onRefresh}
+              existChild={item.childExist}
+            />
+            <MarginBox />
+          </>
         )}
       />
     </Container>
   );
 };
-
+const MarginBox = styled.View`
+  height: 15px;
+`;
 const Container = styled.View`
   width: 100%;
   height: auto;
@@ -67,7 +72,7 @@ const Container = styled.View`
   padding-left: 5%;
   padding-right: 5%;
   padding-top: 5%;
-  padding-bottom: 15%;
+  padding-bottom: 7%;
   gap: 20px;
 `;
 

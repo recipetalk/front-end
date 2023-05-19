@@ -3,13 +3,12 @@ import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 
 const RecipeOrderComponent = props => {
-  console.log('11', props);
   const navigation = useNavigation();
 
   return (
     <PrepOrderItem>
       <NumberPart>
-        <NumberText>{1}</NumberText>
+        <NumberText>{props.num}</NumberText>
       </NumberPart>
       <InfoPart>
         <TextPart>{'댕장찌개'}</TextPart>
@@ -64,7 +63,6 @@ const TextPart = styled.Text`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-
   color: #666666;
 `;
 

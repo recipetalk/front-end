@@ -23,6 +23,11 @@
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
+ - (void)applicationWillTerminate:(UIApplication *)application
+{
+  UNUserNotificationCenter.currentNotificationCenter.removeAllPendingNotificationRequests;
+}
+
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {

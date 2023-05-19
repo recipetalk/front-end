@@ -5,7 +5,8 @@ import SimpleProfileWithDescription from '../../atoms/profile/SimpleProfileWithD
 import FollowingComponent from '../../organisms/mypage/FollowingComponent';
 import NavigatePartContainerComponent from '../../organisms/mypage/NavigatePartContainerComponent';
 import {RefreshControl} from 'react-native';
-import {loadLoginFromStorage} from '../../../services/domain/AutoLogin';
+import {loadLoginFromStorage} from '../../../services/repository/AutoLogin';
+import {useFocusEffect} from '@react-navigation/native';
 
 const MypageComponent = ({navigation, setAlert}) => {
   const [profile, setProfile] = useState({});
@@ -45,7 +46,7 @@ const MypageComponent = ({navigation, setAlert}) => {
   // getBlockUser().then(res => console.log(res));
 
   const ProfileImg =
-    profile.profileURI !== undefined
+    profile.profileImg !== undefined
       ? styled.Image`
           border-radius: 13.873px;
           background-color: #e5e5e5;
@@ -67,7 +68,7 @@ const MypageComponent = ({navigation, setAlert}) => {
       <InfoContainer>
         <SimpleProfile>
           <ProfileTouchableContainer>
-            <ProfileImg source={{uri: profile.profileURI}} />
+            <ProfileImg source={{uri: profile.profileImg}} />
             <Nickname>{profile.nickname}</Nickname>
             <Description numberOfLines={1} ellipsizeMode={'tail'}>
               {profile.description}

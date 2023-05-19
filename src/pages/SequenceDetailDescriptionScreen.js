@@ -12,10 +12,8 @@ import {
   View,
 } from 'react-native';
 import * as Progress from 'react-native-progress';
-import BackgroundTimer from 'react-native-background-timer';
 import AlertYesNoButton from '../components/molecules/AlertYesNoButton';
 import notifee from '@notifee/react-native';
-import {useFocusEffect} from '@react-navigation/native';
 
 const SequenceDetailDescriptionScreen = ({navigation}) => {
   const [isClickedTimer, clickedTimer] = useState(false);
@@ -129,9 +127,15 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
         console.log(backgroundTime);
       } else {
         console.log(state);
+        TimerModule.removeReservedNotification();
         const delay = Math.round((Date.now() - backgroundTime) / 1000) * 1000;
         setRemainingTime(remainingTime => {
-          TimerModule.updateTimerActivity((remainingTime - delay) / 1000);
+          if (Platform.OS === 'ios') {
+            TimerModule.updateTimerActivity((remainingTime - delay) / 1000);
+            TimerModule.registerReservedNotification(
+              (remainingTime - delay) / 1000,
+            );
+          }
           return remainingTime - delay;
         });
         setEstimatedEndTime(estimatedEndTime => estimatedEndTime - delay);
@@ -139,8 +143,6 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
         console.log(isStartTimer);
         console.log('여기서 한번더?');
         startAction();
-        TimerModule.removeReservedNotification();
-        TimerModule.registerReservedNotification(duration());
       }
     }
   }, [state]);

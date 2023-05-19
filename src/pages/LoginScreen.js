@@ -9,11 +9,11 @@ import {jsonAPI} from '../services/connect/API';
 import {
   loadLoginFromStorage,
   saveLoginToStorage,
-} from '../services/domain/AutoLogin';
+} from '../services/repository/AutoLogin';
 import {
   saveJwtAccessTokenToStorage,
   saveJwtRefreshToStorage,
-} from '../services/domain/JwtToken';
+} from '../services/repository/JwtToken';
 import AlertYesButton from '../components/molecules/AlertYesButton';
 import {RequestFcmConnect} from '../services/fcm/FcmConnect';
 import messaging from '@react-native-firebase/messaging';
@@ -95,6 +95,7 @@ export default function LoginScreen({navigation}) {
           setAlertTitle(
             '네트워크 상태가 올바르지 못합니다. 레시피톡에 문의해주세요',
           );
+          console.log(err.response);
         }
       });
 
@@ -164,7 +165,7 @@ export default function LoginScreen({navigation}) {
               <FindLabel>아이디</FindLabel>
             </TouchableOpacity>
             <FindLabel>/</FindLabel>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.push('FindPassword')}>
               <FindLabel>비밀번호 찾기</FindLabel>
             </TouchableOpacity>
 
@@ -178,12 +179,12 @@ export default function LoginScreen({navigation}) {
         <SignButton onPress={() => navigation.navigate('Signup')}>
           <SignButtonLabel>회원가입</SignButtonLabel>
         </SignButton>
-        <SimpleLoginContainer
-          onPress={() => {
-            navigation.navigate('SimpleLogin');
-          }}>
-          <SimpleLoginLabel>간편로그인으로 시작하기</SimpleLoginLabel>
-        </SimpleLoginContainer>
+        {/*<SimpleLoginContainer*/}
+        {/*  onPress={() => {*/}
+        {/*    navigation.navigate('SimpleLogin');*/}
+        {/*  }}>*/}
+        {/*  <SimpleLoginLabel>간편로그인으로 시작하기</SimpleLoginLabel>*/}
+        {/*</SimpleLoginContainer>*/}
       </ScrollView>
       {visibleAlert ? (
         <AlertYesButton

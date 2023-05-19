@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import DetailProfileWithDescription from '../../components/atoms/profile/DetailProfileWithDescription';
-import {Image, View} from 'react-native';
+import {FlatList, Image, ScrollView, View} from 'react-native';
 import {RecipeAndTrimmingComponent} from '../../components/templates/mypage/RecipeAndTrimmingComponent';
 import {getProfile} from '../../services/MyPage';
-import {loadLoginFromStorage} from '../../services/domain/AutoLogin';
+import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ProfileScreen = ({navigation, route}) => {
   const [profile, setProfile] = useState({});
@@ -14,16 +15,19 @@ const ProfileScreen = ({navigation, route}) => {
     console.log(getUsernameInStorage);
     setUsername(() => getUsernameInStorage);
   };
-  useEffect(() => {
-    getProfile(route.params.username).then(res => {
-      const data = JSON.parse(res.request._response);
-      setProfile(data);
-    });
-    getUsername();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getProfile(route.params.username).then(res => {
+        const data = JSON.parse(res.request._response);
+        setProfile(data);
+      });
+      getUsername();
+    }, [route.params.username]),
+  );
 
   return (
-    <Container>
+    <>
+      <Container edges={['top']} />
       <Header>
         <View
           style={{
@@ -50,9 +54,9 @@ const ProfileScreen = ({navigation, route}) => {
           isMine={loadUsername === profile.username}
           setFollow={route.params.setFollowing}
         />
-        <RecipeAndTrimmingComponent />
+        <RecipeAndTrimmingComponent username={route?.params?.username} />
       </InnerContainer>
-    </Container>
+    </>
   );
 };
 
@@ -85,14 +89,19 @@ const VerticalBar = styled.View`
   background: #f5f5f5;
 `;
 
-const Container = styled.SafeAreaView`
-  width: 100%;
-  height: 100%;
-`;
+const Container = styled.SafeAreaView``;
 
-const InnerContainer = styled.ScrollView`
-  width: 100%;
-  height: auto;
-`;
+const InnerContainer = props => {
+  return (
+    <FlatList
+      contentContainerStyle={{}}
+      data={[]}
+      renderItem={null}
+      ListEmptyComponent={null}
+      keyExtractor={() => {}}
+      ListHeaderComponent={<>{props.children}</>}
+    />
+  );
+};
 
 export default ProfileScreen;

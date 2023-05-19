@@ -3,6 +3,8 @@ import styled from 'styled-components/native';
 import Title from '../../components/atoms/board/recipe/edit/Title';
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -57,229 +59,239 @@ const RecipeEditFirstScreen = ({navigation}) => {
         nextNavigation={'RecipeEditSecondScreen'}
         enabled={enabled}
       />
-      <ScrollPart>
-        <ThumbnailImageEditContainer>
-          {photo.uri === '' ? (
-            <ImageSelectBox onPress={() => setAlert(true)}>
-              <Image source={require('../../assets/images/_격리_모드.png')} />
-            </ImageSelectBox>
-          ) : (
-            <TouchableOpacity onPress={() => setAlert(true)}>
-              <Image
-                style={{width: 98, height: 98, borderRadius: 8}}
-                source={{uri: photo.uri}}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          )}
+      <KeyboardAvoidingView
+        behavior={Platform.select({ios: 'padding', android: undefined})}>
+        <ScrollPart>
+          <ThumbnailImageEditContainer>
+            {photo.uri === '' ? (
+              <ImageSelectBox onPress={() => setAlert(true)}>
+                <Image source={require('../../assets/images/_격리_모드.png')} />
+              </ImageSelectBox>
+            ) : (
+              <TouchableOpacity onPress={() => setAlert(true)}>
+                <Image
+                  style={{width: 98, height: 98, borderRadius: 8}}
+                  source={{uri: photo.uri}}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            )}
 
-          <ImageEditDescriptContainer>
-            <CookingSectionLabel>대표 이미지 선택</CookingSectionLabel>
-            <Description>{`레시피를 대표할 수 있는
+            <ImageEditDescriptContainer>
+              <CookingSectionLabel>대표 이미지 선택</CookingSectionLabel>
+              <Description>{`레시피를 대표할 수 있는
 음식사진을 올려주세요`}</Description>
-          </ImageEditDescriptContainer>
-          <TouchableBox onPress={() => setAlert(true)}>
-            <ImageSelectLabel>선택</ImageSelectLabel>
-          </TouchableBox>
-        </ThumbnailImageEditContainer>
-        <EditPart>
-          <TitleTextInput
-            placeholder="제목"
-            placeholderTextColor="#a4a4a4"
-            value={title}
-            onChangeText={text => setTitle(text)}
-          />
-          <DescriptionTextInput
-            placeholder={`레시피를 소개해주세요.
+            </ImageEditDescriptContainer>
+            <TouchableBox onPress={() => setAlert(true)}>
+              <ImageSelectLabel>선택</ImageSelectLabel>
+            </TouchableBox>
+          </ThumbnailImageEditContainer>
+          <EditPart>
+            <TitleTextInput
+              placeholder="제목"
+              placeholderTextColor="#a4a4a4"
+              value={title}
+              onChangeText={text => setTitle(text)}
+            />
+            <DescriptionTextInput
+              placeholder={`레시피를 소개해주세요.
 예) 자취 8년차 언제 먹어도 질리지 않는 맛있는 된장찌개!`}
-            placeholderTextColor="#a4a4a4"
-            multiline={true}
-            scrollEnabled={false}
-            value={description}
-            onChangeText={text => setDescription(text)}
-          />
-        </EditPart>
-        <CookingInfoPart>
-          <PartTitleLabel>요리 정보</PartTitleLabel>
-          <CookingSectionPart>
-            <CookingSectionLabel>인원</CookingSectionLabel>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <TouchableOpacity
-                onPress={() =>
-                  setQuantityNum(quantityNum =>
-                    quantityNum === 0
-                      ? RecipeQuantityList.length - 1
-                      : quantityNum - 1,
-                  )
-                }>
-                <Image
-                  style={{width: 25, height: 25}}
-                  source={require('../../assets/images/Minus.png')}
-                />
-              </TouchableOpacity>
+              placeholderTextColor="#a4a4a4"
+              multiline={true}
+              scrollEnabled={false}
+              value={description}
+              onChangeText={text => setDescription(text)}
+            />
+          </EditPart>
+          <CookingInfoPart>
+            <PartTitleLabel>요리 정보</PartTitleLabel>
+            <CookingSectionPart>
+              <CookingSectionLabel>인원</CookingSectionLabel>
               <View
-                style={{
-                  backgroundColor: '#f5f5f5',
-                  width: 112,
-                  height: 35,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 8,
-                }}>
-                <Text
+                style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                <TouchableOpacity
+                  onPress={() =>
+                    setQuantityNum(quantityNum =>
+                      quantityNum === 0
+                        ? RecipeQuantityList.length - 1
+                        : quantityNum - 1,
+                    )
+                  }>
+                  <Image
+                    style={{width: 25, height: 25}}
+                    source={require('../../assets/images/Minus.png')}
+                  />
+                </TouchableOpacity>
+                <View
                   style={{
                     backgroundColor: '#f5f5f5',
-                    fontStyle: 'normal',
-                    fontFamily: 'Pretendard Variable',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    color: '#666666',
+                    width: 112,
+                    height: 35,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 8,
                   }}>
-                  {RecipeQuantityList[chooseQuantityNum].label}
-                </Text>
+                  <Text
+                    style={{
+                      backgroundColor: '#f5f5f5',
+                      fontStyle: 'normal',
+                      fontFamily: 'Pretendard Variable',
+                      fontWeight: 500,
+                      fontSize: 16,
+                      color: '#666666',
+                    }}>
+                    {RecipeQuantityList[chooseQuantityNum].label}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    setQuantityNum(quantityNum =>
+                      quantityNum === RecipeQuantityList.length - 1
+                        ? 0
+                        : quantityNum + 1,
+                    )
+                  }>
+                  <Image
+                    style={{width: 25, height: 25}}
+                    source={require('../../assets/images/Plus.png')}
+                  />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                onPress={() =>
-                  setQuantityNum(quantityNum =>
-                    quantityNum === RecipeQuantityList.length - 1
-                      ? 0
-                      : quantityNum + 1,
-                  )
-                }>
-                <Image
-                  style={{width: 25, height: 25}}
-                  source={require('../../assets/images/Plus.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </CookingSectionPart>
-          <HorizontalBar height={'1px'} />
-          <CookingSectionPart>
-            <CookingSectionLabel>시간</CookingSectionLabel>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <TouchableOpacity
-                onPress={() =>
-                  setTimeNum(chooseTimeNum =>
-                    chooseTimeNum === 0
-                      ? RecipeTimeList.length - 1
-                      : chooseTimeNum - 1,
-                  )
-                }>
-                <Image
-                  style={{width: 25, height: 25}}
-                  source={require('../../assets/images/Minus.png')}
-                />
-              </TouchableOpacity>
+            </CookingSectionPart>
+            <HorizontalBar height={'1px'} />
+            <CookingSectionPart>
+              <CookingSectionLabel>시간</CookingSectionLabel>
               <View
-                style={{
-                  backgroundColor: '#f5f5f5',
-                  width: 112,
-                  height: 35,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 8,
-                }}>
-                <Text
+                style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                <TouchableOpacity
+                  onPress={() =>
+                    setTimeNum(chooseTimeNum =>
+                      chooseTimeNum === 0
+                        ? RecipeTimeList.length - 1
+                        : chooseTimeNum - 1,
+                    )
+                  }>
+                  <Image
+                    style={{width: 25, height: 25}}
+                    source={require('../../assets/images/Minus.png')}
+                  />
+                </TouchableOpacity>
+                <View
                   style={{
                     backgroundColor: '#f5f5f5',
-                    fontStyle: 'normal',
-                    fontFamily: 'Pretendard Variable',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    color: '#666666',
+                    width: 112,
+                    height: 35,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 8,
                   }}>
-                  {RecipeTimeList[chooseTimeNum].label}
-                </Text>
+                  <Text
+                    style={{
+                      backgroundColor: '#f5f5f5',
+                      fontStyle: 'normal',
+                      fontFamily: 'Pretendard Variable',
+                      fontWeight: 500,
+                      fontSize: 16,
+                      color: '#666666',
+                    }}>
+                    {RecipeTimeList[chooseTimeNum].label}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    setTimeNum(timeNum =>
+                      timeNum === RecipeTimeList.length - 1 ? 0 : timeNum + 1,
+                    )
+                  }>
+                  <Image
+                    style={{width: 25, height: 25}}
+                    source={require('../../assets/images/Plus.png')}
+                  />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                onPress={() =>
-                  setTimeNum(timeNum =>
-                    timeNum === RecipeTimeList.length - 1 ? 0 : timeNum + 1,
-                  )
-                }>
-                <Image
-                  style={{width: 25, height: 25}}
-                  source={require('../../assets/images/Plus.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </CookingSectionPart>
-          <HorizontalBar height={'1px'} />
-          <CookingSectionPart>
-            <CookingSectionLabel>난이도</CookingSectionLabel>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <TouchableOpacity
-                onPress={() =>
-                  setLevelNum(levelNum =>
-                    levelNum === 0 ? RecipeLevelList.length - 1 : levelNum - 1,
-                  )
-                }>
-                <Image
-                  style={{width: 25, height: 25}}
-                  source={require('../../assets/images/Minus.png')}
-                />
-              </TouchableOpacity>
+            </CookingSectionPart>
+            <HorizontalBar height={'1px'} />
+            <CookingSectionPart>
+              <CookingSectionLabel>난이도</CookingSectionLabel>
               <View
-                style={{
-                  backgroundColor: '#f5f5f5',
-                  width: 112,
-                  height: 35,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: 8,
-                }}>
-                <Text
+                style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                <TouchableOpacity
+                  onPress={() =>
+                    setLevelNum(levelNum =>
+                      levelNum === 0
+                        ? RecipeLevelList.length - 1
+                        : levelNum - 1,
+                    )
+                  }>
+                  <Image
+                    style={{width: 25, height: 25}}
+                    source={require('../../assets/images/Minus.png')}
+                  />
+                </TouchableOpacity>
+                <View
                   style={{
                     backgroundColor: '#f5f5f5',
-                    fontStyle: 'normal',
-                    fontFamily: 'Pretendard Variable',
-                    fontWeight: 500,
-                    fontSize: 16,
-                    color: '#666666',
+                    width: 112,
+                    height: 35,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 8,
                   }}>
-                  {RecipeLevelList[chooseLevelNum].label}
-                </Text>
+                  <Text
+                    style={{
+                      backgroundColor: '#f5f5f5',
+                      fontStyle: 'normal',
+                      fontFamily: 'Pretendard Variable',
+                      fontWeight: 500,
+                      fontSize: 16,
+                      color: '#666666',
+                    }}>
+                    {RecipeLevelList[chooseLevelNum].label}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    setLevelNum(levelNum =>
+                      levelNum === RecipeLevelList.length - 1
+                        ? 0
+                        : levelNum + 1,
+                    )
+                  }>
+                  <Image
+                    style={{width: 25, height: 25}}
+                    source={require('../../assets/images/Plus.png')}
+                  />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                onPress={() =>
-                  setLevelNum(levelNum =>
-                    levelNum === RecipeLevelList.length - 1 ? 0 : levelNum + 1,
-                  )
-                }>
-                <Image
-                  style={{width: 25, height: 25}}
-                  source={require('../../assets/images/Plus.png')}
+            </CookingSectionPart>
+          </CookingInfoPart>
+          <CategoryInfoPart>
+            <PartTitleLabel>카테고리 선택</PartTitleLabel>
+            <CategorySelectorContainer>
+              <TouchableWithoutFeedback>
+                <ModalDropDownPickerComponent
+                  value={firstCategoryValue}
+                  setValue={setFirstCategoryValue}
+                  items={RecipeSortList}
+                  placeholder={'종류별'}
+                  minHeight={'40px'}
+                  width={'40%'}
                 />
-              </TouchableOpacity>
-            </View>
-          </CookingSectionPart>
-        </CookingInfoPart>
-        <CategoryInfoPart>
-          <PartTitleLabel>카테고리 선택</PartTitleLabel>
-          <CategorySelectorContainer>
-            <TouchableWithoutFeedback>
-              <ModalDropDownPickerComponent
-                value={firstCategoryValue}
-                setValue={setFirstCategoryValue}
-                items={RecipeSortList}
-                placeholder={'종류별'}
-                minHeight={'40px'}
-                width={'40%'}
-              />
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback>
-              <ModalDropDownPickerComponent
-                value={secondCategoryValue}
-                setValue={setSecondCategoryValue}
-                items={RecipeSituationList}
-                placeholder={'상황별'}
-                minHeight={'40px'}
-                width={'40%'}
-              />
-            </TouchableWithoutFeedback>
-          </CategorySelectorContainer>
-        </CategoryInfoPart>
-      </ScrollPart>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback>
+                <ModalDropDownPickerComponent
+                  value={secondCategoryValue}
+                  setValue={setSecondCategoryValue}
+                  items={RecipeSituationList}
+                  placeholder={'상황별'}
+                  minHeight={'40px'}
+                  width={'40%'}
+                />
+              </TouchableWithoutFeedback>
+            </CategorySelectorContainer>
+          </CategoryInfoPart>
+        </ScrollPart>
+      </KeyboardAvoidingView>
     </RecipeEditScreenContainer>
   );
 };
