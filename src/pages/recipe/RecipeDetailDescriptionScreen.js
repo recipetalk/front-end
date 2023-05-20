@@ -90,7 +90,9 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
           />
         ) : undefined}
       </KeyboardAvoidingView>
-      <SafeAreaView edges={['bottom']} style={{backgroundColor: 'white'}} />
+      {Checked ? (
+        <SafeAreaView edges={['bottom']} style={{backgroundColor: 'white'}} />
+      ) : undefined}
     </>
   );
 };

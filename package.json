@@ -22,6 +22,7 @@
     "react": "18.2.0",
     "react-native": "0.71.1",
     "react-native-background-timer": "^2.4.1",
+    "react-native-camera-kit": "^13.0.0",
     "react-native-draggable-flatlist": "^4.0.1",
     "react-native-dropdown-picker": "https://github.com/khj745700/react-native-dropdown-picker.git",
     "react-native-elements": "^3.4.3",
