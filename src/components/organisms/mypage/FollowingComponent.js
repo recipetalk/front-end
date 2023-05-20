@@ -21,7 +21,7 @@ const FollowingComponent = ({
         <MyInfoTitleLabel>팔로워</MyInfoTitleLabel>
         <MyInfoNumberLabel>{followerNumber}</MyInfoNumberLabel>
       </MyInfoItem>
-      <MyInfoItem onPress={() => navigation.push('MyRecipe')}>
+      <MyInfoItem disabled={true}>
         <MyInfoTitleLabel>나의 레시피</MyInfoTitleLabel>
         <MyInfoNumberLabel>{recipeNumber}</MyInfoNumberLabel>
       </MyInfoItem>

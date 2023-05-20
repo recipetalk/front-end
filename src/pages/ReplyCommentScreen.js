@@ -3,9 +3,14 @@ import React, {useEffect, useState} from 'react';
 import {NavigationHeader} from '../components/organisms/mypage/NavigationHeader';
 import {CommentComponent} from '../components/organisms/comment/CommentComponent';
 import {CommentWriteComponent} from '../components/organisms/comment/CommentWriteComponent';
-import {ActivityIndicator, FlatList} from 'react-native';
-import {getChildComment} from '../services/Comment';
-import {loadLoginFromStorage} from '../services/domain/AutoLogin';
+import {
+  ActivityIndicator,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import {getChildComment, getComment} from '../services/Comment';
+import {loadLoginFromStorage} from '../services/repository/AutoLogin';
 
 export const ReplyCommentScreen = ({navigation, route}) => {
   const [commentRefresh, setCommentRefresh] = useState(false);
@@ -14,6 +19,7 @@ export const ReplyCommentScreen = ({navigation, route}) => {
   const [last, setLast] = useState(true);
   const [loadUsername, setLoadUsername] = useState('');
   const [loading, setLoading] = useState(false);
+  const [parentComment, setParentComment] = useState(null);
 
   useEffect(() => {
     const setUsername = async () => {
@@ -28,9 +34,15 @@ export const ReplyCommentScreen = ({navigation, route}) => {
         setComment(data.content);
         setPagingNum(1);
         setLast(data.last);
-        setLoading(() => false);
       },
     );
+    getComment(route.params.parentCommentId)
+      .then(res => {
+        const data = JSON.parse(res.request._response);
+        setParentComment(data);
+      })
+      .catch(err => console.log(err.response));
+    setLoading(() => false);
   }, []);
 
   const request = () => {
@@ -69,54 +81,65 @@ export const ReplyCommentScreen = ({navigation, route}) => {
       <ParentComment>
         <CommentComponent
           existChild={false}
-          comment={route.params.comment}
+          comment={parentComment}
           details={true}
         />
       </ParentComment>
       <HorizontalBar />
-      <FlatList
-        style={{
-          backgroundColor: 'white',
-          paddingLeft: '7%',
-          paddingRight: '7%',
-          marginTop: '5%',
-          height: '100%',
-        }}
-        keyExtractor={_ => _.commentId}
-        onRefresh={onRefresh}
-        refreshing={commentRefresh}
-        onEndReached={() => {
-          if (loading) {
-            return;
-          }
-          if (!last) {
-            request();
-          }
-        }}
-        onEndReachedThreshold={0.6}
-        data={comment}
-        renderItem={({item}) => (
-          <CommentComponent
-            comment={item}
-            details={true}
-            isMine={loadUsername === item.userProfile.username}
+      <KeyboardAvoidingView
+        behavior={Platform.select({ios: 'padding', android: undefined})}
+        style={{flex: 1}}>
+        <FlatList
+          style={{
+            backgroundColor: 'white',
+            paddingLeft: '7%',
+            paddingRight: '7%',
+            marginTop: '5%',
+            height: '100%',
+          }}
+          keyExtractor={_ => _.commentId}
+          onRefresh={onRefresh}
+          refreshing={commentRefresh}
+          onEndReached={() => {
+            if (loading) {
+              return;
+            }
+            if (!last) {
+              request();
+            }
+          }}
+          onEndReachedThreshold={0.6}
+          data={comment}
+          renderItem={({item}) => (
+            <>
+              <CommentComponent
+                comment={item}
+                details={true}
+                isMine={loadUsername === item.userProfile.username}
+                boardId={route.params.boardId}
+                onRefresh={onRefresh}
+              />
+              <MarginBox />
+            </>
+          )}
+          ListFooterComponent={loading && <ActivityIndicator />}
+        />
+        {parentComment?.userProfile?.username !== null ? (
+          <CommentWriteComponent
+            isAbsolute={false}
             boardId={route.params.boardId}
+            parentCommentId={route.params.parentCommentId}
             onRefresh={onRefresh}
           />
-        )}
-        ListFooterComponent={loading && <ActivityIndicator />}
-      />
-      {route.params.comment.userProfile.username !== null ? (
-        <CommentWriteComponent
-          isAbsolute={false}
-          boardId={route.params.boardId}
-          parentCommentId={route.params.parentCommentId}
-          onRefresh={onRefresh}
-        />
-      ) : undefined}
+        ) : undefined}
+      </KeyboardAvoidingView>
     </Container>
   );
 };
+
+const MarginBox = styled.View`
+  height: 15px;
+`;
 
 const HorizontalBar = styled.View`
   width: 100%;

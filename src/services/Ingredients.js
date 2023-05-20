@@ -100,3 +100,14 @@ export const editIngredient = async id => {
 
   return await jsonAPI.patch(url, data, config);
 };
+
+export const getIngredientPrepByUsername = async (
+  username,
+  sortType,
+  offset,
+  limit,
+) => {
+  let url = `/api/board/ingredient/trimming/username/${username}?sortType=${sortType}&offset=${offset}&limit=${limit}`;
+
+  return await jsonAPI.get(url, config);
+};

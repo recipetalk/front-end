@@ -14,7 +14,7 @@ import CreatedDateLabel from '../components/atoms/CreatedDateLabel';
 import {getNotifications} from '../services/Notification';
 import {useDispatch} from 'react-redux';
 import {notExist} from '../store/notification/NotificationStateSlice';
-import {setNotificationHasNew} from '../services/domain/NotificationHasNew';
+import {setNotificationHasNew} from '../services/repository/NotificationHasNew';
 
 //  {
 //       id: 1,
@@ -218,6 +218,10 @@ const determineNavigationWithNotiSort = (
         boardId: navigations.boardId,
       });
       //TODO : Parent Comment 가져오는 로직 필요
+      await navigation.push('ReplyComment', {
+        parentCommentId: navigations.parentCommentId,
+        boardId: navigations.boardId,
+      });
     };
   } else if (notificationSort === 'FOLLOWING') {
     return () => {

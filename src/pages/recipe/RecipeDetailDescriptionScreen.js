@@ -1,5 +1,11 @@
 import React, {Fragment, useEffect, useRef, useState} from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import styled from 'styled-components/native';
 import RecipeDetailDescription from '../../components/atoms/board/RecipeDetailDescription';
 import {CommentWriteComponent} from '../../components/organisms/comment/CommentWriteComponent';
@@ -15,10 +21,10 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    getParentComment(boardId, commentPagingNum).then(res => {
+    getParentComment(boardId, 0).then(res => {
       const data = JSON.parse(res.request._response);
       setComment(data.content);
-      setCommentPagingNum(pagingNum => pagingNum++);
+      setCommentPagingNum(1);
       setLast(data.last);
     });
   }, []);
@@ -60,31 +66,33 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
           />
         </TouchableOpacity>
       </Header>
-      <RecipeDetailDescription
-        setChecked={setChecked}
-        boardId={1}
-        recipeId={1}
-        commentRefresh={commentRefresh}
-        comment={comment}
-        setComment={setComment}
-        onRefresh={onRefresh}
-        onRequest={onRequest}
-        isLast={isLast}
-        isLoading={isLoading}
-      />
-      {Checked ? (
-        <CommentWriteComponent
-          boardId={boardId}
-          setCommentRefresh={setCommentRefresh}
+      <KeyboardAvoidingView
+        behavior={Platform.select({ios: 'padding', android: undefined})}
+        style={{flex: 1}}>
+        <RecipeDetailDescription
+          setChecked={setChecked}
+          boardId={1}
+          recipeId={1}
+          commentRefresh={commentRefresh}
+          comment={comment}
+          setComment={setComment}
           onRefresh={onRefresh}
-          isAbsolute={false}
+          onRequest={onRequest}
+          isLast={isLast}
+          isLoading={isLoading}
         />
+        {Checked ? (
+          <CommentWriteComponent
+            boardId={boardId}
+            setCommentRefresh={setCommentRefresh}
+            onRefresh={onRefresh}
+            isAbsolute={false}
+          />
+        ) : undefined}
+      </KeyboardAvoidingView>
+      {Checked ? (
+        <SafeAreaView edges={['bottom']} style={{backgroundColor: 'white'}} />
       ) : undefined}
-
-      <SafeAreaView
-        edges={['bottom']}
-        style={{flex: 1, backgroundColor: 'white', position: 'relative'}}
-      />
     </>
   );
 };

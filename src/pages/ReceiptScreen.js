@@ -3,6 +3,7 @@ import React from 'react';
 import {Platform, Text} from 'react-native';
 import styled from 'styled-components/native';
 import IngredientsHeader from '../components/organisms/Ingredients/IngredientsHeader';
+import BarcodeScanner from '../components/templates/barcode/BarcodeScanner';
 
 const ReceiptScreen = () => {
   const navigation = useNavigation();
@@ -16,9 +17,7 @@ const ReceiptScreen = () => {
         isTransparent={true}
         screen=""
       />
-      <Btn onPress={() => navigation.navigate('RegisterMyIngredients')}>
-        <Text>이동</Text>
-      </Btn>
+      <BarcodeScanner />
     </ReciptScreenContainer>
   );
 };

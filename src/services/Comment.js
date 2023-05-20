@@ -3,7 +3,7 @@ import {jsonAPI} from './connect/API';
 const config = {
   headers: {
     Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4Mzg4MDg3MywidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.T85g3E3LYQB_xsigXVsdsqN-MbY1yNX90qNOEmCyd70',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NjUyOTcwMywidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.uJM2fdN95TOvgQ5IA9DD12X9jg74TDuocx9TRji0SV8',
   },
 };
 
@@ -15,6 +15,12 @@ export const getParentComment = async (boardId, page) => {
 
 export const getChildComment = async (boardId, parentId, page) => {
   const url = `/api/board/${boardId}/comment/${parentId}?page=${page}`;
+
+  return await jsonAPI.get(url, config);
+};
+
+export const getComment = async commentId => {
+  const url = `/api/user/comment/${commentId}`;
 
   return await jsonAPI.get(url, config);
 };

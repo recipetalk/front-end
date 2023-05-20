@@ -7,8 +7,8 @@ const config = {
   },
 };
 
-export const getNotifications = async pagingNum => {
-  const url = `/api/notification?page=${pagingNum}`;
+export const toggleBoardBookmark = async boardId => {
+  const url = `/api/board/${boardId}/bookmark`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.post(url, null, config);
 };

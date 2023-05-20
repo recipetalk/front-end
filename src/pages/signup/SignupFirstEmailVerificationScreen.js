@@ -84,6 +84,7 @@ export default function SignupFirstEmailVerificationScreen({navigation}) {
               placeholder="이메일을 입력해주세요"
               value={localEmail}
               setData={setLocalEmail}
+              type={'email-address'}
             />
             {isValidEmail === 'no' && (
               <ValidateLabel>이메일 형식을 맞춰주세요!</ValidateLabel>

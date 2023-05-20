@@ -1,26 +1,49 @@
-import React from 'react';
 import styled from 'styled-components/native';
+import React, {useMemo} from 'react';
 import BottomImageComponent from '../BottomImageComponent';
+import {useNavigation} from '@react-navigation/native';
+import MiniBottomImageComponent from '../MiniBottomImageComponent';
 
 const DList = props => {
+  const navigation = useNavigation();
+  const determineNav = useMemo(
+    () => determineNavigation(props?.value?.boardSort),
+    [props?.value?.boardSort],
+  );
+
   return (
-    <DListContainer>
+    <DListContainer
+      onPress={() =>
+        navigation.push(determineNav(), {
+          boardId: props?.value?.boardId,
+        })
+      }>
       <ImagePart />
 
       <InfoPart>
-        <Titie>{props.value.title}</Titie>
-        <UserID>{props.value.nickname}</UserID>
-        <BottomImageComponent value={props.value} isBookmark={false} />
+        <Titie>{props?.value?.title}</Titie>
+        <UserID>{props?.value?.description}</UserID>
+        <MiniBottomImageComponent value={props.value} isBookmark={false} />
       </InfoPart>
     </DListContainer>
   );
 };
 
-const DListContainer = styled.View`
+const determineNavigation = boardSort => {
+  if (boardSort === 'RECIPE') {
+    return 'RecipeDetailScreen';
+  } else if (boardSort === 'TRIMMING') {
+    return 'PrepDetail';
+  } else if (boardSort === 'DESCRIPTION') {
+    return 'Efficacy';
+  }
+};
+
+const DListContainer = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 150px;
+  align-items: center;
   padding: 18px;
   gap: 20px;
   border-bottom-width: 2px;
