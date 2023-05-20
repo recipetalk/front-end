@@ -1,3 +1,4 @@
+import {useRoute} from '@react-navigation/native';
 import React from 'react';
 import styled from 'styled-components/native';
 import DirectlyRegisterIngredients from '../../components/organisms/Ingredients/DirectlyRegisterIngredients';
@@ -5,6 +6,8 @@ import IngredientsHeader from '../../components/organisms/Ingredients/Ingredient
 import {editIngredient} from '../../services/Ingredients';
 
 const IngredientsEditScreen = () => {
+  const router = useRoute();
+
   const dummy = {
     expirationDate: '2024-05-05',
     ingredientId: 1,
@@ -15,7 +18,7 @@ const IngredientsEditScreen = () => {
   };
 
   const test = () => {
-    editIngredient()
+    editIngredient(router.params.id)
       .then(res => console.log(res))
       .catch(error => console.error(error.response));
   };
@@ -28,7 +31,7 @@ const IngredientsEditScreen = () => {
         btnTextValue=""
       />
       <Test>
-        <DirectlyRegisterIngredients item={dummy} />
+        <DirectlyRegisterIngredients item={dummy} readOnly={true} />
 
         <TouchContainer onPress={test}>
           <IngredientRegisterButton>

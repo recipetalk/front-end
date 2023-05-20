@@ -11,19 +11,19 @@ import {View} from 'react-native';
 import {getSearchIngredient} from '../../../services/Ingredients';
 import {Text} from 'react-native';
 
-const DirectlyRegisterIngredients = props => {
+const DirectlyRegisterIngredients = ({item, readOnly}) => {
   const dispatch = useDispatch();
-  const [isAddChecked, setIsAddChecked] = useState(props.item.isChecked);
+  const [isAddChecked, setIsAddChecked] = useState(item.isChecked);
   const [isResultLength, setIsResultLength] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
   const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
-    props.item.ingredientState,
+    item.ingredientState,
   );
 
   const [ingredientsInfo, setIngredientsInfo] = useState({
-    ingredientName: props.item.ingredientName,
-    expirationDate: props.item.expirationDate,
-    quantity: props.item.quantity,
+    ingredientName: item.ingredientName,
+    expirationDate: item.expirationDate,
+    quantity: item.quantity,
   });
 
   const statusPlaceholder = [
@@ -37,7 +37,7 @@ const DirectlyRegisterIngredients = props => {
     if (newValue) {
       dispatch(
         addIngredients({
-          ingredientId: props.item.ingredientId,
+          ingredientId: item.ingredientId,
           ingredientName: ingredientsInfo.ingredientName,
           ingredientState: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
@@ -48,7 +48,7 @@ const DirectlyRegisterIngredients = props => {
     } else {
       dispatch(
         addIngredients({
-          ingredientId: props.item.ingredientId,
+          ingredientId: item.ingredientId,
           ingredientName: ingredientsInfo.ingredientName,
           ingredientState: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
@@ -60,7 +60,7 @@ const DirectlyRegisterIngredients = props => {
   };
 
   const deleteThisIngredients = () => {
-    dispatch(deleteIngredients(props.item.ingredientId));
+    dispatch(deleteIngredients(item.ingredientId));
   };
 
   const changeText = res => {
@@ -128,6 +128,9 @@ const DirectlyRegisterIngredients = props => {
       <IngredientName>식재료 명</IngredientName>
       <IngredientNameContainer>
         <IngredientNameInput
+          readOnly={readOnly}
+          editable={readOnly}
+          selectTextOnFocus={readOnly}
           placeholder="  예) 감자  "
           value={ingredientsInfo.ingredientName}
           onChangeText={changeText}
@@ -235,7 +238,7 @@ const IngredientNameContainer = styled.View`
 `;
 
 const IngredientNameInput = styled.TextInput`
-  background: #ffffff;
+  background: ${props => (props.readOnly ? 'gray' : '#ffffff')};
   width: 100%;
   height: 48px;
   border: 1px solid #d8d8d8;

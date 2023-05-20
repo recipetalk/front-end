@@ -22,7 +22,7 @@ const IngredientsItem = props => {
       value: 'update',
       onPress: () => {
         console.log('수정!!');
-        navigation.navigate('IngredientsEdit');
+        navigation.navigate('IngredientsEdit', {id: props.item.ingredientId});
       },
     },
     {
@@ -55,14 +55,16 @@ const IngredientsItem = props => {
       <IngredientsItemETCInfo>
         <TouchContainer
           onPress={() =>
-            navigation.navigate('Efficacy', {testID: props.item.ingredientId})
+            navigation.navigate('Efficacy', {
+              ingredientID: props.item.ingredientId,
+            })
           }>
           <EfficacyText>효능 및 정보</EfficacyText>
         </TouchContainer>
         <Text> | </Text>
         <TouchContainer
           onPress={() =>
-            navigation.navigate('Prep', {testID: props.item.ingredientId})
+            navigation.navigate('Prep', {ingredientID: props.item.ingredientId})
           }>
           <PrepText>손질법 보기</PrepText>
         </TouchContainer>

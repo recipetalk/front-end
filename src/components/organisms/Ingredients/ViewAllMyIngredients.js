@@ -1,3 +1,4 @@
+import {useIsFocused} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native';
@@ -7,6 +8,7 @@ import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import IngredientsItem from './IngredientsItem';
 
 const ViewAllMyIngredients = () => {
+  const isFocused = useIsFocused();
   const [myIngredients, setMyIngredients] = useState(null);
 
   const [oneItemState, setOneItemState] = useState();
@@ -38,7 +40,7 @@ const ViewAllMyIngredients = () => {
     getMyIngredientPage('new')
       .then(res => setMyIngredients(res.data.content))
       .catch(error => console.error(error.response));
-  }, []);
+  }, [isFocused]);
 
   // useEffect(() => {
   //   getMyIngredientPage(oneItemState)

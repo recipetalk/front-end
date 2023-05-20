@@ -44,6 +44,18 @@ export const getIngredientsPrep = async ingredientId => {
   return await jsonAPI.get(url, config);
 };
 // 식재료 손질법 상세 조회 | get | /api/board/ingredient/{ingredientId}/trimming/{trimmingId}
+export const getIngredientsPrepDetail = async trimmingId => {
+  const url = `/api/board/ingredient/trimming/${trimmingId}`;
+
+  return await jsonAPI.get(url, config);
+};
+
+// 식재료 손질법 hard 삭제
+export const hardDelete = async trimmingId => {
+  const url = `/api/board/ingredient/trimming/hard/${trimmingId}`;
+
+  return await jsonAPI.delete(url, config);
+};
 
 // 효능 조회
 export const getEfficacy = async ingredientId => {

@@ -59,7 +59,13 @@ const RegisterMyIngredientsComponent = () => {
           </DirectlyRegisterIngredientsText>
 
           {ingredientsList.map((item, index) => {
-            return <DirectlyRegisterIngredients key={index} item={item} />;
+            return (
+              <DirectlyRegisterIngredients
+                key={index}
+                item={item}
+                readOnly={false}
+              />
+            );
           })}
 
           <TouchContainer

@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Image} from 'react-native';
 import {FlatList, TouchableOpacity, View} from 'react-native';
@@ -7,6 +7,7 @@ import styled from 'styled-components/native';
 import {
   addIngredientTrimming,
   addRowIngredientTrimming,
+  hardDelete,
 } from '../../../services/Ingredients';
 import {ImageAndCameraFun} from '../../atoms/functions/ImageAndCameraFun';
 import Line from '../../atoms/Line';
@@ -14,6 +15,7 @@ import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import PrepIntro from '../../organisms/Ingredients/PrepIntro';
 
 const PrepRegisterComponent = () => {
+  const router = useRoute();
   const navigation = useNavigation();
   const toast = useToast();
   const [index, setIndex] = useState(null);
@@ -68,23 +70,26 @@ const PrepRegisterComponent = () => {
   // 모든 데이터 저장하는 함수
   const registerPrepOrder = () => {
     addIngredientTrimming({
-      ingredientId: 1,
+      ingredientId: router.params.ingredientID,
       title: prepInfo.title,
       desc: prepInfo.desc,
       img: '',
     })
-      .then(res => {
-        console.log(res.data);
+      .then(result => {
+        rows.map(item => {
+          addRowIngredientTrimming({
+            ingredientId: router.params.ingredientID,
+            trimmingId: result.data.ingredientTrimmingId,
+            itemList: item,
+          }).catch(error => {
+            console.log(error.response);
+            hardDelete();
+          });
+        });
       })
       .catch(error => {
         console.error(error.response);
       });
-
-    rows.map((item, i) => {
-      addRowIngredientTrimming({ingredientId: 1, trimmingId: 2, itemList: item})
-        .then(res => console.log(res.status))
-        .catch(err => console.log(err.response));
-    });
 
     navigation.goBack();
   };

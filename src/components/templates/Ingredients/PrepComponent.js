@@ -1,4 +1,4 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {getEfficacy, getIngredientsPrep} from '../../../services/Ingredients';
@@ -10,24 +10,22 @@ import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
 const PrepComponent = () => {
   const router = useRoute();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const [efficacyInfo, setEfficacyInfo] = useState({});
   const [ingredientsPrepInfo, setIngredientsPrepInfo] = useState([]);
 
   useEffect(() => {
-    // TODO :: ingredientId 동적으로
-    getEfficacy(1)
-      .then(res => {
-        setEfficacyInfo(res.data);
-      })
-      .catch(error => console.error(error));
-  }, []);
+    getEfficacy(router.params.ingredientID)
+      .then(res => setEfficacyInfo(res.data))
+      .catch(error => console.error(error.response));
+  }, [isFocused, router.params.ingredientID]);
 
   useEffect(() => {
-    getIngredientsPrep(1)
+    getIngredientsPrep(router.params.ingredientID)
       .then(res => setIngredientsPrepInfo(res.data.content))
       .catch(error => console.error(error.response));
-  }, [router.params.testID]);
+  }, [isFocused, router.params.ingredientID]);
 
   return (
     <PrepComponentContainer>
@@ -47,7 +45,12 @@ const PrepComponent = () => {
           return (
             <TouchContainer
               key={index}
-              onPress={() => navigation.navigate('PrepDetail')}>
+              onPress={() =>
+                navigation.navigate('PrepDetail', {
+                  trimmingID: item.id,
+                  ingredientID: router.params.ingredientID,
+                })
+              }>
               <DList value={item} />
             </TouchContainer>
           );
