@@ -64,9 +64,6 @@ export default function PasswordModifyScreen({navigation, route}) {
 
   return (
     <SignupIdScreenContainer>
-      <TouchableContainer onPress={() => navigation.pop()}>
-        <Image source={require('../../../assets/images/Back.png')} />
-      </TouchableContainer>
       <DescriptionContainer>
         <FirstDescription>인증이 끝났어요!</FirstDescription>
         <Description>바꿀 비밀번호를</Description>
