@@ -35,11 +35,6 @@ const IngredientsStackNavigator = () => {
   return (
     <IngredientsStack.Navigator>
       <IngredientsStack.Screen
-        name="RegisterMyIngredients"
-        component={RegisterMyIngredientsScreen}
-        options={{headerShown: false}}
-      />
-      <IngredientsStack.Screen
         name="Ingredients"
         component={IngredientsScreen}
         options={{headerShown: false}}

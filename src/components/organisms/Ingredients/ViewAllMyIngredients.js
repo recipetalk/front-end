@@ -1,51 +1,104 @@
-import React from 'react';
+import {useIsFocused} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {getMyIngredientPage} from '../../../services/Ingredients';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import IngredientsItem from './IngredientsItem';
 
 const ViewAllMyIngredients = () => {
-  const ingredientsList = useSelector(state => state.ingredients);
+  const isFocused = useIsFocused();
+  const [myIngredients, setMyIngredients] = useState(null);
+
+  const [oneItemState, setOneItemState] = useState();
+  const [twoItemState, setTwoItemState] = useState();
+  const [threeItemState, setThreeItemState] = useState();
 
   const oneItem = [
-    {placeholder: '등록일', label: '최신순', value: '최신순'},
-    {placeholder: '등록일', label: '과거순', value: '과거순'},
+    {placeholder: '등록일', label: '최신순', value: 'new'},
+    {placeholder: '등록일', label: '과거순', value: 'old'},
   ];
   const twoItem = [
-    {placeholder: '가나다', label: '오름차순', value: '오름차순'},
-    {placeholder: '가나다', label: '내림차순', value: '내림차순'},
+    {placeholder: '가나다', label: '오름차순', value: 'alphabet_asc'},
+    {placeholder: '가나다', label: '내림차순', value: 'alphabet_desc'},
   ];
   const threeItem = [
     {
       placeholder: '소비기한',
-      label: '가까운 순서 보기(임박)',
-      value: '가까운 순서 보기(임박)',
+      label: '가까운 순서보기(임박)',
+      value: 'expiry_date_immi',
     },
     {
       placeholder: '소비기한',
-      label: '여유로운 순서 보기(여유)',
-      value: '여유로운 순서 보기(여유)',
+      label: '여유로운 순서보기(여유)',
+      value: 'expiry_date_spare',
     },
   ];
+
+  useEffect(() => {
+    getMyIngredientPage('new')
+      .then(res => setMyIngredients(res.data.content))
+      .catch(error => console.error(error.response));
+  }, [isFocused]);
+
+  // useEffect(() => {
+  //   getMyIngredientPage(oneItemState)
+  //     .then(res => setMyIngredients(res.data.content))
+  //     .catch(error => console.error(error.response));
+  // }, [oneItemState]);
+
+  // useEffect(() => {
+  //   getMyIngredientPage(twoItemState)
+  //     .then(res => setMyIngredients(res.data.content))
+  //     .catch(error => console.error(error.response));
+  // }, [twoItemState]);
+
+  // useEffect(() => {
+  //   getMyIngredientPage(threeItemState)
+  //     .then(res => setMyIngredients(res.data.content))
+  //     .catch(error => console.error(error.response));
+  // }, [threeItemState]);
+
+  if (myIngredients === null) {
+    return null;
+  }
+
   return (
     <>
       <DropDownPickerContainer>
         <View>
-          <DropDownPickerComponent width="90px" items={oneItem} />
+          <DropDownPickerComponent
+            width="80px"
+            items={oneItem}
+            value={oneItemState}
+            placeholder="등록일"
+            setValue={setOneItemState}
+          />
         </View>
         <View>
-          <DropDownPickerComponent width="90px" items={twoItem} />
+          <DropDownPickerComponent
+            width="100px"
+            items={twoItem}
+            value={twoItemState}
+            placeholder="가나다"
+            setValue={setTwoItemState}
+          />
         </View>
         <View>
-          <DropDownPickerComponent width="160px" items={threeItem} />
+          <DropDownPickerComponent
+            width="170px"
+            items={threeItem}
+            value={threeItemState}
+            placeholder="소비기한(임박)"
+            setValue={setThreeItemState}
+          />
         </View>
       </DropDownPickerContainer>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <MyIngredientsTitle>나의 식재료</MyIngredientsTitle>
-        {ingredientsList.map((item, i) => {
+        {myIngredients.map((item, i) => {
           return <IngredientsItem key={i} item={item} />;
         })}
       </ScrollView>

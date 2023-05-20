@@ -1,7 +1,11 @@
+import {useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
-import {getEfficacy} from '../../../services/Ingredients';
+import {
+  getEfficacy,
+  getIngredientsPrepDetail,
+} from '../../../services/Ingredients';
 import ExpandableText from '../../atoms/board/ExpandableText';
 import Line from '../../atoms/Line';
 import SimpleProfileWithDescription from '../../atoms/profile/SimpleProfileWithDescription';
@@ -12,47 +16,35 @@ import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
 import PrepOrderComponent from '../../organisms/PrepOrderComponent';
 
 const PrepDetailComponent = () => {
-  const dummy = {
-    description: '식재료 손질법 설명',
-    trimmingRows: [
-      {
-        description: '식재료 손질순서 1번에 대한 1번 사진 설명',
-        imgUri:
-          'https://recipe-prod-s3.s3.ap-northeast-2.amazonaws.com/img/ingredient/trimming/row/0f9cac8c-078a-49b2-8929-daa9bc384dc0forImg.jpg',
-        trimmingSeq: 1,
-        trimmingSubSeq: 1,
-      },
-      {
-        description: '식재료 손질순서 1번에 대한 2번 사진 설명',
-        imgUri:
-          'https://recipe-prod-s3.s3.ap-northeast-2.amazonaws.com/img/ingredient/trimming/row/6bcdcf11-834a-4516-85d7-863bd862e200forImg.jpg',
-        trimmingSeq: 1,
-        trimmingSubSeq: 2,
-      },
-      {
-        description: '식재료 손질순서 2번에 대한 1번 사진 설명',
-        imgUri:
-          'https://recipe-prod-s3.s3.ap-northeast-2.amazonaws.com/img/ingredient/trimming/row/129dafac-9b5d-426e-9a47-b8ace32b5d0bforImg.jpg',
-        trimmingSeq: 2,
-        trimmingSubSeq: 1,
-      },
-    ],
-  };
+  const router = useRoute();
 
-  const [efficacyInfo, setEfficacyInfo] = useState({});
+  const [efficacyInfo, setEfficacyInfo] = useState(null);
+  const [detailInfo, setDetailInfo] = useState(null);
 
   useEffect(() => {
-    // TODO :: ingredientId 동적으로
-    getEfficacy(1)
+    getEfficacy(router.params.ingredientID)
       .then(res => {
         setEfficacyInfo(res.data);
       })
       .catch(error => console.error(error));
-  }, []);
+  }, [router.params.ingredientID]);
+
+  useEffect(() => {
+    getIngredientsPrepDetail(router.params.trimmingID)
+      .then(res => {
+        setDetailInfo(res.data);
+      })
+      .catch(error => console.error(error.response));
+  }, [router.params.trimmingID]);
+
+  if (efficacyInfo === null || detailInfo === null) {
+    return null;
+  }
 
   return (
     <>
       <IngredientsHeader
+        routerInfo={router.params.ingredientID}
         title="손질법"
         isTitleOnly={false}
         btnTextValue="수정"
@@ -64,21 +56,18 @@ const PrepDetailComponent = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <SimpleProfileWithDescriptionContainer>
           <SimpleProfileWithDescription
-            nickname={'사용자아이디0000'}
-            description={'4아이 엄마~^^'}
+            nickname={detailInfo.boardDTO.writer.nickname}
+            description={''}
           />
         </SimpleProfileWithDescriptionContainer>
         <Line />
 
         <DescriptionDetailContainer>
           <TitleContainer>
-            <Title>주부 100단 마늘 쉽게 손질하기</Title>
+            <Title>{detailInfo.boardDTO.title}</Title>
           </TitleContainer>
           <ExpandableText
-            text={`생각해보니 결혼한 지 5년이 넘었는데도 친정 부모님께 제대로 된 요리하나 만들어드린 적이 없는 무심함 큰딸 이더라구요.
-"부모님이 집에 오셔도 오랜만에 엄마 밥"
-생각해보니 결혼한 지 5년이 넘었는데도 친정 부모님께 제대로 된 요리하나 만들어드린 적이 없는 무심함 큰딸 이더라구요.
-"부모님이 집에 오셔도 오랜만에 엄마 밥"`}
+            text={detailInfo.description === null ? '' : detailInfo.description}
           />
           <LikeAndCountNumContainer>
             <BottomImageComponent isBookmark={true} />
@@ -92,7 +81,7 @@ const PrepDetailComponent = () => {
         <PrepOrderContainer>
           <PrepOrderTitle>손질 순서</PrepOrderTitle>
 
-          {dummy.trimmingRows.map((item, index) => {
+          {detailInfo.trimmingRows.map((item, index) => {
             return <PrepOrderComponent value={item} key={index} />;
           })}
         </PrepOrderContainer>

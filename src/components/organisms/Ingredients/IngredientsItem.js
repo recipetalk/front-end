@@ -1,45 +1,71 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
+import {deleteIngredient} from '../../../services/Ingredients';
 import {OptionModalChildImage} from '../OptionModalChildImage';
 
 const IngredientsItem = props => {
   const navigation = useNavigation();
+  const [checkedItem, setCheckedItem] = useState(undefined);
+  console.log('IngredientsItem props.item is ::', props.item);
+
+  useEffect(() => {
+    if (checkedItem !== undefined) {
+      checkedItem.onPress();
+    }
+  }, [checkedItem]);
 
   const items = [
     {
       label: '수정',
       value: 'update',
+      onPress: () => {
+        console.log('수정!!');
+        navigation.navigate('IngredientsEdit', {id: props.item.ingredientId});
+      },
     },
     {
       label: '재료 삭제',
       value: 'delete',
+      onPress: () => {
+        deleteIngredient(props.item.ingredientId)
+          .then(console.log('삭제 완료'))
+          .catch(error => console.error(error.response));
+      },
     },
   ];
 
-  return props.item !== undefined ? (
+  return (
     <IngredientsItemContainer>
       <Header>
         <IngredientsItemInfo>
-          <Name>{props.item.name}</Name>
+          <Name>{props.item.ingredientName}</Name>
           <Amount>
-            {props.item.status} | {props.item.amount}
+            {props.item.state} | {props.item.quantity}
           </Amount>
         </IngredientsItemInfo>
         <TouchContainer>
-          <OptionModalChildImage items={items}>
+          <OptionModalChildImage items={items} setCheckedItem={setCheckedItem}>
             <Image source={require('../../../assets/images/More.png')} />
           </OptionModalChildImage>
         </TouchContainer>
       </Header>
 
       <IngredientsItemETCInfo>
-        <TouchContainer onPress={() => navigation.navigate('Efficacy')}>
+        <TouchContainer
+          onPress={() =>
+            navigation.navigate('Efficacy', {
+              ingredientID: props.item.ingredientId,
+            })
+          }>
           <EfficacyText>효능 및 정보</EfficacyText>
         </TouchContainer>
         <Text> | </Text>
-        <TouchContainer onPress={() => navigation.navigate('Prep')}>
+        <TouchContainer
+          onPress={() =>
+            navigation.navigate('Prep', {ingredientID: props.item.ingredientId})
+          }>
           <PrepText>손질법 보기</PrepText>
         </TouchContainer>
       </IngredientsItemETCInfo>
@@ -48,32 +74,6 @@ const IngredientsItem = props => {
         <ExpirationInfoText>
           소비기한 : {props.item.expirationDate}까지
         </ExpirationInfoText>
-      </ExpirationInfo>
-    </IngredientsItemContainer>
-  ) : (
-    <IngredientsItemContainer>
-      <Header>
-        <IngredientsItemInfo>
-          <Name>마늘</Name>
-          <Amount>생것 | 100개</Amount>
-        </IngredientsItemInfo>
-        <TouchContainer>
-          <Image source={require('../../../assets/images/More.png')} />
-        </TouchContainer>
-      </Header>
-
-      <IngredientsItemETCInfo>
-        <TouchContainer onPress={() => navigation.navigate('Efficacy')}>
-          <EfficacyText>효능 및 정보</EfficacyText>
-        </TouchContainer>
-        <Text> | </Text>
-        <TouchContainer onPress={() => navigation.navigate('Prep')}>
-          <PrepText>손질법 보기</PrepText>
-        </TouchContainer>
-      </IngredientsItemETCInfo>
-
-      <ExpirationInfo>
-        <ExpirationInfoText>소비기한 : 2023 / 10 / 10까지</ExpirationInfoText>
       </ExpirationInfo>
     </IngredientsItemContainer>
   );
