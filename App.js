@@ -54,6 +54,8 @@ import FindPasswordScreen from './src/pages/login/find/FindPasswordScreen';
 import PasswordEmailVerificationScreen from './src/pages/login/find/PasswordEmailVerificationScreen';
 import PasswordModifyScreen from './src/pages/login/find/PasswordModifyScreen';
 import EndPasswordScreen from './src/pages/login/find/EndPasswordScreen';
+import RegisterMyIngredientsScreen from './src/pages/Ingredients/RegisterMyIngredientsScreen';
+import IngredientsEditScreen from './src/pages/Ingredients/IngredientsEditScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -306,7 +308,7 @@ function App() {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="PrepEdit"
+          name="PrepRegister"
           component={PrepRegisterScreen}
           options={{headerShown: false}}
         />
@@ -403,6 +405,16 @@ function App() {
         <Stack.Screen
           name="Notification"
           component={NotificationScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RegisterMyIngredients"
+          component={RegisterMyIngredientsScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="IngredientsEdit"
+          component={IngredientsEditScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -1,16 +1,22 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React from 'react';
 import {Image} from 'react-native';
 import styled from 'styled-components/native';
 import PrepComponent from '../../components/templates/Ingredients/PrepComponent';
 
 const PrepScreen = () => {
+  const router = useRoute();
   const navigation = useNavigation();
 
   return (
     <>
       <PrepComponent />
-      <PrepRegisterButton onPress={() => navigation.push('PrepRegister')}>
+      <PrepRegisterButton
+        onPress={() =>
+          navigation.push('PrepRegister', {
+            ingredientID: router.params.ingredientID,
+          })
+        }>
         <Image source={require('../../assets/images/ggggector.png')} />
       </PrepRegisterButton>
     </>

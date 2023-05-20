@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import Checkbox from '@react-native-community/checkbox';
 import {
@@ -8,18 +8,22 @@ import {
 import {useDispatch} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import {View} from 'react-native';
+import {getSearchIngredient} from '../../../services/Ingredients';
+import {Text} from 'react-native';
 
-const DirectlyRegisterIngredients = props => {
+const DirectlyRegisterIngredients = ({item, readOnly}) => {
   const dispatch = useDispatch();
-  const [isAddChecked, setIsAddChecked] = useState(props.item.isChecked);
+  const [isAddChecked, setIsAddChecked] = useState(item.isChecked);
+  const [isResultLength, setIsResultLength] = useState(0);
+  const [searchResult, setSearchResult] = useState([]);
   const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
-    props.item.status,
+    item.ingredientState,
   );
 
   const [ingredientsInfo, setIngredientsInfo] = useState({
-    name: props.item.name,
-    expirationDate: props.item.expirationDate,
-    amount: props.item.amount,
+    ingredientName: item.ingredientName,
+    expirationDate: item.expirationDate,
+    quantity: item.quantity,
   });
 
   const statusPlaceholder = [
@@ -33,22 +37,22 @@ const DirectlyRegisterIngredients = props => {
     if (newValue) {
       dispatch(
         addIngredients({
-          id: props.item.id,
-          name: ingredientsInfo.name,
-          status: ingredientsStatusInfo,
+          ingredientId: item.ingredientId,
+          ingredientName: ingredientsInfo.ingredientName,
+          ingredientState: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
-          amount: ingredientsInfo.amount,
+          quantity: ingredientsInfo.quantity,
           isChecked: true,
         }),
       );
     } else {
       dispatch(
         addIngredients({
-          id: props.item.id,
-          name: ingredientsInfo.name,
-          status: ingredientsStatusInfo,
+          ingredientId: item.ingredientId,
+          ingredientName: ingredientsInfo.ingredientName,
+          ingredientState: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
-          amount: ingredientsInfo.amount,
+          quantity: ingredientsInfo.quantity,
           isChecked: false,
         }),
       );
@@ -56,7 +60,48 @@ const DirectlyRegisterIngredients = props => {
   };
 
   const deleteThisIngredients = () => {
-    dispatch(deleteIngredients(props.item.id));
+    dispatch(deleteIngredients(item.ingredientId));
+  };
+
+  const changeText = res => {
+    if (res.length === 0) {
+      setIsResultLength(0);
+    } else {
+      setIsResultLength(res.length);
+    }
+
+    setIngredientsInfo({...ingredientsInfo, ingredientName: res});
+  };
+
+  useEffect(() => {
+    let id = setTimeout(() => {
+      console.log(ingredientsInfo.ingredientName);
+      getSearchIngredient(ingredientsInfo.ingredientName).then(result =>
+        setSearchResult(result.data),
+      );
+    }, 600);
+
+    return () => clearTimeout(id);
+  }, [ingredientsInfo.ingredientName]);
+
+  const renderItem = ({item}) => {
+    return (
+      <View
+        style={{
+          padding: 10,
+          width: '100%',
+        }}>
+        <TouchContainer
+          onPress={() =>
+            setIngredientsInfo({
+              ...ingredientsInfo,
+              ingredientName: item.ingredientName,
+            })
+          }>
+          <Text style={{fontSize: 20}}>{item.ingredientName}</Text>
+        </TouchContainer>
+      </View>
+    );
   };
 
   return (
@@ -80,16 +125,24 @@ const DirectlyRegisterIngredients = props => {
           <DeleteIngredientsText>재료 삭제</DeleteIngredientsText>
         </TouchContainer>
       </CheckBoxViewContainer>
-
       <IngredientName>식재료 명</IngredientName>
       <IngredientNameContainer>
         <IngredientNameInput
+          readOnly={readOnly}
+          editable={readOnly}
+          selectTextOnFocus={readOnly}
           placeholder="  예) 감자  "
-          value={ingredientsInfo.name}
-          onChangeText={res =>
-            setIngredientsInfo({...ingredientsInfo, name: res})
-          }
+          value={ingredientsInfo.ingredientName}
+          onChangeText={changeText}
         />
+        {isResultLength === 0 ? null : (
+          <CustomFlatList
+            horizontal={true}
+            data={searchResult}
+            renderItem={renderItem}
+            keyExtractor={(_, index) => index.toString()}
+          />
+        )}
       </IngredientNameContainer>
 
       <IngredientStatusDropBoxContainer>
@@ -98,8 +151,9 @@ const DirectlyRegisterIngredients = props => {
           <DropDownPickerComponent
             width="260px"
             items={statusPlaceholder}
-            state={ingredientsStatusInfo}
-            setState={setIngredientsStatusInfo}
+            value={ingredientsStatusInfo}
+            placeholder=" 예) 생 것"
+            setValue={setIngredientsStatusInfo}
           />
         </View>
       </IngredientStatusDropBoxContainer>
@@ -119,9 +173,9 @@ const DirectlyRegisterIngredients = props => {
         <IngredientStatusText>수량 입력</IngredientStatusText>
         <IngredientStatusInput
           placeholder="  예) 1개 "
-          value={ingredientsInfo.amount}
+          value={ingredientsInfo.quantity}
           onChangeText={res =>
-            setIngredientsInfo({...ingredientsInfo, amount: res})
+            setIngredientsInfo({...ingredientsInfo, quantity: res})
           }
         />
       </IngredientStatusContainer>
@@ -179,12 +233,12 @@ const IngredientName = styled.Text`
 
 const IngredientNameContainer = styled.View`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-bottom: 18px;
 `;
 
 const IngredientNameInput = styled.TextInput`
-  background: #ffffff;
+  background: ${props => (props.readOnly ? 'gray' : '#ffffff')};
   width: 100%;
   height: 48px;
   border: 1px solid #d8d8d8;
@@ -224,4 +278,10 @@ const IngredientStatusText = styled.Text`
 `;
 
 const TouchContainer = styled.TouchableOpacity``;
+
+const CustomFlatList = styled.FlatList`
+  height: 50px;
+  background-color: white;
+  border-radius: 20;
+`;
 export default DirectlyRegisterIngredients;

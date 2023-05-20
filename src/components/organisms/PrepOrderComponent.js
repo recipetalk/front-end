@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 
 const PrepOrderComponent = props => {
-  console.log('11', props);
   const navigation = useNavigation();
 
   return (

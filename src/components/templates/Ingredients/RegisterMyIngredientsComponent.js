@@ -1,21 +1,20 @@
-import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React from 'react';
 import {ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
+import {registerIngredient} from '../../../services/Ingredients';
 import {addEmptyIngredients} from '../../../store/Ingredients/IngredientsSlice';
 import Line from '../../atoms/Line';
 import DirectlyRegisterIngredients from '../../organisms/Ingredients/DirectlyRegisterIngredients';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
-import RecentlyRegisteredIngredients from '../../organisms/Ingredients/RecentlyRegisteredIngredients';
 
 const RegisterMyIngredientsComponent = () => {
   const dispatch = useDispatch();
   const ingredientsList = useSelector(state => state.ingredients);
-  const [isPressed, setIsPressed] = useState(false);
+  const navigation = useNavigation();
 
   const addDirectly = () => {
-    setIsPressed(true);
-
     dispatch(addEmptyIngredients());
   };
 
@@ -54,34 +53,63 @@ const RegisterMyIngredientsComponent = () => {
       </RegisterIngredientsDirectlyContainer>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {isPressed ? (
-          <DirectlyRegisterIngredientsContainer>
-            <DirectlyRegisterIngredientsText>
-              식재료 등록하기
-            </DirectlyRegisterIngredientsText>
+        <DirectlyRegisterIngredientsContainer>
+          <DirectlyRegisterIngredientsText>
+            식재료 등록하기
+          </DirectlyRegisterIngredientsText>
 
-            {ingredientsList.map((item, index) => {
-              return <DirectlyRegisterIngredients key={index} item={item} />;
-            })}
+          {ingredientsList.map((item, index) => {
+            return (
+              <DirectlyRegisterIngredients
+                key={index}
+                item={item}
+                readOnly={false}
+              />
+            );
+          })}
 
-            <TouchContainer
-              onPress={() => {
-                if (checkIsChecked() === 0) {
-                  return;
-                }
-                setIsPressed(prev => !prev);
-              }}>
-              <IngredientRegisterButton
-                active={checkIsChecked() > 0 ? true : false}>
-                <IngredientRegisterButtonText>
-                  {`총 ${checkIsChecked()}개의 식재료 등록하기`}
-                </IngredientRegisterButtonText>
-              </IngredientRegisterButton>
-            </TouchContainer>
-          </DirectlyRegisterIngredientsContainer>
-        ) : (
-          <RecentlyRegisteredIngredients items={ingredientsList} />
-        )}
+          <TouchContainer
+            onPress={() => {
+              if (checkIsChecked() === 0) {
+                return;
+              }
+
+              let newArr = [];
+              ingredientsList.map(item => {
+                newArr.push({
+                  expirationDate: item.expirationDate,
+                  ingredientId: item.ingredientId,
+                  ingredientName: item.ingredientName,
+                  ingredientState: item.ingredientState,
+                  quantity: item.quantity,
+                });
+              });
+
+              console.log(
+                'RegisterMyIngredientsComponent newArr is : ',
+                newArr,
+              );
+
+              registerIngredient(newArr)
+                .then(res =>
+                  console.log('RegisterMyIngredientsComponent res is :', res),
+                )
+                .catch(error =>
+                  console.error(
+                    'RegisterMyIngredientsComponent error is ',
+                    error.response,
+                  ),
+                );
+              navigation.goBack();
+            }}>
+            <IngredientRegisterButton
+              active={checkIsChecked() > 0 ? true : false}>
+              <IngredientRegisterButtonText>
+                {`총 ${checkIsChecked()}개의 식재료 등록하기`}
+              </IngredientRegisterButtonText>
+            </IngredientRegisterButton>
+          </TouchContainer>
+        </DirectlyRegisterIngredientsContainer>
       </ScrollView>
     </RegisterMyIngredientsComponentContainer>
   );
