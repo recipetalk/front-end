@@ -22,20 +22,20 @@ const PrepDetailComponent = () => {
   const [detailInfo, setDetailInfo] = useState(null);
 
   useEffect(() => {
-    getEfficacy(router.params.ingredientID)
+    getEfficacy(router.params.ingredientId)
       .then(res => {
         setEfficacyInfo(res.data);
       })
-      .catch(error => console.error(error));
-  }, [router.params.ingredientID]);
+      .catch(error => console.error(error.response));
+  }, [router.params.ingredientId]);
 
   useEffect(() => {
-    getIngredientsPrepDetail(router.params.trimmingID)
+    getIngredientsPrepDetail(router.params.boardId)
       .then(res => {
         setDetailInfo(res.data);
       })
       .catch(error => console.error(error.response));
-  }, [router.params.trimmingID]);
+  }, [router.params.boardId]);
 
   if (efficacyInfo === null || detailInfo === null) {
     return null;
@@ -44,7 +44,7 @@ const PrepDetailComponent = () => {
   return (
     <>
       <IngredientsHeader
-        routerInfo={router.params.ingredientID}
+        routerInfo={router.params.ingredientId}
         title="손질법"
         isTitleOnly={false}
         btnTextValue="수정"
