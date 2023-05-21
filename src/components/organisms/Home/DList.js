@@ -10,23 +10,28 @@ const DList = props => {
     [props?.boardSort],
   );
 
-  useEffect(() => {
-    console.log('props.ingredientId: ', props?.ingredientId);
-    console.log(props?.value?.ingredientId === undefined);
-  }, []);
+  const determineBoardId = useMemo(
+    () =>
+      props?.value?.boardId === undefined
+        ? props?.value?.id
+        : props?.value?.boardId,
+    [props?.value?.id, props?.value?.boardId],
+  );
+
+  const determineIngredientId = useMemo(
+    () =>
+      props?.value?.ingredientId === undefined
+        ? props?.ingredientId
+        : props?.value?.ingredientId,
+    [props?.value?.ingredientId, props.ingredientId],
+  );
 
   return (
     <DListContainer
       onPress={() =>
         navigation.push(determineNav, {
-          boardId:
-            props?.value?.boardId === undefined
-              ? props?.value?.id
-              : props?.value?.boardId,
-          ingredientId:
-            props?.value?.ingredientId === undefined
-              ? props?.ingredientId
-              : props?.value?.ingredientId,
+          boardId: determineBoardId,
+          ingredientId: determineIngredientId,
         })
       }>
       <ImagePart />
