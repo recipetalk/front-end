@@ -41,6 +41,13 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
       backAction(),
     );
 
+    if (Platform.OS === 'ios') {
+      navigation.addListener('beforeRemove', e => {
+        pauseTimer();
+        cancelTimer();
+      });
+    }
+
     return () => backHandler.remove();
   });
 
@@ -49,6 +56,7 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
       setAlert(true);
       return true;
     } else {
+      deleteAlarm();
       navigation.pop();
       return false;
     }
@@ -99,7 +107,6 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
         //예약 알림 필요
         Timer.setReserveAlarm(duration() * 1000);
       }
-      console.log('나야?');
       startAction();
     }
   }, [isStartTimer]);

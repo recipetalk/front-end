@@ -1,54 +1,81 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {FlatList, Image, TouchableOpacity, View} from 'react-native';
 import Title from '../../components/atoms/board/recipe/edit/Title';
 import {ImageAndCameraFun} from '../../components/atoms/functions/ImageAndCameraFun';
 import {useToast} from 'react-native-toast-notifications';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  setRecipeRows,
+  updateRecipeRowWithIndex,
+} from '../../store/RecipeEdit/TempRecipeEditInfoSlice';
+import {requestRegisterRecipe} from '../../services/recipe/Recipe';
 
 const RecipeEditThirdScreen = ({navigation}) => {
   const toast = useToast();
   const [isAlert, setAlert] = useState(false);
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      description: '',
-      photo: {uri: ''},
-    },
-  ]);
+  const [photo, setPhoto] = useState({uri: ''});
+  const dispatch = useDispatch();
+  const loadData = useSelector(state => state.editRecipeInfo).recipeRows;
+  const loadRecipeAll = useSelector(state => state.editRecipeInfo);
+  const [photoProps, setPhotoProps] = useState({
+    index: null,
+    property: 'photo',
+  });
+  const [enabled, setEndabled] = useState(false);
 
-  const [index, setIndex] = useState(null);
+  useEffect(() => {
+    if (photoProps.index != null) {
+      const data = {...photoProps, text: photo};
+      dispatch(updateRecipeRowWithIndex(data));
+      setPhotoProps({...photoProps, index: null});
+    }
+  }, [photo]);
+
+  useEffect(() => {}, [loadData]);
 
   const addComponent = () => {
-    let newArr = [...rows];
+    let newArr = [...loadData];
 
     newArr.push({
       id: newArr[newArr.length - 1].id + 1,
       description: null,
       photo: {uri: ''},
     });
-    setRows(newArr);
+    dispatch(setRecipeRows(newArr));
   };
 
   const dataUpdateTextHandler = (index, property) => e => {
-    let newArr = [...rows];
-
-    newArr[index][property] = e.nativeEvent.text;
-    console.log(newArr[index][property]);
-    setRows(newArr);
-  };
-
-  const dataUpdatePhoto = index => value => {
-    let newArr = [...rows];
-
-    newArr[index].photo = value;
-    console.log(value);
-    setRows(newArr);
+    let data = {index: index, property: property, text: e.nativeEvent.text};
+    dispatch(updateRecipeRowWithIndex(data));
+    console.log(loadData);
   };
 
   const deleteItem = index => () => {
-    let newArr = rows.filter((row, itemIndex) => index !== itemIndex);
+    let newArr = loadData.filter((row, itemIndex) => index !== itemIndex);
 
-    setRows(newArr);
+    dispatch(setRecipeRows(newArr));
+  };
+
+  const saveData = async () => {
+    const recipe = {
+      title: loadRecipeAll.title,
+      description: loadRecipeAll.description,
+      quantity: loadRecipeAll.quantity,
+      level: loadRecipeAll.level,
+      time: loadRecipeAll.time,
+      sort: loadRecipeAll.sort,
+      secondCategory: loadRecipeAll.situationCategory,
+      thumbnail: loadRecipeAll.thumbnail,
+    };
+    console.log('recipe : ', recipe);
+    await requestRegisterRecipe(recipe)
+      .then(res => {
+        console.log(res);
+        const data = JSON.parse(res.request._response);
+        console.log(data);
+      })
+      .catch(err => console.error(err));
   };
 
   return (
@@ -57,18 +84,20 @@ const RecipeEditThirdScreen = ({navigation}) => {
         toast={toast}
         setAlert={setAlert}
         isAlert={isAlert}
-        setPhoto={dataUpdatePhoto(index)}
+        setPhoto={setPhoto}
       />
       <Title
         totalStep={3}
         nowStep={3}
         navigation={navigation}
         nextNavigation={'RecipeScreen'}
+        enabled={true}
+        request={saveData}
       />
 
       <OrderTitle>손질 순서</OrderTitle>
       <FlatList
-        data={rows}
+        data={loadData}
         renderItem={({item, index}) => (
           <View
             style={{
@@ -86,7 +115,7 @@ const RecipeEditThirdScreen = ({navigation}) => {
                   <ImageSelectBox
                     onPress={() => {
                       setAlert(true);
-                      setIndex(index);
+                      setPhotoProps({...photoProps, index: index});
                     }}>
                     <Image
                       source={require('../../assets/images/_격리_모드.png')}
@@ -96,12 +125,12 @@ const RecipeEditThirdScreen = ({navigation}) => {
                   <TouchableOpacity
                     onPress={() => {
                       setAlert(true);
-                      setIndex(index);
+                      setPhotoProps({...photoProps, index: index});
                     }}>
                     <Image
                       style={{width: 98, height: 98, borderRadius: 8}}
                       source={{uri: item.photo.uri}}
-                      resizeMode="contain"
+                      resizeMode="cover"
                     />
                   </TouchableOpacity>
                 )}
@@ -204,7 +233,6 @@ const PrepOrderInfo = styled.View`
   gap: 10px;
   align-items: center;
 `;
-
 
 const PrepOrderContentTextInput = styled.TextInput`
   font-style: normal;

@@ -18,31 +18,91 @@ import {RecipeLevelList} from '../../category/recipe/RecipeLevelList';
 import {RecipeSortList} from '../../category/recipe/RecipeSortList';
 import {RecipeSituationList} from '../../category/recipe/RecipeSituationList';
 import ModalDropDownPickerComponent from '../../components/molecules/ModalDropDownPickerComponent';
+import {useFocusEffect} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  setEditRecipeDescription,
+  setEditRecipeLevel,
+  setEditRecipeQuantity,
+  setEditRecipeSituationCategory,
+  setEditRecipeSort,
+  setEditRecipeThumbnail,
+  setEditRecipeTime,
+  setEditRecipeTitle,
+} from '../../store/RecipeEdit/TempRecipeEditInfoSlice';
 
 const RecipeEditFirstScreen = ({navigation}) => {
   const [isAlert, setAlert] = useState(false);
   const [photo, setPhoto] = useState({uri: ''});
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
   const [chooseQuantityNum, setQuantityNum] = useState(0);
   const [chooseTimeNum, setTimeNum] = useState(0);
   const [chooseLevelNum, setLevelNum] = useState(0);
   const [enabled, setEnabled] = useState(false);
   const [firstCategoryValue, setFirstCategoryValue] = useState(null);
   const [secondCategoryValue, setSecondCategoryValue] = useState(null);
+  const dispatch = useDispatch();
+  const loadRecipeInfo = useSelector(state => state.editRecipeInfo);
+
+  useEffect(() => {
+    console.log(loadRecipeInfo);
+    setPhoto(loadRecipeInfo.thumbnail);
+    setQuantityNum(
+      RecipeQuantityList.findIndex(
+        data => data.key === loadRecipeInfo.quantity,
+      ),
+    );
+    setTimeNum(
+      RecipeTimeList.findIndex(data => data.key === loadRecipeInfo.time),
+    );
+    setLevelNum(
+      RecipeLevelList.findIndex(data => data.key === loadRecipeInfo.level),
+    );
+
+    if (loadRecipeInfo.situationCategory != null) {
+      setSecondCategoryValue(loadRecipeInfo.situationCategory);
+    }
+    if (loadRecipeInfo.sort != null) {
+      setFirstCategoryValue(loadRecipeInfo.sort);
+    }
+  }, []);
+
   useEffect(() => {
     if (
-      title.trim() !== '' &&
-      description.trim() !== '' &&
+      loadRecipeInfo.title?.trim() !== '' &&
+      loadRecipeInfo.description?.trim() !== '' &&
       firstCategoryValue !== null
     ) {
       setEnabled(true);
     } else {
       setEnabled(false);
     }
-  }, [title, description, firstCategoryValue, secondCategoryValue]);
+  }, [loadRecipeInfo]);
 
   const toast = useToast();
+
+  useEffect(() => {
+    dispatch(setEditRecipeSort(firstCategoryValue));
+  }, [firstCategoryValue]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeSituationCategory(secondCategoryValue));
+  }, [secondCategoryValue]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeQuantity(RecipeQuantityList[chooseQuantityNum].key));
+  }, [chooseQuantityNum]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeTime(RecipeTimeList[chooseLevelNum].key));
+  }, [chooseTimeNum]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeLevel(RecipeLevelList[chooseLevelNum].key));
+  }, [chooseLevelNum]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeThumbnail(photo));
+  }, [photo]);
 
   return (
     <RecipeEditScreenContainer>
@@ -72,7 +132,7 @@ const RecipeEditFirstScreen = ({navigation}) => {
                 <Image
                   style={{width: 98, height: 98, borderRadius: 8}}
                   source={{uri: photo.uri}}
-                  resizeMode="contain"
+                  resizeMode="cover"
                 />
               </TouchableOpacity>
             )}
@@ -90,8 +150,8 @@ const RecipeEditFirstScreen = ({navigation}) => {
             <TitleTextInput
               placeholder="제목"
               placeholderTextColor="#a4a4a4"
-              value={title}
-              onChangeText={text => setTitle(text)}
+              value={loadRecipeInfo.title}
+              onChangeText={text => dispatch(setEditRecipeTitle(text))}
             />
             <DescriptionTextInput
               placeholder={`레시피를 소개해주세요.
@@ -99,8 +159,8 @@ const RecipeEditFirstScreen = ({navigation}) => {
               placeholderTextColor="#a4a4a4"
               multiline={true}
               scrollEnabled={false}
-              value={description}
-              onChangeText={text => setDescription(text)}
+              value={loadRecipeInfo.description}
+              onChangeText={text => dispatch(setEditRecipeDescription(text))}
             />
           </EditPart>
           <CookingInfoPart>

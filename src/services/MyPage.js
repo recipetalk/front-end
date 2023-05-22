@@ -1,5 +1,6 @@
 import {jsonAPI, multiPartAPI} from './connect/API';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
+import {customImageResizer} from '../utils/CustomIamgeResizer';
 
 const config = {
   headers: {
