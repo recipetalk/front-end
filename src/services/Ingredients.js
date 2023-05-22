@@ -111,3 +111,9 @@ export const getIngredientPrepByUsername = async (
 
   return await jsonAPI.get(url, config);
 };
+
+export const getBarcode = async barcode => {
+  const url = `/api/product/${barcode}`;
+
+  return await jsonAPI.get(url, config);
+};

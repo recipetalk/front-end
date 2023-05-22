@@ -13,7 +13,6 @@ const ReceiptScreen = () => {
       <IngredientsHeader
         title="바코드 찍기"
         isTitleOnly={false}
-        btnTextValue="앨범"
         isTransparent={true}
         screen=""
       />

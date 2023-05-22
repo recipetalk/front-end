@@ -8,14 +8,20 @@ import {
   View,
 } from 'react-native';
 import {Camera, CameraType} from 'react-native-camera-kit';
-import {useFocusEffect} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import AlertYesNoButton from '../../molecules/AlertYesNoButton';
 
 const BarcodeScanner = () => {
+  const navigation = useNavigation();
   const [scaned, setScaned] = useState(true);
   const [scanValue, setScanValue] = useState(null);
   const [isAlertVisible, setAlertVisible] = useState(false);
   const ref = useRef(null);
+  const isFocused = useIsFocused();
 
   useFocusEffect(() => {
     //컴포넌트 마운트 됬을 때
@@ -35,6 +41,22 @@ const BarcodeScanner = () => {
     //event.nativeEvent.codeStringValue가 바코드.
     setScanValue(event.nativeEvent.codeStringValue);
     setAlertVisible(true);
+  };
+
+  useEffect(() => {
+    console.log('test');
+    setAlertVisible(true);
+    setScanValue(8809376328815);
+  }, [isFocused]);
+
+  console.log(isAlertVisible);
+
+  const moveAndCloseAlert = () => {
+    navigation.navigate('RegisterMyIngredients', {
+      barcodeNumber: 8809376328815,
+    });
+
+    setTimeout(() => setAlertVisible(false), 500);
   };
 
   return (
@@ -58,7 +80,7 @@ const BarcodeScanner = () => {
       {isAlertVisible ? (
         <AlertYesNoButton
           setAlert={setAlertVisible}
-          onPress={undefined}
+          onPress={moveAndCloseAlert}
           title={'바코드 확인'}
           text={`바코드 번호 \n${scanValue}가 맞나요?`}
           yesButtonText={'네!'}
