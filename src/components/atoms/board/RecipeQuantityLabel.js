@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import React from 'react';
+import {RecipeQuantityList} from '../../../category/recipe/RecipeQuantityList';
 
 export default function RecipeQuantityLabel({quantity}) {
   const QuantityLabel = styled.Text`
@@ -11,5 +12,14 @@ export default function RecipeQuantityLabel({quantity}) {
     color: #a0a0a0;
   `;
 
-  return <QuantityLabel>{quantity + '인분'}</QuantityLabel>;
+  return (
+    <QuantityLabel>
+      {RecipeQuantityList[LabelCheck(quantity)].label}
+    </QuantityLabel>
+  );
 }
+
+const LabelCheck = quantity => {
+  const index = RecipeQuantityList.findIndex(data => data.key === quantity);
+  return index > -1 ? index : 0;
+};

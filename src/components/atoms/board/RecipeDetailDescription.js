@@ -9,44 +9,20 @@ import {FlatList, Platform, RefreshControl, View} from 'react-native';
 import {IngredientList} from '../../organisms/Recipe/IngredientList';
 import {CommentListComponent} from '../../templates/board/CommentListComponent';
 import RecipeOrderComponent from '../../organisms/RecipeOrderComponent';
-
-const Ingredients = [
-  {
-    name: '마늘',
-    quantity: '한 쪽',
-    isHas: true,
-  },
-  {
-    name: '마늘',
-    quantity: '한 쪽',
-    isHas: true,
-  },
-  {
-    name: '김치',
-    quantity: '한 포기',
-    isHas: false,
-  },
-  {
-    name: '소금',
-    quantity: '한 티스푼',
-    isHas: true,
-  },
-  {
-    name: '마늘',
-    quantity: '한 쪽',
-    isHas: false,
-  },
-  {
-    name: '마늘',
-    quantity: '한 쪽',
-    isHas: false,
-  },
-  {
-    name: '마늘',
-    quantity: '한 쪽',
-    isHas: false,
-  },
-];
+import {
+  getRecipe,
+  getRecipeIngredients,
+  getRecipeRow,
+} from '../../../services/recipe/Recipe';
+import {RecipeSortList} from '../../../category/recipe/RecipeSortList';
+import {loadProfileToStorage} from '../../../services/repository/Profile';
+import {loadLoginFromStorage} from '../../../services/repository/AutoLogin';
+import {useDispatch} from 'react-redux';
+import {
+  setEditRecipeRows,
+  setRecipeBoard,
+  setRecipeIngredients,
+} from '../../../store/RecipeEdit/TempRecipeEditInfoSlice';
 
 export default function RecipeDetailDescription({
   navigation,
@@ -58,9 +34,16 @@ export default function RecipeDetailDescription({
   onRequest,
   isLoading,
   isLast,
+  boardId,
+  setMine,
+  isEdit,
 }) {
   const [isFirst, setFirst] = useState(false);
   const [isSecond, setSecond] = useState(false);
+  const [recipeInfo, setRecipeInfo] = useState({description: ''});
+  const [recipeIngredient, setRecipeIngredient] = useState([]);
+  const [recipeRows, setRecipeRows] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isFirst || isSecond) {
@@ -70,29 +53,101 @@ export default function RecipeDetailDescription({
     }
   }, [isFirst, isSecond]);
 
+  useEffect(() => {
+    //RecipeInfo
+    getRecipe(boardId).then(async res => {
+      const data = JSON.parse(res.request._response);
+      setRecipeInfo(() => data);
+      const loginInfo = await loadLoginFromStorage();
+      console.log(data);
+      setMine(loginInfo.username === data?.board?.writer?.username);
+    });
+    //RecipeIngredient
+    getRecipeIngredients(boardId)
+      .then(res => {
+        const data = JSON.parse(res.request._response);
+
+        setRecipeIngredient(() => data);
+      })
+      .catch(err => console.log(err.response));
+
+    //RecipeRow
+    getRecipeRow(boardId).then(res => {
+      const data = JSON.parse(res.request._response);
+      console.log(data);
+      setRecipeRows(() => data);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isEdit) {
+      const recipeBoardData = {
+        title: recipeInfo.board.title,
+        description: recipeInfo.description,
+        thumbnail: {uri: recipeInfo.thumbnailUri},
+        quantity: recipeInfo.quantity,
+        level: recipeInfo.level,
+        sort: recipeInfo.sort,
+        time: recipeInfo.durationTime,
+        situationCategory: recipeInfo.situationCategory,
+        recipeId: recipeInfo.board.boardId,
+      };
+
+      const recipeIngredientData = recipeIngredient.map(data => ({
+        ingredientId: data.ingredientId,
+        ingredientName: data.name,
+        quantity: data.quantity,
+      }));
+
+      const recipeRowData = recipeRows.map(data => ({
+        id: data.seqNum,
+        description: data.description,
+        photo: {uri: data.imgUri},
+      }));
+
+      dispatch(setRecipeBoard(recipeBoardData));
+      dispatch(setRecipeIngredients(recipeIngredientData));
+      dispatch(setEditRecipeRows(recipeRowData));
+      navigation.navigate('RecipeEdit');
+    }
+  }, [isEdit]);
+
   return (
     <RecipeDetailDescriptionContainer>
-      <ThumbnailImg />
+      {recipeInfo?.thumbnailUri != null && recipeInfo?.thumbnailUri !== '' ? (
+        <ThumbnailImg source={{uri: recipeInfo.thumbnailUri}} />
+      ) : undefined}
       <SimpleProfileWithDescriptionContainer>
         <SimpleProfileWithDescription
-          nickname={'사용자아이디0000'}
-          description={'4아이 엄마~^^'}
+          nickname={recipeInfo?.board?.writer?.nickname}
+          description={recipeInfo?.board?.writer?.description}
+          navigation={navigation}
+          username={recipeInfo?.board?.writer?.username}
+          profileURI={recipeInfo?.board?.writer?.profileImageURI}
         />
       </SimpleProfileWithDescriptionContainer>
       <DescriptionDetailContainer>
         <TitleContainer>
-          <Title>[찌개요리]자취 8년차 된장찌개 맛있게 끓이는 법</Title>
+          <Title>
+            {`[${
+              RecipeSortList[
+                RecipeSortList.findIndex(data => data.value === recipeInfo.sort)
+              ]?.label
+            }] ` + recipeInfo?.board?.title}
+          </Title>
           <RecipeQuantityLabel quantity={4} />
         </TitleContainer>
-        <ExpandableText
-          text={`생각해보니 결혼한 지 5년이 넘었는데도 친정 부모님께 제대로 된 요리하나 만들어드린 적이 없는 무심함 큰딸 이더라구요.
-"부모님이 집에 오셔도 오랜만에 엄마 밥"
-생각해보니 결혼한 지 5년이 넘었는데도 친정 부모님께 제대로 된 요리하나 만들어드린 적이 없는 무심함 큰딸 이더라구요.
-"부모님이 집에 오셔도 오랜만에 엄마 밥"`}
-        />
+        <ExpandableText text={recipeInfo?.description} />
         {/*<Hashtag hashtags={['#한식', '#한식', '#한식']} />*/}
         <LikeAndCountNumContainer>
-          <LikeAndCommentNum likeNum={545} commentNum={545} />
+          <LikeAndCommentNum
+            likeNum={recipeInfo.board?.likeCount}
+            commentNum={recipeInfo.board?.commentCount}
+            bookmarkable={true}
+            isBookmarked={recipeInfo.board?.isBookmarked}
+            isLiked={recipeInfo.board?.isLiked}
+            boardId={recipeInfo.board?.boardId}
+          />
         </LikeAndCountNumContainer>
       </DescriptionDetailContainer>
       <NavigationContainer>
@@ -119,9 +174,10 @@ export default function RecipeDetailDescription({
           </NavigationButton>
         </NavigationBox>
       </NavigationContainer>
+
       {isFirst ? (
         <View>
-          <IngredientList data={Ingredients} />
+          <IngredientList data={recipeIngredient} />
           <GoToIngredient>
             <GoToIngredientTitle>재료 준비가 됐나요?</GoToIngredientTitle>
             <GoToIngredientButton
@@ -133,18 +189,20 @@ export default function RecipeDetailDescription({
           </GoToIngredient>
         </View>
       ) : undefined}
+
       {isSecond ? (
         <PrepOrderContainer>
           <OrderTitle>조리 순서</OrderTitle>
-          {[1, 2, 3, 4, 5].map(i => {
-            return <RecipeOrderComponent num={i} key={i} />;
+          {recipeRows.map(i => {
+            return <RecipeOrderComponent value={i} datas={recipeRows} />;
           })}
         </PrepOrderContainer>
       ) : undefined}
+
       {!isSecond && !isFirst ? (
         <CommentListComponent
           isReply={false}
-          boardId={1}
+          boardId={boardId}
           comment={comment}
           setComment={setComment}
           onRefresh={onRefresh}
@@ -218,13 +276,14 @@ const RecipeDetailDescriptionContainer = props => {
       ListEmptyComponent={null}
       keyExtractor={() => {}}
       ListHeaderComponent={<>{props.children}</>}
+      onRefresh={props.onRefresh}
+      refreshing={props.commentRefresh}
     />
   );
 };
 
-const ThumbnailImg = styled.View`
+const ThumbnailImg = styled.Image`
   height: 360px;
-  border: 1px solid black;
 `;
 
 const SimpleProfileWithDescriptionContainer = styled.View`
@@ -232,6 +291,8 @@ const SimpleProfileWithDescriptionContainer = styled.View`
   margin-bottom: 7px;
   padding-top: 13px;
   padding-bottom: 13px;
+  border-bottom-width: 4px;
+  border-bottom-color: #e5e5e5;
 `;
 
 const TitleContainer = styled.View`
@@ -239,6 +300,7 @@ const TitleContainer = styled.View`
   display: flex;
   gap: 10px;
   margin-top: 30px;
+  margin-bottom: 15px;
 `;
 
 const Title = styled.Text`
@@ -260,6 +322,7 @@ const DescriptionDetailContainer = styled.View`
 
 const LikeAndCountNumContainer = styled.View`
   margin-bottom: 15px;
+  margin-top: 15px;
 `;
 
 const OrderTitle = styled.Text`
@@ -274,4 +337,6 @@ const OrderTitle = styled.Text`
 const PrepOrderContainer = styled.View`
   background: #ffffff;
   gap: 20px;
+  padding-bottom: 70px;
+  flex: 1;
 `;

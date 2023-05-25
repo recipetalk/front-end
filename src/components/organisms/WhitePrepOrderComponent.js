@@ -1,20 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 
-const PrepOrderComponent = ({num}) => {
+const PrepOrderComponent = ({num, item}) => {
   return (
     <PrepOrderItem>
       <InfoPart>
         <NumberPart>
           <NumberText>{num}</NumberText>
         </NumberPart>
-        <TextPart>
-          {`2인분기준으로조리했으며 계랑은 밥숟가락과
-종이컵입니다. 2인분기준으로조리했으며 계랑은 밥숟가락과 종이컵입니다. 2인분기준으로조리했으며 계랑은 밥숟가락과 종이컵입니다.`}
-        </TextPart>
+        <TextPart>{item[num - 1].description}</TextPart>
       </InfoPart>
-      <ImagePart />
+      {item[num - 1].imgUri != null ? (
+        <ImagePart source={{uri: item[num - 1].imgUri}} />
+      ) : undefined}
     </PrepOrderItem>
   );
 };
@@ -60,7 +59,7 @@ const TextPart = styled.Text`
   color: #e1e1e1;
 `;
 
-const ImagePart = styled.View`
+const ImagePart = styled.Image`
   width: 100%;
   height: 300px;
   background-color: gray;

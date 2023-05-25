@@ -6,7 +6,6 @@ const IngredientsInfo = props => {
     <IngredientsInfoContainer>
       <IngredientsInfoSection>
         <IngredientsName>{props.ingredientName}</IngredientsName>
-        <IngredientsCategory>분류: 향신료 | 채소</IngredientsCategory>
       </IngredientsInfoSection>
       {props.isEdit ? (
         <>
@@ -15,8 +14,10 @@ const IngredientsInfo = props => {
             <CameraImg source={require('../../../assets/images/Camera.png')} />
           </EditImageView>
         </>
+      ) : props.thumbnail != '' ? (
+        <ImageView source={{uri : props.thumbnailURI}} />
       ) : (
-        <ImageView />
+        <ImageDummyView />
       )}
     </IngredientsInfoContainer>
   );
@@ -53,7 +54,14 @@ const IngredientsCategory = styled.Text`
   color: #666666;
 `;
 
-const ImageView = styled.View`
+const ImageView = styled.Image`
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  background-color: gray;
+`;
+
+const ImageDummyView = styled.View`
   width: 100px;
   height: 100px;
   border-radius: 4px;

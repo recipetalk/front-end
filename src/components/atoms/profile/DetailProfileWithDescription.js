@@ -52,27 +52,17 @@ export default function DetailProfileWithDescription({
       .catch(err => console.log(err.response));
   };
 
-  const ProfileImg =
-    profile?.profileImg !== null
-      ? styled.Image`
-          border-radius: 13.873px;
-          background-color: #e5e5e5;
-          width: 63px;
-          height: 63px;
-        `
-      : styled.View`
-          border-radius: 13.873px;
-          background-color: #e5e5e5;
-          width: 63px;
-          height: 63px;
-        `;
-
   //TODO : IMG URI 체킹할 방법 알아내야함.
   //TODO : 내아이디가 아니면 프로필 수정과 세팅, 내가 작성한 댓글, 기타 안뜨게 하기
   return (
     <ProfileContainer>
       <View style={{flexDirection: 'row', width: '100%'}}>
-        <ProfileImg source={{uri: profile.profileImg}} />
+        {profile?.profileImg != null && profile?.profileImg !== '' ? (
+          <ProfileImg source={{uri: profile.profileImg}} />
+        ) : (
+          <ProfileImgDummy />
+        )}
+
         <View
           style={{
             width: '85%',
@@ -199,7 +189,6 @@ const Nickname = styled.Text`
   font-family: 'Pretendard Variable';
   margin-top: 20px;
 `;
-
 const Description = styled.Text`
   width: 80%;
   color: #666666;
@@ -207,4 +196,18 @@ const Description = styled.Text`
   margin-top: 5px;
   font-size: 16px;
   line-height: 19px;
+`;
+
+const ProfileImg = styled.Image`
+  border-radius: 13.873px;
+  background-color: #e5e5e5;
+  width: 63px;
+  height: 63px;
+`;
+
+const ProfileImgDummy = styled.View`
+  border-radius: 13.873px;
+  background-color: #e5e5e5;
+  width: 63px;
+  height: 63px;
 `;

@@ -19,7 +19,7 @@ const Title = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (totalStep === 1) {
+    if (nowStep === 1) {
       navigation.addListener('beforeRemove', e => {
         dispatch(initRecipe());
       });
@@ -63,9 +63,9 @@ const Title = ({
             if (totalStep !== nowStep) {
               navigation.push(nextNavigation);
             } else {
-              //navigation.navigate('Home');
-              request().then(() => {});
-              //dispatch(initRecipe()
+              //
+              request();
+              //
             }
           }}>
           <NextLabel enabled={enabled}>

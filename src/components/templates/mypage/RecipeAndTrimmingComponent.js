@@ -282,7 +282,7 @@ export const RecipeAndTrimmingComponent = props => {
             columnWrapperStyle={{justifyContent: 'space-between'}}
             data={recipe}
             renderItem={({item}) => {
-              return <HList value={item} />;
+              return <HList value={item} boardSort={'RECIPE'} />;
             }}
             keyExtractor={keyExtractorHandler}
             onRefresh={onRecipeRefresh}
@@ -299,7 +299,7 @@ export const RecipeAndTrimmingComponent = props => {
             scrollEnabled={false}
             data={prep}
             renderItem={({item}) => {
-              return <HList value={item} />;
+              return <HList value={item} boardSort={'TRIMMING'} />;
             }}
             keyExtractor={keyExtractorHandler}
             onRefresh={onPrepRefresh}

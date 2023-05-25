@@ -12,6 +12,7 @@ const MypageComponent = ({navigation, setAlert}) => {
   const [profile, setProfile] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [loadUsername, setLoadUsername] = useState();
+
   useEffect(() => {
     const init = async () => {
       // TODO : 아이디 리덕스에 저장 후? 가져오기?

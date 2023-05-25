@@ -52,27 +52,14 @@ export const CommentWriteComponent = ({
     });
   };
 
-  const UserImage =
-    loadProfile?.profileImageURI !== null
-      ? styled.Image`
-          width: 23px;
-          height: 23px;
-          border-radius: 23px;
-          background: #a4a4a4;
-          margin-top: 0px;
-        `
-      : styled.View`
-          width: 23px;
-          height: 23px;
-          border-radius: 23px;
-          background: #a4a4a4;
-          margin-top: 0px;
-        `;
-
   return (
     <Container isAbsolute={isAbsolute}>
       <CommentPart>
-        <UserImage source={{uri: loadProfile?.profileImageURI}} />
+        {loadProfile?.profileImageURI != '' ? (
+          <UserImage source={{uri: loadProfile?.profileImageURI}} />
+        ) : (
+          <UserImageDummy />
+        )}
         <InputBox
           ref={textInputRef}
           multiline
@@ -140,4 +127,18 @@ const InputBox = styled.TextInput`
   padding: 0;
   margin-left: 5px;
   color: #333333;
+`;
+const UserImage = styled.Image`
+  width: 23px;
+  height: 23px;
+  border-radius: 23px;
+  background: #a4a4a4;
+  margin-top: 0px;
+`;
+const UserImageDummy = styled.View`
+  width: 23px;
+  height: 23px;
+  border-radius: 23px;
+  background: #a4a4a4;
+  margin-top: 0px;
 `;

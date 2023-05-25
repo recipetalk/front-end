@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import styled from 'styled-components/native';
+import {View} from 'react-native';
 
 const IngredientsHeader = props => {
   const navigation = useNavigation();
@@ -8,33 +9,37 @@ const IngredientsHeader = props => {
   return (
     <Header isTransparent={props.isTransparent}>
       <TitleContainer>
-        <BackBtn onPress={() => navigation.goBack()}>
-          {props.isTransparent ? (
-            <Back source={require('../../../assets/images/Back_w.png')} />
-          ) : (
-            <Back source={require('../../../assets/images/Back.png')} />
-          )}
-        </BackBtn>
-        <HeaderTitle isTransparent={props.isTransparent}>
-          {props.title}
-        </HeaderTitle>
+        <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+          <BackBtn onPress={() => navigation.goBack()}>
+            {props.isTransparent ? (
+              <Back source={require('../../../assets/images/Back_w.png')} />
+            ) : (
+              <Back source={require('../../../assets/images/Back.png')} />
+            )}
+          </BackBtn>
+          <HeaderTitle isTransparent={props.isTransparent}>
+            {props.title}
+          </HeaderTitle>
+        </View>
+        {props.isTitleOnly ? null : (
+          <BtnBtn onPress={() => navigation.navigate(props.screen)}>
+            <BtnValueText isTransparent={props.isTransparent}>
+              {props.btnTextValue}
+            </BtnValueText>
+          </BtnBtn>
+        )}
       </TitleContainer>
-      {props.isTitleOnly ? null : (
-        <BtnBtn onPress={() => navigation.navigate(props.screen)}>
-          <BtnValueText isTransparent={props.isTransparent}>
-            {props.btnTextValue}
-          </BtnValueText>
-        </BtnBtn>
-      )}
     </Header>
   );
 };
 
 const Header = styled.View`
+  height: 50px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 20px;
+  padding-left: 5%;
+  padding-right: 5%;
   border-bottom-width: 1px;
   border-bottom-color: #e1e1e1;
   background-color: ${props => (props.isTransparent ? 'black' : '#ffffff')};
@@ -42,16 +47,16 @@ const Header = styled.View`
 `;
 
 const TitleContainer = styled.View`
-  display: flex;
+  width: 100%;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
 `;
 
 const BackBtn = styled.TouchableOpacity``;
-const Back = styled.Image`
-  margin-right: 20px;
-  width: 18px;
-  height: 18px;
-`;
+
+const Back = styled.Image``;
 
 const HeaderTitle = styled.Text`
   font-style: normal;

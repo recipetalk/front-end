@@ -113,23 +113,6 @@ export const CommentComponent = ({
         },
       ];
 
-  const UserImage =
-    comment?.userProfile?.profileImageURI !== null
-      ? styled.Image`
-          width: 23px;
-          height: 23px;
-          border-radius: 23px;
-          background: #a4a4a4;
-          margin-top: 0px;
-        `
-      : styled.View`
-          width: 23px;
-          height: 23px;
-          border-radius: 23px;
-          background: #a4a4a4;
-          margin-top: 0px;
-        `;
-
   return (
     <Container>
       <TouchableOpacity
@@ -139,7 +122,12 @@ export const CommentComponent = ({
             username: comment?.userProfile?.username,
           })
         }>
-        <UserImage source={{uri: comment?.userProfile?.profileImageURI}} />
+        {comment?.userProfile?.profileImageURI != null &&
+        comment?.userProfile.profileImageURI != '' ? (
+          <UserImage source={{uri: comment?.userProfile?.profileImageURI}} />
+        ) : (
+          <UserImageDummy />
+        )}
       </TouchableOpacity>
       <CommentPart>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -242,4 +230,19 @@ const ReplyLabel = styled.Text`
   font-weight: 500;
   font-size: 14px;
   color: #f09311;
+`;
+const UserImage = styled.Image`
+  width: 23px;
+  height: 23px;
+  border-radius: 23px;
+  background: #a4a4a4;
+  margin-top: 0px;
+`;
+
+const UserImageDummy = styled.View`
+  width: 23px;
+  height: 23px;
+  border-radius: 23px;
+  background: #a4a4a4;
+  margin-top: 0px;
 `;

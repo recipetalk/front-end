@@ -23,12 +23,19 @@ export const CommentListComponent = ({
     setUsername();
   }, []);
 
+  if (comment.length === 0) {
+    return (
+      <EmptyContainer>
+        <CommentLabel>댓글이 없습니다</CommentLabel>
+      </EmptyContainer>
+    );
+  }
+
   return (
     <Container>
       {isReply ? undefined : (
         <LabelPart>
           <CommentLabel>전체 댓글</CommentLabel>
-          <CountLabel>{'545'}개의 댓글</CountLabel>
         </LabelPart>
       )}
 
@@ -67,7 +74,7 @@ const MarginBox = styled.View`
 `;
 const Container = styled.View`
   width: 100%;
-  height: auto;
+  height: 100%
   background: #ffffff;
   padding-left: 5%;
   padding-right: 5%;
@@ -90,6 +97,14 @@ const CountLabel = styled.Text`
   font-weight: 500;
   font-size: 14px;
   color: #666666;
+`;
+
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
 `;
 
 const LabelPart = styled.View`

@@ -1,19 +1,39 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 
-const RecipeOrderComponent = props => {
+const RecipeOrderComponent = ({value, datas}) => {
   const navigation = useNavigation();
+
+  useEffect(() => {
+    console.log(value);
+  }, []);
+
+  const maxValue = useMemo(() => {
+    return Math.max.apply(
+      Math,
+      datas?.map(data => data.seqNum),
+    );
+  }, [value.datas]);
 
   return (
     <PrepOrderItem>
       <NumberPart>
-        <NumberText>{props.num}</NumberText>
+        <NumberText>{value.seqNum}</NumberText>
       </NumberPart>
       <InfoPart>
-        <TextPart>{'댕장찌개'}</TextPart>
-        <ImagePart />
-        <TouchContainer onPress={() => navigation.push('SequenceDetailScreen')}>
+        <TextPart>{value.description}</TextPart>
+        {value.imgUri != null ? (
+          <ImagePart source={{uri: value.imgUri}} />
+        ) : undefined}
+        <TouchContainer
+          onPress={() =>
+            navigation.push('SequenceDetailScreen', {
+              index: value.seqNum,
+              item: datas,
+              lastIndex: maxValue,
+            })
+          }>
           <MorePart>
             <MoreImg source={require('../../assets/images/Find_g.png')} />
             <MoreText>자세히보기</MoreText>
@@ -29,9 +49,9 @@ const PrepOrderItem = styled.View`
   flex-direction: row;
 
   width: 100%;
-  height: 280px;
+
   margin: auto;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
   justify-content: center;
 `;
 
@@ -66,7 +86,7 @@ const TextPart = styled.Text`
   color: #666666;
 `;
 
-const ImagePart = styled.View`
+const ImagePart = styled.Image`
   width: 310px;
   height: 140px;
   background-color: gray;

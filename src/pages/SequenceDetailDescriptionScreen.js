@@ -15,7 +15,7 @@ import * as Progress from 'react-native-progress';
 import AlertYesNoButton from '../components/molecules/AlertYesNoButton';
 import notifee from '@notifee/react-native';
 
-const SequenceDetailDescriptionScreen = ({navigation}) => {
+const SequenceDetailDescriptionScreen = ({navigation, route}) => {
   const [isClickedTimer, clickedTimer] = useState(false);
   const [isStartTimer, startTimer] = useState(false);
   const [isClickedStartTimer, clickedStartTimer] = useState(false);
@@ -35,11 +35,14 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
   const Timer = NativeModules.Timer;
   const TimerModule = NativeModules.TimerModule;
 
+
+
   //뒤로가기 핸들러
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
       backAction(),
     );
+
 
     if (Platform.OS === 'ios') {
       navigation.addListener('beforeRemove', e => {
@@ -49,7 +52,7 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
     }
 
     return () => backHandler.remove();
-  });
+  }, []);
 
   const backAction = () => {
     if (isStartTimer) {
@@ -278,7 +281,11 @@ const SequenceDetailDescriptionScreen = ({navigation}) => {
           )}
         </TouchableButton>
       </Header>
-      <SequenceDetailDescription index={1} lastIndex={3} />
+      <SequenceDetailDescription
+        index={route.params.index}
+        lastIndex={route.params.lastIndex}
+        item={route.params?.item}
+      />
       {isClickedTimer && !isStartTimer ? (
         <InitTimerBox>
           <TextBoxPart>

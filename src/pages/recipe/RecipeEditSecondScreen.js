@@ -22,6 +22,7 @@ const RecipeEditSecondScreen = ({navigation}) => {
   const [isFocus, setFocus] = useState(false);
   const [selectIndex, setSelectIndex] = useState(0);
   const [sendText, setSendText] = useState(null);
+  const [enabled, setEnabled] = useState(true);
   const dispatch = useDispatch();
   const getText = useSelector(state => state.findIngredientsSelector);
   const loadRecipeIngredients = useSelector(
@@ -32,13 +33,31 @@ const RecipeEditSecondScreen = ({navigation}) => {
     let data = {index: index, property: property, text: e.nativeEvent.text};
     dispatch(updateRecipeIngredientWithIndex(data));
 
-
     //텍스트 박스에 포커스가 잡혀있으면?
     if (isFocus) {
       //IngredientSelectorComponent로 데이터 전송
       setSendText(e.nativeEvent.text);
     }
   };
+
+  useEffect(() => {
+    setEnabled(() => true);
+    if (loadRecipeIngredients.length === 0) {
+      setEnabled(false);
+      return;
+    }
+    loadRecipeIngredients.forEach(data =>
+      setEnabled(
+        enabled =>
+          enabled &&
+          data.ingredientName !== null &&
+          data.ingredientName.trim() !== '' &&
+          data.quantity !== null &&
+          data.quantity.trim() !== '',
+      ),
+    );
+    console.log('action ', enabled);
+  }, [loadRecipeIngredients]);
 
   useEffect(() => {
     if (getText.index != null) {
@@ -89,7 +108,7 @@ const RecipeEditSecondScreen = ({navigation}) => {
       <RecipeEditScreenContainer edges={['top']} />
       <View style={{marginBottom: 3}}>
         <Title
-          enabled={true}
+          enabled={enabled}
           navigation={navigation}
           totalStep={3}
           nowStep={2}
@@ -137,14 +156,12 @@ const RecipeEditSecondScreen = ({navigation}) => {
               );
             })}
             <>
-              <HorizontalBar height={'1px'} />
               <AddPrepOrder>
                 <AddPrepOrderText>재료 추가</AddPrepOrderText>
                 <TouchContainer onPress={addComponent}>
                   <AddImage source={require('../../assets/images/Add_o.png')} />
                 </TouchContainer>
               </AddPrepOrder>
-              <HorizontalBar height={'4px'} />
             </>
           </TextInputListContainer>
         </PrepOrderContainer>
@@ -156,7 +173,7 @@ const RecipeEditSecondScreen = ({navigation}) => {
           />
         ) : undefined}
       </KeyboardAvoidingView>
-      <RecipeEditScreenContainer edges={['bottom']} />
+
     </>
   );
 };
@@ -207,6 +224,10 @@ const AddPrepOrder = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding: 20px 30px;
+  border-top-width: 1px;
+  border-top-color: #e1e1e1;
+  border-bottom-width: 4px;
+  border-bottom-color: #e1e1e1;
 `;
 
 const AddPrepOrderText = styled.Text`
@@ -236,14 +257,14 @@ const TextInputLowContainer = styled.View`
 `;
 
 const TextInputListContainer = styled.View`
-  display: flex;
+
   flex-direction: column;
 `;
 
 const PrepOrderContainer = styled.ScrollView`
-  width: 90%;
+  width: 100%;
   height: 100%;
-  margin: 15px auto 0;
+
   position: relative;
 `;
 
@@ -253,7 +274,7 @@ const OrderTitle = styled.Text`
   font-size: 24px;
   margin-bottom: 10px;
   font-family: 'Pretendard Variable';
-
+  padding: 18px;
   color: #333333;
 `;
 

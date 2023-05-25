@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const TempRecipeEditInfoSlice = createSlice({
   name: 'TempRecipeEditInfoSlice',
   initialState: {
+    recipeId: null,
     title: null,
     description: null,
     quantity: 'ONE',
@@ -18,18 +19,7 @@ const TempRecipeEditInfoSlice = createSlice({
         ingredientId: null,
         quantity: null,
       },
-      {
-        key: 2,
-        ingredientName: null,
-        ingredientId: null,
-        quantity: null,
-      },
-      {
-        key: 3,
-        ingredientName: null,
-        ingredientId: null,
-        quantity: null,
-      },
+
     ],
     recipeRows: [
       {
@@ -50,6 +40,7 @@ const TempRecipeEditInfoSlice = createSlice({
       state.time = action.payload.time;
       state.situationCategory = action.payload.situationCategory;
       state.thumbnail = action.payload.thumbnail;
+      state.boardId = action.payload.boardId;
     },
     setRecipeIngredients: (state, action) => {
       state.recipeIngredients = action.payload;
@@ -58,6 +49,7 @@ const TempRecipeEditInfoSlice = createSlice({
       state.recipeRows = action.payload;
     },
     initRecipe: state => {
+      state.boardId = null;
       state.boardId = null;
       state.title = null;
       state.description = null;
@@ -70,18 +62,6 @@ const TempRecipeEditInfoSlice = createSlice({
       state.recipeIngredients = [
         {
           key: 1,
-          ingredientName: null,
-          ingredientId: null,
-          quantity: null,
-        },
-        {
-          key: 2,
-          ingredientName: null,
-          ingredientId: null,
-          quantity: null,
-        },
-        {
-          key: 3,
           ingredientName: null,
           ingredientId: null,
           quantity: null,
@@ -121,9 +101,6 @@ const TempRecipeEditInfoSlice = createSlice({
     },
     setEditRecipeThumbnail: (state, action) => {
       state.thumbnail = action.payload;
-    },
-    setEditRecipeIngredients: (state, action) => {
-      state.recipeIngredients = action.payload;
     },
     setEditRecipeRows: (state, action) => {
       state.recipeRows = action.payload;
@@ -169,7 +146,6 @@ export const {
   setEditRecipeSituationCategory,
   setEditRecipeTime,
   setEditRecipeThumbnail,
-  setEditRecipeIngredients,
   setEditRecipeRows,
   updateRecipeIngredientWithIndex,
   removeRecipeRow,
