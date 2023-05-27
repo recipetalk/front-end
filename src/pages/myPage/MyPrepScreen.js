@@ -39,23 +39,19 @@ export const MyPrepScreen = ({navigation}) => {
 
   const init = async () => {
     const username = (await loadLoginFromStorage()).username;
-    console.log(
-      firstFilter[firstClicked.id - 1].value,
-      offset,
-      limit,
-      username,
-    );
+    console.log(firstFilter[firstClicked.id - 1].value, 0, limit, username);
     await getIngredientPrepByUsername(
       username,
       firstFilter[firstClicked.id - 1].value,
-      offset,
+      0,
       limit,
     )
       .then(res => {
         const data = JSON.parse(res.request._response);
+        console.log(data);
         setPrep(() => data);
         setLast(() => determinePageEnd(data.length, limit));
-        setOffset(() => 0);
+        setOffset(() => 20);
         data.forEach(res => console.log(res));
       })
       .catch(err => {
@@ -65,23 +61,26 @@ export const MyPrepScreen = ({navigation}) => {
 
   const onRefresh = async () => {
     await setRefresh(true);
-    await init().then(() => setRefresh(false));
+    await init();
+    setTimeout(() => setRefresh(false), 1000);
   };
 
   const onRequest = async () => {
     await setLoading(() => true);
     const username = (await loadLoginFromStorage()).username;
-    await getDynamicRecipes(
+    await getIngredientPrepByUsername(
       username,
       firstFilter[firstClicked.id].value,
       offset,
       limit,
-    ).then(res => {
-      const data = JSON.parse(res.request._response);
-      setPrep(recipes => recipes.concat(data));
-      setLast(() => determinePageEnd(data.length, limit));
-      setOffset(() => offset + limit);
-    });
+    )
+      .then(res => {
+        const data = JSON.parse(res.request._response);
+        setPrep(recipes => recipes.concat(data));
+        setLast(() => determinePageEnd(data.length, limit));
+        setOffset(() => offset + limit);
+      })
+      .catch(err => console.log(err.response));
     await setLoading(() => false);
   };
 
@@ -103,26 +102,26 @@ export const MyPrepScreen = ({navigation}) => {
             />
           ))}
         </FilterPart>
-        <HListView>
-          <FlatList
-            numColumns={2}
-            contentContainerStyle={{height: 'auto', paddingBottom: '20%'}}
-            columnWrapperStyle={{justifyContent: 'space-between'}}
-            data={prep}
-            renderItem={({item}) => {
-              return <HList value={item} />;
-            }}
-            keyExtractor={_ => _.board.boardId}
-            onRefresh={onRefresh}
-            refreshing={isRefresh}
-            onEndReached={() => {
-              if (last) {
-                onRequest();
-              }
-            }}
-            onEndReachedThreshold={0.6}
-          />
-        </HListView>
+
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          numColumns={2}
+          contentContainerStyle={{height: 'auto', paddingBottom: '20%'}}
+          columnWrapperStyle={{justifyContent: 'space-between'}}
+          data={prep}
+          renderItem={({item}) => {
+            return <HList value={item} boardSort={'TRIMMING'} />;
+          }}
+          keyExtractor={_ => _.board.boardId}
+          onRefresh={onRefresh}
+          refreshing={isRefresh}
+          onEndReached={() => {
+            if (last) {
+              onRequest();
+            }
+          }}
+          onEndReachedThreshold={0.6}
+        />
       </InnerContainer>
     </Container>
   );
@@ -139,13 +138,6 @@ const InnerContainer = styled.View`
   padding-right: 5%;
   width: 100%;
   height: 100%;
-`;
-
-const HListView = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  justify-content: space-between;
 `;
 
 const FilterPart = styled.View`

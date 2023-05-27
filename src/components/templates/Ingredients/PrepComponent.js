@@ -43,16 +43,11 @@ const PrepComponent = () => {
         </Header>
         {ingredientsPrepInfo.map((item, index) => {
           return (
-            <TouchContainer
-              key={index}
-              onPress={() =>
-                navigation.navigate('PrepDetail', {
-                  trimmingID: item.id,
-                  ingredientID: router.params.ingredientID,
-                })
-              }>
-              <DList value={item} />
-            </TouchContainer>
+            <DList
+              value={item}
+              boardSort={'TRIMMING'}
+              ingredientId={router.params.ingredientID}
+            />
           );
         })}
       </ScrollViewContainer>

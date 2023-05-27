@@ -12,6 +12,8 @@ const PrepDetailScreen = () => {
 
 const PrepDetailScreenContainer = styled.SafeAreaView`
   background-color: #ffffff;
+  width: 100%;
+  height: 100%;
 `;
 
 export default PrepDetailScreen;

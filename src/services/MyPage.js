@@ -1,4 +1,6 @@
 import {jsonAPI, multiPartAPI} from './connect/API';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
+import {customImageResizer} from '../utils/CustomIamgeResizer';
 
 const config = {
   headers: {
@@ -30,9 +32,17 @@ export const editProfile = async (nickname, description, profileImg) => {
   }
 
   if (profileImg.uri !== null) {
+    const resizedImage = await ImageResizer.createResizedImage(
+      profileImg.uri,
+      200,
+      200,
+      'JPEG',
+      100,
+    );
+
     var photo = {
-      uri: profileImg.uri,
-      type: 'multipart/form-data',
+      uri: resizedImage.uri,
+      type: 'image/jpeg',
       name: profileImg.fileName,
     };
     await formdata.append('profileImg', photo);

@@ -1,15 +1,30 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import WhitePrepOrderComponent from '../../organisms/WhitePrepOrderComponent';
 import {Image} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function SequenceDetailDescription({index, item, lastIndex}) {
+  const [num, setNum] = useState(index);
+  const navigation = useNavigation();
+
+  const afterPart = () => {
+    if (num == lastIndex) {
+      return;
+    }
+    setNum(num => num + 1);
+  };
+
+  const beforePart = () => {
+    setNum(num => num - 1);
+  };
+
   return (
     <SequenceDetailDescriptionContainer>
-      {index !== 1 ? (
-        <NavigationContainer>
+      {num !== 1 ? (
+        <NavigationContainer onPress={() => beforePart()}>
           <NavigationLabel>
-            STEP {index}{' '}
+            STEP {num - 1}{' '}
             <Image
               source={require('../../../assets/images/Community_SwipeUp_D8D.png')}
             />
@@ -21,19 +36,19 @@ export default function SequenceDetailDescription({index, item, lastIndex}) {
         </NavigationContainer>
       )}
       <DescriptionContainer>
-        <WhitePrepOrderComponent num={1} />
+        <WhitePrepOrderComponent num={num} item={item} />
       </DescriptionContainer>
-      {index !== lastIndex ? (
-        <NavigationContainer>
+      {num !== lastIndex ? (
+        <NavigationContainer onPress={() => afterPart()}>
           <NavigationLabel>
-            STEP {index + 1}{' '}
+            STEP {num + 1}{' '}
             <Image
               source={require('../../../assets/images/Community_SwipeDown_D8D.png')}
             />{' '}
           </NavigationLabel>
         </NavigationContainer>
       ) : (
-        <NavigationContainer>
+        <NavigationContainer onPress={() => navigation.pop()}>
           <NavigationLabel>맛있는 요리 완성!</NavigationLabel>
         </NavigationContainer>
       )}

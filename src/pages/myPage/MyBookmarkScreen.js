@@ -124,7 +124,7 @@ const CustomDList = ({value}) => {
 
   return (
     <CustomDListContainer>
-      <DList value={value} />
+      <DList value={value} boardSort={value?.boardSort} />
       <TouchableOpacity onPress={() => onRequest()}>
         {isBookmarked ? (
           <BookmarkImage

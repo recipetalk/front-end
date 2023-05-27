@@ -7,6 +7,8 @@ import Signup from './signup/Signup';
 import IngredientsSlice from './Ingredients/IngredientsSlice';
 import PrepSlice from './Ingredients/PrepSlice';
 import notificationStateSlice from './notification/NotificationStateSlice';
+import SelectedByFindIngredientSlice from './Ingredients/SelectedByFindIngredientSlice';
+import TempRecipeEditInfoSlice from './RecipeEdit/TempRecipeEditInfoSlice';
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +19,8 @@ export const store = configureStore({
     ingredients: IngredientsSlice,
     prep: PrepSlice,
     notificationState: notificationStateSlice,
+    findIngredientsSelector: SelectedByFindIngredientSlice,
+    editRecipeInfo: TempRecipeEditInfoSlice,
   },
   enhancers: [reactotron.createEnhancer()], //
 });

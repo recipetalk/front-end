@@ -12,6 +12,7 @@ const MypageComponent = ({navigation, setAlert}) => {
   const [profile, setProfile] = useState({});
   const [refreshing, setRefreshing] = useState(false);
   const [loadUsername, setLoadUsername] = useState();
+
   useEffect(() => {
     const init = async () => {
       // TODO : 아이디 리덕스에 저장 후? 가져오기?
@@ -46,7 +47,7 @@ const MypageComponent = ({navigation, setAlert}) => {
   // getBlockUser().then(res => console.log(res));
 
   const ProfileImg =
-    profile.profileImg !== undefined
+    profile.profileImg != null && profile.profileImg != ''
       ? styled.Image`
           border-radius: 13.873px;
           background-color: #e5e5e5;

@@ -11,7 +11,9 @@ const IngredientsScreen = () => {
   );
 };
 
-const IngredientsScreenContainer =
-  Platform.OS === 'ios' ? styled.SafeAreaView`` : styled.View``;
+const IngredientsScreenContainer = styled.SafeAreaView`
+  width: 100%;
+  height: 100%;
+`;
 
 export default IngredientsScreen;

@@ -19,7 +19,6 @@ import RecipeEditFirstScreen from './src/pages/recipe/RecipeEditFirstScreen';
 import RecipeEditSecondScreen from './src/pages/recipe/RecipeEditSecondScreen';
 import RecipeEditThirdScreen from './src/pages/recipe/RecipeEditThirdScreen';
 import CommentHistoryScreen from './src/pages/myPage/CommentHistoryScreen';
-import RecipeDetailStackNavigator from './src/navigations/RecipeDetailStackNavigator';
 import SignupSecondEmailVerificationScreen from './src/pages/signup/SignupSecondEmailVerificationScreen';
 import SignupFinishScreen from './src/pages/signup/SignupFinishScreen';
 import ProfileScreen from './src/pages/myPage/ProfileScreen';
@@ -56,6 +55,7 @@ import PasswordModifyScreen from './src/pages/login/find/PasswordModifyScreen';
 import EndPasswordScreen from './src/pages/login/find/EndPasswordScreen';
 import RegisterMyIngredientsScreen from './src/pages/Ingredients/RegisterMyIngredientsScreen';
 import IngredientsEditScreen from './src/pages/Ingredients/IngredientsEditScreen';
+import RecipeDetailDescriptionScreen from './src/pages/recipe/RecipeDetailDescriptionScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -324,7 +324,7 @@ function App() {
         />
         <Stack.Screen
           name="RecipeDetailScreen"
-          component={RecipeDetailStackNavigator}
+          component={RecipeDetailDescriptionScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen
