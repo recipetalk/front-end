@@ -3,12 +3,14 @@ import React, {useEffect, useState} from 'react';
 import {Image} from 'react-native';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 import {useToast} from 'react-native-toast-notifications';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {
   addIngredientTrimming,
   addRowIngredientTrimming,
   hardDelete,
 } from '../../../services/Ingredients';
+import {isEmptyArr} from '../../../utils/Validation';
 import {ImageAndCameraFun} from '../../atoms/functions/ImageAndCameraFun';
 import Line from '../../atoms/Line';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
@@ -18,21 +20,42 @@ const PrepRegisterComponent = () => {
   const router = useRoute();
   const navigation = useNavigation();
   const toast = useToast();
+  const prepState = useSelector(state => state.prep);
   const [index, setIndex] = useState(null);
   const [isAlert, setAlert] = useState(false);
-  const [prepInfo, setPrepInfo] = useState({
-    title: '',
-    desc: '',
-    img: '',
-  });
+  const [prepInfo, setPrepInfo] = useState(
+    isEmptyArr(prepState)
+      ? {
+          title: '',
+          desc: '',
+          img: '',
+        }
+      : {
+          title: prepState.boardDTO.title,
+          desc: prepState.description,
+          img: prepState.thumbnailURI,
+        },
+  );
 
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      description: '',
-      photo: {uri: ''},
-    },
-  ]);
+  const [rows, setRows] = useState(
+    isEmptyArr(prepState)
+      ? [
+          {
+            id: 1,
+            description: '',
+            photo: {uri: ''},
+          },
+        ]
+      : [
+          {
+            id: 1,
+            description: '',
+            photo: {uri: ''},
+          },
+        ],
+  );
+
+  const [thumbnailPhoto, setThumbnailPhoto] = useState({photo: {uri: ''}});
 
   const addComponent = () => {
     let newArr = [...rows];
@@ -72,7 +95,7 @@ const PrepRegisterComponent = () => {
       ingredientId: router.params.ingredientID,
       title: prepInfo.title,
       desc: prepInfo.desc,
-      img: '',
+      img: thumbnailPhoto,
     };
 
     await addIngredientTrimming(ingredient)
@@ -101,10 +124,17 @@ const PrepRegisterComponent = () => {
       .catch(error => console.log('PrepRegisterComponent', error.response));
   };
 
+  const editPrepOrder = async () => {};
+
   return (
     <>
       <IngredientsHeader title="손질법" isTitleOnly={true} />
-      <PrepIntro state={prepInfo} setState={setPrepInfo} />
+      <PrepIntro
+        state={prepInfo}
+        setThumbnailPhoto={setThumbnailPhoto}
+        thumbnailPhoto={thumbnailPhoto}
+        setState={setPrepInfo}
+      />
       <Line />
       <ImageAndCameraFun
         toast={toast}
@@ -185,7 +215,10 @@ const PrepRegisterComponent = () => {
               <CancelBtn onPress={() => navigation.goBack()}>
                 <CancelText>취소</CancelText>
               </CancelBtn>
-              <SaveBtn onPress={registerPrepOrder}>
+              <SaveBtn
+                onPress={
+                  isEmptyArr(prepState) ? registerPrepOrder : editPrepOrder
+                }>
                 <SaveText>저장</SaveText>
               </SaveBtn>
             </BtnContainer>

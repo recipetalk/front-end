@@ -1,24 +1,56 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Image} from 'react-native';
+import {useToast} from 'react-native-toast-notifications';
 import styled from 'styled-components/native';
+import {ImageAndCameraFun} from '../../atoms/functions/ImageAndCameraFun';
 
-const IngredientsInfo = props => {
+const IngredientsInfo = ({
+  thumbnail,
+  setThumbnailPhoto,
+  isEdit,
+  ingredientName,
+}) => {
+  const toast = useToast();
+  const [isAlert, setAlert] = useState(false);
+
+  const dataUpdatePhoto = () => value => {
+    setThumbnailPhoto({photo: value});
+  };
+
+  const renderFunc = () => {
+    if (isEdit) {
+      return (
+        <>
+          <ImageSelectBox
+            onPress={() => {
+              setAlert(true);
+            }}>
+            <Image source={require('../../../assets/images/_격리_모드.png')} />
+          </ImageSelectBox>
+        </>
+      );
+    }
+
+    if (thumbnail === undefined) {
+      <ImageDummyView />;
+    } else {
+      return <ImageView source={{url: thumbnail}} />;
+    }
+  };
+
   return (
     <IngredientsInfoContainer>
+      <ImageAndCameraFun
+        toast={toast}
+        setAlert={setAlert}
+        isAlert={isAlert}
+        setPhoto={dataUpdatePhoto()}
+      />
+
       <IngredientsInfoSection>
-        <IngredientsName>{props.ingredientName}</IngredientsName>
+        <IngredientsName>{ingredientName}</IngredientsName>
       </IngredientsInfoSection>
-      {props.isEdit ? (
-        <>
-          <ImageView />
-          <EditImageView>
-            <CameraImg source={require('../../../assets/images/Camera.png')} />
-          </EditImageView>
-        </>
-      ) : props.thumbnail != '' ? (
-        <ImageView source={{uri : props.thumbnailURI}} />
-      ) : (
-        <ImageDummyView />
-      )}
+      {renderFunc()}
     </IngredientsInfoContainer>
   );
 };
@@ -80,5 +112,14 @@ const EditImageView = styled.TouchableOpacity`
 
 const CameraImg = styled.Image`
   margin: auto;
+`;
+
+const ImageSelectBox = styled.TouchableOpacity`
+  width: 98px;
+  height: 98px;
+  background: #ededed;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
 `;
 export default IngredientsInfo;

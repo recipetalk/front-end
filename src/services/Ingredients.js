@@ -16,9 +16,12 @@ export const addIngredientTrimming = async ingredientInfo => {
 
   await body.append('title', ingredientInfo.title);
 
-  if (ingredientInfo.img.uri != null && ingredientInfo.img.uri !== '') {
+  if (
+    ingredientInfo.img.photo.uri != null &&
+    ingredientInfo.img.photo.uri !== ''
+  ) {
     const resizedImage = await ImageResizer.createResizedImage(
-      ingredientInfo.img.uri,
+      ingredientInfo.img.photo.uri,
       1000,
       1000,
       'JPEG',
@@ -28,7 +31,7 @@ export const addIngredientTrimming = async ingredientInfo => {
     const image = {
       uri: resizedImage.uri,
       type: 'image/jpeg',
-      name: ingredientInfo.img.fileName,
+      name: ingredientInfo.img.photo.fileName,
     };
 
     await body.append('thumbnail', image);
