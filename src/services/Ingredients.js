@@ -1,4 +1,5 @@
 import {jsonAPI, multiPartAPI} from './connect/API';
+import ImageResizer from '@bam.tech/react-native-image-resizer';
 
 const config = {
   headers: {
@@ -13,9 +14,26 @@ export const addIngredientTrimming = async ingredientInfo => {
 
   const body = new FormData();
 
-  body.append('title', ingredientInfo.title);
-  // body.append('thumbnail', ingredientInfo.img);
-  body.append('description', ingredientInfo.desc);
+  await body.append('title', ingredientInfo.title);
+
+  if (ingredientInfo.img.uri != null && ingredientInfo.img.uri !== '') {
+    const resizedImage = await ImageResizer.createResizedImage(
+      ingredientInfo.img.uri,
+      1000,
+      1000,
+      'JPEG',
+      100,
+    );
+
+    const image = {
+      uri: resizedImage.uri,
+      type: 'image/jpeg',
+      name: ingredientInfo.img.fileName,
+    };
+
+    await body.append('thumbnail', image);
+  }
+  await body.append('description', ingredientInfo.desc);
 
   return await multiPartAPI.post(url, body, config);
 };
@@ -25,8 +43,29 @@ export const addRowIngredientTrimming = async rowIngredientInfo => {
   const url = `/api/board/ingredient/${rowIngredientInfo.ingredientId}/trimming/${rowIngredientInfo.trimmingId}`;
   const body = new FormData();
 
-  body.append('description', rowIngredientInfo.itemList.description);
-  body.append('trimmingSeq', rowIngredientInfo.itemList.id);
+  await body.append('description', rowIngredientInfo.itemList.description);
+  await body.append('trimmingSeq', rowIngredientInfo.itemList.id);
+
+  if (
+    rowIngredientInfo.itemList.photo.uri != null &&
+    rowIngredientInfo.itemList.photo.uri !== ''
+  ) {
+    const resizedImage = await ImageResizer.createResizedImage(
+      rowIngredientInfo.itemList.photo.uri,
+      1000,
+      1000,
+      'JPEG',
+      100,
+    );
+
+    const image = {
+      uri: resizedImage.uri,
+      type: 'image/jpeg',
+      name: rowIngredientInfo.itemList.photo.fileName,
+    };
+
+    await body.append('img', image);
+  }
 
   return await multiPartAPI.post(url, body, config);
 };

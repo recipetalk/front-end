@@ -70,7 +70,7 @@ const TextPart = styled.Text`
 const ImagePart = styled.Image`
   width: 310px;
   height: 140px;
-  background-color: gray;
+  background-color: white;
   margin-bottom: 10px;
   border-radius: 8px;
 `;

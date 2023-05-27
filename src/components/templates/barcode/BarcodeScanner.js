@@ -46,14 +46,14 @@ const BarcodeScanner = () => {
   useEffect(() => {
     console.log('test');
     setAlertVisible(true);
-    setScanValue(8809376328815);
+    setScanValue(1);
   }, [isFocused]);
 
   console.log(isAlertVisible);
 
   const moveAndCloseAlert = () => {
     navigation.navigate('RegisterMyIngredients', {
-      barcodeNumber: 8809376328815,
+      barcodeNumber: scanValue,
     });
 
     setTimeout(() => setAlertVisible(false), 500);

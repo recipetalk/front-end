@@ -1,5 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image} from 'react-native';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 import {useToast} from 'react-native-toast-notifications';
@@ -49,7 +49,7 @@ const PrepRegisterComponent = () => {
     let newArr = [...rows];
 
     newArr[index][property] = e.nativeEvent.text;
-    console.log(newArr[index][property]);
+    console.log('PrepRegisterComponent', newArr[index][property]);
     setRows(newArr);
   };
 
@@ -57,7 +57,7 @@ const PrepRegisterComponent = () => {
     let newArr = [...rows];
 
     newArr[index].photo = value;
-    console.log(value);
+    console.log('PrepRegisterComponent', value);
     setRows(newArr);
   };
 
@@ -67,31 +67,38 @@ const PrepRegisterComponent = () => {
     setRows(newArr);
   };
 
-  // 모든 데이터 저장하는 함수
-  const registerPrepOrder = () => {
-    addIngredientTrimming({
+  const registerPrepOrder = async () => {
+    const ingredient = {
       ingredientId: router.params.ingredientID,
       title: prepInfo.title,
       desc: prepInfo.desc,
       img: '',
-    })
-      .then(result => {
-        rows.map(item => {
-          addRowIngredientTrimming({
-            ingredientId: router.params.ingredientID,
-            trimmingId: result.data.ingredientTrimmingId,
-            itemList: item,
-          }).catch(error => {
-            console.log(error.response);
-            hardDelete();
-          });
+    };
+
+    await addIngredientTrimming(ingredient)
+      .then(async res => {
+        const data = JSON.parse(res.request._response);
+
+        const result = Promise.all(
+          rows.map(item => {
+            return addRowIngredientTrimming({
+              ingredientId: router.params.ingredientID,
+              trimmingId: data.ingredientTrimmingId,
+              itemList: item,
+            });
+          }),
+        );
+
+        result.then(res2 => {
+          console.log('PrepRegisterComponent res2 is ', res2);
+          navigation.goBack();
+        });
+        result.catch(error => {
+          console.error('PrepRegisterComponent error', error);
+          hardDelete(data.ingredientTrimmingId);
         });
       })
-      .catch(error => {
-        console.error(error.response);
-      });
-
-    navigation.goBack();
+      .catch(error => console.log('PrepRegisterComponent', error.response));
   };
 
   return (
