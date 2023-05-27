@@ -14,6 +14,7 @@ import {IngredientSelectorComponent} from '../../components/templates/Ingredient
 import {useDispatch, useSelector} from 'react-redux';
 import {initSaveIngredientToTarget} from '../../store/Ingredients/SelectedByFindIngredientSlice';
 import {
+  removeRecipeIngredients,
   setRecipeIngredients,
   updateRecipeIngredientWithIndex,
 } from '../../store/RecipeEdit/TempRecipeEditInfoSlice';
@@ -96,11 +97,7 @@ const RecipeEditSecondScreen = ({navigation}) => {
   };
 
   const deleteItem = index => () => {
-    let newArr = loadRecipeIngredients.filter(
-      (row, itemIndex) => index !== itemIndex,
-    );
-
-    dispatch(setRecipeIngredients(newArr));
+    dispatch(removeRecipeIngredients(index));
   };
 
   return (
@@ -140,6 +137,7 @@ const RecipeEditSecondScreen = ({navigation}) => {
                         setSelectIndex(0);
                       }}
                       autoComplete={'off'}
+                      editable={item.editable != null ? item.editable : true}
                     />
                     <VerticalBar />
                     <TextInputBox

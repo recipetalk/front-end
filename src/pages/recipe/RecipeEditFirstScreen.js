@@ -30,9 +30,11 @@ import {
   setEditRecipeTime,
   setEditRecipeTitle,
 } from '../../store/RecipeEdit/TempRecipeEditInfoSlice';
+import AlertYesNoButton from '../../components/molecules/AlertYesNoButton';
 
 const RecipeEditFirstScreen = ({navigation}) => {
   const [isAlert, setAlert] = useState(false);
+  const [isCancelAlert, setCancelAlert] = useState(false);
   const [photo, setPhoto] = useState({uri: ''});
   const [chooseQuantityNum, setQuantityNum] = useState(0);
   const [chooseTimeNum, setTimeNum] = useState(0);
@@ -101,6 +103,7 @@ const RecipeEditFirstScreen = ({navigation}) => {
   }, [chooseLevelNum]);
 
   useEffect(() => {
+    console.log('thumbnail : ', loadRecipeInfo.thumbnail);
     dispatch(setEditRecipeThumbnail(photo));
   }, [photo]);
 
@@ -123,12 +126,12 @@ const RecipeEditFirstScreen = ({navigation}) => {
         behavior={Platform.select({ios: 'padding', android: undefined})}>
         <ScrollPart>
           <ThumbnailImageEditContainer>
-            {photo.uri === '' ? (
+            {photo.uri == null || photo.uri === '' ? (
               <ImageSelectBox onPress={() => setAlert(true)}>
                 <Image source={require('../../assets/images/_격리_모드.png')} />
               </ImageSelectBox>
             ) : (
-              <TouchableOpacity onPress={() => setAlert(true)}>
+              <TouchableOpacity onPress={() => setCancelAlert(true)}>
                 <Image
                   style={{width: 98, height: 98, borderRadius: 8}}
                   source={{uri: photo.uri}}
@@ -352,6 +355,18 @@ const RecipeEditFirstScreen = ({navigation}) => {
           </CategoryInfoPart>
         </ScrollPart>
       </KeyboardAvoidingView>
+      {isCancelAlert ? (
+        <AlertYesNoButton
+          title={'이미지를 삭제할까요?'}
+          setAlert={setCancelAlert}
+          yesButtonText={'네'}
+          text={'이미지가 있으면 보기 편해져요!'}
+          onPress={() => {
+            setPhoto({uri: ''});
+            setCancelAlert(false);
+          }}
+        />
+      ) : undefined}
     </RecipeEditScreenContainer>
   );
 };

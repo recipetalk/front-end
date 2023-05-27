@@ -154,6 +154,7 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
           isLoading={isLoading}
           setMine={setMine}
           isEdit={isEdit}
+          setEdit={setEdit}
           navigation={navigation}
         />
         {Checked ? (

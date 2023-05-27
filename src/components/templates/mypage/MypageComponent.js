@@ -47,7 +47,7 @@ const MypageComponent = ({navigation, setAlert}) => {
   // getBlockUser().then(res => console.log(res));
 
   const ProfileImg =
-    profile.profileImg !== undefined
+    profile.profileImg != null && profile.profileImg != ''
       ? styled.Image`
           border-radius: 13.873px;
           background-color: #e5e5e5;

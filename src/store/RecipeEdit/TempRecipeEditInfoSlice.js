@@ -40,7 +40,7 @@ const TempRecipeEditInfoSlice = createSlice({
       state.time = action.payload.time;
       state.situationCategory = action.payload.situationCategory;
       state.thumbnail = action.payload.thumbnail;
-      state.boardId = action.payload.boardId;
+      state.recipeId = action.payload.recipeId;
     },
     setRecipeIngredients: (state, action) => {
       state.recipeIngredients = action.payload;
@@ -49,8 +49,7 @@ const TempRecipeEditInfoSlice = createSlice({
       state.recipeRows = action.payload;
     },
     initRecipe: state => {
-      state.boardId = null;
-      state.boardId = null;
+      state.recipeId = null;
       state.title = null;
       state.description = null;
       state.quantity = 'ONE';
@@ -75,8 +74,8 @@ const TempRecipeEditInfoSlice = createSlice({
         },
       ];
     },
-    setEditRecipeBoardId: (state, action) => {
-      state.boardId = action.payload;
+    setEditRecipeRecipeId: (state, action) => {
+      state.recipeId = action.payload;
     },
     setEditRecipeTitle: (state, action) => {
       state.title = action.payload;
@@ -107,7 +106,7 @@ const TempRecipeEditInfoSlice = createSlice({
     },
     removeRecipeIngredients: (state, action) => {
       let newArr = state.recipeIngredients.filter(
-        (row, itemIndex) => action.payload.index !== itemIndex,
+        (row, itemIndex) => action.payload !== itemIndex,
       );
       state.recipeIngredients = newArr;
     },
@@ -148,6 +147,7 @@ export const {
   setEditRecipeThumbnail,
   setEditRecipeRows,
   updateRecipeIngredientWithIndex,
+  removeRecipeIngredients,
   removeRecipeRow,
   updateRecipeRowWithIndex,
 } = TempRecipeEditInfoSlice.actions;

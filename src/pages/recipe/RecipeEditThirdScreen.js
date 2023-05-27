@@ -19,9 +19,13 @@ import {
 } from '../../store/RecipeEdit/TempRecipeEditInfoSlice';
 import {
   hardRemoveRecipes,
+  modifyRecipeBoard,
+  modifyRecipeIngredients,
+  modifyRecipeRows,
   requestRegisterRecipe,
   requestRegisterRecipeIngredients,
   requestRegisterRecipeRows,
+  requestRegisterTotalRecipeRows,
 } from '../../services/recipe/Recipe';
 import AlertYesNoButton from '../../components/molecules/AlertYesNoButton';
 import AlertYesButton from '../../components/molecules/AlertYesButton';
@@ -66,11 +70,19 @@ const RecipeEditThirdScreen = ({navigation}) => {
   const addComponent = () => {
     let newArr = [...loadData];
 
-    newArr.push({
-      id: newArr[newArr.length - 1].id + 1,
-      description: null,
-      photo: {uri: ''},
-    });
+    if (newArr.length === 0) {
+      newArr.push({
+        id: 1,
+        description: null,
+        photo: {uri: ''},
+      });
+    } else {
+      newArr.push({
+        id: newArr[newArr.length - 1].id + 1,
+        description: null,
+        photo: {uri: ''},
+      });
+    }
     dispatch(setRecipeRows(newArr));
   };
 
@@ -98,7 +110,7 @@ const RecipeEditThirdScreen = ({navigation}) => {
       secondCategory: loadRecipeAll.situationCategory,
       thumbnail: loadRecipeAll.thumbnail,
     };
-    console.log('recipe : ', recipe);
+    console.log('recipe : ', loadRecipeAll);
     await requestRegisterRecipe(recipe)
       .then(async res => {
         console.log(res);
@@ -144,6 +156,67 @@ const RecipeEditThirdScreen = ({navigation}) => {
       });
   };
 
+  const updateData = async () => {
+    setSaving(() => true);
+    const recipe = {
+      title: loadRecipeAll.title,
+      description: loadRecipeAll.description,
+      quantity: loadRecipeAll.quantity,
+      level: loadRecipeAll.level,
+      time: loadRecipeAll.time,
+      sort: loadRecipeAll.sort,
+      secondCategory: loadRecipeAll.situationCategory,
+      thumbnail: loadRecipeAll.thumbnail,
+      recipeId: loadRecipeAll.recipeId,
+    };
+
+    await modifyRecipeBoard(recipe)
+      .then(async res => {
+        console.log('recipeIngredients : ', loadRecipeAll.recipeIngredients);
+        modifyRecipeIngredients(
+          loadRecipeAll.recipeId,
+          loadRecipeAll.recipeIngredients,
+        )
+          .then(async res => {
+            for (let i = 0; i < loadData.length; i++) {
+              try {
+                await modifyRecipeRows(
+                  loadRecipeAll.recipeId,
+                  loadData[i],
+                  i === loadData.length - 1,
+                  i,
+                );
+              } catch (err) {
+                setExceptionAlert(true);
+                setSaving(false);
+                console.error('requestRows ', err.response);
+                break;
+              }
+            }
+            setSaving(false);
+            navigation.reset({
+              routes: [
+                {name: 'Home'},
+                {
+                  name: 'RecipeDetailScreen',
+                  params: {boardId: loadRecipeAll.recipeId},
+                },
+              ],
+            });
+          })
+          .catch(err => {
+            setExceptionAlert(true);
+            setSaving(false);
+            console.error('requestIngredient ', err.response);
+          });
+      })
+      .catch(err => {
+        setExceptionAlert(true);
+        setSaving(false);
+        console.error('requestBoard ', err.response);
+      });
+  };
+
   const deletePhoto = () => {
     const data = {...photoProps, text: {uri: ''}};
     dispatch(updateRecipeRowWithIndex(data));
@@ -165,7 +238,7 @@ const RecipeEditThirdScreen = ({navigation}) => {
         navigation={navigation}
         nextNavigation={'RecipeScreen'}
         enabled={enabled}
-        request={saveData}
+        request={loadRecipeAll.recipeId != null ? updateData : saveData}
       />
       <KeyboardAvoidingView
         behavior={Platform.select({ios: 'padding', android: undefined})}
@@ -186,7 +259,7 @@ const RecipeEditThirdScreen = ({navigation}) => {
                     <PrepOrderNumText>{index + 1}</PrepOrderNumText>
                   </PrepOrderNum>
                   <PrepOrderInfo>
-                    {item.photo.uri === '' ? (
+                    {item.photo.uri == null || item.photo.uri === '' ? (
                       <ImageSelectBox
                         onPress={() => {
                           setAlert(true);

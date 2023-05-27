@@ -37,6 +37,7 @@ export default function RecipeDetailDescription({
   boardId,
   setMine,
   isEdit,
+  setEdit,
 }) {
   const [isFirst, setFirst] = useState(false);
   const [isSecond, setSecond] = useState(false);
@@ -97,18 +98,21 @@ export default function RecipeDetailDescription({
         ingredientId: data.ingredientId,
         ingredientName: data.name,
         quantity: data.quantity,
+        editable: false,
       }));
 
       const recipeRowData = recipeRows.map(data => ({
         id: data.seqNum,
         description: data.description,
         photo: {uri: data.imgUri},
+        repoId: data.id,
       }));
 
       dispatch(setRecipeBoard(recipeBoardData));
       dispatch(setRecipeIngredients(recipeIngredientData));
       dispatch(setEditRecipeRows(recipeRowData));
       navigation.navigate('RecipeEdit');
+      setEdit(false);
     }
   }, [isEdit]);
 
@@ -241,6 +245,8 @@ const GoToIngredient = styled.View`
   align-items: center;
   padding-top: 30px;
   gap: 10px;
+  border-top-width: 4px;
+  border-top-color: #e5e5e5;
 `;
 
 const NavigationContainer = styled.View`
