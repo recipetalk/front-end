@@ -1,23 +1,59 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {Image} from 'react-native';
+import {useToast} from 'react-native-toast-notifications';
 import styled from 'styled-components/native';
+import {ImageAndCameraFun} from '../../atoms/functions/ImageAndCameraFun';
 
-const IngredientsInfo = props => {
+const IngredientsInfo = ({
+  thumbnail,
+  setThumbnailPhoto,
+  isEdit,
+  ingredientName,
+}) => {
+  const toast = useToast();
+  const [isAlert, setAlert] = useState(false);
+
+  const dataUpdatePhoto = () => value => {
+    setThumbnailPhoto({photo: value});
+  };
+
+  const renderFunc = () => {
+    if (thumbnail === null || thumbnail === '') {
+      return (
+        <>
+          <ImageSelectBox
+            onPress={() => {
+              setAlert(true);
+            }}>
+            <Image source={require('../../../assets/images/_격리_모드.png')} />
+          </ImageSelectBox>
+        </>
+      );
+    }
+
+    return (
+      <TouchContainer
+        onPress={() => {
+          isEdit ? setAlert(true) : null;
+        }}>
+        <ImageView source={{url: thumbnail}} />
+      </TouchContainer>
+    );
+  };
+
   return (
     <IngredientsInfoContainer>
+      <ImageAndCameraFun
+        toast={toast}
+        setAlert={setAlert}
+        isAlert={isAlert}
+        setPhoto={dataUpdatePhoto()}
+      />
+
       <IngredientsInfoSection>
-        <IngredientsName>{props.ingredientName}</IngredientsName>
-        <IngredientsCategory>분류: 향신료 | 채소</IngredientsCategory>
+        <IngredientsName>{ingredientName}</IngredientsName>
       </IngredientsInfoSection>
-      {props.isEdit ? (
-        <>
-          <ImageView />
-          <EditImageView>
-            <CameraImg source={require('../../../assets/images/Camera.png')} />
-          </EditImageView>
-        </>
-      ) : (
-        <ImageView />
-      )}
+      {renderFunc()}
     </IngredientsInfoContainer>
   );
 };
@@ -53,7 +89,14 @@ const IngredientsCategory = styled.Text`
   color: #666666;
 `;
 
-const ImageView = styled.View`
+const ImageView = styled.Image`
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  background-color: gray;
+`;
+
+const ImageDummyView = styled.View`
   width: 100px;
   height: 100px;
   border-radius: 4px;
@@ -73,4 +116,15 @@ const EditImageView = styled.TouchableOpacity`
 const CameraImg = styled.Image`
   margin: auto;
 `;
+
+const ImageSelectBox = styled.TouchableOpacity`
+  width: 98px;
+  height: 98px;
+  background: #ededed;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+`;
+
+const TouchContainer = styled.TouchableOpacity``;
 export default IngredientsInfo;

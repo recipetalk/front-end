@@ -18,31 +18,94 @@ import {RecipeLevelList} from '../../category/recipe/RecipeLevelList';
 import {RecipeSortList} from '../../category/recipe/RecipeSortList';
 import {RecipeSituationList} from '../../category/recipe/RecipeSituationList';
 import ModalDropDownPickerComponent from '../../components/molecules/ModalDropDownPickerComponent';
+import {useFocusEffect} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  setEditRecipeDescription,
+  setEditRecipeLevel,
+  setEditRecipeQuantity,
+  setEditRecipeSituationCategory,
+  setEditRecipeSort,
+  setEditRecipeThumbnail,
+  setEditRecipeTime,
+  setEditRecipeTitle,
+} from '../../store/RecipeEdit/TempRecipeEditInfoSlice';
+import AlertYesNoButton from '../../components/molecules/AlertYesNoButton';
 
 const RecipeEditFirstScreen = ({navigation}) => {
   const [isAlert, setAlert] = useState(false);
+  const [isCancelAlert, setCancelAlert] = useState(false);
   const [photo, setPhoto] = useState({uri: ''});
-  const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
   const [chooseQuantityNum, setQuantityNum] = useState(0);
   const [chooseTimeNum, setTimeNum] = useState(0);
   const [chooseLevelNum, setLevelNum] = useState(0);
   const [enabled, setEnabled] = useState(false);
   const [firstCategoryValue, setFirstCategoryValue] = useState(null);
   const [secondCategoryValue, setSecondCategoryValue] = useState(null);
+  const dispatch = useDispatch();
+  const loadRecipeInfo = useSelector(state => state.editRecipeInfo);
+
+  useEffect(() => {
+    console.log(loadRecipeInfo);
+    setPhoto(loadRecipeInfo.thumbnail);
+    setQuantityNum(
+      RecipeQuantityList.findIndex(
+        data => data.key === loadRecipeInfo.quantity,
+      ),
+    );
+    setTimeNum(
+      RecipeTimeList.findIndex(data => data.key === loadRecipeInfo.time),
+    );
+    setLevelNum(
+      RecipeLevelList.findIndex(data => data.key === loadRecipeInfo.level),
+    );
+
+    if (loadRecipeInfo.situationCategory != null) {
+      setSecondCategoryValue(loadRecipeInfo.situationCategory);
+    }
+    if (loadRecipeInfo.sort != null) {
+      setFirstCategoryValue(loadRecipeInfo.sort);
+    }
+  }, []);
+
   useEffect(() => {
     if (
-      title.trim() !== '' &&
-      description.trim() !== '' &&
+      loadRecipeInfo.title?.trim() !== '' &&
+      loadRecipeInfo.description?.trim() !== '' &&
       firstCategoryValue !== null
     ) {
       setEnabled(true);
     } else {
       setEnabled(false);
     }
-  }, [title, description, firstCategoryValue, secondCategoryValue]);
+  }, [loadRecipeInfo]);
 
   const toast = useToast();
+
+  useEffect(() => {
+    dispatch(setEditRecipeSort(firstCategoryValue));
+  }, [firstCategoryValue]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeSituationCategory(secondCategoryValue));
+  }, [secondCategoryValue]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeQuantity(RecipeQuantityList[chooseQuantityNum].key));
+  }, [chooseQuantityNum]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeTime(RecipeTimeList[chooseLevelNum].key));
+  }, [chooseTimeNum]);
+
+  useEffect(() => {
+    dispatch(setEditRecipeLevel(RecipeLevelList[chooseLevelNum].key));
+  }, [chooseLevelNum]);
+
+  useEffect(() => {
+    console.log('thumbnail : ', loadRecipeInfo.thumbnail);
+    dispatch(setEditRecipeThumbnail(photo));
+  }, [photo]);
 
   return (
     <RecipeEditScreenContainer>
@@ -63,16 +126,16 @@ const RecipeEditFirstScreen = ({navigation}) => {
         behavior={Platform.select({ios: 'padding', android: undefined})}>
         <ScrollPart>
           <ThumbnailImageEditContainer>
-            {photo.uri === '' ? (
+            {photo.uri == null || photo.uri === '' ? (
               <ImageSelectBox onPress={() => setAlert(true)}>
                 <Image source={require('../../assets/images/_격리_모드.png')} />
               </ImageSelectBox>
             ) : (
-              <TouchableOpacity onPress={() => setAlert(true)}>
+              <TouchableOpacity onPress={() => setCancelAlert(true)}>
                 <Image
                   style={{width: 98, height: 98, borderRadius: 8}}
                   source={{uri: photo.uri}}
-                  resizeMode="contain"
+                  resizeMode="cover"
                 />
               </TouchableOpacity>
             )}
@@ -90,8 +153,8 @@ const RecipeEditFirstScreen = ({navigation}) => {
             <TitleTextInput
               placeholder="제목"
               placeholderTextColor="#a4a4a4"
-              value={title}
-              onChangeText={text => setTitle(text)}
+              value={loadRecipeInfo.title}
+              onChangeText={text => dispatch(setEditRecipeTitle(text))}
             />
             <DescriptionTextInput
               placeholder={`레시피를 소개해주세요.
@@ -99,8 +162,8 @@ const RecipeEditFirstScreen = ({navigation}) => {
               placeholderTextColor="#a4a4a4"
               multiline={true}
               scrollEnabled={false}
-              value={description}
-              onChangeText={text => setDescription(text)}
+              value={loadRecipeInfo.description}
+              onChangeText={text => dispatch(setEditRecipeDescription(text))}
             />
           </EditPart>
           <CookingInfoPart>
@@ -292,6 +355,18 @@ const RecipeEditFirstScreen = ({navigation}) => {
           </CategoryInfoPart>
         </ScrollPart>
       </KeyboardAvoidingView>
+      {isCancelAlert ? (
+        <AlertYesNoButton
+          title={'이미지를 삭제할까요?'}
+          setAlert={setCancelAlert}
+          yesButtonText={'네'}
+          text={'이미지가 있으면 보기 편해져요!'}
+          onPress={() => {
+            setPhoto({uri: ''});
+            setCancelAlert(false);
+          }}
+        />
+      ) : undefined}
     </RecipeEditScreenContainer>
   );
 };

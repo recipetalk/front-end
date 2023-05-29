@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components/native';
 import {Image, Text} from 'react-native';
 import {CalanderPrint} from '../../../../utils/CalanderPrint';
 
 const CommentHistoryComponent = ({navigation, item}) => {
+  useEffect(() => {
+    console.log(item);
+  },[]);
   return (
     <Container>
       <InnerContainer>
@@ -45,21 +48,25 @@ const determineNavigation = async (
   boardId,
   navigation,
 ) => {
+  const naviList = [{name: 'Home'}, {name: 'CommentHistory'}];
   if (boardSort === 'RECIPE') {
-    await navigation.navigate('RecipeDetailScreen', {boardId: boardId});
+    naviList.push({name: 'RecipeDetailScreen', params: {boardId: boardId}});
   } else if (boardSort === 'TRIMMING') {
-    await navigation.navigate('PrepDetail', {boardId: boardId});
+    naviList.push({name: 'PrepDetail', params: {boardId: boardId}});
   } else if (boardSort === 'DESCRIPTION') {
-    await navigation.navigate('Efficacy', {boardId: boardId});
+    naviList.push({name: 'Efficacy', params: {boardId: boardId}});
   }
   if (parentCommentId !== undefined) {
-    await navigation.push('ReplyComment', {
-      boardId: boardId,
-      parentCommentId: parentCommentId,
+    naviList.push({
+      name: 'ReplyComment',
+      params: {
+        boardId: boardId,
+        parentCommentId: parentCommentId,
+      },
     });
   }
+  navigation.reset({routes: naviList});
 };
-
 const HorizontalBar = styled.View`
   width: 100%;
   height: 1px;

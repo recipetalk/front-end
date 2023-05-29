@@ -29,7 +29,7 @@ const IngredientsItem = props => {
       label: '재료 삭제',
       value: 'delete',
       onPress: () => {
-        deleteIngredient(props.item.ingredientId)
+        deleteIngredient(props.item.userHasIngredientId)
           .then(console.log('삭제 완료'))
           .catch(error => console.error(error.response));
       },

@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@bam.tech/react-native-image-resizer": "^3.0.5",
     "@notifee/react-native": "^7.7.1",
     "@react-native-community/checkbox": "^0.5.14",
     "@react-native-firebase/app": "^17.4.1",

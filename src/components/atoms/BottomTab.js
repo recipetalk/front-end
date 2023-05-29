@@ -5,29 +5,11 @@ import MypageScreen from '../../pages/myPage/MypageScreen';
 import ReceiptScreen from '../../pages/ReceiptScreen';
 import RecipeScreen from '../../pages/RecipeScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import RegisterMyIngredientsScreen from '../../pages/Ingredients/RegisterMyIngredientsScreen';
 import IngredientsScreen from '../../pages/Ingredients/IngredientsScreen';
-import EfficacyScreen from '../../pages/Ingredients/EfficacyScreen';
 import PrepScreen from '../../pages/Ingredients/PrepScreen';
-import PrepDetailScreen from '../../pages/Ingredients/PrepDetailScreen';
-import EfficacyEditScreen from '../../pages/Ingredients/EfficacyEditScreen';
-import RecipeDetailStackNavigator from '../../navigations/RecipeDetailStackNavigator';
 import {Image, Platform, View} from 'react-native';
 import {getMyProfile} from '../../services/MyPage';
 import {saveProfileToStorage} from '../../services/repository/Profile';
-
-const RecipeStackNavigator = () => {
-  const RecipeStack = createNativeStackNavigator();
-  return (
-    <RecipeStack.Navigator>
-      <RecipeStack.Screen
-        name="RecipeHome"
-        component={RecipeScreen}
-        options={{headerShown: false}}
-      />
-    </RecipeStack.Navigator>
-  );
-};
 
 const IngredientsStackNavigator = () => {
   const IngredientsStack = createNativeStackNavigator();
@@ -152,7 +134,7 @@ const BottomTab = () => {
       />
       <Tab.Screen
         name="Recipe"
-        component={RecipeStackNavigator}
+        component={RecipeScreen}
         options={{
           title: '레시피',
           headerShown: false,

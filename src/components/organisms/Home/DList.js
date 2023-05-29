@@ -1,21 +1,37 @@
 import styled from 'styled-components/native';
-import React, {useMemo} from 'react';
-import BottomImageComponent from '../BottomImageComponent';
+import React, {useEffect, useMemo} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import MiniBottomImageComponent from '../MiniBottomImageComponent';
 
 const DList = props => {
   const navigation = useNavigation();
   const determineNav = useMemo(
-    () => determineNavigation(props?.value?.boardSort),
-    [props?.value?.boardSort],
+    () => determineNavigation(props?.boardSort),
+    [props?.boardSort],
+  );
+
+  const determineBoardId = useMemo(
+    () =>
+      props?.value?.boardId === undefined
+        ? props?.value?.id
+        : props?.value?.boardId,
+    [props?.value?.id, props?.value?.boardId],
+  );
+
+  const determineIngredientId = useMemo(
+    () =>
+      props?.value?.ingredientId === undefined
+        ? props?.ingredientId
+        : props?.value?.ingredientId,
+    [props?.value?.ingredientId, props.ingredientId],
   );
 
   return (
     <DListContainer
       onPress={() =>
-        navigation.push(determineNav(), {
-          boardId: props?.value?.boardId,
+        navigation.push(determineNav, {
+          boardId: determineBoardId,
+          ingredientId: determineIngredientId,
         })
       }>
       <ImagePart />

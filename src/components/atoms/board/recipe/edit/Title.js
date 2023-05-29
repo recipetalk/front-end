@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Image, View} from 'react-native';
+import {BackHandler, Image, View} from 'react-native';
 import ProgressBar from './ProgressBar';
+import AlertYesNoButton from '../../../../molecules/AlertYesNoButton';
+import {useDispatch} from 'react-redux';
+import {initRecipe} from '../../../../../store/RecipeEdit/TempRecipeEditInfoSlice';
 
 const Title = ({
   totalStep,
@@ -9,7 +12,29 @@ const Title = ({
   navigation,
   nextNavigation,
   enabled = false,
+  request = async () => {},
 }) => {
+  const [isAlert, setAlert] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (nowStep === 1) {
+      navigation.addListener('beforeRemove', e => {
+        dispatch(initRecipe());
+      });
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        setAlert(true);
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <TitleContainer>
       <TitleInfoContainer>
@@ -20,18 +45,29 @@ const Title = ({
             alignItems: 'center',
             gap: 10,
           }}>
-          <TouchContainer onPress={() => navigation.pop()}>
+          <TouchContainer
+            onPress={() => {
+              if (nowStep === 1) {
+                setAlert(true);
+              } else {
+                navigation.pop();
+              }
+            }}>
             <Image source={require('../../../../../assets/images/Back.png')} />
           </TouchContainer>
           <TitleLabel>글쓰기</TitleLabel>
         </View>
         <TouchContainer
           disabled={!enabled}
-          onPress={() =>
-            totalStep === nowStep
-              ? navigation.navigate('Home')
-              : navigation.push(nextNavigation)
-          }>
+          onPress={() => {
+            if (totalStep !== nowStep) {
+              navigation.push(nextNavigation);
+            } else {
+              //
+              request();
+              //
+            }
+          }}>
           <NextLabel enabled={enabled}>
             {totalStep === nowStep ? '저장' : '다음'}
           </NextLabel>
@@ -40,6 +76,18 @@ const Title = ({
       <ProgressBarContainer>
         <ProgressBar totalStep={totalStep} nowStep={nowStep} />
       </ProgressBarContainer>
+      {isAlert ? (
+        <AlertYesNoButton
+          title={'정말 나가시겠어요?'}
+          text={'이대로 나가시면 저장이 되지 않습니다.'}
+          setAlert={setAlert}
+          yesButtonText={'네'}
+          onPress={() => {
+            dispatch(initRecipe());
+            navigation.pop();
+          }}
+        />
+      ) : undefined}
     </TitleContainer>
   );
 };

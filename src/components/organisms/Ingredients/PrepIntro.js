@@ -17,6 +17,8 @@ const PrepIntro = props => {
   return (
     <>
       <IngredientsInfo
+        thumbnail={props.thumbnailPhoto.photo.uri}
+        setThumbnailPhoto={props.setThumbnailPhoto}
         ingredientName={efficacyInfo.ingredientName}
         isEdit={true}
       />

@@ -49,7 +49,7 @@ export const MyRecipeScreen = ({navigation}) => {
       firstFilter[firstClicked.id - 1].value,
       firstCategoryValue,
       secondCategoryValue,
-      offset,
+      0,
       limit,
       username,
     )
@@ -58,7 +58,6 @@ export const MyRecipeScreen = ({navigation}) => {
         setRecipe(() => data);
         setLast(() => determinePageEnd(data.length, limit));
         setOffset(() => 20);
-        console.log(data);
       })
       .catch(err => {
         console.log(err.response);
@@ -68,7 +67,8 @@ export const MyRecipeScreen = ({navigation}) => {
 
   const onRefresh = async () => {
     await setRefresh(true);
-    await init().then(() => setRefresh(false));
+    await init().then();
+    setTimeout(() => setRefresh(false), 1000);
   };
 
   const onRequest = async () => {
@@ -135,12 +135,13 @@ export const MyRecipeScreen = ({navigation}) => {
         </FilterPart>
 
         <FlatList
+          showsVerticalScrollIndicator={false}
           numColumns={2}
           contentContainerStyle={{height: 'auto', paddingBottom: '20%'}}
           columnWrapperStyle={{justifyContent: 'space-between'}}
           data={recipe}
           renderItem={({item}) => {
-            return <HList value={item} />;
+            return <HList value={item} boardSort={'RECIPE'} />;
           }}
           keyExtractor={_ => _?.board?.boardId}
           onRefresh={onRefresh}
