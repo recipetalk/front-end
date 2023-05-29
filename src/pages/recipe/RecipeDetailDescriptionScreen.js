@@ -19,6 +19,9 @@ import {useFocusEffect} from '@react-navigation/native';
 import {OptionModalChildImage} from '../../components/organisms/OptionModalChildImage';
 import AlertYesNoButton from '../../components/molecules/AlertYesNoButton';
 import {useToast} from 'react-native-toast-notifications';
+import {RecipeRemoveRequest} from '../../services/recipe/Recipe';
+import {reportRecipe} from '../../services/Report';
+import {requestRegisterBlockedUser} from '../../services/MyPage';
 
 const RecipeDetailDescriptionScreen = ({navigation, route}) => {
   const [Checked, setChecked] = useState(true);
@@ -33,6 +36,7 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
   const [alertTitle, setAlertTitle] = useState('');
   const [alertText, setAlertText] = useState('');
   const [isEdit, setEdit] = useState(false);
+  const [writer, setWriter] = useState(null);
   const toast = useToast();
 
   useEffect(() => {
@@ -156,6 +160,7 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
           isEdit={isEdit}
           setEdit={setEdit}
           navigation={navigation}
+          setWriter={setWriter}
         />
         {Checked ? (
           <CommentWriteComponent
@@ -174,8 +179,31 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
           text={alertText}
           onPress={() => {
             if (checkedItem.value === 'delete') {
+              RecipeRemoveRequest(route?.params?.boardId).then(() => {
+                setAlert(false);
+                navigation.pop();
+                setTimeout(
+                  () => toast.show('게시글이 정상적으로 삭제되었습니다.'),
+                  300,
+                );
+              });
             } else if (checkedItem.value === 'report') {
+              reportRecipe(route?.params?.boardId).then(() => {
+                setAlert(false);
+                setTimeout(
+                  () => toast.show('게시글이 정상적으로 신고되었습니다.'),
+                  300,
+                );
+              });
             } else if (checkedItem.value === 'userBlock') {
+              requestRegisterBlockedUser(writer).then(() => {
+                setAlert(false);
+                navigation.pop();
+                setTimeout(
+                  () => toast.show('작성자 차단이 완료되었습니다.'),
+                  300,
+                );
+              });
             }
           }}
         />

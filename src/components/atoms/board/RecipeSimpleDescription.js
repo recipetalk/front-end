@@ -11,34 +11,24 @@ export default function RecipeSimpleDescription({
   thumbnailUrl,
   description,
   createdDate,
-  recipeId,
   boardId,
   navigation,
+  commentNum,
+  likeNum,
+  isLiked,
 }) {
-  const ThumbnailImg =
-    thumbnailUrl !== undefined
-      ? styled.Image`
-          width: 100%;
-          height: 170px;
-          border: 1px solid black;
-          border-radius: 8px;
-        `
-      : styled.View`
-          width: 100%;
-          height: 170px;
-          border: 1px solid black;
-          border-radius: 8px;
-        `;
-
   return (
-    <RecipeSimpleDescriptionContainer>
+    <RecipeSimpleDescriptionContainer
+      exist={thumbnailUrl != null && thumbnailUrl != ''}>
       <TouchContainer
         onPress={() =>
           navigation.push('RecipeDetailScreen', {
             boardId: boardId,
           })
         }>
-        <ThumbnailImg />
+        {thumbnailUrl != null && thumbnailUrl != '' ? (
+          <ThumbnailImg source={{uri: thumbnailUrl}} />
+        ) : undefined}
         <ViewAndCreatedDateLabelContainer>
           <RecipeQuantityLabel quantity={quantity} />
           <CreatedDateLabel createdDate={createdDate} />
@@ -46,15 +36,32 @@ export default function RecipeSimpleDescription({
         <TitleText>{title}</TitleText>
         <Description>{description}</Description>
       </TouchContainer>
-      <LikeAndCommentNum isLiked={true} commentNum={54} likeNum={546} />
+      <LikeAndCommentNum
+        isLiked={isLiked}
+        commentNum={commentNum}
+        likeNum={likeNum}
+        boardId={boardId}
+      />
     </RecipeSimpleDescriptionContainer>
   );
 }
 
+const ThumbnailImg = styled.Image`
+  width: 100%;
+  height: 170px;
+  border-radius: 8px;
+`;
+const ThumbnailImgDummy = styled.View`
+  width: 100%;
+  height: 170px;
+  background: #f9f9f9;
+  border-radius: 8px;
+`;
+
 const RecipeSimpleDescriptionContainer = styled.View`
   padding: 0px;
   width: 90%;
-  height: 400px;
+  height: ${props => (props.exist ? '400px' : '230px')};
   margin: 0 auto;
 `;
 
@@ -68,7 +75,6 @@ const TitleText = styled.Text`
   font-size: 16px;
   letter-spacing: -1px;
   color: #333333;
-  margin-top: -9px;
   font-family: 'Pretendard Variable';
 `;
 

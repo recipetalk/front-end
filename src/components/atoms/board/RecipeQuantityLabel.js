@@ -14,12 +14,7 @@ export default function RecipeQuantityLabel({quantity}) {
 
   return (
     <QuantityLabel>
-      {RecipeQuantityList[LabelCheck(quantity)].label}
+      {quantity}
     </QuantityLabel>
   );
 }
-
-const LabelCheck = quantity => {
-  const index = RecipeQuantityList.findIndex(data => data.key === quantity);
-  return index > -1 ? index : 0;
-};

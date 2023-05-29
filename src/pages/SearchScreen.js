@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import SearchInput from '../components/atoms/SearchInput';
 
-const SearchScreen = () => {
+const SearchScreen = ({navigation}) => {
   const dummyCategory = [
     '🍖고기파티',
     '🥗1인가구',
@@ -22,10 +22,15 @@ const SearchScreen = () => {
   ];
   return (
     <SearchScreenContainer>
-      <Back source={require('../assets/images/Back.png')} />
-      <Logo source={require('../assets/images/Logo_o.png')} />
+      <TouchableOpacity onPress={() => navigation.pop()}>
+        <Back source={require('../assets/images/Back.png')} />
+      </TouchableOpacity>
+      <Logo
+        source={require('../assets/images/Logo_o.png')}
+        resizeMode={'contain'}
+      />
       <SearchInput />
-      <TotalCategory>전체 카테고리</TotalCategory>
+      <TotalCategory>최근 검색어</TotalCategory>
       <TotalCategoryContainer>
         {dummyCategory.map((v, i) => {
           return (
@@ -39,7 +44,7 @@ const SearchScreen = () => {
   );
 };
 
-const SearchScreenContainer = styled.View`
+const SearchScreenContainer = styled.SafeAreaView`
   margin: 0 15px 0 15px;
 `;
 

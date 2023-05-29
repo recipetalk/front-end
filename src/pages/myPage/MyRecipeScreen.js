@@ -13,7 +13,7 @@ import {determinePageEnd} from '../../utils/determinePageEnd';
 import {request} from 'axios';
 
 export const MyRecipeScreen = ({navigation}) => {
-  const [firstClicked, setFirstClicked] = useState({id: 1});
+  const [firstClicked, setFirstClicked] = useState({key: 1});
   const [firstCategoryValue, setFirstCategoryValue] = useState(null);
   const [secondCategoryValue, setSecondCategoryValue] = useState(null);
   const [recipe, setRecipe] = useState([]);
@@ -24,14 +24,14 @@ export const MyRecipeScreen = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const firstFilter = [
     {
-      id: 1,
-      onPress: () => setFirstClicked({id: 1}),
+      key: 1,
+      onPress: () => setFirstClicked({key: 1}),
       title: '최신',
       value: 'NEW',
     },
     {
-      id: 2,
-      onPress: () => setFirstClicked({id: 2}),
+      key: 2,
+      onPress: () => setFirstClicked({key: 2}),
       title: '인기',
       value: 'POPULAR',
     },
@@ -46,7 +46,7 @@ export const MyRecipeScreen = ({navigation}) => {
     const username = (await loadLoginFromStorage()).username;
     await getDynamicRecipes(
       null,
-      firstFilter[firstClicked.id - 1].value,
+      firstFilter[firstClicked.key - 1].value,
       firstCategoryValue,
       secondCategoryValue,
       0,
@@ -55,7 +55,7 @@ export const MyRecipeScreen = ({navigation}) => {
     )
       .then(res => {
         const data = JSON.parse(res.request._response);
-        setRecipe(() => data);
+        setRecipe(data);
         setLast(() => determinePageEnd(data.length, limit));
         setOffset(() => 20);
       })
@@ -76,7 +76,7 @@ export const MyRecipeScreen = ({navigation}) => {
     const username = (await loadLoginFromStorage()).username;
     await getDynamicRecipes(
       null,
-      firstFilter[firstClicked.id - 1].value,
+      firstFilter[firstClicked.key - 1].value,
       firstCategoryValue,
       secondCategoryValue,
       offset,
@@ -105,7 +105,7 @@ export const MyRecipeScreen = ({navigation}) => {
               clickedBackgroundColor={'#666666'}
               textColor={'#666666'}
               clickedTextColor={'#D8D8D8'}
-              clickedNumber={firstClicked.id}
+              clickedNumber={firstClicked.key}
               item={value}
             />
           ))}

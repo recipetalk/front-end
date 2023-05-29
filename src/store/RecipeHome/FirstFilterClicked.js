@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const FirstFilterClicked = createSlice({
   name: 'firstFilterClicked',
-  initialState: {value: {id: 1, title: '최신'}},
+  initialState: {value: {key: 1, title: '최신'}},
   reducers: {
     setFirstClicked: (state, action) => {
       state.value = action.payload;

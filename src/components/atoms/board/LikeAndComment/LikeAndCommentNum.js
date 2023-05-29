@@ -1,8 +1,9 @@
 import styled from 'styled-components/native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {View} from 'react-native';
 import {toggleBoardLikeAction} from '../../../../services/BoardLike';
 import {toggleBoardBookmark} from '../../../../services/BoardBookmark';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function LikeAndCommentNum({
   likeNum,
@@ -12,10 +13,9 @@ export default function LikeAndCommentNum({
   bookmarkable,
   boardId,
 }) {
-  const [bookmark, setBookmark] = useState(false);
+  const [bookmark, setBookmark] = useState(isBookmarked);
   const [liked, setLiked] = useState(false);
-  const [activeLikeNum, setLikeNum] = useState(0);
-  const [commentCount, setCommentCount] = useState(0);
+  const [activeLikeNum, setLikeNum] = useState(likeNum);
 
   const requestAboutLike = () => {
     toggleBoardLikeAction(boardId).then(res => {
@@ -24,7 +24,6 @@ export default function LikeAndCommentNum({
       setLiked(data.isLiked);
     });
   };
-
   const requestAboutBookmark = () => {
     toggleBoardBookmark(boardId).then(res => {
       const data = JSON.parse(res.request._response);
@@ -36,10 +35,11 @@ export default function LikeAndCommentNum({
     setBookmark(isBookmarked);
     setLiked(isLiked);
     setLikeNum(likeNum);
-    setCommentCount(commentNum);
-  }, [likeNum, isLiked, commentNum, isBookmarked]);
+  }, [likeNum, isLiked, isBookmarked]);
 
-  useEffect(() => {
+
+  useLayoutEffect(() => {
+    console.log('렌더링렌더링');
     if (isLiked && liked) {
       setLikeNum(likeNum);
     } else if (isLiked && !liked) {
@@ -49,7 +49,7 @@ export default function LikeAndCommentNum({
     } else {
       setLikeNum(likeNum);
     }
-  }, [liked, likeNum]);
+  }, [liked, likeNum, boardId]);
 
   return (
     <LikeAndCommentNumContainer>
@@ -68,7 +68,7 @@ export default function LikeAndCommentNum({
         <CommentImg
           source={require('../../../../assets/images/BoardComment.png')}
         />
-        <NumLabel>{commentCount}</NumLabel>
+        <NumLabel>{commentNum}</NumLabel>
       </View>
       {bookmarkable ? (
         <TouchContainer onPress={() => requestAboutBookmark()}>

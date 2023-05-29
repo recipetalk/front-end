@@ -8,6 +8,8 @@ import {CalanderPrint} from '../../../utils/CalanderPrint';
 import AlertYesNoButton from '../../molecules/AlertYesNoButton';
 import {removeComment} from '../../../services/Comment';
 import {useToast} from 'react-native-toast-notifications';
+import {reportComment} from '../../../services/Report';
+import {requestRegisterBlockedUser} from '../../../services/MyPage';
 
 export const CommentComponent = ({
   details = false,
@@ -176,9 +178,26 @@ export const CommentComponent = ({
                 })
                 .catch(err => toast.show('댓글이 삭제되지 않았습니다.'));
             } else if (checkedItem.value === 'report') {
-              console.log('신고 시퀀스');
+              reportComment(comment.commentId)
+                .then(() => {
+                  setTimeout(
+                    () => toast.show('댓글이 정상적으로 신고되었습니다.'),
+                    300,
+                  );
+                })
+                .catch(() =>
+                  setTimeout(() => toast.show('신고되지 않았습니다.'), 300),
+                );
             } else if (checkedItem.value === 'userBlock') {
-              console.log('차단 시퀀스');
+              requestRegisterBlockedUser(comment?.userProfile?.username)
+                .then(() => {
+                  setAlert(false);
+                  setTimeout(() => toast.show('사용자를 차단하였습니다.'), 300);
+                  onRefresh();
+                })
+                .catch(() => {
+                  setTimeout(() => toast.show('차단되지 않았습니다.'), 300);
+                });
             }
           }}
         />

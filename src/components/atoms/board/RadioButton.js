@@ -16,7 +16,7 @@ export default function RadioButton({
     height: 30px;
     width: 50px;
     background-color: ${() =>
-      item.id === clickedNumber ? clickedBackgroundColor : backgroundColor};
+      item.key === clickedNumber ? clickedBackgroundColor : backgroundColor};
     border-radius: 5px;
     margin: 0px 7px 15px 0px;
     border: ${() =>
@@ -28,7 +28,7 @@ export default function RadioButton({
   `;
   const Label = styled.Text`
     font-weight: 700;
-    color: ${() => (item.id === clickedNumber ? clickedTextColor : textColor)};
+    color: ${() => (item.key === clickedNumber ? clickedTextColor : textColor)};
     text-align: center;
     line-height: 27px;
     font-family: 'Pretendard Variable';

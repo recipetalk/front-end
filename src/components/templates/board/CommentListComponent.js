@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {CommentComponent} from '../../organisms/comment/CommentComponent';
 import {loadLoginFromStorage} from '../../../services/repository/AutoLogin';
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 
 export const CommentListComponent = ({
   isReply,
@@ -26,7 +26,7 @@ export const CommentListComponent = ({
   if (comment.length === 0) {
     return (
       <EmptyContainer>
-        <CommentLabel>댓글이 없습니다</CommentLabel>
+        <EmptyLabel>댓글이 없습니다</EmptyLabel>
       </EmptyContainer>
     );
   }
@@ -54,7 +54,12 @@ export const CommentListComponent = ({
           }
         }}
         renderItem={({item}) => (
-          <>
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderColor: '#e5e5e5',
+              marginBottom: 15,
+            }}>
             <CommentComponent
               comment={item}
               isMine={loadUsername === item.userProfile.username}
@@ -63,7 +68,7 @@ export const CommentListComponent = ({
               existChild={item.childExist}
             />
             <MarginBox />
-          </>
+          </View>
         )}
       />
     </Container>
@@ -105,6 +110,7 @@ const EmptyContainer = styled.View`
   padding-top: 10px;
   align-items: center;
   background: white;
+  margin-bottom: 70px;
 `;
 
 const LabelPart = styled.View`
@@ -112,4 +118,12 @@ const LabelPart = styled.View`
   justify-content: space-between;
   flex-direction: row;
   margin-bottom: 15px;
+`;
+
+const EmptyLabel = styled.Text`
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  color: #999999;
 `;

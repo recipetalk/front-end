@@ -56,6 +56,7 @@ import EndPasswordScreen from './src/pages/login/find/EndPasswordScreen';
 import RegisterMyIngredientsScreen from './src/pages/Ingredients/RegisterMyIngredientsScreen';
 import IngredientsEditScreen from './src/pages/Ingredients/IngredientsEditScreen';
 import RecipeDetailDescriptionScreen from './src/pages/recipe/RecipeDetailDescriptionScreen';
+import SearchScreen from './src/pages/SearchScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -415,6 +416,11 @@ function App() {
         <Stack.Screen
           name="IngredientsEdit"
           component={IngredientsEditScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'Search'}
+          component={SearchScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Platform, TouchableWithoutFeedback} from 'react-native';
 import styled from 'styled-components/native';
 import SearchInput from '../../atoms/SearchInput';
@@ -8,31 +8,42 @@ import {setFirstClicked} from '../../../store/RecipeHome/FirstFilterClicked';
 import ModalDropDownPickerComponent from '../../molecules/ModalDropDownPickerComponent';
 import {RecipeSortList} from '../../../category/recipe/RecipeSortList';
 import {RecipeSituationList} from '../../../category/recipe/RecipeSituationList';
+import {setSortCategory} from '../../../store/RecipeHome/SortCategory';
+import {setSituationCategory} from '../../../store/RecipeHome/SituationCategory';
 
 const SearchWithFilterHeader = () => {
   const firstClicked = useSelector(state => state.firstFilterClicked.value);
+  const sortCategory = useSelector(state => state.sortCategory.value);
+  const situationCategory = useSelector(state => state.situationCategory.value);
   const [firstCategoryValue, setFirstCategoryValue] = useState(null);
   const [secondCategoryValue, setSecondCategoryValue] = useState(null);
-
   const dispatch = useDispatch();
 
   const firstFilter = [
     {
-      id: 1,
-      onPress: () => dispatch(setFirstClicked({id: 1, title: '최신'})),
+      key: 1,
+      onPress: () => dispatch(setFirstClicked({key: 1, title: '최신'})),
       title: '최신',
     },
     {
-      id: 2,
-      onPress: () => dispatch(setFirstClicked({id: 2, title: '인기'})),
+      key: 2,
+      onPress: () => dispatch(setFirstClicked({key: 2, title: '인기'})),
       title: '인기',
     },
     {
-      id: 3,
-      onPress: () => dispatch(setFirstClicked({id: 3, title: '이웃'})),
+      key: 3,
+      onPress: () => dispatch(setFirstClicked({key: 3, title: '이웃'})),
       title: '이웃',
     },
   ];
+
+  useEffect(() => {
+    dispatch(setSortCategory(firstCategoryValue));
+  }, [firstCategoryValue]);
+
+  useEffect(() => {
+    dispatch(setSituationCategory(secondCategoryValue));
+  }, [secondCategoryValue]);
 
   return (
     <SearchHeaderContainer>
@@ -47,7 +58,7 @@ const SearchWithFilterHeader = () => {
             clickedBackgroundColor={'#666666'}
             textColor={'#666666'}
             clickedTextColor={'#D8D8D8'}
-            clickedNumber={firstClicked.id}
+            clickedNumber={firstClicked.key}
             item={value}
           />
         ))}
@@ -55,7 +66,7 @@ const SearchWithFilterHeader = () => {
         <CategorySelectorContainer>
           <TouchableWithoutFeedback>
             <ModalDropDownPickerComponent
-              value={firstCategoryValue}
+              value={sortCategory}
               setValue={setFirstCategoryValue}
               items={RecipeSortList}
               placeholder={'종류별'}
@@ -65,7 +76,7 @@ const SearchWithFilterHeader = () => {
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback>
             <ModalDropDownPickerComponent
-              value={secondCategoryValue}
+              value={situationCategory}
               setValue={setSecondCategoryValue}
               items={RecipeSituationList}
               placeholder={'상황별'}

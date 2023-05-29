@@ -1,5 +1,4 @@
 import React from 'react';
-import {Platform} from 'react-native';
 import styled from 'styled-components/native';
 
 const SearchInput = () => {
@@ -10,8 +9,7 @@ const SearchInput = () => {
   );
 };
 
-const SearchInputView =
-  Platform.OS === 'ios' ? styled.SafeAreaView`` : styled.View``;
+const SearchInputView = styled.View``;
 
 const CustomInput = styled.TextInput`
   position: relative;

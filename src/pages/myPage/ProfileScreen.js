@@ -25,8 +25,8 @@ const ProfileScreen = ({navigation, route}) => {
     }, [route.params.username]),
   );
 
-  if (profile === null) {
-    return null;
+  if (profile == null) {
+    return <></>;
   }
 
   return (
