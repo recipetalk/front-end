@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import BottomImageComponent from '../BottomImageComponent';
 import {useNavigation} from '@react-navigation/native';
@@ -70,4 +70,4 @@ const Title = styled.Text`
   margin-bottom: 8px;
 `;
 
-export default HList;
+export default memo(HList);

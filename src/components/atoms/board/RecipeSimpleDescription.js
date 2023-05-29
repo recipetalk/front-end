@@ -4,6 +4,7 @@ import RecipeQuantityLabel from './RecipeQuantityLabel';
 import CreatedDateLabel from '../CreatedDateLabel';
 import LikeAndCommentNum from './LikeAndComment/LikeAndCommentNum';
 import React from 'react';
+import {View} from 'react-native';
 
 export default function RecipeSimpleDescription({
   quantity,
@@ -36,12 +37,14 @@ export default function RecipeSimpleDescription({
         <TitleText>{title}</TitleText>
         <Description>{description}</Description>
       </TouchContainer>
-      <LikeAndCommentNum
-        isLiked={isLiked}
-        commentNum={commentNum}
-        likeNum={likeNum}
-        boardId={boardId}
-      />
+      <View style={{position: 'absolute', bottom: 10}}>
+        <LikeAndCommentNum
+          isLiked={isLiked}
+          commentNum={commentNum}
+          likeNum={likeNum}
+          boardId={boardId}
+        />
+      </View>
     </RecipeSimpleDescriptionContainer>
   );
 }
@@ -63,6 +66,7 @@ const RecipeSimpleDescriptionContainer = styled.View`
   width: 90%;
   height: ${props => (props.exist ? '400px' : '230px')};
   margin: 0 auto;
+  position: relative;
 `;
 
 const TouchContainer = styled.TouchableOpacity`

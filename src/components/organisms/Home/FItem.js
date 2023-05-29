@@ -1,41 +1,58 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import BottomImageComponent from '../BottomImageComponent';
+import LikeAndCommentNum from '../../atoms/board/LikeAndComment/LikeAndCommentNum';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-const FItem = () => {
-  const dummyTag = ['#한식', '#중식', '#일식'];
-
+const FItem = props => {
+  const navigation = useNavigation();
   return (
     <FItemContainer>
-      <FItemImage />
-      <Title>[찌개요리] 자취 8년차 된장찌개 맛있게 끓이는법</Title>
-      <Content>
-        안녕하세요 자취 8년차의 특별한 부대찌개 레시피를. 공개합니다. 여러분
-        요리는 과학이에요. 레시피를 불과 8년차...
-      </Content>
-      <TagContainer>
-        {dummyTag.map((v, i) => {
-          return (
-            <Tag key={i}>
-              <TagText>{v}</TagText>
-            </Tag>
-          );
-        })}
-      </TagContainer>
-
-      <BottomImageComponent isBookmark={true} />
+      <TouchableOpacity
+        onPress={() =>
+          navigation.push('RecipeDetailScreen', {
+            boardId: props?.value?.board?.boardId,
+          })
+        }>
+        {props?.value?.thumbnailUri != null &&
+        props?.value?.thumbnailUri != '' ? (
+          <FItemImage source={{uri: props?.value?.thumbnailUri}} />
+        ) : (
+          <FItemDummyImage />
+        )}
+        <Title>{props?.value?.board?.title}</Title>
+        <Content>{props?.value?.description}</Content>
+      </TouchableOpacity>
+      <LikeAndCommentNum
+        isLiked={props?.value?.board?.isLiked}
+        commentNum={props?.value?.board?.commentCount}
+        likeNum={props?.value?.board?.likeCount}
+        boardId={props?.value?.board?.boardId}
+        bookmarkable={true}
+        isBookmarked={props?.value?.board?.isBookmarked}
+      />
     </FItemContainer>
   );
 };
 
 const FItemContainer = styled.View``;
 
-const FItemImage = styled.View`
+const FItemDummyImage = styled.View`
   width: 100%;
   height: 170px;
 
   border-radius: 8px;
   border: 1px solid black;
+  margin: auto;
+  margin-bottom: 8px;
+`;
+
+const FItemImage = styled.Image`
+  width: 100%;
+  height: 170px;
+
+  border-radius: 8px;
   margin: auto;
   margin-bottom: 8px;
 `;

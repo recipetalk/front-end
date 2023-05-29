@@ -118,7 +118,7 @@ export default function RecipeDetailDescription({
     }
   }, [isEdit]);
 
-  if(recipeInfo?.board == null){
+  if (recipeInfo?.board == null) {
     return null;
   }
 
@@ -259,7 +259,11 @@ const NavigationContainer = styled.View`
   flex-direction: row;
   gap: 1px;
   margin-bottom: 1px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  ${Platform.select({
+    ios: 'box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);',
+    android:
+      'border-top-width: 1px; border-bottom-width: 1px; border-color: #d8d8d8',
+  })}
 `;
 
 const NavigationBox = styled.View`
@@ -268,6 +272,10 @@ const NavigationBox = styled.View`
   background-color: #ffffff;
   justify-content: center;
   align-items: center;
+  ${Platform.select({
+    android: 'border-right-width:1px; border-right-color:#d8d8d8;',
+    ios: undefined,
+  })}
 `;
 
 const NavigationButton = styled.TouchableOpacity``;

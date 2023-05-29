@@ -1,11 +1,16 @@
 import styled from 'styled-components/native';
-import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import {View} from 'react-native';
 import {toggleBoardLikeAction} from '../../../../services/BoardLike';
 import {toggleBoardBookmark} from '../../../../services/BoardBookmark';
-import {useFocusEffect} from '@react-navigation/native';
 
-export default function LikeAndCommentNum({
+function LikeAndCommentNum({
   likeNum,
   isLiked,
   commentNum,
@@ -37,9 +42,7 @@ export default function LikeAndCommentNum({
     setLikeNum(likeNum);
   }, [likeNum, isLiked, isBookmarked]);
 
-
   useLayoutEffect(() => {
-    console.log('렌더링렌더링');
     if (isLiked && liked) {
       setLikeNum(likeNum);
     } else if (isLiked && !liked) {
@@ -127,3 +130,5 @@ const BookmarkImg = styled.Image`
   width: 25px;
   height: 25px;
 `;
+
+export default memo(LikeAndCommentNum);

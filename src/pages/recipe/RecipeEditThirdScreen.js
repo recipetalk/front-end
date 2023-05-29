@@ -151,7 +151,7 @@ const RecipeEditThirdScreen = ({navigation}) => {
           });
       })
       .catch(err => {
-        console.log(err);
+        setExceptionAlert(true);
         setSaving(false);
       });
   };

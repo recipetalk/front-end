@@ -6,7 +6,6 @@ import IngredientsHeader from '../components/organisms/Ingredients/IngredientsHe
 import BarcodeScanner from '../components/templates/barcode/BarcodeScanner';
 
 const ReceiptScreen = () => {
-  const navigation = useNavigation();
 
   return (
     <ReciptScreenContainer>

@@ -5,10 +5,7 @@ import styled from 'styled-components/native';
 const Footer = () => {
   return (
     <FooterContainer>
-      <Top>
-        레시피톡 소개 | 광고문의 | 개인정보처리방침 | 이용약관 | 고객센터
-      </Top>
-      <Bottom>서비스 이용문의 : 070-4896-6416</Bottom>
+      <Bottom>광고 및 기타문의 : recipetalk1@naver.com</Bottom>
       <Bottom>Copyright 레시피톡. All Rights Reserved</Bottom>
       <Image source={require('../../assets/images/Logo_g.png')} />
     </FooterContainer>
@@ -18,9 +15,12 @@ const Footer = () => {
 const FooterContainer = styled.View`
   width: 100%;
   height: 200px;
-
+  padding-top: 15px;
   border-top-width: 1px;
-  border-top-color: black;
+  border-top-color: #e5e5e5;
+  padding-left: 5%;
+  padding-right: 5%;
+  background: white;
 `;
 
 const Top = styled.Text`

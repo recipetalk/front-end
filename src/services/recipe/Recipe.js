@@ -175,13 +175,11 @@ export const modifyRecipeBoard = async ({
 
   let data = new FormData();
 
-  if (thumbnail.uri == '') {
-    await data.append('isThumbnailDeleted', true);
-  }
-
   await data.append('title', title);
 
-  if (thumbnail.fileName != null) {
+  if (thumbnail.uri === '') {
+    await data.append('isThumbnailDeleted', true);
+  } else if (thumbnail.fileName != null) {
     const resizedImage = await ImageResizer.createResizedImage(
       thumbnail.uri,
       1000,
@@ -197,6 +195,8 @@ export const modifyRecipeBoard = async ({
     };
     await data.append('isThumbnailDeleted', true);
     await data.append('thumbnailImg', image);
+  } else {
+    await data.append('isThumbnailDeleted', false);
   }
 
   await data.append('level', level);
@@ -209,7 +209,7 @@ export const modifyRecipeBoard = async ({
   if (secondCategory != null) {
     await data.append('situation', secondCategory);
   }
-  console.log(data);
+  console.log('modifyRequest : ', data);
   return await multiPartAPI.put(url, data, config);
 };
 
@@ -265,9 +265,14 @@ export const modifyRecipeRows = async (recipeId, recipeRow, isLast, index) => {
   return await multiPartAPI.patch(url, body, config);
 };
 
-
-export const RecipeRemoveRequest = async (recipeId) => {
+export const RecipeRemoveRequest = async recipeId => {
   const url = `/api/board/recipe/${recipeId}`;
 
   return await jsonAPI.delete(url, config);
-}
+};
+
+export const getRecipePick = async () => {
+  const url = '/api/board/recipe/pick';
+
+  return await jsonAPI.get(url, config);
+};
