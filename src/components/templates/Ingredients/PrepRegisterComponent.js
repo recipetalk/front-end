@@ -1,14 +1,18 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image} from 'react-native';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 import {useToast} from 'react-native-toast-notifications';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {
   addIngredientTrimming,
   addRowIngredientTrimming,
+  editIngredientTrimming,
+  editRowIngredientTrimming,
   hardDelete,
 } from '../../../services/Ingredients';
+import {isEmptyArr} from '../../../utils/Validation';
 import {ImageAndCameraFun} from '../../atoms/functions/ImageAndCameraFun';
 import Line from '../../atoms/Line';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
@@ -18,21 +22,40 @@ const PrepRegisterComponent = () => {
   const router = useRoute();
   const navigation = useNavigation();
   const toast = useToast();
+  const prepState = useSelector(state => state.prep);
   const [index, setIndex] = useState(null);
   const [isAlert, setAlert] = useState(false);
-  const [prepInfo, setPrepInfo] = useState({
-    title: '',
-    desc: '',
-    img: '',
-  });
+  const [prepInfo, setPrepInfo] = useState(
+    isEmptyArr(prepState)
+      ? {
+          title: '',
+          desc: '',
+          img: '',
+        }
+      : {
+          title: prepState.boardDTO.title,
+          desc: prepState.description,
+          img: prepState.thumbnailURI,
+        },
+  );
 
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      description: '',
-      photo: {uri: ''},
-    },
-  ]);
+  const [rows, setRows] = useState(
+    isEmptyArr(prepState)
+      ? [
+          {
+            id: 1,
+            description: '',
+            photo: {uri: ''},
+          },
+        ]
+      : prepState.trimmingRows,
+  );
+
+  const [thumbnailPhoto, setThumbnailPhoto] = useState(
+    isEmptyArr(prepState)
+      ? {photo: {uri: ''}}
+      : {photo: {uri: prepState.thumbnailURI}},
+  );
 
   const addComponent = () => {
     let newArr = [...rows];
@@ -49,7 +72,7 @@ const PrepRegisterComponent = () => {
     let newArr = [...rows];
 
     newArr[index][property] = e.nativeEvent.text;
-    console.log(newArr[index][property]);
+    console.log('PrepRegisterComponent', newArr[index][property]);
     setRows(newArr);
   };
 
@@ -57,7 +80,7 @@ const PrepRegisterComponent = () => {
     let newArr = [...rows];
 
     newArr[index].photo = value;
-    console.log(value);
+    console.log('PrepRegisterComponent', value);
     setRows(newArr);
   };
 
@@ -67,37 +90,81 @@ const PrepRegisterComponent = () => {
     setRows(newArr);
   };
 
-  // 모든 데이터 저장하는 함수
-  const registerPrepOrder = () => {
-    addIngredientTrimming({
+  const registerPrepOrder = async () => {
+    const ingredient = {
       ingredientId: router.params.ingredientID,
       title: prepInfo.title,
       desc: prepInfo.desc,
-      img: '',
-    })
-      .then(result => {
-        rows.map(item => {
-          addRowIngredientTrimming({
-            ingredientId: router.params.ingredientID,
-            trimmingId: result.data.ingredientTrimmingId,
-            itemList: item,
-          }).catch(error => {
-            console.log(error.response);
-            hardDelete();
-          });
+      img: thumbnailPhoto,
+    };
+
+    await addIngredientTrimming(ingredient)
+      .then(async res => {
+        const data = JSON.parse(res.request._response);
+
+        const result = Promise.all(
+          rows.map(item => {
+            return addRowIngredientTrimming({
+              ingredientId: router.params.ingredientID,
+              trimmingId: data.ingredientTrimmingId,
+              itemList: item,
+            });
+          }),
+        );
+
+        result.then(res2 => {
+          console.log('PrepRegisterComponent res2 is ', res2);
+          navigation.goBack();
+        });
+        result.catch(error => {
+          console.error('PrepRegisterComponent error', error);
+          hardDelete(data.ingredientTrimmingId);
         });
       })
-      .catch(error => {
-        console.error(error.response);
-      });
+      .catch(error => console.log('PrepRegisterComponent', error.response));
+  };
 
-    navigation.goBack();
+  const editPrepOrder = async () => {
+    const newData = {
+      trimmingId: prepState.boardDTO.boardId,
+      title: prepInfo.title,
+      description: prepInfo.desc,
+      thumbnail: thumbnailPhoto,
+      isThumbnailDeleted: true,
+    };
+
+    await editIngredientTrimming(newData)
+      .then(async res => {
+        const result = Promise.all(
+          rows.map((item, index) => {
+            return editRowIngredientTrimming({
+              ingredientId: prepState.ingredient.ingredientId,
+              trimmingId: prepState.boardDTO.boardId,
+              itemList: item,
+              isLast: rows.length === index + 1,
+            });
+          }),
+        );
+
+        result.then(navigation.goBack());
+        result.catch(error => {
+          console.error('error', error);
+          hardDelete(prepState.boardDTO.boardId);
+        });
+      })
+      .catch(error => console.error(error));
   };
 
   return (
     <>
       <IngredientsHeader title="손질법" isTitleOnly={true} />
-      <PrepIntro state={prepInfo} setState={setPrepInfo} />
+      <PrepIntro
+        isEdit={true}
+        state={prepInfo}
+        setThumbnailPhoto={setThumbnailPhoto}
+        thumbnailPhoto={thumbnailPhoto}
+        setState={setPrepInfo}
+      />
       <Line />
       <ImageAndCameraFun
         toast={toast}
@@ -178,7 +245,10 @@ const PrepRegisterComponent = () => {
               <CancelBtn onPress={() => navigation.goBack()}>
                 <CancelText>취소</CancelText>
               </CancelBtn>
-              <SaveBtn onPress={registerPrepOrder}>
+              <SaveBtn
+                onPress={
+                  isEmptyArr(prepState) ? registerPrepOrder : editPrepOrder
+                }>
                 <SaveText>저장</SaveText>
               </SaveBtn>
             </BtnContainer>

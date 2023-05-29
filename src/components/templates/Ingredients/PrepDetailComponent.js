@@ -1,11 +1,6 @@
 import {useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from 'react-native';
+import {FlatList, KeyboardAvoidingView, Platform} from 'react-native';
 import styled from 'styled-components/native';
 import {
   getEfficacy,
@@ -14,7 +9,6 @@ import {
 import ExpandableText from '../../atoms/board/ExpandableText';
 import Line from '../../atoms/Line';
 import SimpleProfileWithDescription from '../../atoms/profile/SimpleProfileWithDescription';
-import BottomImageComponent from '../../organisms/BottomImageComponent';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import PrepOrderComponent from '../../organisms/PrepOrderComponent';
 import {CommentListComponent} from '../board/CommentListComponent';
@@ -22,10 +16,12 @@ import {getParentComment} from '../../../services/Comment';
 import {CommentWriteComponent} from '../../organisms/comment/CommentWriteComponent';
 import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
 import LikeAndCommentNum from '../../atoms/board/LikeAndComment/LikeAndCommentNum';
+import {useDispatch} from 'react-redux';
+import {__getPrepDetail} from '../../../store/Ingredients/PrepSlice';
 
 const PrepDetailComponent = () => {
   const router = useRoute();
-
+  const dispatch = useDispatch();
   const [efficacyInfo, setEfficacyInfo] = useState(null);
   const [detailInfo, setDetailInfo] = useState(null);
   const [isClicked, setClicked] = useState(false);
@@ -60,6 +56,10 @@ const PrepDetailComponent = () => {
     });
   }, [router.params.boardId]);
 
+  useEffect(() => {
+    dispatch(__getPrepDetail(router.params.boardId));
+  }, [dispatch, router.params.boardId]);
+
   const onRefresh = async () => {
     setCommentRefresh(true);
     await getParentComment(router.params.boardId, 0).then(res => {
@@ -92,15 +92,15 @@ const PrepDetailComponent = () => {
     <>
       <Container>
         <IngredientsHeader
-          routerInfo={router.params.ingredientId}
           title="손질법"
           isTitleOnly={false}
           btnTextValue="수정"
           screen="PrepRegister"
         />
         <IngredientsInfo
+          isEdit={false}
           ingredientName={efficacyInfo.ingredientName}
-          thumbnailURI={detailInfo.thumbnailURI}
+          thumbnail={detailInfo.thumbnailURI}
         />
         <Line />
 

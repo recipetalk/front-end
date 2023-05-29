@@ -1,18 +1,26 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useEffect} from 'react';
 import {ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
-import {registerIngredient} from '../../../services/Ingredients';
+import {getBarcode, registerIngredient} from '../../../services/Ingredients';
 import {addEmptyIngredients} from '../../../store/Ingredients/IngredientsSlice';
-import Line from '../../atoms/Line';
 import DirectlyRegisterIngredients from '../../organisms/Ingredients/DirectlyRegisterIngredients';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 
 const RegisterMyIngredientsComponent = () => {
+  const router = useRoute();
   const dispatch = useDispatch();
   const ingredientsList = useSelector(state => state.ingredients);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (router.params !== undefined) {
+      getBarcode(router.params.barcodeNumber)
+        .then(res => console.log(res))
+        .catch(error => console.error(error.response));
+    }
+  }, [router.params]);
 
   const addDirectly = () => {
     dispatch(addEmptyIngredients());
@@ -29,18 +37,6 @@ const RegisterMyIngredientsComponent = () => {
         isTitleOnly={true}
         btnTextValue=""
       />
-
-      <ScannerContainer>
-        <ScannerSection>
-          <ScannerImage
-            source={require('../../../assets/images/Barcode_Shooting_f09.png')}
-          />
-          <ScannerText>바코드 스캔하기</ScannerText>
-        </ScannerSection>
-      </ScannerContainer>
-
-      <Line />
-
       <RegisterIngredientsDirectlyContainer>
         <RegisterIngredientsDirectlyText>
           재료 직접 추가
@@ -111,6 +107,9 @@ const RegisterMyIngredientsComponent = () => {
           </TouchContainer>
         </DirectlyRegisterIngredientsContainer>
       </ScrollView>
+      <BarcodeRegisterBtn onPress={() => navigation.navigate('Receipt')}>
+        <CustomImage source={require('../../../assets/images/Receipt.png')} />
+      </BarcodeRegisterBtn>
     </RegisterMyIngredientsComponentContainer>
   );
 };
@@ -129,40 +128,7 @@ const DirectlyRegisterIngredientsText = styled.Text`
 `;
 
 const RegisterMyIngredientsComponentContainer = styled.View`
-  margin-bottom: 600px;
-`;
-
-const ScannerContainer = styled.View`
-  width: 100%;
-  height: 170px;
-  background-color: #ffffff;
-`;
-
-const ScannerSection = styled.View`
-  width: 250px;
-  height: 135px;
-
-  background: #fff4e5;
-
-  border: 1px solid #f09311;
-  border-radius: 5px;
-  margin: auto;
-  justify-content: center;
-`;
-
-const ScannerText = styled.Text`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 14px;
-  font-family: 'Pretendard Variable';
-  color: #f09311;
-  text-align: center;
-`;
-
-const ScannerImage = styled.Image`
-  width: 40px;
-  height: 40px;
-  margin: 0 auto 10px auto;
+  margin-bottom: 230px;
 `;
 
 const RegisterIngredientsDirectlyContainer = styled.View`
@@ -204,4 +170,22 @@ const IngredientRegisterButtonText = styled.Text`
 `;
 
 const TouchContainer = styled.TouchableOpacity``;
+
+const BarcodeRegisterBtn = styled.TouchableOpacity`
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background: #333333;
+  border-radius: 100px;
+  right: 20px;
+  bottom: 20px;
+
+  align-items: center;
+  justify-content: center;
+`;
+
+const CustomImage = styled.Image`
+  width: 40px;
+  height: 40px;
+`;
 export default RegisterMyIngredientsComponent;
