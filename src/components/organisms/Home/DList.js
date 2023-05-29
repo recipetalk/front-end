@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import React, {useEffect, useMemo} from 'react';
+import React, {memo, useEffect, useMemo} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import MiniBottomImageComponent from '../MiniBottomImageComponent';
 
@@ -18,6 +18,14 @@ const DList = props => {
     [props?.value?.id, props?.value?.boardId],
   );
 
+  const mainDetermineBoardId = useMemo(
+    () =>
+      determineBoardId === undefined
+        ? props?.value?.board?.boardId
+        : determineBoardId,
+    [props?.value?.board?.boardId, determineBoardId],
+  );
+
   const determineIngredientId = useMemo(
     () =>
       props?.value?.ingredientId === undefined
@@ -26,20 +34,35 @@ const DList = props => {
     [props?.value?.ingredientId, props.ingredientId],
   );
 
+  const title = useMemo(
+    () =>
+      props?.value?.title === undefined
+        ? props?.value?.board?.title
+        : props?.value?.title,
+    [props?.value?.board?.title, props?.value?.title],
+  );
+
   return (
     <DListContainer
       onPress={() =>
         navigation.push(determineNav, {
-          boardId: determineBoardId,
+          boardId: mainDetermineBoardId,
           ingredientId: determineIngredientId,
         })
       }>
       <ImagePart />
 
       <InfoPart>
-        <Titie>{props?.value?.title}</Titie>
+        <Titie>{title}</Titie>
         <UserID>{props?.value?.description}</UserID>
-        <MiniBottomImageComponent value={props.value} isBookmark={false} />
+        {props.value?.board?.commentCount !== undefined ? (
+          <MiniBottomImageComponent
+            value={props.value?.board}
+            isBookmark={false}
+          />
+        ) : (
+          <MiniBottomImageComponent value={props.value} isBookmark={false} />
+        )}
       </InfoPart>
     </DListContainer>
   );
@@ -67,13 +90,22 @@ const DListContainer = styled.TouchableOpacity`
   background-color: #ffffff;
 `;
 
-const ImagePart = styled.View`
+const ImagePart = styled.Image`
   width: 98px;
   height: 98px;
   border-radius: 8px;
   background-color: gray;
   opacity: 0.3;
 `;
+
+const ImageDummyPart = styled.View`
+  width: 98px;
+  height: 98px;
+  border-radius: 8px;
+  background-color: gray;
+  opacity: 0.3;
+`;
+
 
 const InfoPart = styled.View`
   width: 205px;
@@ -128,4 +160,4 @@ const CommentPart = styled.View`
   display: flex;
   flex-direction: row;
 `;
-export default DList;
+export default memo(DList);

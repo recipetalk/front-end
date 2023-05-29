@@ -1,48 +1,85 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import BottomImageComponent from '../BottomImageComponent';
+import MiniBottomImageComponent from '../MiniBottomImageComponent';
+import {TouchableOpacity, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const EList = props => {
+  const navigation = useNavigation();
   return (
     <EListContainer>
-      <CustomView />
-      <Title>[찌개요리] 자취 8년차 된장찌개</Title>
-      <Content>맛있는 된장찌개의 비법은 쌈장입..</Content>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.push('RecipeDetailScreen', {
+            boardId: props?.value?.board?.boardId,
+          })
+        }>
+        {props?.value?.thumbnailUri != null &&
+        props?.value?.thumbnailUri != '' ? (
+          <CustomView source={{uri: props?.value?.thumbnailUri}} />
+        ) : (
+          <CustomDummyView />
+        )}
+        <Title numberOfLines={2}>{props?.value?.board?.title}</Title>
+        <Content numberOfLines={1}>{props?.value?.description}</Content>
+      </TouchableOpacity>
       <Line />
 
-      <BottomImageComponent isBookmark={false} />
+      <View style={{position: 'absolute', bottom: -1}}>
+        <MiniBottomImageComponent
+          value={props.value?.board}
+          isBookmark={false}
+        />
+      </View>
     </EListContainer>
   );
 };
 
-const EListContainer = styled.SafeAreaView`
+const EListContainer = styled.View`
   margin-right: 20px;
+  position: relative;
+  height: 200px;
 `;
 
-const CustomView = styled.View`
+const CustomDummyView = styled.View`
   width: 200px;
   height: 100px;
 
   border-radius: 8px;
   border: 1px solid black;
+  margin-bottom: 8px;
+`;
 
+const CustomView = styled.Image`
+  width: 200px;
+  height: 100px;
+
+  border-radius: 8px;
   margin-bottom: 8px;
 `;
 
 const Title = styled.Text`
-  margin-bottom: 8px;
-  font-family: 'Pretendard Variable';
+  font-family: 'Pretendard variable';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  width: 200px;
 `;
 
 const Content = styled.Text`
   margin-bottom: 15px;
+  margin-top: 5px;
   font-family: 'Pretendard Variable';
+  color: #a0a0a0;
 `;
 
 const Line = styled.View`
   border-bottom-width: 1px;
-  border-bottom-color: gray;
-  margin-bottom: 8px;
+  border-bottom-color: #e1e1e1;
+  width: 100%;
+  bottom: 20px;
+  position: absolute;
 `;
 
 export default EList;

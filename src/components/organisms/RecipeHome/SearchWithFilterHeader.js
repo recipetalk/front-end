@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {Platform, TouchableWithoutFeedback} from 'react-native';
 import styled from 'styled-components/native';
 import SearchInput from '../../atoms/SearchInput';
@@ -10,6 +10,7 @@ import {RecipeSortList} from '../../../category/recipe/RecipeSortList';
 import {RecipeSituationList} from '../../../category/recipe/RecipeSituationList';
 import {setSortCategory} from '../../../store/RecipeHome/SortCategory';
 import {setSituationCategory} from '../../../store/RecipeHome/SituationCategory';
+import {setGoToRecipeHome} from '../../../store/RecipeHome/IsGoToRecipeHome';
 
 const SearchWithFilterHeader = () => {
   const firstClicked = useSelector(state => state.firstFilterClicked.value);
@@ -17,6 +18,7 @@ const SearchWithFilterHeader = () => {
   const situationCategory = useSelector(state => state.situationCategory.value);
   const [firstCategoryValue, setFirstCategoryValue] = useState(null);
   const [secondCategoryValue, setSecondCategoryValue] = useState(null);
+  const isGoToRecipeHome = useSelector(state => state.isGoToRecipeHome.value);
   const dispatch = useDispatch();
 
   const firstFilter = [
@@ -44,6 +46,14 @@ const SearchWithFilterHeader = () => {
   useEffect(() => {
     dispatch(setSituationCategory(secondCategoryValue));
   }, [secondCategoryValue]);
+
+  useEffect(() => {
+    if (isGoToRecipeHome) {
+      setFirstCategoryValue(sortCategory);
+      setSecondCategoryValue(situationCategory);
+      dispatch(setGoToRecipeHome(false));
+    }
+  }, [isGoToRecipeHome]);
 
   return (
     <SearchHeaderContainer>

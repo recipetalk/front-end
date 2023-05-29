@@ -43,12 +43,6 @@ const BarcodeScanner = () => {
     setAlertVisible(true);
   };
 
-  useEffect(() => {
-    console.log('test');
-    setAlertVisible(true);
-    setScanValue(1);
-  }, [isFocused]);
-
   console.log(isAlertVisible);
 
   const moveAndCloseAlert = () => {

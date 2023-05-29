@@ -12,9 +12,15 @@ const IngredientsHeader = props => {
         <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
           <BackBtn onPress={() => navigation.goBack()}>
             {props.isTransparent ? (
-              <Back source={require('../../../assets/images/Back_w.png')} />
+              <Back
+                source={require('../../../assets/images/Back_w.png')}
+                resizeMode={'contain'}
+              />
             ) : (
-              <Back source={require('../../../assets/images/Back.png')} />
+              <Back
+                source={require('../../../assets/images/Back.png')}
+                resizeMode={'contain'}
+              />
             )}
           </BackBtn>
           <HeaderTitle isTransparent={props.isTransparent}>
@@ -56,7 +62,10 @@ const TitleContainer = styled.View`
 
 const BackBtn = styled.TouchableOpacity``;
 
-const Back = styled.Image``;
+const Back = styled.Image`
+  width: 20px;
+  height: 20px;
+`;
 
 const HeaderTitle = styled.Text`
   font-style: normal;
