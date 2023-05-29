@@ -73,13 +73,80 @@ export const addRowIngredientTrimming = async rowIngredientInfo => {
   return await multiPartAPI.post(url, body, config);
 };
 
-// 식재료 손질법 수정 | patch | /api/board/ingredient/{ingredientId}/trimming/{trimmingId}
+export const editIngredientTrimming = async ingredientInfo => {
+  const url = `/api/board/ingredient/trimming/${ingredientInfo.trimmingId}`;
 
-// 식재료 손질법 행 수정 | patch | /api/board/ingredient/{ingredientId}/trimming/{trimmingId}/row
+  const body = new FormData();
+
+  await body.append('title', ingredientInfo.title);
+  await body.append('description', ingredientInfo.description);
+
+  if (
+    ingredientInfo.thumbnail.photo.uri != null &&
+    ingredientInfo.thumbnail.photo.uri !== ''
+  ) {
+    const resizedImage = await ImageResizer.createResizedImage(
+      ingredientInfo.thumbnail.photo.uri,
+      1000,
+      1000,
+      'JPEG',
+      100,
+    );
+
+    const image = {
+      uri: resizedImage.uri,
+      type: 'image/jpeg',
+      name: ingredientInfo.thumbnail.photo.fileName,
+    };
+
+    await body.append('thumbnail', image);
+  }
+
+  await body.append('isThumbnailDeleted', ingredientInfo.isThumbnailDeleted);
+
+  return await multiPartAPI.patch(url, body, config);
+};
+
+export const editRowIngredientTrimming = async rowIngredientInfo => {
+  const url = `/api/board/ingredient/${rowIngredientInfo.ingredientId}/trimming/${rowIngredientInfo.trimmingId}/row`;
+  const body = new FormData();
+
+  await body.append('description', rowIngredientInfo.itemList.description);
+  await body.append('trimmingSeq', rowIngredientInfo.itemList.trimmingSeq);
+  await body.append('id', rowIngredientInfo.itemList.id);
+
+  if (rowIngredientInfo.itemList.photo.fileName !== undefined) {
+    const resizedImage = await ImageResizer.createResizedImage(
+      rowIngredientInfo.itemList.photo.uri,
+      1000,
+      1000,
+      'JPEG',
+      100,
+    );
+
+    const image = {
+      uri: resizedImage.uri,
+      type: 'image/jpeg',
+      name: rowIngredientInfo.itemList.photo.fileName,
+    };
+
+    await body.append('img', image);
+  } else {
+    if (
+      rowIngredientInfo.itemList.photo.uri !== null &&
+      rowIngredientInfo.itemList.photo.uri !== ''
+    ) {
+      body.append('imgUri', rowIngredientInfo.itemList.photo.uri);
+    }
+  }
+  await body.append('isImgDeleted', false);
+  await body.append('isLast', rowIngredientInfo.isLast);
+
+  return await multiPartAPI.patch(url, body, config);
+};
 
 // 식재료 손질법 삭제 | delete
 
-// 식재료 통한 식재료 손질법 조회
 export const getIngredientsPrep = async ingredientId => {
   const url = `/api/board/ingredient/${ingredientId}/trimming?page=0`;
 

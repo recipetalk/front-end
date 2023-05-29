@@ -8,6 +8,8 @@ import styled from 'styled-components/native';
 import {
   addIngredientTrimming,
   addRowIngredientTrimming,
+  editIngredientTrimming,
+  editRowIngredientTrimming,
   hardDelete,
 } from '../../../services/Ingredients';
 import {isEmptyArr} from '../../../utils/Validation';
@@ -46,16 +48,14 @@ const PrepRegisterComponent = () => {
             photo: {uri: ''},
           },
         ]
-      : [
-          {
-            id: 1,
-            description: '',
-            photo: {uri: ''},
-          },
-        ],
+      : prepState.trimmingRows,
   );
 
-  const [thumbnailPhoto, setThumbnailPhoto] = useState({photo: {uri: ''}});
+  const [thumbnailPhoto, setThumbnailPhoto] = useState(
+    isEmptyArr(prepState)
+      ? {photo: {uri: ''}}
+      : {photo: {uri: prepState.thumbnailURI}},
+  );
 
   const addComponent = () => {
     let newArr = [...rows];
@@ -124,12 +124,42 @@ const PrepRegisterComponent = () => {
       .catch(error => console.log('PrepRegisterComponent', error.response));
   };
 
-  const editPrepOrder = async () => {};
+  const editPrepOrder = async () => {
+    const newData = {
+      trimmingId: prepState.boardDTO.boardId,
+      title: prepInfo.title,
+      description: prepInfo.desc,
+      thumbnail: thumbnailPhoto,
+      isThumbnailDeleted: true,
+    };
+
+    await editIngredientTrimming(newData)
+      .then(async res => {
+        const result = Promise.all(
+          rows.map((item, index) => {
+            return editRowIngredientTrimming({
+              ingredientId: prepState.ingredient.ingredientId,
+              trimmingId: prepState.boardDTO.boardId,
+              itemList: item,
+              isLast: rows.length === index + 1,
+            });
+          }),
+        );
+
+        result.then(navigation.goBack());
+        result.catch(error => {
+          console.error('error', error);
+          hardDelete(prepState.boardDTO.boardId);
+        });
+      })
+      .catch(error => console.error(error));
+  };
 
   return (
     <>
       <IngredientsHeader title="손질법" isTitleOnly={true} />
       <PrepIntro
+        isEdit={true}
         state={prepInfo}
         setThumbnailPhoto={setThumbnailPhoto}
         thumbnailPhoto={thumbnailPhoto}

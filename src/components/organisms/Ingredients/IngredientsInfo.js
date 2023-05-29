@@ -18,7 +18,7 @@ const IngredientsInfo = ({
   };
 
   const renderFunc = () => {
-    if (isEdit) {
+    if (thumbnail === null || thumbnail === '') {
       return (
         <>
           <ImageSelectBox
@@ -31,11 +31,14 @@ const IngredientsInfo = ({
       );
     }
 
-    if (thumbnail === undefined) {
-      <ImageDummyView />;
-    } else {
-      return <ImageView source={{url: thumbnail}} />;
-    }
+    return (
+      <TouchContainer
+        onPress={() => {
+          isEdit ? setAlert(true) : null;
+        }}>
+        <ImageView source={{url: thumbnail}} />
+      </TouchContainer>
+    );
   };
 
   return (
@@ -122,4 +125,6 @@ const ImageSelectBox = styled.TouchableOpacity`
   align-items: center;
   border-radius: 8px;
 `;
+
+const TouchContainer = styled.TouchableOpacity``;
 export default IngredientsInfo;

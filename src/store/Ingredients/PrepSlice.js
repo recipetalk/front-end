@@ -51,9 +51,9 @@ const PrepSlice = createSlice({
       return previousState.filter(item => item.trimmingSeq !== action.payload);
     },
 
-    initPrep: (previousState, action) => {
+    resetPrep: (previousState, action) => {
       console.log(previousState, action);
-      return previousState;
+      return [];
     },
   },
   extraReducers: {
@@ -63,6 +63,16 @@ const PrepSlice = createSlice({
     [__getPrepDetail.fulfilled.type]: (state, action) => {
       console.log(state, action.payload);
       state = action.payload;
+      const convertTrimmingRows = action.payload.trimmingRows.map(value => {
+        return {
+          description: value.description,
+          id: value.id,
+          photo: {uri: value.imgUri},
+          trimmingSeq: value.trimmingSeq,
+        };
+      });
+
+      state = {...action.payload, trimmingRows: convertTrimmingRows};
       return state;
     },
     [__getPrepDetail.rejected.type]: state => {
@@ -71,6 +81,6 @@ const PrepSlice = createSlice({
   },
 });
 
-export const {addEmptyPrep, addPrep, registerPrep, deletePrep, initPrep} =
+export const {addEmptyPrep, addPrep, registerPrep, deletePrep, resetPrep} =
   PrepSlice.actions;
 export default PrepSlice.reducer;
