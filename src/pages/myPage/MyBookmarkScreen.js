@@ -10,7 +10,7 @@ import {toggleBoardLikeAction} from '../../services/BoardLike';
 import {toggleBoardBookmark} from '../../services/BoardBookmark';
 
 export const MyBookmarkScreen = ({navigation}) => {
-  const [firstClicked, setFirstClicked] = useState({id: 1});
+  const [firstClicked, setFirstClicked] = useState({key: 1});
   const [bookmark, setBookmark] = useState([]);
   const [page, setPage] = useState(0);
   const [last, setLast] = useState(false);
@@ -19,14 +19,14 @@ export const MyBookmarkScreen = ({navigation}) => {
   const dummy = [1, 2, 3, 4, 5];
   const firstFilter = [
     {
-      id: 1,
-      onPress: () => setFirstClicked({id: 1}),
+      key: 1,
+      onPress: () => setFirstClicked({key: 1}),
       title: '최신',
       value: 'NEW',
     },
     {
-      id: 2,
-      onPress: () => setFirstClicked({id: 2}),
+      key: 2,
+      onPress: () => setFirstClicked({key: 2}),
       title: '인기',
       value: 'POPULAR',
     },
@@ -38,7 +38,7 @@ export const MyBookmarkScreen = ({navigation}) => {
 
   const init = async () => {
     setLoading(() => true);
-    await getBoardBookmarkList(0, firstFilter[firstClicked.id - 1].value)
+    await getBoardBookmarkList(0, firstFilter[firstClicked.key - 1].value)
       .then(res => {
         const data = JSON.parse(res.request._response);
         setBookmark(() => data.content);
@@ -60,7 +60,7 @@ export const MyBookmarkScreen = ({navigation}) => {
     await setLoading(() => true);
     await getBoardBookmarkList(
       page,
-      firstFilter[firstClicked.id - 1].value,
+      firstFilter[firstClicked.key - 1].value,
     ).then(res => {
       const data = JSON.parse(res.request._response);
       setBookmark(boardLikes => boardLikes.concat(data.content));
@@ -83,7 +83,7 @@ export const MyBookmarkScreen = ({navigation}) => {
             clickedBackgroundColor={'#666666'}
             textColor={'#666666'}
             clickedTextColor={'#D8D8D8'}
-            clickedNumber={firstClicked.id}
+            clickedNumber={firstClicked.key}
             item={value}
           />
         ))}

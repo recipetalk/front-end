@@ -264,3 +264,10 @@ export const modifyRecipeRows = async (recipeId, recipeRow, isLast, index) => {
   console.log('modifyRecipeRow : ', body);
   return await multiPartAPI.patch(url, body, config);
 };
+
+
+export const RecipeRemoveRequest = async (recipeId) => {
+  const url = `/api/board/recipe/${recipeId}`;
+
+  return await jsonAPI.delete(url, config);
+}

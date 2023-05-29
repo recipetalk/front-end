@@ -10,7 +10,7 @@ import {getIngredientPrepByUsername} from '../../services/Ingredients';
 import {FlatList} from 'react-native';
 
 export const MyPrepScreen = ({navigation}) => {
-  const [firstClicked, setFirstClicked] = useState({id: 1});
+  const [firstClicked, setFirstClicked] = useState({key: 1});
   const [prep, setPrep] = useState([]);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(20);
@@ -20,14 +20,14 @@ export const MyPrepScreen = ({navigation}) => {
   const dummy = [1, 2, 3, 4, 5];
   const firstFilter = [
     {
-      id: 1,
-      onPress: () => setFirstClicked({id: 1}),
+      key: 1,
+      onPress: () => setFirstClicked({key: 1}),
       title: '최신',
       value: 'NEW',
     },
     {
-      id: 2,
-      onPress: () => setFirstClicked({id: 2}),
+      key: 2,
+      onPress: () => setFirstClicked({key: 2}),
       title: '인기',
       value: 'POPULAR',
     },
@@ -39,10 +39,10 @@ export const MyPrepScreen = ({navigation}) => {
 
   const init = async () => {
     const username = (await loadLoginFromStorage()).username;
-    console.log(firstFilter[firstClicked.id - 1].value, 0, limit, username);
+    console.log(firstFilter[firstClicked.key - 1].value, 0, limit, username);
     await getIngredientPrepByUsername(
       username,
-      firstFilter[firstClicked.id - 1].value,
+      firstFilter[firstClicked.key - 1].value,
       0,
       limit,
     )
@@ -70,7 +70,7 @@ export const MyPrepScreen = ({navigation}) => {
     const username = (await loadLoginFromStorage()).username;
     await getIngredientPrepByUsername(
       username,
-      firstFilter[firstClicked.id].value,
+      firstFilter[firstClicked.key - 1].value,
       offset,
       limit,
     )
@@ -97,7 +97,7 @@ export const MyPrepScreen = ({navigation}) => {
               clickedBackgroundColor={'#666666'}
               textColor={'#666666'}
               clickedTextColor={'#D8D8D8'}
-              clickedNumber={firstClicked.id}
+              clickedNumber={firstClicked.key}
               item={value}
             />
           ))}

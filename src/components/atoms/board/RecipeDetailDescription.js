@@ -38,6 +38,7 @@ export default function RecipeDetailDescription({
   setMine,
   isEdit,
   setEdit,
+  setWriter,
 }) {
   const [isFirst, setFirst] = useState(false);
   const [isSecond, setSecond] = useState(false);
@@ -62,6 +63,7 @@ export default function RecipeDetailDescription({
       const loginInfo = await loadLoginFromStorage();
       console.log(data);
       setMine(loginInfo.username === data?.board?.writer?.username);
+      setWriter(data?.board?.writer?.username);
     });
     //RecipeIngredient
     getRecipeIngredients(boardId)
@@ -116,6 +118,10 @@ export default function RecipeDetailDescription({
     }
   }, [isEdit]);
 
+  if(recipeInfo?.board == null){
+    return null;
+  }
+
   return (
     <RecipeDetailDescriptionContainer>
       {recipeInfo?.thumbnailUri != null && recipeInfo?.thumbnailUri !== '' ? (
@@ -139,18 +145,18 @@ export default function RecipeDetailDescription({
               ]?.label
             }] ` + recipeInfo?.board?.title}
           </Title>
-          <RecipeQuantityLabel quantity={4} />
+          <RecipeQuantityLabel quantity={recipeInfo?.quantity} />
         </TitleContainer>
         <ExpandableText text={recipeInfo?.description} />
         {/*<Hashtag hashtags={['#한식', '#한식', '#한식']} />*/}
         <LikeAndCountNumContainer>
           <LikeAndCommentNum
-            likeNum={recipeInfo.board?.likeCount}
-            commentNum={recipeInfo.board?.commentCount}
+            likeNum={recipeInfo.board.likeCount}
+            commentNum={recipeInfo.board.commentCount}
             bookmarkable={true}
-            isBookmarked={recipeInfo.board?.isBookmarked}
-            isLiked={recipeInfo.board?.isLiked}
-            boardId={recipeInfo.board?.boardId}
+            isBookmarked={recipeInfo.board.isBookmarked}
+            isLiked={recipeInfo.board.isLiked}
+            boardId={recipeInfo.board.boardId}
           />
         </LikeAndCountNumContainer>
       </DescriptionDetailContainer>

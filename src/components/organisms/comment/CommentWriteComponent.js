@@ -55,7 +55,8 @@ export const CommentWriteComponent = ({
   return (
     <Container isAbsolute={isAbsolute}>
       <CommentPart>
-        {loadProfile?.profileImageURI != '' ? (
+        {loadProfile?.profileImageURI != null &&
+        loadProfile?.profileImageURI != '' ? (
           <UserImage source={{uri: loadProfile?.profileImageURI}} />
         ) : (
           <UserImageDummy />

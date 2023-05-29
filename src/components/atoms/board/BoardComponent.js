@@ -1,30 +1,47 @@
 import SimpleProfileWithDescription from '../profile/SimpleProfileWithDescription';
 import RecipeSimpleDescription from './RecipeSimpleDescription';
 import styled from 'styled-components/native';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {RecipeSortList} from '../../../category/recipe/RecipeSortList';
 
-export default function BoardComponent({navigation}) {
+function BoardComponent({navigation, item}) {
   const BoardComponentContainer = styled.View`
     padding-top: 15px;
     gap: 15px;
     background-color: #ffffff;
   `;
-
+  useEffect(() => {
+    console.log(item.board);
+  }, []);
   return (
     <BoardComponentContainer>
       <SimpleProfileWithDescription
-        nickname={'사용자아이디0000'}
-        description={'4아이 엄마~^^'}
+        nickname={item?.board?.writer?.nickname}
+        description={item?.board?.writer?.description}
+        profileURI={item?.board?.writer?.profileImageURI}
+        username={item?.board?.writer?.username}
+        navigation={navigation}
+        isFollowing={item?.board?.writer?.isFollowing}
       />
       <RecipeSimpleDescription
-        title={'[찌개요리]자취 8년차 된장찌개 맛있게 끓이는 법'}
-        description={
-          '안녕하세요 자취 8년차의 특별한 부대찌개 레시피를. 공개합니다. 여러분 요리는 과학이에요. 레시피를 불과 8년차...'
+        title={
+          `[${
+            RecipeSortList[
+              RecipeSortList.findIndex(data => data.value === item?.sort)
+            ]?.label
+          }] ` + item.board.title
         }
-        quantity={'4'}
-        recipeId={1}
+        description={item.description}
+        quantity={item.quantity}
+        boardId={item.board?.boardId}
         navigation={navigation}
+        thumbnailUrl={item.thumbnailUri}
+        isLiked={item.board?.isLiked}
+        commentNum={item.board.commentCount}
+        likeNum={item.board.likeCount}
       />
     </BoardComponentContainer>
   );
 }
+
+export default React.memo(BoardComponent);

@@ -23,7 +23,7 @@ const RecipeOrderComponent = ({value, datas}) => {
       </NumberPart>
       <InfoPart>
         <TextPart>{value.description}</TextPart>
-        {value.imgUri != null ? (
+        {value.imgUri != null && value.imgUri != '' ? (
           <ImagePart source={{uri: value.imgUri}} />
         ) : undefined}
         <TouchContainer

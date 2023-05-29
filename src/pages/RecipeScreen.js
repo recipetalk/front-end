@@ -16,14 +16,11 @@ const RecipeScreen = ({navigation}) => {
   );
 };
 
-const RecipeHomeScreenContainer =
-  Platform.OS === 'ios'
-    ? styled.SafeAreaView`
-        margin-bottom: 125px;
-      `
-    : styled.View`
-        margin-bottom: 125px;
-      `;
+const RecipeHomeScreenContainer = styled.SafeAreaView`
+  width: 100%;
+  height: 100%;
+  background: white;
+`;
 
 const ToRecipeEditNaviButton = styled.TouchableOpacity`
   position: absolute;

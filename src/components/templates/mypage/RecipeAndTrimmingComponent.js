@@ -12,8 +12,8 @@ import {getIngredientPrepByUsername} from '../../../services/Ingredients';
 
 export const RecipeAndTrimmingComponent = props => {
   const [isHighLight, setHighLight] = useState(1);
-  const [firstClicked, setFirstClicked] = useState({id: 1});
-  const [secondClicked, setSecondClicked] = useState({id: 1});
+  const [firstClicked, setFirstClicked] = useState({key: 1});
+  const [secondClicked, setSecondClicked] = useState({key: 1});
   const [firstCategoryValue, setFirstCategoryValue] = useState(null);
   const [secondCategoryValue, setSecondCategoryValue] = useState(null);
   const [recipeOffset, setRecipeOffset] = useState(0);
@@ -32,14 +32,14 @@ export const RecipeAndTrimmingComponent = props => {
 
   const firstFilter = [
     {
-      id: 1,
-      onPress: () => setFirstClicked({id: 1}),
+      key: 1,
+      onPress: () => setFirstClicked({key: 1}),
       title: '최신',
       value: 'NEW',
     },
     {
-      id: 2,
-      onPress: () => setFirstClicked({id: 2}),
+      key: 2,
+      onPress: () => setFirstClicked({key: 2}),
       title: '인기',
       value: 'POPULAR',
     },
@@ -47,14 +47,14 @@ export const RecipeAndTrimmingComponent = props => {
 
   const secondFilter = [
     {
-      id: 1,
-      onPress: () => setSecondClicked({id: 1}),
+      key: 1,
+      onPress: () => setSecondClicked({key: 1}),
       title: '최신',
       value: 'NEW',
     },
     {
-      id: 2,
-      onPress: () => setSecondClicked({id: 2}),
+      key: 2,
+      onPress: () => setSecondClicked({key: 2}),
       title: '인기',
       value: 'POPULAR',
     },
@@ -68,7 +68,7 @@ export const RecipeAndTrimmingComponent = props => {
     await setRecipeLoading(() => true);
     await getDynamicRecipes(
       null,
-      firstFilter[firstClicked.id - 1].value,
+      firstFilter[firstClicked.key - 1].value,
       firstCategoryValue,
       secondCategoryValue,
       0,
@@ -97,7 +97,7 @@ export const RecipeAndTrimmingComponent = props => {
 
     await getDynamicRecipes(
       null,
-      firstFilter[firstClicked.id - 1].value,
+      firstFilter[firstClicked.key - 1].value,
       firstCategoryValue,
       secondCategoryValue,
       recipeOffset,
@@ -130,7 +130,7 @@ export const RecipeAndTrimmingComponent = props => {
   const prepInit = useCallback(async () => {
     setPrepLoading(() => true);
     console.log(
-      secondFilter[secondClicked.id - 1].value,
+      secondFilter[secondClicked.key - 1].value,
       prepOffset,
       prepLimit,
       props?.username,
@@ -138,7 +138,7 @@ export const RecipeAndTrimmingComponent = props => {
 
     await getIngredientPrepByUsername(
       props?.username,
-      secondFilter[secondClicked.id - 1].value,
+      secondFilter[secondClicked.key - 1].value,
       0,
       10,
     )
@@ -164,7 +164,7 @@ export const RecipeAndTrimmingComponent = props => {
     await setPrepLoading(() => true);
     await getIngredientPrepByUsername(
       props?.username,
-      secondFilter[secondClicked.id].value,
+      secondFilter[secondClicked.key].value,
       prepOffset,
       prepLimit,
     )
@@ -227,7 +227,7 @@ export const RecipeAndTrimmingComponent = props => {
                   clickedBackgroundColor={'#666666'}
                   textColor={'#666666'}
                   clickedTextColor={'#D8D8D8'}
-                  clickedNumber={firstClicked.id}
+                  clickedNumber={firstClicked.key}
                   item={value}
                 />
               ))}
@@ -265,7 +265,7 @@ export const RecipeAndTrimmingComponent = props => {
                 clickedBackgroundColor={'#666666'}
                 textColor={'#666666'}
                 clickedTextColor={'#D8D8D8'}
-                clickedNumber={secondClicked.id}
+                clickedNumber={secondClicked.key}
                 item={value}
               />
             ))}
