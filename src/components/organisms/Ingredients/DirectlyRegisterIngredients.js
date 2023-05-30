@@ -7,12 +7,15 @@ import {
 } from '../../../store/Ingredients/IngredientsSlice';
 import {useDispatch} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
-import {View} from 'react-native';
+import {Dimensions, Modal, View} from 'react-native';
 import {getSearchIngredient} from '../../../services/Ingredients';
 import {Text} from 'react-native';
+import {Calendar} from 'react-native-calendars';
 
 const DirectlyRegisterIngredients = ({item, readOnly}) => {
   const dispatch = useDispatch();
+  const [selected, setSelected] = useState('');
+  const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const [isAddChecked, setIsAddChecked] = useState(item.isChecked);
   const [isResultLength, setIsResultLength] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
@@ -84,26 +87,6 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
     return () => clearTimeout(id);
   }, [ingredientsInfo.ingredientName]);
 
-  const renderItem = ({item}) => {
-    return (
-      <View
-        style={{
-          padding: 10,
-          width: '100%',
-        }}>
-        <TouchContainer
-          onPress={() =>
-            setIngredientsInfo({
-              ...ingredientsInfo,
-              ingredientName: item.ingredientName,
-            })
-          }>
-          <Text style={{fontSize: 20}}>{item.ingredientName}</Text>
-        </TouchContainer>
-      </View>
-    );
-  };
-
   return (
     <RegisterIngredientsItemContainer>
       <CheckBoxViewContainer>
@@ -125,24 +108,18 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
           <DeleteIngredientsText>재료 삭제</DeleteIngredientsText>
         </TouchContainer>
       </CheckBoxViewContainer>
+
       <IngredientName>식재료 명</IngredientName>
       <IngredientNameContainer>
         <IngredientNameInput
           readOnly={readOnly}
           editable={readOnly}
           selectTextOnFocus={readOnly}
-          placeholder="  예) 감자  "
+          placeholder="예) 감자"
+          placeholderTextColor="gray"
           value={ingredientsInfo.ingredientName}
           onChangeText={changeText}
         />
-        {isResultLength === 0 ? null : (
-          <CustomFlatList
-            horizontal={true}
-            data={searchResult}
-            renderItem={renderItem}
-            keyExtractor={(_, index) => index.toString()}
-          />
-        )}
       </IngredientNameContainer>
 
       <IngredientStatusDropBoxContainer>
@@ -152,7 +129,7 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
             width="260px"
             items={statusPlaceholder}
             value={ingredientsStatusInfo}
-            placeholder=" 예) 생 것"
+            placeholder="예) 생 것"
             setValue={setIngredientsStatusInfo}
           />
         </View>
@@ -160,25 +137,51 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
 
       <IngredientStatusContainer>
         <IngredientStatusText>소비 기한</IngredientStatusText>
-        <IngredientStatusInput
-          placeholder="  예) 1개 "
-          value={ingredientsInfo.expirationDate}
-          onChangeText={res =>
-            setIngredientsInfo({...ingredientsInfo, expirationDate: res})
-          }
-        />
+        <TouchContainer onPress={() => setIsOpenCalendar(prev => !prev)}>
+          <ExpirationDateView>
+            {selected.length === 0 ? (
+              <Text style={{color: 'gray'}}>{'예) 2023-11-11'}</Text>
+            ) : (
+              <Text style={{color: 'black'}}>{selected}</Text>
+            )}
+          </ExpirationDateView>
+        </TouchContainer>
       </IngredientStatusContainer>
 
       <IngredientStatusContainer>
         <IngredientStatusText>수량 입력</IngredientStatusText>
         <IngredientStatusInput
-          placeholder="  예) 1개 "
+          placeholder="예) 1개"
+          placeholderTextColor="gray"
           value={ingredientsInfo.quantity}
           onChangeText={res =>
             setIngredientsInfo({...ingredientsInfo, quantity: res})
           }
         />
       </IngredientStatusContainer>
+      {isOpenCalendar ? (
+        <Modal transparent={true}>
+          <CustomModal>
+            <CustomCalendar
+              onDayPress={day => {
+                setIsOpenCalendar(false);
+                setSelected(day.dateString);
+                setIngredientsInfo({
+                  ...ingredientsInfo,
+                  expirationDate: day.dateString,
+                });
+              }}
+              markedDates={{
+                [selected]: {
+                  selected: true,
+                  disableTouchEvent: true,
+                  selectedDotColor: 'orange',
+                },
+              }}
+            />
+          </CustomModal>
+        </Modal>
+      ) : null}
     </RegisterIngredientsItemContainer>
   );
 };
@@ -244,6 +247,7 @@ const IngredientNameInput = styled.TextInput`
   border: 1px solid #d8d8d8;
   border-radius: 8px;
   font-family: 'Pretendard Variable';
+  padding: 10px;
 `;
 
 const IngredientStatusContainer = styled.View`
@@ -266,6 +270,7 @@ const IngredientStatusInput = styled.TextInput`
   border: 1px solid #d8d8d8;
   border-radius: 8px;
   font-family: 'Pretendard Variable';
+  padding: 10px;
 `;
 
 const IngredientStatusText = styled.Text`
@@ -279,9 +284,27 @@ const IngredientStatusText = styled.Text`
 
 const TouchContainer = styled.TouchableOpacity``;
 
-const CustomFlatList = styled.FlatList`
-  height: 50px;
-  background-color: white;
-  border-radius: 20;
+const ExpirationDateView = styled.View`
+  background: #ffffff;
+  width: 260px;
+  height: 48px;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  font-family: 'Pretendard Variable';
+  display: flex;
+  justify-content: center;
+  padding: 10px;
 `;
+
+const CustomModal = styled.View`
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+`;
+
+const CustomCalendar = styled(Calendar)`
+  width: 350px;
+  margin: 0 auto;
+  top: ${Dimensions.get('window').height / 3.5}px;
+`;
+
 export default DirectlyRegisterIngredients;

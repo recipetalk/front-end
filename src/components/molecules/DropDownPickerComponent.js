@@ -38,6 +38,9 @@ const DropDownPickerComponent = ({
         }}
         ArrowDownIconComponent={TriangleDownIcon}
         ArrowUpIconComponent={TriangleUpIcon}
+        placeholderStyle={{
+          color: 'gray',
+        }}
       />
     </Container>
   );
