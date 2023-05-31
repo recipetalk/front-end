@@ -11,6 +11,7 @@ import TempRecipeEditInfoSlice from './RecipeEdit/TempRecipeEditInfoSlice';
 import SituationCategory from './RecipeHome/SituationCategory';
 import SortCategory from './RecipeHome/SortCategory';
 import IsGoToRecipeHome from './RecipeHome/IsGoToRecipeHome';
+import SearchValue from './search/SearchValue';
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
     findIngredientsSelector: SelectedByFindIngredientSlice,
     editRecipeInfo: TempRecipeEditInfoSlice,
     isGoToRecipeHome: IsGoToRecipeHome,
+    searchValue: SearchValue,
   },
   enhancers: [reactotron.createEnhancer()], //
 });

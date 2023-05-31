@@ -1,7 +1,10 @@
-import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {Platform, TouchableWithoutFeedback} from 'react-native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {
+  Platform,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import styled from 'styled-components/native';
-import SearchInput from '../../atoms/SearchInput';
 import RadioButton from '../../atoms/board/RadioButton';
 import {useSelector, useDispatch} from 'react-redux';
 import {setFirstClicked} from '../../../store/RecipeHome/FirstFilterClicked';
@@ -11,6 +14,7 @@ import {RecipeSituationList} from '../../../category/recipe/RecipeSituationList'
 import {setSortCategory} from '../../../store/RecipeHome/SortCategory';
 import {setSituationCategory} from '../../../store/RecipeHome/SituationCategory';
 import {setGoToRecipeHome} from '../../../store/RecipeHome/IsGoToRecipeHome';
+import {useNavigation} from '@react-navigation/native';
 
 const SearchWithFilterHeader = () => {
   const firstClicked = useSelector(state => state.firstFilterClicked.value);
@@ -20,7 +24,9 @@ const SearchWithFilterHeader = () => {
   const [secondCategoryValue, setSecondCategoryValue] = useState(null);
   const isGoToRecipeHome = useSelector(state => state.isGoToRecipeHome.value);
   const dispatch = useDispatch();
-
+  const textBoxRef = useRef();
+  const navigation = useNavigation();
+  const searchValue = useSelector(state => state.searchValue.value);
   const firstFilter = [
     {
       key: 1,
@@ -38,6 +44,11 @@ const SearchWithFilterHeader = () => {
       title: '이웃',
     },
   ];
+
+  const onFocusAction = () => {
+    textBoxRef.current.blur();
+    navigation.push('Search', {nextNavigation: 'Recipe'});
+  };
 
   useEffect(() => {
     dispatch(setSortCategory(firstCategoryValue));
@@ -58,7 +69,20 @@ const SearchWithFilterHeader = () => {
   return (
     <SearchHeaderContainer>
       <SearchInputContainer>
-        <SearchInput />
+        <InputBox>
+          <CustomInput
+            ref={textBoxRef}
+            placeholder="검색어를 입력해주세요"
+            placeholderTextColor="#a4a4a4"
+            onFocus={onFocusAction}
+            value={searchValue}
+          />
+          <TouchableOpacity>
+            <SearchIcon
+              source={require('../../../assets/images/SearchIcon.png')}
+            />
+          </TouchableOpacity>
+        </InputBox>
       </SearchInputContainer>
       <HorizontalScrollContainer horizontal={true}>
         {firstFilter.map(value => (
@@ -111,6 +135,8 @@ const SearchHeaderContainer = styled.SafeAreaView`
   background: #f5f5f5;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
   z-index: 2;
+  gap: 10px;
+  padding-top: 10px;
 `;
 
 const SearchInputContainer = styled.View`
@@ -126,6 +152,31 @@ const CategorySelectorContainer = styled.View`
   flex-direction: row;
   gap: 10px;
   width: 100%;
+`;
+
+const SearchIcon = styled.Image`
+  width: 18px;
+  height: 18px;
+`;
+
+const InputBox = styled.View`
+  position: relative;
+  width: 100%;
+  height: 44px;
+  background: #ffffff;
+  border: 1px solid #f09311;
+  border-radius: 100px;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-left: 5%;
+  padding-right: 5%;
+  gap: 7px;
+`;
+
+const CustomInput = styled.TextInput`
+  font-family: 'Pretendard Variable';
+  flex: 1;
 `;
 
 export default SearchWithFilterHeader;

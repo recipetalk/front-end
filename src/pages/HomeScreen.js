@@ -10,13 +10,13 @@ import PickComponent from '../components/templates/Home/PickComponent';
 import GComponent from '../components/templates/Home/GComponent';
 import OnePersonRecipeComponent from '../components/templates/Home/OnePersonRecipeComponent';
 import Footer from '../components/organisms/Footer';
-import {FlatList, View} from 'react-native';
+import {FlatList, TouchableOpacity, View} from 'react-native';
 
 const HomeScreen = ({navigation}) => {
   const textBoxRef = useRef();
   const onFocusAction = () => {
     textBoxRef.current.blur();
-    navigation.push('Search');
+    navigation.push('Search', {nextNavigation: 'SearchResult'});
   };
 
   const [isRefresh, setRefresh] = useState(false);
@@ -28,14 +28,18 @@ const HomeScreen = ({navigation}) => {
         isRefresh={isRefresh}
         setRefresh={setRefresh}
         showsVerticalScrollIndicator={false}>
-        <View style={{paddingLeft: '5%', paddingRight: '5%'}}>
+        <InputBox>
           <CustomInput
             ref={textBoxRef}
-            paddingLeft={10}
             placeholder="검색어를 입력해주세요"
-            onFocus={() => onFocusAction()}
+            placeholderTextColor="#a4a4a4"
+            onFocus={onFocusAction}
           />
-        </View>
+          <TouchableOpacity>
+            <SearchIcon source={require('../assets/images/SearchIcon.png')} />
+          </TouchableOpacity>
+        </InputBox>
+
         {/*<AComponent />*/}
         <CComponent />
         <RecentComponent isRefresh={isRefresh} />
@@ -68,15 +72,31 @@ const HomeScreenContainer = styled.SafeAreaView`
   background: #f09311;
 `;
 
-const CustomInput = styled.TextInput`
+const InputBox = styled.View`
   position: relative;
-  width: 100%;
+  width: 90%;
   height: 44px;
   background: #ffffff;
   border: 1px solid #f09311;
   border-radius: 100px;
-  margin-top: 18px;
-  margin-bottom: 18px;
-  font-family: 'Pretendard Variable';
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-top: 15px;
+  margin-left: 5%;
+  margin-right: 5%;
+  gap: 7px;
 `;
+
+const CustomInput = styled.TextInput`
+  font-family: 'Pretendard Variable';
+  flex: 1;
+`;
+const SearchIcon = styled.Image`
+  width: 18px;
+  height: 18px;
+`;
+
 export default HomeScreen;

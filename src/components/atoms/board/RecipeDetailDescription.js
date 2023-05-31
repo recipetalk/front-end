@@ -23,6 +23,7 @@ import {
   setRecipeBoard,
   setRecipeIngredients,
 } from '../../../store/RecipeEdit/TempRecipeEditInfoSlice';
+import AlertYesButton from '../../molecules/AlertYesButton';
 
 export default function RecipeDetailDescription({
   navigation,
@@ -45,6 +46,7 @@ export default function RecipeDetailDescription({
   const [recipeInfo, setRecipeInfo] = useState({description: ''});
   const [recipeIngredient, setRecipeIngredient] = useState([]);
   const [recipeRows, setRecipeRows] = useState([]);
+  const [isAlert, setAlert] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -57,14 +59,18 @@ export default function RecipeDetailDescription({
 
   useEffect(() => {
     //RecipeInfo
-    getRecipe(boardId).then(async res => {
-      const data = JSON.parse(res.request._response);
-      setRecipeInfo(() => data);
-      const loginInfo = await loadLoginFromStorage();
-      console.log(data);
-      setMine(loginInfo.username === data?.board?.writer?.username);
-      setWriter(data?.board?.writer?.username);
-    });
+    getRecipe(boardId)
+      .then(async res => {
+        const data = JSON.parse(res.request._response);
+        setRecipeInfo(() => data);
+        const loginInfo = await loadLoginFromStorage();
+        console.log(data);
+        setMine(loginInfo.username === data?.board?.writer?.username);
+        setWriter(data?.board?.writer?.username);
+      })
+      .catch(err => {
+        setAlert(true);
+      });
     //RecipeIngredient
     getRecipeIngredients(boardId)
       .then(res => {
@@ -220,6 +226,15 @@ export default function RecipeDetailDescription({
           onRequest={onRequest}
           isLoading={isLoading}
           commentRefresh={commentRefresh}
+        />
+      ) : undefined}
+      {isAlert ? (
+        <AlertYesButton
+          title={'레시피를 불러올 수 없습니다.'}
+          onPress={() => {
+            setAlert(false);
+            navigation.goBack();
+          }}
         />
       ) : undefined}
     </RecipeDetailDescriptionContainer>

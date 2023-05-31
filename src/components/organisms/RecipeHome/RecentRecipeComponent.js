@@ -18,10 +18,10 @@ export default function RecentRecipeComponent({navigation}) {
   const firstClicked = useSelector(state => state.firstFilterClicked.value);
   const sortCategory = useSelector(state => state.sortCategory.value);
   const situationCategory = useSelector(state => state.situationCategory.value);
-
+  const title = useSelector(state => state.searchValue.value);
   useLayoutEffect(() => {
     init();
-  }, [firstClicked, sortCategory, situationCategory]);
+  }, [firstClicked, sortCategory, situationCategory, title]);
 
   const firstFilter = [
     {
@@ -38,7 +38,7 @@ export default function RecentRecipeComponent({navigation}) {
   const init = async () => {
     await setLoading(() => true);
     await getDynamicRecipes(
-      null,
+      title,
       firstFilter[firstClicked.key - 1].value,
       sortCategory,
       situationCategory,
@@ -67,7 +67,7 @@ export default function RecentRecipeComponent({navigation}) {
   const onRequest = async () => {
     await setLoading(() => true);
     await getDynamicRecipes(
-      null,
+      title,
       firstFilter[firstClicked.key - 1].value,
       sortCategory,
       situationCategory,

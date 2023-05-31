@@ -1,7 +1,6 @@
 import styled from 'styled-components/native';
 import React, {
   memo,
-  useCallback,
   useEffect,
   useLayoutEffect,
   useState,
