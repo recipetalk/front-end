@@ -36,8 +36,12 @@ const DropDownPickerComponent = ({
         containerstyle={{
           width: '100%',
         }}
+        listMode="SCROLLVIEW"
         ArrowDownIconComponent={TriangleDownIcon}
         ArrowUpIconComponent={TriangleUpIcon}
+        placeholderStyle={{
+          color: 'gray',
+        }}
       />
     </Container>
   );
