@@ -8,13 +8,13 @@ const MiniBottomImageComponent = props => {
       <Default>
         <LikePart>
           <LikeImg source={require('../../assets/images/LikeFalse.png')} />
-          <Text>{props.value?.likeCount}</Text>
+          <Label>{props.value?.likeCount}</Label>
         </LikePart>
         <CommentPart>
           <CommentImg
             source={require('../../assets/images/BoardComment.png')}
           />
-          <Text>{props.value?.commentCount}</Text>
+          <Label>{props.value?.commentCount}</Label>
         </CommentPart>
       </Default>
 
@@ -26,6 +26,13 @@ const MiniBottomImageComponent = props => {
     </ImageContainer>
   );
 };
+
+const Label = styled.Text`
+  font-family: 'Pretendard Variable';
+  font-weight: 400;
+  color: #555555;
+  font-size: 14px;
+`;
 
 const ImageContainer = styled.View`
   display: flex;

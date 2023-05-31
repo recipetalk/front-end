@@ -1,5 +1,12 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
+import {loadLoginFromStorage} from '../../../services/repository/AutoLogin';
+import {TouchableOpacity} from 'react-native';
+import {
+  requestRegisterFollowing,
+  requestRemoveFollowing,
+} from '../../../services/MyPage';
+import {useToast} from 'react-native-toast-notifications';
 
 export default function SimpleProfileWithDescription({
   username,
@@ -10,6 +17,44 @@ export default function SimpleProfileWithDescription({
   isFollowing,
 }) {
   //TODO : IMG URI 체킹할 방법 알아내야함.
+  const [isMine, setMine] = useState(false);
+  const [followed, setFollowed] = useState(isFollowing);
+  const toast = useToast();
+  useEffect(() => {
+    loadMineInit();
+  }, [username]);
+
+  const loadMineInit = async () => {
+    const loadUsername = (await loadLoginFromStorage()).username;
+    if (loadUsername === username) {
+      setMine(true);
+    } else {
+      setMine(false);
+    }
+  };
+
+  const requestFollowing = useCallback(async () => {
+    const loadUsername = (await loadLoginFromStorage()).username;
+    if (loadUsername === username) {
+      toast.show('나 자신을 팔로우 할 수 없습니다.');
+      return;
+    }
+    requestRegisterFollowing(username)
+      .then(() => setFollowed(true))
+      .catch(() => toast.show('팔로우 요청 실패'));
+  },[username]);
+
+  const requestUnfollowing = useCallback(async () => {
+    const loadUsername = (await loadLoginFromStorage()).username;
+    if (loadUsername === username) {
+      toast.show('나 자신을 팔로우 할 수 없습니다.');
+      return;
+    }
+    requestRemoveFollowing(username)
+      .then(() => setFollowed(false))
+      .catch(() => toast.show('팔로우 요청 실패'));
+  },[username]);
+
   return (
     <SimpleProfile>
       <ProfileTouchableContainer
@@ -25,7 +70,15 @@ export default function SimpleProfileWithDescription({
         </Description>
       </ProfileTouchableContainer>
       <FollowingTouchableContainer>
-        <Following>{'팔로잉'}</Following>
+        {isMine ? undefined : followed ? (
+          <TouchableOpacity onPress={requestUnfollowing}>
+            <Following>{'팔로잉 해제'}</Following>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={requestFollowing}>
+            <Following>{'팔로잉'}</Following>
+          </TouchableOpacity>
+        )}
       </FollowingTouchableContainer>
     </SimpleProfile>
   );

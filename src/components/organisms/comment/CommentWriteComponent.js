@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {
   Alert,
@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {registerComment} from '../../../services/Comment';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useToast} from 'react-native-toast-notifications';
 import {loadProfileToStorage} from '../../../services/repository/Profile';
 
@@ -18,19 +18,19 @@ export const CommentWriteComponent = ({
   isAbsolute = true,
   onRefresh,
 }) => {
+  const isFocused = useIsFocused();
   const [canSend, setCanSend] = useState(false);
   const [value, setValue] = useState('');
-  const navigation = useNavigation();
   const toast = useToast();
   const [loadProfile, setLoadProfile] = useState(null);
 
   useEffect(() => {
     init();
-  }, []);
+  }, [isFocused]);
 
   const init = async () => {
     const loadProfileInfo = await loadProfileToStorage();
-    setLoadProfile(loadProfileInfo);
+    setLoadProfile(() => loadProfileInfo);
   };
 
   useEffect(() => {
@@ -143,3 +143,4 @@ const UserImageDummy = styled.View`
   background: #a4a4a4;
   margin-top: 0px;
 `;
+

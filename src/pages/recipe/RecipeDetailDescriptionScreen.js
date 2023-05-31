@@ -9,13 +9,8 @@ import {
 import styled from 'styled-components/native';
 import RecipeDetailDescription from '../../components/atoms/board/RecipeDetailDescription';
 import {CommentWriteComponent} from '../../components/organisms/comment/CommentWriteComponent';
-import {
-  getChildComment,
-  getParentComment,
-  removeComment,
-} from '../../services/Comment';
+import {getParentComment} from '../../services/Comment';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useFocusEffect} from '@react-navigation/native';
 import {OptionModalChildImage} from '../../components/organisms/OptionModalChildImage';
 import AlertYesNoButton from '../../components/molecules/AlertYesNoButton';
 import {useToast} from 'react-native-toast-notifications';
