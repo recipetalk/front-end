@@ -83,6 +83,14 @@ export default function RecentRecipeComponent({navigation}) {
     setLoading(() => false);
   };
 
+  if (data.length === 0) {
+    return (
+      <EmptyContainer>
+        <EmptyLabel>검색한 레시피가 존재하지 않습니다.</EmptyLabel>
+      </EmptyContainer>
+    );
+  }
+
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
@@ -114,6 +122,22 @@ const RenderItem = ({item, navigation}) => {
     </View>
   );
 };
+
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
+  margin-bottom: 70px;
+`;
+const EmptyLabel = styled.Text`
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  color: #999999;
+`;
 
 const HorizonalBar = styled.View`
   border: 3px solid #f5f5f5;

@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     height: 48,
     fontFamily: 'Pretendard Variable',
+    color: '#333333',
   },
   isHighlighted: {
     borderColor: '#666666',

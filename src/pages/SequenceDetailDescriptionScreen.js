@@ -35,14 +35,11 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
   const Timer = NativeModules.Timer;
   const TimerModule = NativeModules.TimerModule;
 
-
-
   //뒤로가기 핸들러
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () =>
       backAction(),
     );
-
 
     if (Platform.OS === 'ios') {
       navigation.addListener('beforeRemove', e => {
@@ -106,6 +103,7 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
       } else {
         Timer.showNotification(
           getFormattedTime(Date.now() + duration() * 1000),
+          duration() * 1000,
         );
         //예약 알림 필요
         Timer.setReserveAlarm(duration() * 1000);
@@ -137,7 +135,9 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
         console.log(backgroundTime);
       } else {
         console.log(state);
-        TimerModule.removeReservedNotification();
+        if (Platform.OS === 'ios') {
+          TimerModule.removeReservedNotification();
+        }
         const delay = Math.round((Date.now() - backgroundTime) / 1000) * 1000;
         setRemainingTime(remainingTime => {
           if (Platform.OS === 'ios') {

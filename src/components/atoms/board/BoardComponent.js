@@ -39,6 +39,7 @@ function BoardComponent({navigation, item}) {
         isLiked={item.board?.isLiked}
         commentNum={item.board.commentCount}
         likeNum={item.board.likeCount}
+        createdDate={item.board?.createdDate}
       />
     </BoardComponentContainer>
   );

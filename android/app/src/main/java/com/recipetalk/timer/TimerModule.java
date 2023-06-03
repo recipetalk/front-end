@@ -35,8 +35,8 @@ import java.util.TimerTask;
 
 public class TimerModule extends ReactContextBaseJavaModule {
     private final static String TIMER_CLASS = "Timer";
-    public static final String CHANNEL_ID = "my_channel_id";
-    public static final String CHANNEL_NAME = "My Channel Name";
+    public static final String CHANNEL_ID = "recipeTalk";
+    public static final String CHANNEL_NAME = "timer";
     private  final ReactApplicationContext reactContext;
 
     public TimerModule(@Nullable ReactApplicationContext reactContext) {
@@ -44,7 +44,6 @@ public class TimerModule extends ReactContextBaseJavaModule {
         this.reactContext = reactContext;
         Log.d(TIMER_CLASS, "초기화");
         reactContext.registerReceiver(AlarmReceiver.alarmReceiver, new IntentFilter());
-
     }
 
     @NonNull
@@ -54,25 +53,30 @@ public class TimerModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void showNotification(String endTime) {
+    public void showNotification(String endTime, double duration) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getReactApplicationContext());
         Intent reactIntent = new Intent(getReactApplicationContext(), MainActivity.class);
         PendingIntent reactPandingIntent = PendingIntent.getActivity(getReactApplicationContext(), 0, reactIntent, PendingIntent.FLAG_IMMUTABLE);
-        Toast.makeText(reactContext, "타이머 시작!", Toast.LENGTH_SHORT).show();
         //안드로이드 오레오 대응
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getReactApplicationContext(), CHANNEL_ID)
-                .setContentTitle("레시피톡 타이머")
-                .setContentText("타이머 종료 예정 시간 : " + endTime)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setUsesChronometer(true)
-                .setContentIntent(reactPandingIntent)
-                .setOngoing(true);
+        NotificationCompat.Builder builder = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            builder = new NotificationCompat.Builder(getReactApplicationContext(), CHANNEL_ID)
+                    .setContentTitle("레시피톡 타이머")
+                    .setContentText("타이머 종료 예정 시간 : " + endTime)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setChronometerCountDown(true)
+                    .setUsesChronometer(true)
+                    .setSilent(true)
+                    .setContentIntent(reactPandingIntent)
+                    .setWhen((long) (System.currentTimeMillis() + duration))
+                    .setOngoing(true);
+        }
 
         int notificationId = 1;
         notificationManager.notify(notificationId, builder.build());
@@ -99,7 +103,6 @@ public class TimerModule extends ReactContextBaseJavaModule {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getReactApplicationContext());
         int notificationId = 1;
         notificationManager.cancel(notificationId);
-        Toast.makeText(reactContext, "타이머 해제!", Toast.LENGTH_SHORT).show();
     }
 
     @ReactMethod
