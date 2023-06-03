@@ -8,7 +8,6 @@ import {OptionModalChildImage} from '../OptionModalChildImage';
 const IngredientsItem = props => {
   const navigation = useNavigation();
   const [checkedItem, setCheckedItem] = useState(undefined);
-  console.log('IngredientsItem props.item is ::', props.item);
 
   useEffect(() => {
     if (checkedItem !== undefined) {
@@ -22,7 +21,9 @@ const IngredientsItem = props => {
       value: 'update',
       onPress: () => {
         console.log('수정!!');
-        navigation.navigate('IngredientsEdit', {id: props.item.ingredientId});
+        navigation.navigate('IngredientsEdit', {
+          id: props.item.userHasIngredientId,
+        });
       },
     },
     {
@@ -30,7 +31,10 @@ const IngredientsItem = props => {
       value: 'delete',
       onPress: () => {
         deleteIngredient(props.item.userHasIngredientId)
-          .then(console.log('삭제 완료'))
+          .then(res => {
+            console.log('삭제 완료', res);
+            props.deleteCallback();
+          })
           .catch(error => console.error(error.response));
       },
     },

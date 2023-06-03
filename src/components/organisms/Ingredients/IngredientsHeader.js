@@ -27,7 +27,7 @@ const IngredientsHeader = props => {
             {props.title}
           </HeaderTitle>
         </View>
-        {props.isTitleOnly ? null : (
+        {props.isTitleOnly || props.same === false ? null : (
           <BtnBtn onPress={() => navigation.navigate(props.screen)}>
             <BtnValueText isTransparent={props.isTransparent}>
               {props.btnTextValue}

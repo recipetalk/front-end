@@ -1,5 +1,5 @@
 import {useIsFocused} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
@@ -11,9 +11,10 @@ const ViewAllMyIngredients = () => {
   const isFocused = useIsFocused();
   const [myIngredients, setMyIngredients] = useState(null);
 
-  const [oneItemState, setOneItemState] = useState();
-  const [twoItemState, setTwoItemState] = useState();
-  const [threeItemState, setThreeItemState] = useState();
+  const [oneItemState, setOneItemState] = useState('');
+  const [twoItemState, setTwoItemState] = useState('');
+  const [threeItemState, setThreeItemState] = useState('');
+  const [deleteItem, setDeleteItem] = useState(false);
 
   const oneItem = [
     {placeholder: '등록일', label: '최신순', value: 'new'},
@@ -36,29 +37,40 @@ const ViewAllMyIngredients = () => {
     },
   ];
 
+  const deleteCallback = useCallback(() => {
+    setDeleteItem(true);
+  }, []);
+
   useEffect(() => {
-    getMyIngredientPage('new')
-      .then(res => setMyIngredients(res.data.content))
-      .catch(error => console.error(error.response));
-  }, [isFocused]);
+    setOneItemState('new');
+    setDeleteItem(false);
+  }, [isFocused, deleteItem]);
 
-  // useEffect(() => {
-  //   getMyIngredientPage(oneItemState)
-  //     .then(res => setMyIngredients(res.data.content))
-  //     .catch(error => console.error(error.response));
-  // }, [oneItemState]);
+  useEffect(() => {
+    if (oneItemState !== '') {
+      getMyIngredientPage(oneItemState)
+        .then(res => setMyIngredients(res.data.content))
+        .catch(error => console.error(error.response));
 
-  // useEffect(() => {
-  //   getMyIngredientPage(twoItemState)
-  //     .then(res => setMyIngredients(res.data.content))
-  //     .catch(error => console.error(error.response));
-  // }, [twoItemState]);
+      setOneItemState('');
+    }
 
-  // useEffect(() => {
-  //   getMyIngredientPage(threeItemState)
-  //     .then(res => setMyIngredients(res.data.content))
-  //     .catch(error => console.error(error.response));
-  // }, [threeItemState]);
+    if (twoItemState !== '') {
+      getMyIngredientPage(twoItemState)
+        .then(res => setMyIngredients(res.data.content))
+        .catch(error => console.error(error.response));
+
+      setTwoItemState('');
+    }
+
+    if (threeItemState !== '') {
+      getMyIngredientPage(threeItemState)
+        .then(res => setMyIngredients(res.data.content))
+        .catch(error => console.error(error.response));
+
+      setThreeItemState('');
+    }
+  }, [isFocused, oneItemState, twoItemState, threeItemState]);
 
   if (myIngredients === null) {
     return null;
@@ -99,7 +111,13 @@ const ViewAllMyIngredients = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <MyIngredientsTitle>나의 식재료</MyIngredientsTitle>
         {myIngredients.map((item, i) => {
-          return <IngredientsItem key={i} item={item} />;
+          return (
+            <IngredientsItem
+              deleteCallback={deleteCallback}
+              key={i}
+              item={item}
+            />
+          );
         })}
       </ScrollView>
     </>

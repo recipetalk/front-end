@@ -1,27 +1,63 @@
-import {useRoute} from '@react-navigation/native';
-import React from 'react';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import DirectlyRegisterIngredients from '../../components/organisms/Ingredients/DirectlyRegisterIngredients';
 import IngredientsHeader from '../../components/organisms/Ingredients/IngredientsHeader';
-import {editIngredient} from '../../services/Ingredients';
+
+import DirectlyEditIngredients from '../../components/organisms/Ingredients/DirectlyEditIngredients';
+import {editIngredient, getTargetIngredient} from '../../services/Ingredients';
 
 const IngredientsEditScreen = () => {
   const router = useRoute();
+  const navigation = useNavigation();
+  const [item, setItem] = useState();
 
-  const dummy = {
-    expirationDate: '2024-05-05',
-    ingredientId: 1,
-    ingredientName: '감자',
-    ingredientState: '생것',
-    isChecked: true,
-    quantity: '121',
-  };
+  const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState('');
 
-  const test = () => {
-    editIngredient(router.params.id)
-      .then(res => console.log(res))
+  const [ingredientsInfo, setIngredientsInfo] = useState({
+    ingredientName: '',
+    expirationDate: '',
+    quantity: '',
+  });
+
+  const edit = () => {
+    const editData = {
+      id: router.params.id,
+      state: ingredientsStatusInfo,
+      quantity: ingredientsInfo.quantity,
+      expirationDate: ingredientsInfo.expirationDate,
+    };
+
+    editIngredient(editData)
+      .then(res => {
+        if (res.request.status === 200) {
+          navigation.goBack();
+        }
+      })
       .catch(error => console.error(error.response));
   };
+
+  useEffect(() => {
+    getTargetIngredient(router.params.id)
+      .then(res => {
+        setItem(JSON.parse(res.request._response));
+      })
+      .catch(error => console.error(error.response));
+  }, [router.params.id]);
+
+  useEffect(() => {
+    if (item !== undefined) {
+      setIngredientsStatusInfo(item.state);
+      setIngredientsInfo({
+        ingredientName: item.ingredientName,
+        expirationDate: item.expirationDate,
+        quantity: item.quantity,
+      });
+    }
+  }, [item]);
+
+  if (item === undefined) {
+    return null;
+  }
 
   return (
     <Container>
@@ -30,24 +66,30 @@ const IngredientsEditScreen = () => {
         isTitleOnly={true}
         btnTextValue=""
       />
-      <Test>
-        <DirectlyRegisterIngredients item={dummy} readOnly={true} />
-
-        <TouchContainer onPress={test}>
+      <CustomView>
+        <DirectlyEditIngredients
+          item={item}
+          ingredientsInfo={ingredientsInfo}
+          ingredientsStatusInfo={ingredientsStatusInfo}
+          setIngredientsInfo={setIngredientsInfo}
+          setIngredientsStatusInfo={setIngredientsStatusInfo}
+          readOnly={true}
+        />
+        <TouchContainer onPress={edit}>
           <IngredientRegisterButton>
             <IngredientRegisterButtonText>
               {'식재료 수정하기'}
             </IngredientRegisterButtonText>
           </IngredientRegisterButton>
         </TouchContainer>
-      </Test>
+      </CustomView>
     </Container>
   );
 };
 
 const Container = styled.SafeAreaView``;
 
-const Test = styled.View`
+const CustomView = styled.View`
   margin: 18px;
 `;
 

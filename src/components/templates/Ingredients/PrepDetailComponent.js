@@ -1,5 +1,5 @@
 import {useRoute} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, KeyboardAvoidingView, Platform} from 'react-native';
 import styled from 'styled-components/native';
 import {
@@ -18,6 +18,7 @@ import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
 import LikeAndCommentNum from '../../atoms/board/LikeAndComment/LikeAndCommentNum';
 import {useDispatch} from 'react-redux';
 import {__getPrepDetail} from '../../../store/Ingredients/PrepSlice';
+import {loadLoginFromStorage} from '../../../services/repository/AutoLogin';
 
 const PrepDetailComponent = () => {
   const router = useRoute();
@@ -30,6 +31,7 @@ const PrepDetailComponent = () => {
   const [commentPagingNum, setCommentPagingNum] = useState(0);
   const [isLast, setLast] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [sameUser, setSameUser] = useState(false);
 
   useEffect(() => {
     getIngredientsPrepDetail(router.params.boardId)
@@ -84,6 +86,21 @@ const PrepDetailComponent = () => {
     );
   };
 
+  const checkSameUser = useCallback(async () => {
+    const loadUsername = (await loadLoginFromStorage()).username;
+
+    if (loadUsername === detailInfo.boardDTO.writer.username) {
+      setSameUser(true);
+      return;
+    }
+
+    setSameUser(false);
+  }, [detailInfo]);
+
+  useEffect(() => {
+    checkSameUser();
+  }, [checkSameUser]);
+
   if (efficacyInfo === null || detailInfo === null) {
     return null;
   }
@@ -96,6 +113,7 @@ const PrepDetailComponent = () => {
           isTitleOnly={false}
           btnTextValue="수정"
           screen="PrepRegister"
+          sameUser={sameUser}
         />
         <IngredientsInfo
           isEdit={false}
