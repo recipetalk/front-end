@@ -116,6 +116,7 @@ const RegisterMyIngredientsComponent = () => {
 
 const DirectlyRegisterIngredientsContainer = styled.View`
   padding: 18px;
+  height: 100%;
 `;
 
 const DirectlyRegisterIngredientsText = styled.Text`
@@ -128,7 +129,7 @@ const DirectlyRegisterIngredientsText = styled.Text`
 `;
 
 const RegisterMyIngredientsComponentContainer = styled.View`
-  margin-bottom: 230px;
+  height: 100%;
 `;
 
 const RegisterIngredientsDirectlyContainer = styled.View`
@@ -188,4 +189,5 @@ const CustomImage = styled.Image`
   width: 40px;
   height: 40px;
 `;
+
 export default RegisterMyIngredientsComponent;
