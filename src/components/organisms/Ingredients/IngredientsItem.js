@@ -8,7 +8,6 @@ import {OptionModalChildImage} from '../OptionModalChildImage';
 const IngredientsItem = props => {
   const navigation = useNavigation();
   const [checkedItem, setCheckedItem] = useState(undefined);
-  console.log('IngredientsItem props.item is ::', props.item);
 
   useEffect(() => {
     if (checkedItem !== undefined) {

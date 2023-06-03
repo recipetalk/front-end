@@ -1,5 +1,5 @@
 import {useIsFocused} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
@@ -11,9 +11,9 @@ const ViewAllMyIngredients = () => {
   const isFocused = useIsFocused();
   const [myIngredients, setMyIngredients] = useState(null);
 
-  const [oneItemState, setOneItemState] = useState();
-  const [twoItemState, setTwoItemState] = useState();
-  const [threeItemState, setThreeItemState] = useState();
+  const [oneItemState, setOneItemState] = useState('new');
+  const [twoItemState, setTwoItemState] = useState('');
+  const [threeItemState, setThreeItemState] = useState('');
 
   const oneItem = [
     {placeholder: '등록일', label: '최신순', value: 'new'},
@@ -37,28 +37,30 @@ const ViewAllMyIngredients = () => {
   ];
 
   useEffect(() => {
-    getMyIngredientPage('new')
-      .then(res => setMyIngredients(res.data.content))
-      .catch(error => console.error(error.response));
-  }, [isFocused]);
+    if (oneItemState !== '') {
+      getMyIngredientPage(oneItemState)
+        .then(res => setMyIngredients(res.data.content))
+        .catch(error => console.error(error.response));
 
-  // useEffect(() => {
-  //   getMyIngredientPage(oneItemState)
-  //     .then(res => setMyIngredients(res.data.content))
-  //     .catch(error => console.error(error.response));
-  // }, [oneItemState]);
+      setOneItemState('');
+    }
 
-  // useEffect(() => {
-  //   getMyIngredientPage(twoItemState)
-  //     .then(res => setMyIngredients(res.data.content))
-  //     .catch(error => console.error(error.response));
-  // }, [twoItemState]);
+    if (twoItemState !== '') {
+      getMyIngredientPage(twoItemState)
+        .then(res => setMyIngredients(res.data.content))
+        .catch(error => console.error(error.response));
 
-  // useEffect(() => {
-  //   getMyIngredientPage(threeItemState)
-  //     .then(res => setMyIngredients(res.data.content))
-  //     .catch(error => console.error(error.response));
-  // }, [threeItemState]);
+      setTwoItemState('');
+    }
+
+    if (threeItemState !== '') {
+      getMyIngredientPage(threeItemState)
+        .then(res => setMyIngredients(res.data.content))
+        .catch(error => console.error(error.response));
+
+      setThreeItemState('');
+    }
+  }, [isFocused, oneItemState, twoItemState, threeItemState]);
 
   if (myIngredients === null) {
     return null;
