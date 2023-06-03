@@ -65,7 +65,7 @@ class TimerModule: NSObject {
     content.body = "타이머가 다됬어요!"
   
     if #available(iOS 15.2, *){
-      content.sound = UNNotificationSound.defaultRingtone
+      content.sound = UNNotificationSound.ringtoneSoundNamed(UNNotificationSoundName(rawValue: "kitchen-timer-33043.caf"))
     }
     
     let updateDate = Date().addingTimeInterval(time.doubleValue);

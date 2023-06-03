@@ -227,6 +227,10 @@ const determineNavigationWithNotiSort = (
     return () => {
       navigation.push('ProfileScreen', {username: navigations.username});
     };
+  } else if (notificationSort === 'INGREDIENT') {
+    return () => {
+      navigation.navigate('IngredientsHome');
+    };
   }
 };
 

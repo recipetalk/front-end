@@ -105,7 +105,7 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
         TimerModule.registerReservedNotification(duration());
       } else {
         Timer.showNotification(
-          getFormattedTime(Date.now() + duration() * 1000),
+          getFormattedTime(Date.now() + duration() * 1000), duration() * 1000
         );
         //예약 알림 필요
         Timer.setReserveAlarm(duration() * 1000);
