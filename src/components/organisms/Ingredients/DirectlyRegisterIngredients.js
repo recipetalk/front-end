@@ -30,8 +30,9 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
   });
 
   const statusPlaceholder = [
-    {placeholder: '상태', label: '생것', value: '생것'},
-    {placeholder: '상태', label: '익힌것', value: '익힌것'},
+    {placeholder: '상태', label: '냉동', value: '냉동'},
+    {placeholder: '상태', label: '냉장', value: '냉장'},
+    {placeholder: '상태', label: '실온', value: '실온'},
   ];
 
   const addThisIngredients = newValue => {
@@ -129,7 +130,7 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
             width="260px"
             items={statusPlaceholder}
             value={ingredientsStatusInfo}
-            placeholder="예) 생 것"
+            placeholder="예) 냉동"
             setValue={setIngredientsStatusInfo}
           />
         </View>

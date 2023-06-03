@@ -46,9 +46,26 @@ const IngredientsSlice = createSlice({
     deleteIngredients: (previousState, action) => {
       return previousState.filter(item => item.ingredientId !== action.payload);
     },
+
+    resetIngredients: (previousState, action) => {
+      return [
+        {
+          ingredientId: 1,
+          ingredientName: '',
+          ingredientState: '',
+          expirationDate: '',
+          quantity: '',
+          isChecked: false,
+        },
+      ];
+    },
   },
 });
 
-export const {addEmptyIngredients, addIngredients, deleteIngredients} =
-  IngredientsSlice.actions;
+export const {
+  addEmptyIngredients,
+  addIngredients,
+  deleteIngredients,
+  resetIngredients,
+} = IngredientsSlice.actions;
 export default IngredientsSlice.reducer;

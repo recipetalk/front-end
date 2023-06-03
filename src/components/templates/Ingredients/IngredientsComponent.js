@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components/native';
 import ViewAllMyIngredients from '../../organisms/Ingredients/ViewAllMyIngredients';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Image} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {resetIngredients} from '../../../store/Ingredients/IngredientsSlice';
 
 const IngredientsComponent = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetIngredients());
+  }, [dispatch, isFocused]);
 
   return (
     <IngredientsComponentContainer>
