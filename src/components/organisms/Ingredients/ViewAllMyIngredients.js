@@ -11,7 +11,7 @@ const ViewAllMyIngredients = () => {
   const isFocused = useIsFocused();
   const [myIngredients, setMyIngredients] = useState(null);
 
-  const [oneItemState, setOneItemState] = useState('new');
+  const [oneItemState, setOneItemState] = useState('');
   const [twoItemState, setTwoItemState] = useState('');
   const [threeItemState, setThreeItemState] = useState('');
 
@@ -35,6 +35,10 @@ const ViewAllMyIngredients = () => {
       value: 'expiry_date_spare',
     },
   ];
+
+  useEffect(() => {
+    setOneItemState('new');
+  }, [isFocused]);
 
   useEffect(() => {
     if (oneItemState !== '') {

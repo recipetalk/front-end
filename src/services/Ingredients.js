@@ -198,16 +198,22 @@ export const deleteIngredient = async id => {
   return await jsonAPI.delete(url, config);
 };
 
-export const editIngredient = async id => {
-  const url = `/api/user/ingredient/${id}`;
+export const editIngredient = async testInfo => {
+  const url = `/api/user/ingredient/${testInfo.id}`;
 
   const data = {
-    state: '다짐',
-    quantity: '1봉',
-    expirationDate: '2027-05-01',
+    state: testInfo.state,
+    quantity: testInfo.quantity,
+    expirationDate: testInfo.expirationDate,
   };
 
   return await jsonAPI.patch(url, data, config);
+};
+
+export const getTargetIngredient = async id => {
+  const url = `/api/user/ingredient/${id}`;
+
+  return await jsonAPI.get(url, config);
 };
 
 export const getIngredientPrepByUsername = async (

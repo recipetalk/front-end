@@ -1,33 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import Checkbox from '@react-native-community/checkbox';
-import {
-  addIngredients,
-  deleteIngredients,
-} from '../../../store/Ingredients/IngredientsSlice';
-import {useDispatch} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import {Dimensions, Modal, View} from 'react-native';
-import {getSearchIngredient} from '../../../services/Ingredients';
 import {Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 
-const DirectlyRegisterIngredients = ({item, readOnly}) => {
-  const dispatch = useDispatch();
+const DirectlyEditIngredients = props => {
   const [selected, setSelected] = useState('');
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
-  const [isAddChecked, setIsAddChecked] = useState(item.isChecked);
-  const [isResultLength, setIsResultLength] = useState(0);
-  const [searchResult, setSearchResult] = useState([]);
-  const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
-    item.ingredientState,
-  );
-
-  const [ingredientsInfo, setIngredientsInfo] = useState({
-    ingredientName: item.ingredientName,
-    expirationDate: item.expirationDate,
-    quantity: item.quantity,
-  });
 
   const statusPlaceholder = [
     {placeholder: '상태', label: '냉동', value: '냉동'},
@@ -35,91 +16,17 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
     {placeholder: '상태', label: '실온', value: '실온'},
   ];
 
-  const addThisIngredients = newValue => {
-    setIsAddChecked(newValue);
-
-    if (newValue) {
-      dispatch(
-        addIngredients({
-          ingredientId: item.ingredientId,
-          ingredientName: ingredientsInfo.ingredientName,
-          ingredientState: ingredientsStatusInfo,
-          expirationDate: ingredientsInfo.expirationDate,
-          quantity: ingredientsInfo.quantity,
-          isChecked: true,
-        }),
-      );
-    } else {
-      dispatch(
-        addIngredients({
-          ingredientId: item.ingredientId,
-          ingredientName: ingredientsInfo.ingredientName,
-          ingredientState: ingredientsStatusInfo,
-          expirationDate: ingredientsInfo.expirationDate,
-          quantity: ingredientsInfo.quantity,
-          isChecked: false,
-        }),
-      );
-    }
-  };
-
-  const deleteThisIngredients = () => {
-    dispatch(deleteIngredients(item.ingredientId));
-  };
-
-  const changeText = res => {
-    if (res.length === 0) {
-      setIsResultLength(0);
-    } else {
-      setIsResultLength(res.length);
-    }
-
-    setIngredientsInfo({...ingredientsInfo, ingredientName: res});
-  };
-
-  useEffect(() => {
-    let id = setTimeout(() => {
-      console.log(ingredientsInfo.ingredientName);
-      getSearchIngredient(ingredientsInfo.ingredientName).then(result =>
-        setSearchResult(result.data),
-      );
-    }, 600);
-
-    return () => clearTimeout(id);
-  }, [ingredientsInfo.ingredientName]);
-
   return (
     <RegisterIngredientsItemContainer>
-      <CheckBoxViewContainer>
-        <CheckBoxView>
-          <RegisterIngredientsCheckbox
-            value={isAddChecked}
-            onFillColor="#F09311"
-            onValueChange={addThisIngredients}
-            tintColors={{true: '#F09311', false: '#A4A4A4'}}
-            boxType="square"
-            tintColor="#A4A4A4"
-            onCheckColor="#FFFFFF"
-            onTintColor="#F09311"
-          />
-          <RegisterIngredientsText>이 식재료 추가</RegisterIngredientsText>
-        </CheckBoxView>
-
-        <TouchContainer onPress={deleteThisIngredients}>
-          <DeleteIngredientsText>재료 삭제</DeleteIngredientsText>
-        </TouchContainer>
-      </CheckBoxViewContainer>
-
       <IngredientName>식재료 명</IngredientName>
       <IngredientNameContainer>
         <IngredientNameInput
-          readOnly={readOnly}
-          editable={readOnly}
-          selectTextOnFocus={readOnly}
+          readOnly={props.readOnly}
+          editable={props.readOnly}
+          selectTextOnFocus={props.readOnly}
           placeholder="예) 감자"
           placeholderTextColor="gray"
-          value={ingredientsInfo.ingredientName}
-          onChangeText={changeText}
+          value={props.item.ingredientName}
         />
       </IngredientNameContainer>
 
@@ -129,9 +36,9 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
           <DropDownPickerComponent
             width="260px"
             items={statusPlaceholder}
-            value={ingredientsStatusInfo}
+            value={props.ingredientsStatusInfo}
             placeholder="예) 냉동"
-            setValue={setIngredientsStatusInfo}
+            setValue={props.setIngredientsStatusInfo}
           />
         </View>
       </IngredientStatusDropBoxContainer>
@@ -140,10 +47,12 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
         <IngredientStatusText>소비 기한</IngredientStatusText>
         <TouchContainer onPress={() => setIsOpenCalendar(prev => !prev)}>
           <ExpirationDateView>
-            {selected.length === 0 ? (
+            {props.ingredientsInfo.expirationDate.length === 0 ? (
               <Text style={{color: 'gray'}}>{'예) 2023-11-11'}</Text>
             ) : (
-              <Text style={{color: 'black'}}>{selected}</Text>
+              <Text style={{color: 'black'}}>
+                {props.ingredientsInfo.expirationDate}
+              </Text>
             )}
           </ExpirationDateView>
         </TouchContainer>
@@ -154,9 +63,9 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
         <IngredientStatusInput
           placeholder="예) 1개"
           placeholderTextColor="gray"
-          value={ingredientsInfo.quantity}
+          value={props.ingredientsInfo.quantity}
           onChangeText={res =>
-            setIngredientsInfo({...ingredientsInfo, quantity: res})
+            props.setIngredientsInfo({...props.ingredientsInfo, quantity: res})
           }
         />
       </IngredientStatusContainer>
@@ -167,8 +76,8 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
               onDayPress={day => {
                 setIsOpenCalendar(false);
                 setSelected(day.dateString);
-                setIngredientsInfo({
-                  ...ingredientsInfo,
+                props.setIngredientsInfo({
+                  ...props.ingredientsInfo,
                   expirationDate: day.dateString,
                 });
               }}
@@ -189,41 +98,6 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
 
 const RegisterIngredientsItemContainer = styled.View`
   margin-top: 18px;
-`;
-
-const CheckBoxViewContainer = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 22px;
-`;
-
-const CheckBoxView = styled.View`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const RegisterIngredientsCheckbox = styled(Checkbox)`
-  width: 22px;
-  height: 22px;
-`;
-
-const RegisterIngredientsText = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  font-family: 'Pretendard Variable';
-  color: #f09311;
-`;
-
-const DeleteIngredientsText = styled.Text`
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  font-family: 'Pretendard Variable';
-
-  color: #a0a0a0;
 `;
 
 const IngredientName = styled.Text`
@@ -308,4 +182,4 @@ const CustomCalendar = styled(Calendar)`
   top: ${Dimensions.get('window').height / 3.5}px;
 `;
 
-export default DirectlyRegisterIngredients;
+export default DirectlyEditIngredients;

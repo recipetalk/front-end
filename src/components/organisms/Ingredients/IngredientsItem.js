@@ -21,7 +21,9 @@ const IngredientsItem = props => {
       value: 'update',
       onPress: () => {
         console.log('수정!!');
-        navigation.navigate('IngredientsEdit', {id: props.item.ingredientId});
+        navigation.navigate('IngredientsEdit', {
+          id: props.item.userHasIngredientId,
+        });
       },
     },
     {
