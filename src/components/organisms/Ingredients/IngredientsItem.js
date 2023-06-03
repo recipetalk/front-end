@@ -31,7 +31,10 @@ const IngredientsItem = props => {
       value: 'delete',
       onPress: () => {
         deleteIngredient(props.item.userHasIngredientId)
-          .then(console.log('삭제 완료'))
+          .then(res => {
+            console.log('삭제 완료', res);
+            props.deleteCallback();
+          })
           .catch(error => console.error(error.response));
       },
     },
