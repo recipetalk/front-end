@@ -42,12 +42,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         //안드로이드 오레오 대응
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                                    .build();
-
-            channel.setSound(soundUri, audioAttributes);
             notificationManager.createNotificationChannel(channel);
 
         }
@@ -61,7 +55,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(reactPandingIntent)
                 .setOngoing(false)
-                .setSound(soundUri)
                 .setAutoCancel(true)
                 ;
 
