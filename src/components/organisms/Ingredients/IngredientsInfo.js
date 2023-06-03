@@ -18,7 +18,11 @@ const IngredientsInfo = ({
   };
 
   const renderFunc = () => {
-    if (thumbnail === null || thumbnail === '') {
+    if (thumbnail === undefined) {
+      return <ImageDummyView />;
+    }
+
+    if (thumbnail === null || (isEdit && thumbnail === '')) {
       return (
         <>
           <ImageSelectBox

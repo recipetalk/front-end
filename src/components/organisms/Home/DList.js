@@ -50,7 +50,12 @@ const DList = props => {
           ingredientId: determineIngredientId,
         })
       }>
-      <ImagePart />
+      {props?.value?.thumbnailUri !== null &&
+      props?.value?.thumbnailUri !== '' ? (
+        <ImagePart source={{uri: props?.value?.thumbnailUri}} />
+      ) : (
+        <ImagePart />
+      )}
 
       <InfoPart>
         <Titie>{title}</Titie>
@@ -95,7 +100,6 @@ const ImagePart = styled.Image`
   height: 98px;
   border-radius: 8px;
   background-color: gray;
-  opacity: 0.3;
 `;
 
 const ImageDummyPart = styled.View`
@@ -105,7 +109,6 @@ const ImageDummyPart = styled.View`
   background-color: gray;
   opacity: 0.3;
 `;
-
 
 const InfoPart = styled.View`
   width: 205px;
