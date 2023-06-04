@@ -11,14 +11,20 @@ import {Dimensions, Modal, View} from 'react-native';
 import {getSearchIngredient} from '../../../services/Ingredients';
 import {Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
+import {updateRecipeIngredientWithIndex} from '../../../store/RecipeEdit/TempRecipeEditInfoSlice';
 
-const DirectlyRegisterIngredients = ({item, readOnly}) => {
+const DirectlyRegisterIngredients = ({
+  item,
+  isFocus,
+  setSendText,
+  setSelectIndex,
+  setFocus,
+  readOnly,
+}) => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState('');
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const [isAddChecked, setIsAddChecked] = useState(item.isChecked);
-  const [isResultLength, setIsResultLength] = useState(0);
-  const [searchResult, setSearchResult] = useState([]);
   const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
     item.ingredientState,
   );
@@ -68,25 +74,13 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
   };
 
   const changeText = res => {
-    if (res.length === 0) {
-      setIsResultLength(0);
-    } else {
-      setIsResultLength(res.length);
+    if (isFocus) {
+      //IngredientSelectorComponent로 데이터 전송
+      setSendText(res);
     }
 
     setIngredientsInfo({...ingredientsInfo, ingredientName: res});
   };
-
-  useEffect(() => {
-    let id = setTimeout(() => {
-      console.log(ingredientsInfo.ingredientName);
-      getSearchIngredient(ingredientsInfo.ingredientName).then(result =>
-        setSearchResult(result.data),
-      );
-    }, 600);
-
-    return () => clearTimeout(id);
-  }, [ingredientsInfo.ingredientName]);
 
   return (
     <RegisterIngredientsItemContainer>
@@ -120,6 +114,15 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
           placeholderTextColor="gray"
           value={ingredientsInfo.ingredientName}
           onChangeText={changeText}
+          onFocus={() => {
+            setSendText(() => item.ingredientName);
+            setFocus(true);
+            setSelectIndex(item.ingredientId);
+          }}
+          onBlur={() => {
+            setFocus(false);
+            setSelectIndex(0);
+          }}
         />
       </IngredientNameContainer>
 

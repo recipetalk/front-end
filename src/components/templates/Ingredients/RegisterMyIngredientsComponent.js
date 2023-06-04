@@ -1,18 +1,22 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useEffect} from 'react';
-import {ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {getBarcode, registerIngredient} from '../../../services/Ingredients';
 import {addEmptyIngredients} from '../../../store/Ingredients/IngredientsSlice';
 import DirectlyRegisterIngredients from '../../organisms/Ingredients/DirectlyRegisterIngredients';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
+import {IngredientSelectorComponent} from './IngredientSelectorComponent';
 
 const RegisterMyIngredientsComponent = () => {
   const router = useRoute();
   const dispatch = useDispatch();
   const ingredientsList = useSelector(state => state.ingredients);
   const navigation = useNavigation();
+  const [isFocus, setFocus] = useState(false);
+  const [selectIndex, setSelectIndex] = useState(0);
+  const [sendText, setSendText] = useState(null);
 
   useEffect(() => {
     if (router.params !== undefined) {
@@ -37,6 +41,7 @@ const RegisterMyIngredientsComponent = () => {
         isTitleOnly={true}
         btnTextValue=""
       />
+
       <RegisterIngredientsDirectlyContainer>
         <RegisterIngredientsDirectlyText>
           재료 직접 추가
@@ -47,66 +52,83 @@ const RegisterMyIngredientsComponent = () => {
           />
         </TouchContainer>
       </RegisterIngredientsDirectlyContainer>
+      <KeyboardAvoidingView
+        behavior={Platform.select({ios: 'padding', android: undefined})}
+        style={{flex: 1, backgroundColor: 'white'}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <DirectlyRegisterIngredientsContainer>
+            <DirectlyRegisterIngredientsText>
+              식재료 등록하기
+            </DirectlyRegisterIngredientsText>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <DirectlyRegisterIngredientsContainer>
-          <DirectlyRegisterIngredientsText>
-            식재료 등록하기
-          </DirectlyRegisterIngredientsText>
-
-          {ingredientsList.map((item, index) => {
-            return (
-              <DirectlyRegisterIngredients
-                key={index}
-                item={item}
-                readOnly={false}
-              />
-            );
-          })}
-
-          <TouchContainer
-            onPress={() => {
-              if (checkIsChecked() === 0) {
-                return;
-              }
-
-              let newArr = [];
-              ingredientsList.map(item => {
-                newArr.push({
-                  expirationDate: item.expirationDate,
-                  ingredientId: item.ingredientId,
-                  ingredientName: item.ingredientName,
-                  ingredientState: item.ingredientState,
-                  quantity: item.quantity,
-                });
-              });
-
-              console.log(
-                'RegisterMyIngredientsComponent newArr is : ',
-                newArr,
+            {ingredientsList.map((item, index) => {
+              return (
+                <DirectlyRegisterIngredients
+                  key={index}
+                  item={item}
+                  isFocus={isFocus}
+                  setFocus={setFocus}
+                  setSendText={setSendText}
+                  setSelectIndex={setSelectIndex}
+                  readOnly={false}
+                />
               );
+            })}
 
-              registerIngredient(newArr)
-                .then(res =>
-                  console.log('RegisterMyIngredientsComponent res is :', res),
-                )
-                .catch(error =>
-                  console.error(
-                    'RegisterMyIngredientsComponent error is ',
-                    error.response,
-                  ),
+            <TouchContainer
+              onPress={() => {
+                if (checkIsChecked() === 0) {
+                  return;
+                }
+
+                let newArr = [];
+                ingredientsList.map(item => {
+                  newArr.push({
+                    expirationDate: item.expirationDate,
+                    ingredientId: item.ingredientId,
+                    ingredientName: item.ingredientName,
+                    ingredientState: item.ingredientState,
+                    quantity: item.quantity,
+                  });
+                });
+
+                console.log(
+                  'RegisterMyIngredientsComponent newArr is : ',
+                  newArr,
                 );
-              navigation.goBack();
-            }}>
-            <IngredientRegisterButton
-              active={checkIsChecked() > 0 ? true : false}>
-              <IngredientRegisterButtonText>
-                {`총 ${checkIsChecked()}개의 식재료 등록하기`}
-              </IngredientRegisterButtonText>
-            </IngredientRegisterButton>
-          </TouchContainer>
-        </DirectlyRegisterIngredientsContainer>
-      </ScrollView>
+
+                registerIngredient(newArr)
+                  .then(res =>
+                    console.log('RegisterMyIngredientsComponent res is :', res),
+                  )
+                  .catch(error =>
+                    console.error(
+                      'RegisterMyIngredientsComponent error is ',
+                      error.response,
+                    ),
+                  );
+                navigation.goBack();
+              }}>
+              <IngredientRegisterButton
+                active={checkIsChecked() > 0 ? true : false}>
+                <IngredientRegisterButtonText>
+                  {`총 ${checkIsChecked()}개의 식재료 등록하기`}
+                </IngredientRegisterButtonText>
+              </IngredientRegisterButton>
+            </TouchContainer>
+          </DirectlyRegisterIngredientsContainer>
+        </ScrollView>
+        {isFocus ? (
+          <CustomInputView>
+            <IngredientSelectorComponent
+              isFocus={isFocus}
+              targetIngredientName={sendText}
+              index={selectIndex}
+            />
+          </CustomInputView>
+        ) : undefined}
+      </KeyboardAvoidingView>
+
       <BarcodeRegisterBtn onPress={() => navigation.navigate('Receipt')}>
         <CustomImage source={require('../../../assets/images/Receipt.png')} />
       </BarcodeRegisterBtn>
@@ -116,7 +138,6 @@ const RegisterMyIngredientsComponent = () => {
 
 const DirectlyRegisterIngredientsContainer = styled.View`
   padding: 18px;
-  height: 100%;
 `;
 
 const DirectlyRegisterIngredientsText = styled.Text`
@@ -190,4 +211,7 @@ const CustomImage = styled.Image`
   height: 40px;
 `;
 
+const CustomInputView = styled.View`
+  margin-bottom: 47px;
+`;
 export default RegisterMyIngredientsComponent;
