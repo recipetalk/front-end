@@ -37,8 +37,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Intent reactIntent = new Intent(context, NotificationActivity.class);
         PendingIntent reactPandingIntent = PendingIntent.getActivity(context, 0, reactIntent, PendingIntent.FLAG_MUTABLE);
 
-        Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+"://"+context.getPackageName()+"/"+R.raw.timer);
-
         //안드로이드 오레오 대응
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);

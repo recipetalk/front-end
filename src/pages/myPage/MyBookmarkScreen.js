@@ -4,14 +4,14 @@ import RadioButton from '../../components/atoms/board/RadioButton';
 import DropDownPickerComponent from '../../components/molecules/DropDownPickerComponent';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
 import DList from '../../components/organisms/Home/DList';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, FlatList, TouchableOpacity} from 'react-native';
 import {getBoardBookmarkList, getBoardLikeList} from '../../services/MyPage';
 import {toggleBoardLikeAction} from '../../services/BoardLike';
 import {toggleBoardBookmark} from '../../services/BoardBookmark';
 
 export const MyBookmarkScreen = ({navigation}) => {
   const [firstClicked, setFirstClicked] = useState({key: 1});
-  const [bookmark, setBookmark] = useState([]);
+  const [bookmark, setBookmark] = useState(null);
   const [page, setPage] = useState(0);
   const [last, setLast] = useState(false);
   const [isRefresh, setRefresh] = useState(false);
@@ -69,6 +69,30 @@ export const MyBookmarkScreen = ({navigation}) => {
     });
     setLoading(() => false);
   };
+
+  if (bookmark == null) {
+    return (
+      <>
+        <Container edges={['top']} />
+        <NavigationHeader navigation={navigation} title={'나의 북마크'} />
+        <HorizontalBar />
+        <FilterPart>
+          {firstFilter.map(value => (
+            <RadioButton
+              onPress={value.onPress}
+              backgroundColor={'#D8D8D8'}
+              clickedBackgroundColor={'#666666'}
+              textColor={'#666666'}
+              clickedTextColor={'#D8D8D8'}
+              clickedNumber={firstClicked.key}
+              item={value}
+            />
+          ))}
+        </FilterPart>
+        <ActivityIndicator color={'#f09311'} size="large" />
+      </>
+    );
+  }
 
   return (
     <>
@@ -179,4 +203,12 @@ const HorizontalBar = styled.View`
   width: 100%;
   height: 1px;
   background: #e1e1e1;
+`;
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
+  margin-bottom: 70px;
 `;

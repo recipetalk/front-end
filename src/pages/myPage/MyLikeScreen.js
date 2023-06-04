@@ -4,7 +4,7 @@ import RadioButton from '../../components/atoms/board/RadioButton';
 import DropDownPickerComponent from '../../components/molecules/DropDownPickerComponent';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
 import DList from '../../components/organisms/Home/DList';
-import {FlatList, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, FlatList, TouchableOpacity} from 'react-native';
 import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
 import {getDynamicRecipes} from '../../services/recipe/Recipe';
 import {determinePageEnd} from '../../utils/determinePageEnd';
@@ -13,7 +13,7 @@ import HList from '../../components/organisms/Home/HList';
 import {toggleBoardLikeAction} from '../../services/BoardLike';
 
 export const MyLikeScreen = ({navigation}) => {
-  const [boardLike, setBoardLike] = useState([]);
+  const [boardLike, setBoardLike] = useState(null);
   const [page, setPage] = useState(0);
   const [last, setLast] = useState(false);
   const [isRefresh, setRefresh] = useState(false);
@@ -53,6 +53,14 @@ export const MyLikeScreen = ({navigation}) => {
     });
     setLoading(() => false);
   };
+
+  if (boardLike == null) {
+    return (
+      <EmptyContainer>
+        <ActivityIndicator color={'#f09311'} size={'large'} />
+      </EmptyContainer>
+    );
+  }
 
   return (
     <>
@@ -127,4 +135,12 @@ const HorizontalBar = styled.View`
   width: 100%;
   height: 1px;
   background: #e1e1e1;
+`;
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
+  margin-bottom: 70px;
 `;

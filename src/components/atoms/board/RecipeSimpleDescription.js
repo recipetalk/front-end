@@ -35,7 +35,7 @@ export default function RecipeSimpleDescription({
           <CreatedDateLabel createdDate={createdDate} />
         </ViewAndCreatedDateLabelContainer>
         <TitleText>{title}</TitleText>
-        <Description>{description}</Description>
+        <Description numberOfLines={5}>{description}</Description>
       </TouchContainer>
       <View style={{position: 'absolute', bottom: 10}}>
         <LikeAndCommentNum
@@ -89,7 +89,6 @@ const Description = styled.Text`
   font-family: 'Pretendard Variable';
 
   letter-spacing: 0px;
-
   margin-bottom: 7px;
   color: #666666;
 `;

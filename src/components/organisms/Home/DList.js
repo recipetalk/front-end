@@ -59,7 +59,7 @@ const DList = props => {
 
       <InfoPart>
         <Titie>{title}</Titie>
-        <UserID>{props?.value?.description}</UserID>
+        <UserID numberOfLines={2}>{props?.value?.description}</UserID>
         {props.value?.board?.commentCount !== undefined ? (
           <MiniBottomImageComponent
             value={props.value?.board}

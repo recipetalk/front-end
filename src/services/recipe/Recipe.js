@@ -1,12 +1,16 @@
 import {jsonAPI} from '../connect/API';
 import {multiPartAPI} from '../connect/API';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
+import {loadJwtAccessTokenFromStorage} from '../repository/JwtToken';
 
-const config = {
-  headers: {
-    Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NjUyOTcwMywidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.uJM2fdN95TOvgQ5IA9DD12X9jg74TDuocx9TRji0SV8',
-  },
+const config = async () => {
+  const accessToken = await loadJwtAccessTokenFromStorage();
+
+  return {
+    headers: {
+      Authorization: accessToken,
+    },
+  };
 };
 
 export const getDynamicRecipes = async (
@@ -36,7 +40,7 @@ export const getDynamicRecipes = async (
   }
 
   console.log(url);
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 export const requestRegisterRecipe = async ({
@@ -85,7 +89,7 @@ export const requestRegisterRecipe = async ({
     await data.append('situationCategory', secondCategory);
   }
 
-  return await multiPartAPI.post(url, data, config);
+  return await multiPartAPI.post(url, data, await config());
 };
 
 export const requestRegisterRecipeIngredients = async (
@@ -102,7 +106,7 @@ export const requestRegisterRecipeIngredients = async (
 
   const body = {recipeIngredientRegisterDTOS: data};
 
-  return await jsonAPI.post(url, body, config);
+  return await jsonAPI.post(url, body, await config());
 };
 
 export const requestRegisterRecipeRows = async (recipeId, recipeRow) => {
@@ -133,7 +137,7 @@ export const requestRegisterRecipeRows = async (recipeId, recipeRow) => {
 
   console.log('request: ', data);
 
-  return await multiPartAPI.post(url, data, config);
+  return await multiPartAPI.post(url, data, await config());
 };
 
 export const hardRemoveRecipes = async recipeId => {
@@ -145,19 +149,19 @@ export const hardRemoveRecipes = async recipeId => {
 export const getRecipe = async recipeId => {
   const url = `/api/board/recipe/${recipeId}`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 export const getRecipeRow = async recipeId => {
   const url = `/api/board/recipe/${recipeId}/recipeRow`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 export const getRecipeIngredients = async recipeId => {
   const url = `/api/board/recipe/${recipeId}/recipeIngredient`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 export const modifyRecipeBoard = async ({
@@ -224,7 +228,7 @@ export const modifyRecipeIngredients = async (recipeId, recipeIngredients) => {
 
   const body = {recipeIngredientRegisterDTOS: data};
 
-  return await jsonAPI.put(url, body, config);
+  return await jsonAPI.put(url, body, await config());
 };
 
 export const modifyRecipeRows = async (recipeId, recipeRow, isLast, index) => {
@@ -262,17 +266,17 @@ export const modifyRecipeRows = async (recipeId, recipeRow, isLast, index) => {
   }
 
   console.log('modifyRecipeRow : ', body);
-  return await multiPartAPI.patch(url, body, config);
+  return await multiPartAPI.patch(url, body, await config());
 };
 
 export const RecipeRemoveRequest = async recipeId => {
   const url = `/api/board/recipe/${recipeId}`;
 
-  return await jsonAPI.delete(url, config);
+  return await jsonAPI.delete(url, await config());
 };
 
 export const getRecipePick = async () => {
   const url = '/api/board/recipe/pick';
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };

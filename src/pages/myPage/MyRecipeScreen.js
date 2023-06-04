@@ -3,7 +3,11 @@ import styled from 'styled-components/native';
 import RadioButton from '../../components/atoms/board/RadioButton';
 import HList from '../../components/organisms/Home/HList';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
-import {FlatList, TouchableWithoutFeedback} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import ModalDropDownPickerComponent from '../../components/molecules/ModalDropDownPickerComponent';
 import {RecipeSortList} from '../../category/recipe/RecipeSortList';
 import {RecipeSituationList} from '../../category/recipe/RecipeSituationList';
@@ -16,7 +20,7 @@ export const MyRecipeScreen = ({navigation}) => {
   const [firstClicked, setFirstClicked] = useState({key: 1});
   const [firstCategoryValue, setFirstCategoryValue] = useState(null);
   const [secondCategoryValue, setSecondCategoryValue] = useState(null);
-  const [recipe, setRecipe] = useState([]);
+  const [recipe, setRecipe] = useState(null);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(20);
   const [last, setLast] = useState(false);
@@ -92,6 +96,14 @@ export const MyRecipeScreen = ({navigation}) => {
     setLoading(() => false);
   };
 
+  if (recipe == null) {
+    return (
+      <EmptyContainer>
+        <ActivityIndicator color={'#f09311'} size="large" />
+      </EmptyContainer>
+    );
+  }
+
   return (
     <Container>
       <NavigationHeader navigation={navigation} title={'나의 레시피'} />
@@ -160,6 +172,15 @@ export const MyRecipeScreen = ({navigation}) => {
     </Container>
   );
 };
+
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
+  margin-bottom: 70px;
+`;
 
 const Container = styled.SafeAreaView`
   width: 100%;

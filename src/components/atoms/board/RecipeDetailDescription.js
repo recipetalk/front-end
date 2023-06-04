@@ -140,6 +140,7 @@ export default function RecipeDetailDescription({
           navigation={navigation}
           username={recipeInfo?.board?.writer?.username}
           profileURI={recipeInfo?.board?.writer?.profileImageURI}
+          isFollowing={recipeInfo?.board?.writer?.isFollowing}
         />
       </SimpleProfileWithDescriptionContainer>
       <DescriptionDetailContainer>

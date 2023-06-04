@@ -217,7 +217,7 @@ function App() {
 
   const onDisplayNotification = async ({title = '', body = ''}) => {
     const channelId = await notifee.createChannel({
-      id: 'recipeTalk',
+      id: 'recipeTalk1',
       name: '포그라운드알림',
     });
 

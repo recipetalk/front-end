@@ -64,7 +64,7 @@ export default function SimpleProfileWithDescription({
         ) : (
           <ProfileImgDummy />
         )}
-        <Nickname>{nickname}</Nickname>
+        <Nickname numberOfLine={1}>{nickname}</Nickname>
         <Description numberOfLines={1} ellipsizeMode={'tail'}>
           {description}
         </Description>

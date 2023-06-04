@@ -1,10 +1,14 @@
 import {jsonAPI} from './connect/API';
+import {loadJwtAccessTokenFromStorage} from './repository/JwtToken';
 
-const config = {
-  headers: {
-    Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NjUyOTcwMywidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.uJM2fdN95TOvgQ5IA9DD12X9jg74TDuocx9TRji0SV8',
-  },
+const config = async () => {
+  const accessToken = await loadJwtAccessTokenFromStorage();
+
+  return {
+    headers: {
+      Authorization: accessToken,
+    },
+  };
 };
 
 export const reportComment = async commentId => {
@@ -12,7 +16,7 @@ export const reportComment = async commentId => {
 
   const data = {description: `commentId=${commentId}`};
 
-  return await jsonAPI.post(url, data, config);
+  return await jsonAPI.post(url, data, await config());
 };
 
 export const reportRecipe = async recipeId => {
@@ -20,5 +24,5 @@ export const reportRecipe = async recipeId => {
 
   const data = {description: `recipeId=${recipeId}`};
 
-  return await jsonAPI.post(url, data, config);
+  return await jsonAPI.post(url, data, await config());
 };

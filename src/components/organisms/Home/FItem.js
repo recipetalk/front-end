@@ -22,7 +22,7 @@ const FItem = props => {
           <FItemDummyImage />
         )}
         <Title>{props?.value?.board?.title}</Title>
-        <Content>{props?.value?.description}</Content>
+        <Content numberOfLines={4}>{props?.value?.description}</Content>
       </TouchableOpacity>
       <LikeAndCommentNum
         isLiked={props?.value?.board?.isLiked}
