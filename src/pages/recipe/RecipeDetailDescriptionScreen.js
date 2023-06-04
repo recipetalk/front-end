@@ -190,7 +190,7 @@ const RecipeDetailDescriptionScreen = ({navigation, route}) => {
                   300,
                 );
               });
-            } else if (checkedItem.value === 'userBlock') {
+            } else if (checkedItem.value === 'block') {
               requestRegisterBlockedUser(writer).then(() => {
                 setAlert(false);
                 navigation.pop();

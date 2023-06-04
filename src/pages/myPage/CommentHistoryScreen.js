@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {FlatList, Image, View} from 'react-native';
+import {ActivityIndicator, FlatList, Image, View} from 'react-native';
 import CommentHistoryComponent from '../../components/atoms/board/Comment/CommentHistoryComponent';
 import {getCommentHistory} from '../../services/MyPage';
 
 const CommentHistoryScreen = ({navigation}) => {
-  const [commentHistory, setCommentHistory] = useState([]);
+  const [commentHistory, setCommentHistory] = useState(null);
   const [isLast, setLast] = useState(false);
   const [pageNum, setPageNum] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
@@ -47,6 +47,14 @@ const CommentHistoryScreen = ({navigation}) => {
     }
     setTimeout(() => setRefresh(false), 1000);
   };
+
+  if (commentHistory == null) {
+    return (
+      <EmptyContainer>
+        <ActivityIndicator color={'#f09311'} size={'large'} />
+      </EmptyContainer>
+    );
+  }
 
   return (
     <Container>
@@ -143,6 +151,15 @@ const TitleLabel = styled.Text`
   color: #333333;
   margin-bottom: 2px;
   font-family: 'Pretendard Variable';
+`;
+
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
+  margin-bottom: 70px;
 `;
 
 export default CommentHistoryScreen;

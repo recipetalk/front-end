@@ -106,7 +106,7 @@ const renderItem = ({item}) => {
       <Profile
         username={item.username}
         description={item.description}
-        profileURI={item.profileURI}
+        profileURI={item.profileImageURI}
         nickname={item.nickname}
       />
       <HorizontalBar />
@@ -129,31 +129,20 @@ const InnerContainer = styled.View`
 
 const Profile = ({username, description, profileURI, nickname}) => {
   const navigation = useNavigation();
-  const [isFollowing, setFollowing] = useState(true);
-  const ProfileImg =
-    profileURI !== undefined
-      ? styled.Image`
-          border-radius: 13.873px;
-          background-color: #e5e5e5;
-          width: 46px;
-          height: 46px;
-        `
-      : styled.View`
-          border-radius: 13.873px;
-          background-color: #e5e5e5;
-          width: 46px;
-          height: 46px;
-        `;
+
   return (
     <SimpleProfile>
       <ProfileTouchableContainer
         onPress={() =>
           navigation.push('ProfileScreen', {
             username: username,
-            setFollowing: setFollowing,
           })
         }>
-        <ProfileImg source={{uri: profileURI}} />
+        {profileURI != null && profileURI != '' ? (
+          <ProfileImg source={{uri: profileURI}} />
+        ) : (
+          <ProfileDummyImage />
+        )}
         <Nickname>{nickname}</Nickname>
         <Description numberOfLines={1} ellipsizeMode={'tail'}>
           {description}
@@ -162,6 +151,19 @@ const Profile = ({username, description, profileURI, nickname}) => {
     </SimpleProfile>
   );
 };
+
+const ProfileImg = styled.Image`
+  border-radius: 13.873px;
+  background-color: #e5e5e5;
+  width: 46px;
+  height: 46px;
+`;
+const ProfileDummyImage = styled.View`
+  border-radius: 13.873px;
+  background-color: #e5e5e5;
+  width: 46px;
+  height: 46px;
+`;
 
 const HorizontalBar = styled.View`
   width: 100%;

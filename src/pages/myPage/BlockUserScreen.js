@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
-import {FlatList, Text, View} from 'react-native';
+import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import {
   getBlockedUser,
   getFollower,
@@ -11,17 +11,17 @@ import {
 
 export const BlockUserScreen = ({navigation}) => {
   const [totalCount, setTotalCount] = useState(0);
-  const [blockedUser, setBlockedUser] = useState([]);
+  const [blockedUser, setBlockedUser] = useState(null);
   const [pagingNum, setPagingNum] = useState(0);
   const [isLast, setLast] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    getBlockedUser(pagingNum)
+    getBlockedUser(0)
       .then(res => {
         const json = JSON.parse(res.request._response);
         console.log(json);
-        setPagingNum(pagingNum => pagingNum++);
+        setPagingNum(1);
         setLast(json.last);
         setBlockedUser(json.content);
         setTotalCount(json.totalElements);
@@ -39,7 +39,7 @@ export const BlockUserScreen = ({navigation}) => {
         } else {
           setBlockedUser(data => [data, ...json.content]);
         }
-        setPagingNum(pagingNum => pagingNum++);
+        setPagingNum(pagingNum => pagingNum + 1);
       })
       .catch(err => console.log(err));
   };
@@ -47,18 +47,25 @@ export const BlockUserScreen = ({navigation}) => {
   const onRefresh = async () => {
     if (!refresh) {
       setRefresh(() => true);
-      setPagingNum(() => 0);
-      await getBlockedUser(pagingNum)
+      await getBlockedUser(0)
         .then(res => {
           const json = JSON.parse(res.request._response);
           setLast(() => json.last);
           setBlockedUser(json.content);
-          setPagingNum(pagingNum => pagingNum++);
+          setPagingNum(1);
         })
         .catch(err => console.log(err));
       setTimeout(() => setRefresh(false), 1000);
     }
   };
+
+  if (blockedUser == null) {
+    return (
+      <EmptyContainer>
+        <ActivityIndicator color={'#f09311'} size={'large'} />
+      </EmptyContainer>
+    );
+  }
 
   return (
     <Container>
@@ -132,24 +139,15 @@ const Profile = ({username, profileURI, nickname}) => {
   const requestRegister = async () => {
     await requestRegisterBlockedUser(username).then(res => setBlocked(true));
   };
-  const ProfileImg =
-    profileURI !== undefined
-      ? styled.Image`
-          border-radius: 13.873px;
-          background-color: #e5e5e5;
-          width: 46px;
-          height: 46px;
-        `
-      : styled.View`
-          border-radius: 13.873px;
-          background-color: #e5e5e5;
-          width: 46px;
-          height: 46px;
-        `;
+
   return (
     <SimpleProfile>
       <ProfileTouchableContainer>
-        <ProfileImg source={{uri: profileURI}} />
+        {profileURI != null && profileURI != '' ? (
+          <ProfileImg source={{uri: profileURI}} />
+        ) : (
+          <ProfileDummyImage />
+        )}
         <Nickname>{nickname}</Nickname>
       </ProfileTouchableContainer>
       <FollowingTouchableContainer
@@ -166,6 +164,18 @@ const Profile = ({username, profileURI, nickname}) => {
   );
 };
 
+const ProfileImg = styled.Image`
+  border-radius: 13.873px;
+  background-color: #e5e5e5;
+  width: 46px;
+  height: 46px;
+`;
+const ProfileDummyImage = styled.View`
+  border-radius: 13.873px;
+  background-color: #e5e5e5;
+  width: 46px;
+  height: 46px;
+`;
 const HorizontalBar = styled.View`
   width: 100%;
   height: 1px;
@@ -221,4 +231,12 @@ const Following = styled.Text`
   line-height: 17px;
 
   text-align: right;
+`;
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
+  margin-bottom: 70px;
 `;

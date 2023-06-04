@@ -7,11 +7,11 @@ import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
 import {getDynamicRecipes} from '../../services/recipe/Recipe';
 import {determinePageEnd} from '../../utils/determinePageEnd';
 import {getIngredientPrepByUsername} from '../../services/Ingredients';
-import {FlatList} from 'react-native';
+import {ActivityIndicator, FlatList} from 'react-native';
 
 export const MyPrepScreen = ({navigation}) => {
   const [firstClicked, setFirstClicked] = useState({key: 1});
-  const [prep, setPrep] = useState([]);
+  const [prep, setPrep] = useState(null);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(20);
   const [last, setLast] = useState(false);
@@ -84,6 +84,14 @@ export const MyPrepScreen = ({navigation}) => {
     await setLoading(() => false);
   };
 
+  if (prep == null) {
+    return (
+      <EmptyContainer>
+        <ActivityIndicator color={'#f09311'} size="large" />
+      </EmptyContainer>
+    );
+  }
+
   return (
     <Container>
       <NavigationHeader navigation={navigation} title={'재료 손질법 관리'} />
@@ -151,4 +159,13 @@ const HorizontalBar = styled.View`
   width: 100%;
   height: 1px;
   background: #e1e1e1;
+`;
+
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
+  margin-bottom: 70px;
 `;

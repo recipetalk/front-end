@@ -1,14 +1,18 @@
 import {jsonAPI} from './connect/API';
+import {loadJwtAccessTokenFromStorage} from './repository/JwtToken';
 
-const config = {
-  headers: {
-    Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NjUyOTcwMywidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.uJM2fdN95TOvgQ5IA9DD12X9jg74TDuocx9TRji0SV8',
-  },
+const config = async () => {
+  const accessToken = await loadJwtAccessTokenFromStorage();
+
+  return {
+    headers: {
+      Authorization: accessToken,
+    },
+  };
 };
 
 export const getNotifications = async pagingNum => {
   const url = `/api/notification?page=${pagingNum}`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };

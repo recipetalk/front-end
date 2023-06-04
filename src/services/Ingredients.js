@@ -1,11 +1,15 @@
 import {jsonAPI, multiPartAPI} from './connect/API';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
+import {loadJwtAccessTokenFromStorage} from './repository/JwtToken';
 
-const config = {
-  headers: {
-    Authorization:
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWIiwiaXNzIjoic29sdXRpb24ucmVjaXBldGFsayIsImV4cCI6MTY4NjQ4NjQ5NSwidXNlcm5hbWUiOiJraGo3NDU3MDAifQ.H87eLa-E3ANgBOerI6rFvVDHnYmn18KIQpqI-atykts',
-  },
+const config = async () => {
+  const accessToken = await loadJwtAccessTokenFromStorage();
+
+  return {
+    headers: {
+      Authorization: accessToken,
+    },
+  };
 };
 
 // 식재료 손질법 등록
@@ -38,7 +42,7 @@ export const addIngredientTrimming = async ingredientInfo => {
   }
   await body.append('description', ingredientInfo.desc);
 
-  return await multiPartAPI.post(url, body, config);
+  return await multiPartAPI.post(url, body, await config());
 };
 
 // 식재료 손질법 행 등록
@@ -70,7 +74,7 @@ export const addRowIngredientTrimming = async rowIngredientInfo => {
     await body.append('img', image);
   }
 
-  return await multiPartAPI.post(url, body, config);
+  return await multiPartAPI.post(url, body, await config());
 };
 
 export const editIngredientTrimming = async ingredientInfo => {
@@ -104,7 +108,7 @@ export const editIngredientTrimming = async ingredientInfo => {
 
   await body.append('isThumbnailDeleted', ingredientInfo.isThumbnailDeleted);
 
-  return await multiPartAPI.patch(url, body, config);
+  return await multiPartAPI.patch(url, body, await config());
 };
 
 export const editRowIngredientTrimming = async rowIngredientInfo => {
@@ -142,7 +146,7 @@ export const editRowIngredientTrimming = async rowIngredientInfo => {
   await body.append('isImgDeleted', false);
   await body.append('isLast', rowIngredientInfo.isLast);
 
-  return await multiPartAPI.patch(url, body, config);
+  return await multiPartAPI.patch(url, body, await config());
 };
 
 // 식재료 손질법 삭제 | delete
@@ -150,52 +154,52 @@ export const editRowIngredientTrimming = async rowIngredientInfo => {
 export const getIngredientsPrep = async ingredientId => {
   const url = `/api/board/ingredient/${ingredientId}/trimming?page=0`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 // 식재료 손질법 상세 조회 | get | /api/board/ingredient/{ingredientId}/trimming/{trimmingId}
 export const getIngredientsPrepDetail = async trimmingId => {
   const url = `/api/board/ingredient/trimming/${trimmingId}`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 // 식재료 손질법 hard 삭제
 export const hardDelete = async trimmingId => {
   const url = `/api/board/ingredient/trimming/hard/${trimmingId}`;
 
-  return await jsonAPI.delete(url, config);
+  return await jsonAPI.delete(url, await config());
 };
 
 // 효능 조회
 export const getEfficacy = async ingredientId => {
   const url = `/api/board/ingredient/${ingredientId}/description/details`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 // 입력한 이름을 포함하는 식재료 이름 조회 get
 export const getSearchIngredient = async searchValue => {
   const url = `/api/ingredient/${searchValue}`;
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 export const registerIngredient = async ingredientsList => {
   const url = '/api/user/ingredient';
 
-  return await jsonAPI.post(url, ingredientsList, config);
+  return await jsonAPI.post(url, ingredientsList, await config());
 };
 
 // 내가 소유한 식재료 조회(페이지)
 export const getMyIngredientPage = async type => {
   const url = `/api/user/ingredient?page=0&sort=${type}`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 export const deleteIngredient = async id => {
   const url = `/api/user/ingredient/${id}`;
 
-  return await jsonAPI.delete(url, config);
+  return await jsonAPI.delete(url, await config());
 };
 
 export const editIngredient = async testInfo => {
@@ -207,13 +211,13 @@ export const editIngredient = async testInfo => {
     expirationDate: testInfo.expirationDate,
   };
 
-  return await jsonAPI.patch(url, data, config);
+  return await jsonAPI.patch(url, data, await config());
 };
 
 export const getTargetIngredient = async id => {
   const url = `/api/user/ingredient/${id}`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 export const getIngredientPrepByUsername = async (
@@ -224,11 +228,11 @@ export const getIngredientPrepByUsername = async (
 ) => {
   let url = `/api/board/ingredient/trimming/username/${username}?sortType=${sortType}&offset=${offset}&limit=${limit}`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };
 
 export const getBarcode = async barcode => {
   const url = `/api/product/${barcode}`;
 
-  return await jsonAPI.get(url, config);
+  return await jsonAPI.get(url, await config());
 };

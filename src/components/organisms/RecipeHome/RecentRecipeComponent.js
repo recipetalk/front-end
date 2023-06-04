@@ -1,6 +1,6 @@
 import React, {memo, useEffect, useLayoutEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {FlatList, View} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
 import BoardComponent from '../../atoms/board/BoardComponent';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
@@ -9,7 +9,7 @@ import {getDynamicRecipes} from '../../../services/recipe/Recipe';
 import {determinePageEnd} from '../../../utils/determinePageEnd';
 
 export default function RecentRecipeComponent({navigation}) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(20);
   const [last, setLast] = useState(false);
@@ -82,6 +82,14 @@ export default function RecentRecipeComponent({navigation}) {
     });
     setLoading(() => false);
   };
+
+  if (data == null) {
+    return (
+      <EmptyContainer>
+        <ActivityIndicator color={'#f09311'} size="large" />
+      </EmptyContainer>
+    );
+  }
 
   if (data.length === 0) {
     return (

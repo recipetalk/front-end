@@ -1,14 +1,20 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import DetailProfileWithDescription from '../../components/atoms/profile/DetailProfileWithDescription';
-import {FlatList, Image, ScrollView, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  ScrollView,
+  View,
+} from 'react-native';
 import {RecipeAndTrimmingComponent} from '../../components/templates/mypage/RecipeAndTrimmingComponent';
 import {getProfile} from '../../services/MyPage';
 import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
 import {useFocusEffect} from '@react-navigation/native';
 
 const ProfileScreen = ({navigation, route}) => {
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState(null);
   const [loadUsername, setUsername] = useState('');
   const getUsername = async () => {
     const getUsernameInStorage = (await loadLoginFromStorage()).username;
@@ -26,7 +32,11 @@ const ProfileScreen = ({navigation, route}) => {
   );
 
   if (profile == null) {
-    return <></>;
+    return (
+      <EmptyContainer>
+        <ActivityIndicator color={'#f09311'} size="large" />
+      </EmptyContainer>
+    );
   }
 
   return (
@@ -91,6 +101,15 @@ const VerticalBar = styled.View`
   width: 100%;
   height: ${props => props.height};
   background: #f5f5f5;
+`;
+
+const EmptyContainer = styled.View`
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  align-items: center;
+  background: white;
+  margin-bottom: 70px;
 `;
 
 const Container = styled.SafeAreaView``;

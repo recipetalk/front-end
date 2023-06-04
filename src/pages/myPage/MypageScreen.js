@@ -4,16 +4,20 @@ import MypageComponent from '../../components/templates/mypage/MypageComponent';
 import MypageHeader from '../../components/organisms/mypage/MypageHeader';
 import AlertYesNoButton from '../../components/molecules/AlertYesNoButton';
 import {
-  loadLoginFromStorage,
-  saveLoginToStorage,
+  deleteLoginToStorage,
+
 } from '../../services/repository/AutoLogin';
+import {deleteJwtAccessTokenToStorage} from '../../services/repository/JwtToken';
+import {RemoveFcmConnect} from '../../services/fcm/FcmConnect';
 
 const MypageScreen = ({navigation}) => {
   const [alert, setAlert] = useState(false);
   const logoutFunction = async () => {
     setAlert(() => false);
-    let user = await loadLoginFromStorage();
-    await saveLoginToStorage(user.username, user.password, false);
+
+    await RemoveFcmConnect();
+    await deleteLoginToStorage();
+    await deleteJwtAccessTokenToStorage();
     await navigation.reset({routes: [{name: 'Login'}]});
   };
 

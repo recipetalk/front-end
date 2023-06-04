@@ -2,7 +2,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 
 export const saveJwtAccessTokenToStorage = async accessToken => {
   try {
-    const jsonValue = JSON.stringify({accessToken});
+    const jsonValue = JSON.stringify(accessToken);
     await EncryptedStorage.setItem('jwtAccess', jsonValue);
   } catch (e) {
     console.log(e);
@@ -11,7 +11,8 @@ export const saveJwtAccessTokenToStorage = async accessToken => {
 
 export const loadJwtAccessTokenFromStorage = async () => {
   try {
-    return await EncryptedStorage.getItem('jwtAccess');
+    const data = await EncryptedStorage.getItem('jwtAccess');
+    return data != null ? JSON.parse(data) : null;
   } catch (e) {
     console.log(e);
   }
@@ -27,7 +28,7 @@ export const deleteJwtAccessTokenToStorage = async () => {
 
 export const saveJwtRefreshToStorage = async refreshToken => {
   try {
-    const jsonValue = JSON.stringify({refreshToken});
+    const jsonValue = JSON.stringify(refreshToken);
     await EncryptedStorage.setItem('jwtRefresh', jsonValue);
   } catch (e) {
     console.log(e);

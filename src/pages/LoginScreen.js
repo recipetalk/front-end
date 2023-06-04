@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import SloganText from '../components/atoms/title/recipetalkSlogan';
 import styled from 'styled-components/native';
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import Checkbox from '@react-native-community/checkbox';
 import {Platform} from 'react-native';
 import FocusedTextInputBorder from '../components/atoms/FocusedTextInputBorder';
 import {jsonAPI} from '../services/connect/API';
@@ -10,10 +9,7 @@ import {
   loadLoginFromStorage,
   saveLoginToStorage,
 } from '../services/repository/AutoLogin';
-import {
-  saveJwtAccessTokenToStorage,
-  saveJwtRefreshToStorage,
-} from '../services/repository/JwtToken';
+import {saveJwtAccessTokenToStorage} from '../services/repository/JwtToken';
 import AlertYesButton from '../components/molecules/AlertYesButton';
 import {RequestFcmConnect} from '../services/fcm/FcmConnect';
 import messaging from '@react-native-firebase/messaging';
@@ -21,7 +17,6 @@ import {useDispatch} from 'react-redux';
 import {clear} from '../store/signup/Signup';
 
 export default function LoginScreen({navigation}) {
-  const [autologinChecked, setAutologinChecked] = useState(false);
   const [username, setId] = useState('');
   const [password, setPassword] = useState('');
   const [visibleAlert, setVisibleAlert] = useState(false);
@@ -32,37 +27,36 @@ export default function LoginScreen({navigation}) {
     async function init() {
       dispatch(clear());
       const loadLoginData = await loadLoginFromStorage();
-      console.log(loadLoginData);
+      if (loadLoginData.username == null || loadLoginData.username === '') {
+        return;
+      }
+      console.log(`loadLoginData : `, loadLoginData);
       setId(loadLoginData.username);
       setPassword(loadLoginData.password);
-      setAutologinChecked(loadLoginData.isAutoLogin);
-
-      if (loadLoginData.isAutoLogin === true) {
-        jsonAPI
-          .post('/auth/login', {
-            username: loadLoginData.username,
-            password: loadLoginData.password,
-          })
-          .then(async res => {
-            await saveJwtRefreshToStorage(res.headers['refresh-token']);
-            await saveJwtAccessTokenToStorage(res.headers.authorization);
-            const getToken = await messaging().getToken();
-            console.log(getToken);
-            await RequestFcmConnect(getToken, true).catch();
-            navigation.reset({routes: [{name: 'Home'}]});
-          })
-          .catch(err => {
-            console.log(err);
-            if (err.response.data === 'Invalid Username or Password') {
-              setVisibleAlert(true);
-              console.log(err.response);
-              setAlertTitle('아이디 또는 비밀번호가 잘못되었습니다.');
-            } else {
-              setVisibleAlert(true);
-              setAlertTitle('네트워크 상태가 올바르지 못합니다.');
-            }
-          });
-      }
+      jsonAPI
+        .post('/auth/login', {
+          username: loadLoginData.username,
+          password: loadLoginData.password,
+        })
+        .then(async res => {
+          //await saveJwtRefreshToStorage(res.headers['refresh-token']);
+          await saveJwtAccessTokenToStorage(res.headers.authorization);
+          const getToken = await messaging().getToken();
+          console.log(getToken);
+          await RequestFcmConnect(getToken, true).catch();
+          navigation.reset({routes: [{name: 'Home'}]});
+        })
+        .catch(err => {
+          console.log(err);
+          if (err.response.data === 'Invalid Username or Password') {
+            setVisibleAlert(true);
+            console.log(err.response);
+            setAlertTitle('아이디 또는 비밀번호가 잘못되었습니다.');
+          } else {
+            setVisibleAlert(true);
+            setAlertTitle('네트워크 상태가 올바르지 못합니다.');
+          }
+        });
     }
     init();
   }, []);
@@ -75,9 +69,9 @@ export default function LoginScreen({navigation}) {
         console.log(username);
         console.log('password');
         console.log(password);
-        await saveLoginToStorage(username, password, autologinChecked);
+        await saveLoginToStorage(username, password);
         await saveJwtAccessTokenToStorage(res.headers.authorization);
-        await saveJwtRefreshToStorage(res.headers['refresh-token']);
+        //await saveJwtRefreshToStorage(res.headers['refresh-token']);
         const getToken = await messaging().getToken();
 
         await RequestFcmConnect(getToken, true).catch();
@@ -95,44 +89,44 @@ export default function LoginScreen({navigation}) {
           setAlertTitle(
             '네트워크 상태가 올바르지 못합니다. 레시피톡에 문의해주세요',
           );
-          console.log(err.response);
+          console.error(err.response);
         }
       });
-
-  const AutoLogin = () => {
-    const styles = StyleSheet.create({
-      checkbox:
-        Platform.OS === 'ios'
-          ? {
-              width: 15,
-              height: 15,
-            }
-          : {
-              marginRight: -15,
-            },
-      label: {
-        color: 'black',
-        marginLeft: Platform.OS === 'ios' ? 10 : 17,
-      },
-    });
-
-    return (
-      <AutoLoginCheckContainer>
-        <Checkbox
-          value={autologinChecked}
-          onValueChange={setAutologinChecked}
-          onFillColor="#F09311"
-          tintColors={{true: '#F09311', false: '#A4A4A4'}}
-          boxType="square"
-          tintColor="#A4A4A4"
-          onCheckColor="#FFFFFF"
-          onTintColor="#F09311"
-          style={styles.checkbox}
-        />
-        <Text style={styles.label}>자동 로그인</Text>
-      </AutoLoginCheckContainer>
-    );
-  };
+  //
+  // const AutoLogin = () => {
+  //   const styles = StyleSheet.create({
+  //     checkbox:
+  //       Platform.OS === 'ios'
+  //         ? {
+  //             width: 15,
+  //             height: 15,
+  //           }
+  //         : {
+  //             marginRight: -15,
+  //           },
+  //     label: {
+  //       color: 'black',
+  //       marginLeft: Platform.OS === 'ios' ? 10 : 17,
+  //     },
+  //   });
+  //
+  //   return (
+  //     <AutoLoginCheckContainer>
+  //       <Checkbox
+  //         value={autologinChecked}
+  //         onValueChange={setAutologinChecked}
+  //         onFillColor="#F09311"
+  //         tintColors={{true: '#F09311', false: '#A4A4A4'}}
+  //         boxType="square"
+  //         tintColor="#A4A4A4"
+  //         onCheckColor="#FFFFFF"
+  //         onTintColor="#F09311"
+  //         style={styles.checkbox}
+  //       />
+  //       <Text style={styles.label}>자동 로그인</Text>
+  //     </AutoLoginCheckContainer>
+  //   );
+  // };
 
   return (
     <LoginScreenContainer>
@@ -169,7 +163,7 @@ export default function LoginScreen({navigation}) {
               <FindLabel>비밀번호 찾기</FindLabel>
             </TouchableOpacity>
 
-            <AutoLogin />
+            {/*<AutoLogin />*/}
           </FindLoginPasswordContainer>
         </LoginContainer>
 
