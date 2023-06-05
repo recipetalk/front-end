@@ -26,6 +26,7 @@
 		B369F6C92A020ED200F16AF5 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B369F6C82A020ED200F16AF5 /* TimerAttributes.swift */; };
 		B369F6CA2A020EDA00F16AF5 /* TimerAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B369F6C82A020ED200F16AF5 /* TimerAttributes.swift */; };
 		B3C935082A2B1686000BF027 /* kitchen-timer-33043.caf in Resources */ = {isa = PBXBuildFile; fileRef = B3C935072A2B1686000BF027 /* kitchen-timer-33043.caf */; };
+		B3D2482D2A2DFCCE009CE1EC /* recipeTalkIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = B3D2482C2A2DFCCE009CE1EC /* recipeTalkIcon.png */; };
 		FA39E13B892546BAAD446578 /* PretendardVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B77C8B859B04E2B9DEE25D3 /* PretendardVariable.ttf */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +90,7 @@
 		B369F6C62A020D4300F16AF5 /* TimerModuleBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimerModuleBridge.m; sourceTree = "<group>"; };
 		B369F6C82A020ED200F16AF5 /* TimerAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAttributes.swift; sourceTree = "<group>"; };
 		B3C935072A2B1686000BF027 /* kitchen-timer-33043.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "kitchen-timer-33043.caf"; sourceTree = "<group>"; };
+		B3D2482C2A2DFCCE009CE1EC /* recipeTalkIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recipeTalkIcon.png; sourceTree = "<group>"; };
 		C8202A9E298C088700A77053 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontisto.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		C8202A9F298C088800A77053 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		C8202AA0298C088800A77053 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SimpleLineIcons.ttf; path = "../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B3D2482C2A2DFCCE009CE1EC /* recipeTalkIcon.png */,
 				B3C935072A2B1686000BF027 /* kitchen-timer-33043.caf */,
 				B3100FD929F6747500B0EA5F /* GoogleService-Info.plist */,
 				C8202A9D298C07FB00A77053 /* Fonts */,
@@ -398,6 +401,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3D2482D2A2DFCCE009CE1EC /* recipeTalkIcon.png in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				B3100FDA29F6747500B0EA5F /* GoogleService-Info.plist in Resources */,
 				B3C935082A2B1686000BF027 /* kitchen-timer-33043.caf in Resources */,
