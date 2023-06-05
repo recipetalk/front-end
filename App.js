@@ -58,6 +58,7 @@ import IngredientsEditScreen from './src/pages/Ingredients/IngredientsEditScreen
 import RecipeDetailDescriptionScreen from './src/pages/recipe/RecipeDetailDescriptionScreen';
 import SearchScreen from './src/pages/search/SearchScreen';
 import {SearchResultScreen} from './src/pages/search/SearchResultScreen';
+import InitScreen from './src/pages/InitScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -299,6 +300,11 @@ function App() {
   return (
     <NavigationContainer ref={navigation}>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Init"
+          component={InitScreen}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Login"
           component={LoginStackNavigator}
