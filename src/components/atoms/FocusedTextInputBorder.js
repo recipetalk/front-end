@@ -8,7 +8,8 @@ export default function FocusedTextInputBorder({
   value,
   style,
   useRef,
-  type= undefined,
+  type = undefined,
+  maxLength = undefined,
 }) {
   const [isHighlighted, setIsHighlighted] = useState(false);
   return (
@@ -24,6 +25,7 @@ export default function FocusedTextInputBorder({
       value={value}
       autoCapitalize="none"
       keyboardType={type}
+      maxLength={maxLength}
     />
   );
 }

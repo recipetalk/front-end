@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
@@ -8,6 +8,7 @@ import {jsonAPI} from '../../services/connect/API';
 import AlertYesButton from '../../components/molecules/AlertYesButton';
 import {useDispatch, useSelector} from 'react-redux';
 import {setNickname} from '../../store/signup/Signup';
+import {NicknameValidator} from '../../services/validator/NicknameValidator';
 
 export default function SignupNicknameScreen({navigation}) {
   const globalNickname = useSelector(state => state.signUp.value.nickname);
@@ -16,6 +17,7 @@ export default function SignupNicknameScreen({navigation}) {
   const [isAccess, setAccess] = useState(false);
   const [accessNickname, setAccessNickname] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
+  const [isValidNickname, setValidNickname] = useState('');
   const textRef = useRef();
 
   const getIsValidNickname = async () => {
@@ -33,6 +35,18 @@ export default function SignupNicknameScreen({navigation}) {
         setVisibleAlert(true);
       });
   };
+
+  useEffect(() => {
+    if (NicknameValidator(localNickname)) {
+      setValidNickname('ok');
+    } else {
+      setValidNickname('no');
+    }
+
+    if (localNickname.length === 0) {
+      setValidNickname('');
+    }
+  }, [localNickname]);
 
   return (
     <SignupIdScreenContainer>
@@ -53,7 +67,13 @@ export default function SignupNicknameScreen({navigation}) {
               useRef={textRef}
               setData={setLocalNickname}
               value={localNickname}
+              maxLength={10}
             />
+            {isValidNickname === 'no' && (
+              <ValidateLabel>
+                닉네임은 4~10자리 한글, 영어, 숫자만 가능합니다
+              </ValidateLabel>
+            )}
           </View>
           <ActiveButton
             width="80px"
@@ -168,4 +188,11 @@ const TouchableContainer = styled.TouchableOpacity`
   height: 48px;
   align-items: center;
   justify-content: center;
+`;
+const ValidateLabel = styled.Text`
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #ff665c;
 `;

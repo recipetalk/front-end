@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, Platform, View} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
@@ -8,6 +8,7 @@ import {jsonAPI} from '../../services/connect/API';
 import AlertYesButton from '../../components/molecules/AlertYesButton';
 import {useDispatch, useSelector} from 'react-redux';
 import {setId} from '../../store/signup/Signup';
+import {UsernameValidator} from '../../services/validator/UsernameValidator';
 
 export default function SignupIdScreen({navigation}) {
   const idGlobal = useSelector(state => state.signUp.value.username);
@@ -16,10 +17,10 @@ export default function SignupIdScreen({navigation}) {
   const [isAccess, setAccess] = useState(false);
   const [accessId, setAccessId] = useState(null);
   const [visibleAlert, setVisibleAlert] = useState(false);
-
+  const [isValidId, setValidId] = useState('');
   const textRef = useRef();
 
-  const getIsValidId = async () =>
+  const getIsValidId = async () => {
     jsonAPI
       .get('/auth/signup/' + localId)
       .then(response => {
@@ -32,7 +33,20 @@ export default function SignupIdScreen({navigation}) {
         setAccess(false);
         setAccessId(null);
         setVisibleAlert(true);
+        console.log(err.response);
       });
+  };
+
+  useEffect(() => {
+    if (UsernameValidator(localId)) {
+      setValidId('ok');
+    } else {
+      setValidId('no');
+    }
+    if (localId.length === 0) {
+      setValidId('');
+    }
+  }, [localId]);
 
   return (
     <SignupIdScreenContainer>
@@ -50,10 +64,17 @@ export default function SignupIdScreen({navigation}) {
         <DuplicationAndTextInputContainer>
           <View style={{width: '76%'}}>
             <FocusedTextInputBorder
+              style={isValidId === 'no' && {borderColor: '#ff665c'}}
               useRef={textRef}
               setData={setLocalId}
               value={localId}
+              maxLength={16}
             />
+            {isValidId === 'no' && (
+              <ValidateLabel>
+                영문과 숫자를 포함한 6~16글자 사이입니다.
+              </ValidateLabel>
+            )}
           </View>
           <ActiveButton
             width="80px"
@@ -61,7 +82,7 @@ export default function SignupIdScreen({navigation}) {
             border_radius="8px"
             LabelInfo={!equals(localId, accessId) ? '중복확인' : '확인완료'}
             LabelSize="14px"
-            isActive={localId.length >= 1 && !equals(localId, accessId)}
+            isActive={isValidId === 'ok' && !equals(localId, accessId)}
             onPress={getIsValidId}
           />
         </DuplicationAndTextInputContainer>
@@ -163,4 +184,11 @@ const TouchableContainer = styled.TouchableOpacity`
   height: 48px;
   align-items: center;
   justify-content: center;
+`;
+const ValidateLabel = styled.Text`
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #ff665c;
 `;
