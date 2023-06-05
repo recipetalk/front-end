@@ -2,10 +2,30 @@ import React from 'react';
 import styled from 'styled-components/native';
 import Alert from '../atoms/Alert';
 import {View} from 'react-native';
+import {requestWithdraw} from '../../services/MyPage';
+import {useToast} from 'react-native-toast-notifications';
+import {RemoveFcmConnect} from '../../services/fcm/FcmConnect';
+import {deleteLoginToStorage} from '../../services/repository/AutoLogin';
+import {deleteJwtAccessTokenToStorage} from '../../services/repository/JwtToken';
 
 export default function AlertWithdraw({navigation, notAction}) {
+  const toast = useToast();
+  const withdrawAction = () => {
+    requestWithdraw()
+      .then(async () => {
+        await deleteLoginToStorage();
+        await deleteJwtAccessTokenToStorage();
+        await notAction(false);
+        await navigation.reset({routes: [{name: 'Login'}]});
+      })
+      .catch(() => {
+        notAction(false);
+        toast.show('회원탈퇴에 실패했습니다. 나중에 다시 시도해주세요');
+      });
+  };
+
   return (
-    <Alert>
+    <Alert setAlert={notAction}>
       <Inner>
         <TitlePart>회원탈퇴</TitlePart>
         <TextPartTwo>{'레시피톡 회원탈퇴 안내'}</TextPartTwo>
@@ -18,7 +38,10 @@ export default function AlertWithdraw({navigation, notAction}) {
       </Inner>
       <VerticalBar />
       <View style={{flexDirection: 'row'}}>
-        <Button onPress={() => navigation.reset({routes: [{name: 'Login'}]})}>
+        <Button
+          onPress={() => {
+            withdrawAction();
+          }}>
           <YesButtonLabel>회원 탈퇴하기</YesButtonLabel>
         </Button>
         <HorizontalBar />

@@ -24,6 +24,14 @@ export const RecipeTimeList = [
     label: '2시간 이상',
   },
   {
+    key: 'FOUR_HOURS',
+    label: '4시간 이상',
+  },
+  {
+    key: 'EIGHT_HOURS',
+    label: '8시간 이상',
+  },
+  {
     key: 'ONE_DAY',
     label: '하루 이상',
   },

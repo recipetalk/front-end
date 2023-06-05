@@ -56,7 +56,8 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
       setAlert(true);
       return true;
     } else {
-      deleteAlarm();
+      pauseTimer();
+      cancelTimer();
       navigation.pop();
       return false;
     }
@@ -285,6 +286,7 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
         index={route.params.index}
         lastIndex={route.params.lastIndex}
         item={route.params?.item}
+        backAction={backAction}
       />
       {isClickedTimer && !isStartTimer ? (
         <InitTimerBox>

@@ -4,7 +4,12 @@ import WhitePrepOrderComponent from '../../organisms/WhitePrepOrderComponent';
 import {Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-export default function SequenceDetailDescription({index, item, lastIndex}) {
+export default function SequenceDetailDescription({
+  index,
+  item,
+  lastIndex,
+  backAction,
+}) {
   const [num, setNum] = useState(index);
   const navigation = useNavigation();
 
@@ -48,7 +53,7 @@ export default function SequenceDetailDescription({index, item, lastIndex}) {
           </NavigationLabel>
         </NavigationContainer>
       ) : (
-        <NavigationContainer onPress={() => navigation.pop()}>
+        <NavigationContainer onPress={() => backAction()}>
           <NavigationLabel>맛있는 요리 완성!</NavigationLabel>
         </NavigationContainer>
       )}

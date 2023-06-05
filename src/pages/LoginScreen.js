@@ -167,7 +167,10 @@ export default function LoginScreen({navigation}) {
           </FindLoginPasswordContainer>
         </LoginContainer>
 
-        <LoginButton onPress={() => sendLogin()}>
+        <LoginButton
+          onPress={() => {
+            sendLogin();
+          }}>
           <LoginButtonLabel>로그인</LoginButtonLabel>
         </LoginButton>
         <SignButton onPress={() => navigation.navigate('Signup')}>

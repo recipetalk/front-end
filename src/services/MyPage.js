@@ -26,6 +26,7 @@ export const getMyProfile = async () => {
 };
 
 export const editProfile = async (nickname, description, profileImg) => {
+  console.log(nickname, description, profileImg);
   const url = '/api/user/profile';
 
   const formdata = new FormData();
@@ -34,7 +35,9 @@ export const editProfile = async (nickname, description, profileImg) => {
     await formdata.append('nickname', nickname);
   }
 
-  if (profileImg.uri !== null) {
+  if (profileImg.uri == '') {
+    await formdata.append('isProfileImgDeleted', true);
+  } else if (profileImg.fileName != null) {
     const resizedImage = await ImageResizer.createResizedImage(
       profileImg.uri,
       200,
@@ -43,17 +46,23 @@ export const editProfile = async (nickname, description, profileImg) => {
       100,
     );
 
-    var photo = {
+    let photo = {
       uri: resizedImage.uri,
       type: 'image/jpeg',
       name: profileImg.fileName,
     };
     await formdata.append('profileImg', photo);
+    await formdata.append('isProfileImgDeleted', true);
+  } else {
+    await formdata.append('isProfileImgDeleted', false);
   }
-
-  if (description != null) {
+  if (description == null) {
+    await formdata.append('description', '');
+  } else {
     await formdata.append('description', description);
   }
+
+  console.log(formdata);
 
   return await multiPartAPI.patch(url, formdata, await config());
 };
@@ -123,6 +132,12 @@ export const getBoardBookmarkList = async (pageNum, sortType) => {
   const url = `/api/user/bookmark/boardList?page=${pageNum}&sortType=${sortType}`;
 
   return await jsonAPI.get(url, await config());
+};
+
+export const requestWithdraw = async () => {
+  const url = '/api/user';
+
+  return await jsonAPI.delete(url, await config());
 };
 
 // 회원 탈퇴

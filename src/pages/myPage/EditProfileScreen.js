@@ -15,20 +15,20 @@ import {
 import {ImageAndCameraFun} from '../../components/atoms/functions/ImageAndCameraFun';
 import {useToast} from 'react-native-toast-notifications';
 import {editProfile, getMyProfile} from '../../services/MyPage';
+import AlertYesNoButton from '../../components/molecules/AlertYesNoButton';
 
 export const EditProfileScreen = ({navigation}) => {
   const [accessNickname, setAccessNickname] = useState('');
   const [localNickname, setLocalNickname] = useState('');
-  const [localDescription, setLocalDescription] = useState('');
-  const [accessDescription, setAccessDescription] = useState(null);
+  const [description, setDescription] = useState('');
   const [isAccess, setAccess] = useState(true);
   const [visibleAlert, setVisibleAlert] = useState(false);
   const [isTryWithdraw, setTryWithdraw] = useState(false);
   const [isHighlight, setHighlight] = useState(false);
-  const [loadPhoto, setLoadPhoto] = useState(null);
-  const [cachePhoto, setCachePhoto] = useState({uri: null});
+  const [photo, setPhoto] = useState({uri: ''});
   const [isAlert, setAlert] = useState(false);
   const [isSendable, setSendable] = useState(false);
+  const [isCancelAlert, setCancelAlert] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
@@ -44,26 +44,26 @@ export const EditProfileScreen = ({navigation}) => {
   }, [localNickname]);
 
   useEffect(() => {
-    console.log(!isAccess, cachePhoto.uri !== null, accessDescription !== null);
-    if (!isAccess) {
+    console.log(!isAccess);
+    if (isAccess) {
+      setSendable(true);
+    } else {
       setSendable(false);
-      return;
     }
-    setSendable(cachePhoto.uri !== null || accessDescription !== null);
-  }, [localNickname, isAccess, cachePhoto.uri, accessDescription]);
+  }, [localNickname, isAccess]);
 
   const init = async () => {
     const loadProfile = await loadProfileToStorage();
     setLocalNickname(loadProfile.nickname);
     setAccessNickname(loadProfile.nickname);
     setAccess(true);
-    setLocalDescription(loadProfile.description);
-    setLoadPhoto(loadProfile.profileImageURI);
+    setDescription(loadProfile.description);
+    setPhoto({uri: loadProfile.profileImageURI});
     console.log(loadProfile.profileImageURI);
   };
 
   const sendData = () => {
-    editProfile(accessNickname, accessDescription, cachePhoto)
+    editProfile(accessNickname, description, photo)
       .then(() =>
         getMyProfile().then(res => {
           const data = JSON.parse(res.request._response);
@@ -98,7 +98,7 @@ export const EditProfileScreen = ({navigation}) => {
       <ImageAndCameraFun
         isAlert={isAlert}
         setAlert={setAlert}
-        setPhoto={setCachePhoto}
+        setPhoto={setPhoto}
         toast={toast}
       />
       <View style={{position: 'relative', width: '100%'}}>
@@ -117,21 +117,12 @@ export const EditProfileScreen = ({navigation}) => {
       </View>
       <HorizontalBar />
 
-      {cachePhoto?.uri != null ? (
+      {photo.uri != null && photo.uri != '' ? (
         <ImageBox
           imageStyle={{borderRadius: 27.444}}
-          source={{uri: cachePhoto.uri}}
+          source={{uri: photo.uri}}
           resizeMode="cover">
-          <ImageUpdate onPress={() => setAlert(true)}>
-            <Image
-              style={{width: 24, height: 24}}
-              source={require('../../assets/images/ProfileImgUpdate.png')}
-            />
-          </ImageUpdate>
-        </ImageBox>
-      ) : loadPhoto !== null ? (
-        <ImageBox source={{uri: loadPhoto}} imageStyle={{borderRadius: 27.444}}>
-          <ImageUpdate onPress={() => setAlert(true)}>
+          <ImageUpdate onPress={() => setCancelAlert(true)}>
             <Image
               style={{width: 24, height: 24}}
               source={require('../../assets/images/ProfileImgUpdate.png')}
@@ -139,14 +130,14 @@ export const EditProfileScreen = ({navigation}) => {
           </ImageUpdate>
         </ImageBox>
       ) : (
-        <ImageBox>
+        <ImageDummyBox>
           <ImageUpdate onPress={() => setAlert(true)}>
             <Image
               style={{width: 24, height: 24}}
               source={require('../../assets/images/ProfileImgUpdate.png')}
             />
           </ImageUpdate>
-        </ImageBox>
+        </ImageDummyBox>
       )}
 
       <NicknamePart>
@@ -183,7 +174,6 @@ export const EditProfileScreen = ({navigation}) => {
       <NicknamePart>
         <NicknameLabel>자기소개</NicknameLabel>
         <DescriptionTextInput
-          placeholder={localDescription}
           placeholderTextColor="#a4a4a4"
           multiline={true}
           scrollEnabled={false}
@@ -191,13 +181,13 @@ export const EditProfileScreen = ({navigation}) => {
           onBlur={() => setHighlight(false)}
           isHighlight={isHighlight}
           onChangeText={text => {
-            setAccessDescription(text);
+            setDescription(text);
           }}
-          value={accessDescription}
+          value={description}
           numberOfLines={2}
         />
         <View style={{flexDirection: 'row-reverse'}}>
-          <TouchableOpacity onPress={() => setAccessDescription(() => null)}>
+          <TouchableOpacity onPress={() => setDescription(() => null)}>
             <ClearLabel>지우기</ClearLabel>
           </TouchableOpacity>
         </View>
@@ -220,6 +210,17 @@ export const EditProfileScreen = ({navigation}) => {
         />
       ) : isTryWithdraw ? (
         <AlertWithdraw notAction={setTryWithdraw} navigation={navigation} />
+      ) : undefined}
+      {isCancelAlert ? (
+        <AlertYesNoButton
+          title={'이미지를 삭제할까요?'}
+          setAlert={setCancelAlert}
+          yesButtonText={'네'}
+          onPress={() => {
+            setPhoto({uri: ''});
+            setCancelAlert(false);
+          }}
+        />
       ) : undefined}
     </Container>
   );
@@ -247,6 +248,15 @@ const HorizontalBar = styled.View`
 `;
 
 const ImageBox = styled.ImageBackground`
+  width: 90px;
+  height: 90px;
+  margin-top: 50px;
+  background: #e5e5e5;
+  border-radius: 27.444px;
+  position: relative;
+`;
+
+const ImageDummyBox = styled.View`
   width: 90px;
   height: 90px;
   margin-top: 50px;
