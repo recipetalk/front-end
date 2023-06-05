@@ -33,10 +33,6 @@ const SetTimerPage = ({navigation, route}) => {
     }
   }, [sec]);
 
-  const moveCareAtEnd = e => {
-    const textLength = e?.nativeEvent?.text?.length || 0;
-    textInputRef.current?.setSelection(textLength, textLength);
-  };
 
   return (
     <Container>
@@ -58,9 +54,8 @@ const SetTimerPage = ({navigation, route}) => {
             <TextBoxLabel>시간</TextBoxLabel>
             <TextInput
               ref={textInputRef}
-              onFocus={e => {
+              onFocus={() => {
                 setHighlighted1(true);
-                moveCareAtEnd(e);
               }}
               onBlur={() => setHighlighted1(false)}
               style={[styles.textInput, isHighlighted1 && styles.isHighlighted]}
@@ -69,10 +64,13 @@ const SetTimerPage = ({navigation, route}) => {
                 setHour(text);
                 route.params.setHour(text);
               }}
-              defaultValue={'00'}
-              inputMode={'decimal'}
+              inputMode={'number-pad'}
               maxLength={2}
-              value={hour}
+              value={hour + ''}
+              selection={{
+                start: (hour + '').length,
+                end: (hour + '').length,
+              }}
             />
           </TextInnerPart>
           <Colon>:</Colon>
@@ -80,13 +78,11 @@ const SetTimerPage = ({navigation, route}) => {
             <TextBoxLabel>분</TextBoxLabel>
             <TextInput
               ref={textInputRef}
-              onFocus={e => {
+              onFocus={() => {
                 setHighlighted2(true);
-                moveCareAtEnd(e);
               }}
               onBlur={() => setHighlighted2(false)}
               style={[styles.textInput, isHighlighted2 && styles.isHighlighted]}
-              defaultValue={'00'}
               autoFocus={true}
               keyboardType={'number-pad'}
               onChangeText={text => {
@@ -95,20 +91,23 @@ const SetTimerPage = ({navigation, route}) => {
               }}
               maxLength={2}
               inputMode={'decimal'}
-              value={min}
+              value={min + ''}
+              selection={{
+                start: (min + '').length,
+                end: (min + '').length,
+              }}
             />
           </TextInnerPart>
           <Colon>:</Colon>
           <TextInnerPart>
             <TextBoxLabel>초</TextBoxLabel>
             <TextInput
-              onFocus={e => {
+              ref={textInputRef}
+              onFocus={() => {
                 setHighlighted3(true);
-                moveCareAtEnd(e);
               }}
               onBlur={() => setHighlighted3(false)}
               style={[styles.textInput, isHighlighted3 && styles.isHighlighted]}
-              defaultValue={'00'}
               keyboardType={'number-pad'}
               onChangeText={text => {
                 route.params.setSecond(text);
@@ -116,7 +115,11 @@ const SetTimerPage = ({navigation, route}) => {
               }}
               maxLength={2}
               inputMode={'decimal'}
-              value={sec}
+              value={sec + ''}
+              selection={{
+                start: (sec + '').length,
+                end: (sec + '').length,
+              }}
             />
           </TextInnerPart>
         </TextBoxPart>
