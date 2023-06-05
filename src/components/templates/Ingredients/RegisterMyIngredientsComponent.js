@@ -17,6 +17,7 @@ const RegisterMyIngredientsComponent = () => {
   const [isFocus, setFocus] = useState(false);
   const [selectIndex, setSelectIndex] = useState(0);
   const [sendText, setSendText] = useState(null);
+  const [checkedItem, setCheckedItem] = useState('');
 
   useEffect(() => {
     if (router.params !== undefined) {
@@ -67,6 +68,7 @@ const RegisterMyIngredientsComponent = () => {
                   key={index}
                   item={item}
                   isFocus={isFocus}
+                  checkedItem={checkedItem}
                   setFocus={setFocus}
                   setSendText={setSendText}
                   setSelectIndex={setSelectIndex}
@@ -122,6 +124,7 @@ const RegisterMyIngredientsComponent = () => {
           <CustomInputView>
             <IngredientSelectorComponent
               isFocus={isFocus}
+              setCheckedItem={setCheckedItem}
               targetIngredientName={sendText}
               index={selectIndex}
             />

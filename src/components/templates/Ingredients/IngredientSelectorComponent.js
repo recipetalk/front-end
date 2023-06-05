@@ -9,7 +9,11 @@ import {
 } from '../../../store/Ingredients/SelectedByFindIngredientSlice';
 import ingredientsComponent from './IngredientsComponent';
 
-export const IngredientSelectorComponent = ({targetIngredientName, index}) => {
+export const IngredientSelectorComponent = ({
+  targetIngredientName,
+  setCheckedItem,
+  index,
+}) => {
   const [searchResult, setSearchResult] = useState([]);
   const dispatch = useDispatch();
 
@@ -33,6 +37,8 @@ export const IngredientSelectorComponent = ({targetIngredientName, index}) => {
       ingredientName: item.ingredientName,
       index: index,
     };
+
+    setCheckedItem(infos.ingredientName);
     //저장
     dispatch(setSaveIngredientToTarget(infos));
   };

@@ -8,14 +8,13 @@ import {
 import {useDispatch} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import {Dimensions, Modal, View} from 'react-native';
-import {getSearchIngredient} from '../../../services/Ingredients';
 import {Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
-import {updateRecipeIngredientWithIndex} from '../../../store/RecipeEdit/TempRecipeEditInfoSlice';
 
 const DirectlyRegisterIngredients = ({
   item,
   isFocus,
+  checkedItem,
   setSendText,
   setSelectIndex,
   setFocus,
@@ -73,14 +72,21 @@ const DirectlyRegisterIngredients = ({
     dispatch(deleteIngredients(item.ingredientId));
   };
 
-  const changeText = res => {
-    if (isFocus) {
-      //IngredientSelectorComponent로 데이터 전송
-      setSendText(res);
-    }
+  const changeText = event => {
+    setSendText(event.nativeEvent.text);
 
-    setIngredientsInfo({...ingredientsInfo, ingredientName: res});
+    setIngredientsInfo({
+      ...ingredientsInfo,
+      ingredientName: event.nativeEvent.text,
+    });
   };
+
+  useEffect(() => {
+    setIngredientsInfo({
+      ...ingredientsInfo,
+      ingredientName: checkedItem,
+    });
+  }, [checkedItem]);
 
   return (
     <RegisterIngredientsItemContainer>
@@ -113,7 +119,7 @@ const DirectlyRegisterIngredients = ({
           placeholder="예) 감자"
           placeholderTextColor="gray"
           value={ingredientsInfo.ingredientName}
-          onChangeText={changeText}
+          onChange={changeText}
           onFocus={() => {
             setSendText(() => item.ingredientName);
             setFocus(true);

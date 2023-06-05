@@ -70,7 +70,7 @@ const ViewAllMyIngredients = () => {
 
       setThreeItemState('');
     }
-  }, [isFocused, oneItemState, twoItemState, threeItemState]);
+  }, [oneItemState, twoItemState, threeItemState]);
 
   if (myIngredients === null) {
     return null;
