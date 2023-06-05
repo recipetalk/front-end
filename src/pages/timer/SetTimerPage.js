@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, StyleSheet, TextInput} from 'react-native';
 
@@ -9,6 +9,8 @@ const SetTimerPage = ({navigation, route}) => {
   const [hour, setHour] = useState(0);
   const [min, setMin] = useState(0);
   const [sec, setSec] = useState(0);
+
+  const textInputRef = useRef(null);
 
   useEffect(() => {
     if (hour >= 24) {
@@ -31,6 +33,11 @@ const SetTimerPage = ({navigation, route}) => {
     }
   }, [sec]);
 
+  const moveCareAtEnd = e => {
+    const textLength = e?.nativeEvent?.text?.length || 0;
+    textInputRef.current?.setSelection(textLength, textLength);
+  };
+
   return (
     <Container>
       <Header>
@@ -50,7 +57,11 @@ const SetTimerPage = ({navigation, route}) => {
           <TextInnerPart>
             <TextBoxLabel>시간</TextBoxLabel>
             <TextInput
-              onFocus={() => setHighlighted1(true)}
+              ref={textInputRef}
+              onFocus={e => {
+                setHighlighted1(true);
+                moveCareAtEnd(e);
+              }}
               onBlur={() => setHighlighted1(false)}
               style={[styles.textInput, isHighlighted1 && styles.isHighlighted]}
               keyboardType={'number-pad'}
@@ -68,7 +79,11 @@ const SetTimerPage = ({navigation, route}) => {
           <TextInnerPart>
             <TextBoxLabel>분</TextBoxLabel>
             <TextInput
-              onFocus={() => setHighlighted2(true)}
+              ref={textInputRef}
+              onFocus={e => {
+                setHighlighted2(true);
+                moveCareAtEnd(e);
+              }}
               onBlur={() => setHighlighted2(false)}
               style={[styles.textInput, isHighlighted2 && styles.isHighlighted]}
               defaultValue={'00'}
@@ -87,7 +102,10 @@ const SetTimerPage = ({navigation, route}) => {
           <TextInnerPart>
             <TextBoxLabel>초</TextBoxLabel>
             <TextInput
-              onFocus={() => setHighlighted3(true)}
+              onFocus={e => {
+                setHighlighted3(true);
+                moveCareAtEnd(e);
+              }}
               onBlur={() => setHighlighted3(false)}
               style={[styles.textInput, isHighlighted3 && styles.isHighlighted]}
               defaultValue={'00'}
@@ -105,6 +123,19 @@ const SetTimerPage = ({navigation, route}) => {
         <StartButton
           color={'#f5f5f5'}
           onPress={() => {
+            if (sec == '') {
+              setSec(0);
+              route.params.setSecond(0);
+            }
+            if (min == '') {
+              setMin(0);
+              route.params.setMinute(0);
+            }
+            if (hour == '') {
+              setHour(0);
+              route.params.setHour(0);
+            }
+
             navigation.goBack();
             route.params.setStart(true);
           }}>
