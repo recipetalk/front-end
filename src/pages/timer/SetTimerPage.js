@@ -6,9 +6,9 @@ const SetTimerPage = ({navigation, route}) => {
   const [isHighlighted1, setHighlighted1] = useState(false);
   const [isHighlighted2, setHighlighted2] = useState(false);
   const [isHighlighted3, setHighlighted3] = useState(false);
-  const [hour, setHour] = useState(0);
-  const [min, setMin] = useState(0);
-  const [sec, setSec] = useState(0);
+  const [hour, setHour] = useState('00');
+  const [min, setMin] = useState('00');
+  const [sec, setSec] = useState('00');
 
   const textInputRef = useRef(null);
 
