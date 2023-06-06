@@ -42,7 +42,7 @@ export default function InitScreen({navigation}) {
           navigation.reset({routes: [{name: 'Login'}]});
         });
     }
-    init();
+    return init();
   }, []);
 
   return (

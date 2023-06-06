@@ -3,9 +3,8 @@ import App from './App';
 import {Provider} from 'react-redux';
 import {store} from './src/store/config';
 import {ToastProvider} from 'react-native-toast-notifications';
-import {NavigationContainer} from '@react-navigation/native';
 
-export const AppWrapper = () => {
+const AppWrapper = () => {
   return (
     <Provider store={store}>
       <ToastProvider
@@ -17,9 +16,10 @@ export const AppWrapper = () => {
           fontStyle: 'normal',
           fontWeight: '500',
         }}>
-
-          <App />
+        <App />
       </ToastProvider>
     </Provider>
   );
 };
+
+export default AppWrapper;
