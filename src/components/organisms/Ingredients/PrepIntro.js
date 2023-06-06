@@ -1,20 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {getEfficacy} from '../../../services/Ingredients';
 import IngredientsInfo from './IngredientsInfo';
-import {useRoute} from '@react-navigation/native';
+import {getEfficacy} from '../../../services/Ingredients';
 
 const PrepIntro = props => {
-  const router = useRoute();
   const [efficacyInfo, setEfficacyInfo] = useState({});
 
   useEffect(() => {
-    getEfficacy(router.params.ingredientID)
+    getEfficacy(props.state.id)
       .then(res => {
         setEfficacyInfo(res.data);
       })
       .catch(error => console.error(error));
-  }, [router.params.ingredientID]);
+  }, [props.state.id]);
 
   return (
     <>
