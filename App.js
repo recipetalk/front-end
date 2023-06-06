@@ -59,11 +59,14 @@ import RecipeDetailDescriptionScreen from './src/pages/recipe/RecipeDetailDescri
 import SearchScreen from './src/pages/search/SearchScreen';
 import {SearchResultScreen} from './src/pages/search/SearchResultScreen';
 import InitScreen from './src/pages/InitScreen';
+import {LogBox} from 'react-native';
 
 if (__DEV__) {
   import('./config').then(() => {
     console.log('Reactotron Configured');
   });
+} else {
+  LogBox.ignoreAllLogs();
 }
 
 function RecipeEditStackNavigator() {
