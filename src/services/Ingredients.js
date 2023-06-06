@@ -150,6 +150,11 @@ export const editRowIngredientTrimming = async rowIngredientInfo => {
 };
 
 // 식재료 손질법 삭제 | delete
+export const deleteIngredientsPrep = async trimmingId => {
+  const url = `/api/board/ingredient/trimming/${trimmingId}`;
+
+  return await jsonAPI.delete(url, await config());
+};
 
 export const getIngredientsPrep = async (ingredientId, page) => {
   const url = `/api/board/ingredient/${ingredientId}/trimming?page=${page}`;

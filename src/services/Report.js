@@ -26,3 +26,11 @@ export const reportRecipe = async recipeId => {
 
   return await jsonAPI.post(url, data, await config());
 };
+
+export const reportPreps = async trimmingId => {
+  const url = '/api/user/report';
+
+  const data = {description: `trimmingId=${trimmingId}`};
+
+  return await jsonAPI.post(url, data, await config());
+};

@@ -1,8 +1,15 @@
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, KeyboardAvoidingView, Platform} from 'react-native';
+import {
+  FlatList,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  View,
+} from 'react-native';
 import styled from 'styled-components/native';
 import {
+  deleteIngredientsPrep,
   getEfficacy,
   getIngredientsPrepDetail,
 } from '../../../services/Ingredients';
@@ -19,10 +26,17 @@ import LikeAndCommentNum from '../../atoms/board/LikeAndComment/LikeAndCommentNu
 import {useDispatch} from 'react-redux';
 import {__getPrepDetail} from '../../../store/Ingredients/PrepSlice';
 import {loadLoginFromStorage} from '../../../services/repository/AutoLogin';
+import AlertYesNoButton from '../../molecules/AlertYesNoButton';
+import {RecipeRemoveRequest} from '../../../services/recipe/Recipe';
+import {reportPreps, reportRecipe} from '../../../services/Report';
+import {requestRegisterBlockedUser} from '../../../services/MyPage';
+import {OptionModalChildImage} from '../../organisms/OptionModalChildImage';
+import {useToast} from 'react-native-toast-notifications';
 
 const PrepDetailComponent = () => {
   const router = useRoute();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [efficacyInfo, setEfficacyInfo] = useState(null);
   const [detailInfo, setDetailInfo] = useState(null);
   const [isClicked, setClicked] = useState(false);
@@ -32,6 +46,11 @@ const PrepDetailComponent = () => {
   const [isLast, setLast] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [sameUser, setSameUser] = useState(false);
+  const [isAlert, setAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertText, setAlertText] = useState('');
+  const [checkedItem, setCheckedItem] = useState(null);
+  const toast = useToast();
 
   useEffect(() => {
     getIngredientsPrepDetail(router.params.boardId)
@@ -61,6 +80,12 @@ const PrepDetailComponent = () => {
   useEffect(() => {
     dispatch(__getPrepDetail(router.params.boardId));
   }, [dispatch, router.params.boardId]);
+
+  useEffect(() => {
+    if (checkedItem !== null) {
+      checkedItem.onPress();
+    }
+  }, [checkedItem]);
 
   const onRefresh = async () => {
     setCommentRefresh(true);
@@ -101,20 +126,85 @@ const PrepDetailComponent = () => {
     checkSameUser();
   }, [checkSameUser]);
 
+  const items = sameUser
+    ? [
+        {
+          label: '삭제하기',
+          value: 'delete',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 삭제하시겠습니까?');
+            setAlertText('삭제하면 복구가 불가능합니다.');
+          },
+        },
+        {
+          label: '수정하기',
+          value: 'commentReply',
+          onPress: () => {
+            navigation.navigate('PrepRegister');
+          },
+        },
+      ]
+    : [
+        {
+          label: '게시글 신고하기',
+          value: 'report',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 신고하시겠습니까?');
+            setAlertText('신중히 신고 해주시면 감사하겠습니다.');
+          },
+        },
+        {
+          label: '작성자 차단하기',
+          value: 'block',
+          onPress: () => {
+            setAlert(true);
+            setAlertTitle('정말 차단하시겠습니까?');
+            setAlertText(
+              '차단하게 되면 글 및 덧글, 프로필 모두 보이지 않게 됩니다.',
+            );
+          },
+        },
+      ];
+
   if (efficacyInfo === null || detailInfo === null) {
     return null;
   }
-
-  return (
-    <>
-      <Container>
-        <IngredientsHeader
+  /*
+<IngredientsHeader
           title="손질법"
           isTitleOnly={false}
           btnTextValue="수정"
           screen="PrepRegister"
           sameUser={sameUser}
         />
+ */
+
+  return (
+    <>
+      <Container>
+        <Header isTransparent={false}>
+          <HeaderTitleContainer>
+            <View style={{flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+              <BackBtn onPress={() => navigation.goBack()}>
+                <Back
+                  source={require('../../../assets/images/Back.png')}
+                  resizeMode={'contain'}
+                />
+              </BackBtn>
+              <HeaderTitle isTransparent={false}>{'손질법'}</HeaderTitle>
+            </View>
+            <OptionModalChildImage
+              items={items}
+              setCheckedItem={setCheckedItem}>
+              <Image
+                source={require('../../../assets/images/More.png')}
+                resizeMode="contain"
+              />
+            </OptionModalChildImage>
+          </HeaderTitleContainer>
+        </Header>
         <IngredientsInfo
           isEdit={false}
           ingredientName={efficacyInfo.ingredientName}
@@ -198,6 +288,45 @@ const PrepDetailComponent = () => {
             isAbsolute={false}
           />
         </KeyboardAvoidingView>
+      ) : undefined}
+      {isAlert ? (
+        <AlertYesNoButton
+          title={alertTitle}
+          setAlert={setAlert}
+          yesButtonText={checkedItem.label}
+          text={alertText}
+          onPress={() => {
+            if (checkedItem.value === 'delete') {
+              deleteIngredientsPrep(router.params.boardId).then(() => {
+                setAlert(false);
+                navigation.pop();
+                setTimeout(
+                  () => toast.show('게시글이 정상적으로 삭제되었습니다.'),
+                  300,
+                );
+              });
+            } else if (checkedItem.value === 'report') {
+              reportPreps(router.params.boardId).then(() => {
+                setAlert(false);
+                setTimeout(
+                  () => toast.show('게시글이 정상적으로 신고되었습니다.'),
+                  300,
+                );
+              });
+            } else if (checkedItem.value === 'block') {
+              requestRegisterBlockedUser(
+                detailInfo.boardDTO.writer.username,
+              ).then(() => {
+                setAlert(false);
+                navigation.pop();
+                setTimeout(
+                  () => toast.show('작성자 차단이 완료되었습니다.'),
+                  300,
+                );
+              });
+            }
+          }}
+        />
       ) : undefined}
     </>
   );
@@ -289,6 +418,52 @@ const NavigationContainer = styled.View`
       'border-top-width: 1px; border-bottom-width: 1px; border-color: #d8d8d8',
   })}
 `;
+
+const Header = styled.View`
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 5%;
+  padding-right: 5%;
+  border-bottom-width: 1px;
+  border-bottom-color: #e1e1e1;
+  background-color: ${props => (props.isTransparent ? 'black' : '#ffffff')};
+  opacity: ${props => (props.isTransparent ? '0.8' : '1.0')};
+`;
+
+const HeaderTitleContainer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+`;
+
+const BackBtn = styled.TouchableOpacity``;
+
+const Back = styled.Image`
+  width: 20px;
+  height: 20px;
+`;
+
+const HeaderTitle = styled.Text`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: ${props => (props.isTransparent ? '#ffffff' : '#333333')};
+  font-family: 'Pretendard Variable';
+`;
+
+const BtnValueText = styled.Text`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  color: ${props => (props.isTransparent ? '#ffffff' : '#f09311')};
+  font-family: 'Pretendard Variable';
+`;
+
+const BtnBtn = styled.TouchableOpacity``;
 
 const PrepDetailDescriptionContainer = props => {
   return (

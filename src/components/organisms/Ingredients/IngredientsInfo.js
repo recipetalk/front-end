@@ -22,14 +22,19 @@ const IngredientsInfo = ({
       return <ImageDummyView />;
     }
 
-    if (thumbnail === null || (isEdit && thumbnail === '')) {
+    if (thumbnail === null || thumbnail === '') {
       return (
         <>
           <ImageSelectBox
+            disabled={!isEdit}
             onPress={() => {
               setAlert(true);
             }}>
-            <Image source={require('../../../assets/images/_격리_모드.png')} />
+            {isEdit && (
+              <Image
+                source={require('../../../assets/images/_격리_모드.png')}
+              />
+            )}
           </ImageSelectBox>
         </>
       );
@@ -37,8 +42,9 @@ const IngredientsInfo = ({
 
     return (
       <TouchContainer
+        disabled={!isEdit}
         onPress={() => {
-          isEdit ? setAlert(true) : null;
+          setAlert(true);
         }}>
         <ImageView source={{url: thumbnail}} />
       </TouchContainer>
