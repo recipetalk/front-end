@@ -28,11 +28,13 @@ const PrepRegisterComponent = () => {
   const [prepInfo, setPrepInfo] = useState(
     isEmptyArr(prepState)
       ? {
+          id: router.params.ingredientID,
           title: '',
           desc: '',
           img: '',
         }
       : {
+          id: prepState.ingredient.ingredientId,
           title: prepState.boardDTO.title,
           desc: prepState.description,
           img: prepState.thumbnailURI,
