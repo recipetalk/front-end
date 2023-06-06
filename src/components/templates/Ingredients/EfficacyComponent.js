@@ -3,18 +3,19 @@ import styled from 'styled-components/native';
 import {getEfficacy} from '../../../services/Ingredients';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
+import {useRoute} from '@react-navigation/native';
 
 const EfficacyComponent = () => {
+  const router = useRoute();
   const [efficacyInfo, setEfficacyInfo] = useState({});
 
   useEffect(() => {
-    // TODO :: ingredientId 동적으로
-    getEfficacy(1)
+    getEfficacy(router.params.ingredientID)
       .then(res => {
         setEfficacyInfo(res.data);
       })
       .catch(error => console.error(error));
-  }, []);
+  }, [router.params.ingredientID]);
 
   return (
     <>

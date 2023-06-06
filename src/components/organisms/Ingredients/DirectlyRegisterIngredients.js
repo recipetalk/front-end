@@ -8,17 +8,22 @@ import {
 import {useDispatch} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import {Dimensions, Modal, View} from 'react-native';
-import {getSearchIngredient} from '../../../services/Ingredients';
 import {Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 
-const DirectlyRegisterIngredients = ({item, readOnly}) => {
+const DirectlyRegisterIngredients = ({
+  item,
+  isFocus,
+  checkedItem,
+  setSendText,
+  setSelectIndex,
+  setFocus,
+  readOnly,
+}) => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState('');
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const [isAddChecked, setIsAddChecked] = useState(item.isChecked);
-  const [isResultLength, setIsResultLength] = useState(0);
-  const [searchResult, setSearchResult] = useState([]);
   const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
     item.ingredientState,
   );
@@ -67,26 +72,21 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
     dispatch(deleteIngredients(item.ingredientId));
   };
 
-  const changeText = res => {
-    if (res.length === 0) {
-      setIsResultLength(0);
-    } else {
-      setIsResultLength(res.length);
-    }
+  const changeText = event => {
+    setSendText(event.nativeEvent.text);
 
-    setIngredientsInfo({...ingredientsInfo, ingredientName: res});
+    setIngredientsInfo({
+      ...ingredientsInfo,
+      ingredientName: event.nativeEvent.text,
+    });
   };
 
   useEffect(() => {
-    let id = setTimeout(() => {
-      console.log(ingredientsInfo.ingredientName);
-      getSearchIngredient(ingredientsInfo.ingredientName).then(result =>
-        setSearchResult(result.data),
-      );
-    }, 600);
-
-    return () => clearTimeout(id);
-  }, [ingredientsInfo.ingredientName]);
+    setIngredientsInfo({
+      ...ingredientsInfo,
+      ingredientName: checkedItem,
+    });
+  }, [checkedItem]);
 
   return (
     <RegisterIngredientsItemContainer>
@@ -119,7 +119,16 @@ const DirectlyRegisterIngredients = ({item, readOnly}) => {
           placeholder="예) 감자"
           placeholderTextColor="gray"
           value={ingredientsInfo.ingredientName}
-          onChangeText={changeText}
+          onChange={changeText}
+          onFocus={() => {
+            setSendText(() => item.ingredientName);
+            setFocus(true);
+            setSelectIndex(item.ingredientId);
+          }}
+          onBlur={() => {
+            setFocus(false);
+            setSelectIndex(0);
+          }}
         />
       </IngredientNameContainer>
 
