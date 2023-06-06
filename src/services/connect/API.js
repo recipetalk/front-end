@@ -25,7 +25,7 @@ jsonAPI.interceptors.response.use(
       config,
       response: {status},
     } = err;
-    if (status === 401) {
+    if (config?.headers?.authorization && status === 401) {
       //console.log('jsonAPI response Interceptor : ', err.response);
       const originalRequest = config;
       const {username, password} = await loadLoginFromStorage();
@@ -45,7 +45,7 @@ multiPartAPI.interceptors.response.use(
       config,
       response: {status},
     } = err;
-    if (status === 401) {
+    if (config?.headers?.authorization && status === 401) {
       console.log('multipart response Interceptor : ', err);
       const originalRequest = config;
       const {username, password} = await loadLoginFromStorage();
