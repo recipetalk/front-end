@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {Image, Text} from 'react-native';
 import styled from 'styled-components/native';
 import {deleteIngredient} from '../../../services/Ingredients';
@@ -56,52 +56,58 @@ const IngredientsItem = props => {
         </TouchContainer>
       </Header>
 
-      <IngredientsItemETCInfo>
-        <TouchContainer
-          onPress={() =>
-            navigation.navigate('Efficacy', {
-              ingredientID: props.item.ingredientId,
-            })
-          }>
-          <EfficacyText>효능 및 정보</EfficacyText>
-        </TouchContainer>
-        <Text> | </Text>
-        <TouchContainer
-          onPress={() =>
-            navigation.navigate('Prep', {ingredientID: props.item.ingredientId})
-          }>
-          <PrepText>손질법 보기</PrepText>
-        </TouchContainer>
-      </IngredientsItemETCInfo>
-
-      <ExpirationInfo>
-        <ExpirationInfoText>
-          소비기한 : {props.item.expirationDate}까지
-        </ExpirationInfoText>
-      </ExpirationInfo>
+      {props?.item.ingredientId != null ? (
+        <IngredientsItemETCInfo>
+          <TouchContainer
+            onPress={() =>
+              navigation.navigate('Efficacy', {
+                ingredientID: props.item.ingredientId,
+              })
+            }>
+            <EfficacyText>효능 및 정보</EfficacyText>
+          </TouchContainer>
+          <Text> | </Text>
+          <TouchContainer
+            onPress={() =>
+              navigation.navigate('Prep', {
+                ingredientID: props.item.ingredientId,
+              })
+            }>
+            <PrepText>손질법 보기</PrepText>
+          </TouchContainer>
+        </IngredientsItemETCInfo>
+      ) : undefined}
+      <ExpirationInfo expirationDate={props?.item?.expirationDate} />
     </IngredientsItemContainer>
   );
 };
 
 const IngredientsItemContainer = styled.View`
-  margin: 0 15px 15px 15px;
   background-color: #ffffff;
   border-radius: 3px;
   height: 130px;
+  position: relative;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+  justify-content: space-between;
 `;
 
 const Header = styled.View`
-  display: flex;
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px;
 `;
 
 const TouchContainer = styled.TouchableOpacity``;
 
 const IngredientsItemInfo = styled.View`
-  display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Name = styled.Text`
@@ -152,18 +158,112 @@ const PrepText = styled.Text`
 
   color: #666666;
 `;
-const ExpirationInfo = styled.View`
-  width: 340px;
+
+const ExpirationInfo = ({expirationDate}) => {
+  if (expirationDate == null) {
+    return undefined;
+  }
+  const now = new Date();
+  const target = new Date(expirationDate);
+
+  const term = (target - now) / 1000 / 60 / 60 / 24;
+
+  if (term > 6) {
+    return (
+      <FreeExpirationInfo>
+        <FreeExpirationInfoText>
+          소비기한 : {expirationDate}까지
+        </FreeExpirationInfoText>
+      </FreeExpirationInfo>
+    );
+  }
+
+  if (term >= 2) {
+    return (
+      <SpareExpirationInfo>
+        <SpareExpirationInfoText>
+          소비기한 : {expirationDate}까지
+        </SpareExpirationInfoText>
+      </SpareExpirationInfo>
+    );
+  }
+
+  if (term >= -1) {
+    return (
+      <ImmiExpirationInfo>
+        <ImmiExpirationInfoText>
+          소비기한 : {expirationDate}까지
+        </ImmiExpirationInfoText>
+      </ImmiExpirationInfo>
+    );
+  }
+
+  if (term < -1) {
+    return (
+      <ExpiredExpirationInfo>
+        <ExpiredExpirationInfoText>
+          소비기한 : {expirationDate}까지
+        </ExpiredExpirationInfoText>
+      </ExpiredExpirationInfo>
+    );
+  }
+};
+
+//지남 (블랙계열)
+const ExpiredExpirationInfo = styled.View`
+  width: 100%;
+  height: 30px;
+  padding: 5px 10px;
+  gap: 10px;
+
+  background-color: #e5e5e5;
+  border-radius: 70px;
+`;
+
+const ExpiredExpirationInfoText = styled.Text`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+
+  font-family: 'Pretendard Variable';
+
+  color: #333333;
+  text-align: center;
+`;
+
+//임박 (빨간색계열)
+const ImmiExpirationInfo = styled.View`
+  width: 100%;
+  height: 30px;
+  padding: 5px 10px;
+  gap: 10px;
+
+  background-color: #fac7c3;
+  border-radius: 70px;
+`;
+
+const ImmiExpirationInfoText = styled.Text`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+
+  font-family: 'Pretendard Variable';
+
+  color: #e01300;
+  text-align: center;
+`;
+//여유 (주황색) => 그대로
+const SpareExpirationInfo = styled.View`
+  width: 100%;
   height: 30px;
   padding: 5px 10px;
   gap: 10px;
 
   background-color: #fff4e6;
   border-radius: 70px;
-  margin: auto;
 `;
 
-const ExpirationInfoText = styled.Text`
+const SpareExpirationInfoText = styled.Text`
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -173,4 +273,26 @@ const ExpirationInfoText = styled.Text`
   color: #f09311;
   text-align: center;
 `;
-export default IngredientsItem;
+
+// 더 여유 (초록색)
+const FreeExpirationInfo = styled.View`
+  width: 100%;
+  height: 30px;
+  padding: 5px 10px;
+  gap: 10px;
+
+  background-color: #c3f9d0;
+  border-radius: 70px;
+`;
+
+const FreeExpirationInfoText = styled.Text`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+
+  font-family: 'Pretendard Variable';
+
+  color: #34e045;
+  text-align: center;
+`;
+export default memo(IngredientsItem);

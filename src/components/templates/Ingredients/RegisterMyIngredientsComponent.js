@@ -84,15 +84,18 @@ const RegisterMyIngredientsComponent = () => {
                 }
 
                 let newArr = [];
-                ingredientsList.map(item => {
-                  newArr.push({
-                    expirationDate: item.expirationDate,
-                    ingredientId: item.ingredientId,
-                    ingredientName: item.ingredientName,
-                    ingredientState: item.ingredientState,
-                    quantity: item.quantity,
+
+                ingredientsList
+                  .filter(item => item.isChecked === true)
+                  .map(item => {
+                    newArr.push({
+                      expirationDate: item.expirationDate,
+                      ingredientId: item.ingredientId,
+                      ingredientName: item.ingredientName,
+                      ingredientState: item.ingredientState,
+                      quantity: item.quantity,
+                    });
                   });
-                });
 
                 console.log(
                   'RegisterMyIngredientsComponent newArr is : ',
@@ -109,7 +112,7 @@ const RegisterMyIngredientsComponent = () => {
                       error.response,
                     ),
                   );
-                navigation.goBack();
+                navigation.pop();
               }}>
               <IngredientRegisterButton
                 active={checkIsChecked() > 0 ? true : false}>

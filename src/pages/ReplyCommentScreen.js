@@ -4,10 +4,11 @@ import {NavigationHeader} from '../components/organisms/mypage/NavigationHeader'
 import {CommentComponent} from '../components/organisms/comment/CommentComponent';
 import {CommentWriteComponent} from '../components/organisms/comment/CommentWriteComponent';
 import {
-    ActivityIndicator,
-    FlatList,
-    KeyboardAvoidingView,
-    Platform, View,
+  ActivityIndicator,
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  View,
 } from 'react-native';
 import {getChildComment, getComment} from '../services/Comment';
 import {loadLoginFromStorage} from '../services/repository/AutoLogin';

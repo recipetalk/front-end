@@ -10,7 +10,7 @@ const IngredientsEditScreen = () => {
   const router = useRoute();
   const navigation = useNavigation();
   const [item, setItem] = useState();
-
+  const [editable, setEditable] = useState(false);
   const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState('');
 
   const [ingredientsInfo, setIngredientsInfo] = useState({
@@ -52,8 +52,24 @@ const IngredientsEditScreen = () => {
         expirationDate: item.expirationDate,
         quantity: item.quantity,
       });
+      console.log(item);
     }
   }, [item]);
+
+  useEffect(() => {
+    if (
+      ingredientsInfo.expirationDate != null &&
+      ingredientsInfo.expirationDate != '' &&
+      ingredientsInfo.quantity != null &&
+      ingredientsInfo.quantity != '' &&
+      ingredientsStatusInfo != null &&
+      ingredientsStatusInfo != ''
+    ) {
+      setEditable(true);
+    } else {
+      setEditable(false);
+    }
+  }, [ingredientsInfo, ingredientsStatusInfo]);
 
   if (item === undefined) {
     return null;
@@ -75,8 +91,8 @@ const IngredientsEditScreen = () => {
           setIngredientsStatusInfo={setIngredientsStatusInfo}
           readOnly={true}
         />
-        <TouchContainer onPress={edit}>
-          <IngredientRegisterButton>
+        <TouchContainer disabled={!editable} onPress={edit}>
+          <IngredientRegisterButton active={editable}>
             <IngredientRegisterButtonText>
               {'식재료 수정하기'}
             </IngredientRegisterButtonText>
@@ -94,7 +110,7 @@ const CustomView = styled.View`
 `;
 
 const IngredientRegisterButton = styled.View`
-  background: #f09311;
+  background: ${props => (props.active ? '#f09311' : '#e1e1e1')}
   border-radius: 8px;
   height: 48px;
   justify-content: center;

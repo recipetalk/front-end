@@ -151,8 +151,8 @@ export const editRowIngredientTrimming = async rowIngredientInfo => {
 
 // 식재료 손질법 삭제 | delete
 
-export const getIngredientsPrep = async ingredientId => {
-  const url = `/api/board/ingredient/${ingredientId}/trimming?page=0`;
+export const getIngredientsPrep = async (ingredientId, page) => {
+  const url = `/api/board/ingredient/${ingredientId}/trimming?page=${page}`;
 
   return await jsonAPI.get(url, await config());
 };
@@ -190,8 +190,9 @@ export const registerIngredient = async ingredientsList => {
 };
 
 // 내가 소유한 식재료 조회(페이지)
-export const getMyIngredientPage = async type => {
-  const url = `/api/user/ingredient?page=0&sort=${type}`;
+export const getMyIngredientPage = async (page, type1, type2, type3) => {
+  const type = type1 ? type1 : type2 ? type2 : type3 ? type3 : 'new';
+  const url = `/api/user/ingredient?page=${page}&sort=${type}`;
 
   return await jsonAPI.get(url, await config());
 };

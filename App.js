@@ -60,10 +60,12 @@ import SearchScreen from './src/pages/search/SearchScreen';
 import {SearchResultScreen} from './src/pages/search/SearchResultScreen';
 import InitScreen from './src/pages/InitScreen';
 import {LogBox} from 'react-native';
+import PrepScreen from './src/pages/Ingredients/PrepScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
     console.log('Reactotron Configured');
+      LogBox.ignoreAllLogs();
   });
 } else {
   LogBox.ignoreAllLogs();
@@ -436,6 +438,11 @@ function App() {
         <Stack.Screen
           name={'SearchResult'}
           component={SearchResultScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Prep"
+          component={PrepScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

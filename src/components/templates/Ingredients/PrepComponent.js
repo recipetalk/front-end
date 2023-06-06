@@ -1,11 +1,17 @@
 import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {getEfficacy, getIngredientsPrep} from '../../../services/Ingredients';
+import {
+  getEfficacy,
+  getIngredientsPrep,
+  getMyIngredientPage,
+} from '../../../services/Ingredients';
 import Line from '../../atoms/Line';
 import DList from '../../organisms/Home/DList';
 import IngredientsHeader from '../../organisms/Ingredients/IngredientsHeader';
 import IngredientsInfo from '../../organisms/Ingredients/IngredientsInfo';
+import IngredientsItem from '../../organisms/Ingredients/IngredientsItem';
+import {FlatList} from 'react-native';
 
 const PrepComponent = () => {
   const router = useRoute();
@@ -14,6 +20,10 @@ const PrepComponent = () => {
 
   const [efficacyInfo, setEfficacyInfo] = useState({});
   const [ingredientsPrepInfo, setIngredientsPrepInfo] = useState([]);
+  const [page, setPage] = useState(0);
+  const [last, setLast] = useState(false);
+  const [isRefresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getEfficacy(router.params.ingredientID)
@@ -22,10 +32,41 @@ const PrepComponent = () => {
   }, [isFocused, router.params.ingredientID]);
 
   useEffect(() => {
-    getIngredientsPrep(router.params.ingredientID)
-      .then(res => setIngredientsPrepInfo(res.data.content))
-      .catch(error => console.error(error.response));
+    init();
   }, [isFocused, router.params.ingredientID]);
+
+  const init = async () => {
+    await setLoading(() => true);
+    await getIngredientsPrep(router.params.ingredientID, 0)
+      .then(res => {
+        const data = JSON.parse(res.request._response);
+        setIngredientsPrepInfo(data.content);
+        setLast(() => data.last);
+        setPage(1);
+        console.log(data.content);
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+    await setLoading(() => false);
+  };
+
+  const onRefresh = async () => {
+    await setRefresh(true);
+    await init().then();
+    setTimeout(() => setRefresh(false), 1000);
+  };
+
+  const onRequest = async () => {
+    await setLoading(() => true);
+    await getIngredientsPrep(router.params.ingredientID, page).then(res => {
+      const data = JSON.parse(res.request._response);
+      setIngredientsPrepInfo(ingredients => ingredients.concat(data.content));
+      setLast(() => data.last);
+      setPage(page => page + 1);
+    });
+    setLoading(() => false);
+  };
 
   return (
     <PrepComponentContainer>
@@ -35,27 +76,59 @@ const PrepComponent = () => {
         isEdit={false}
       />
 
-      <ScrollViewContainer showsVerticalScrollIndicator={false}>
-        <Line />
-        <Header>
-          <TitleHighlightText>{efficacyInfo.ingredientName}</TitleHighlightText>
-          <TitleText> 손질법</TitleText>
-        </Header>
-        {ingredientsPrepInfo.map((item, index) => {
-          return (
+      <FlatList
+        ListHeaderComponent={() => (
+          <>
+            <Line />
+            <Header>
+              <TitleHighlightText>
+                {efficacyInfo.ingredientName}
+              </TitleHighlightText>
+              <TitleText> 손질법</TitleText>
+            </Header>
+          </>
+        )}
+        contentContainerStyle={{
+          paddingLeft: '3%',
+          paddingRight: '3%',
+          justifyContent: 'center',
+        }}
+        showsVerticalScrollIndicator={false}
+        data={ingredientsPrepInfo}
+        renderItem={({item}) => (
+          <DList
+            value={item}
+            boardSort={'TRIMMING'}
+            ingredientId={router.params.ingredientID}
+          />
+        )}
+        keyExtractor={_ => _?.id}
+        onRefresh={onRefresh}
+        refreshing={isRefresh}
+        onEndReached={() => {
+          if (loading) {
+            return;
+          }
+          if (!last) {
+            onRequest();
+          }
+        }}
+      />
+    </PrepComponentContainer>
+  );
+};
+/*
             <DList
               value={item}
               boardSort={'TRIMMING'}
               ingredientId={router.params.ingredientID}
             />
-          );
-        })}
-      </ScrollViewContainer>
-    </PrepComponentContainer>
-  );
-};
+ */
 
-const PrepComponentContainer = styled.SafeAreaView``;
+const PrepComponentContainer = styled.SafeAreaView`
+  width: 100%;
+  height: 100%;
+`;
 
 const Header = styled.View`
   display: flex;
@@ -78,10 +151,6 @@ const TitleText = styled.Text`
   font-size: 20px;
   font-family: 'Pretendard Variable';
   color: #333333;
-`;
-
-const ScrollViewContainer = styled.ScrollView`
-  margin-bottom: 160px;
 `;
 
 const TouchContainer = styled.TouchableOpacity``;

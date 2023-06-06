@@ -37,8 +37,7 @@ export const IngredientSelectorComponent = ({
       ingredientName: item.ingredientName,
       index: index,
     };
-
-    setCheckedItem(infos.ingredientName);
+    setCheckedItem(infos);
     //저장
     dispatch(setSaveIngredientToTarget(infos));
   };

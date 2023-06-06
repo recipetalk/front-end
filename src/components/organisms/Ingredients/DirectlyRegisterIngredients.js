@@ -21,7 +21,12 @@ const DirectlyRegisterIngredients = ({
   readOnly,
 }) => {
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(() => {
+    const date = new Date();
+    const temp = date.toISOString();
+    return temp.split('T')[0];
+  });
+
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const [isAddChecked, setIsAddChecked] = useState(item.isChecked);
   const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
@@ -30,7 +35,7 @@ const DirectlyRegisterIngredients = ({
 
   const [ingredientsInfo, setIngredientsInfo] = useState({
     ingredientName: item.ingredientName,
-    expirationDate: item.expirationDate,
+    expirationDate: new Date().toISOString().split('T')[0],
     quantity: item.quantity,
   });
 
@@ -40,10 +45,52 @@ const DirectlyRegisterIngredients = ({
     {placeholder: '상태', label: '실온', value: '실온'},
   ];
 
-  const addThisIngredients = newValue => {
-    setIsAddChecked(newValue);
+  useEffect(() => {
+    if (
+      ingredientsInfo.ingredientName != '' &&
+      ingredientsInfo.expirationDate != '' &&
+      ingredientsInfo.quantity != ''
+    ) {
+      setIsAddChecked(true);
+      dispatch(
+        addIngredients({
+          id: item.id,
+          ingredientId: ingredientsInfo.ingredientId,
+          ingredientName: ingredientsInfo.ingredientName,
+          ingredientState: ingredientsStatusInfo,
+          expirationDate: ingredientsInfo.expirationDate,
+          quantity: ingredientsInfo.quantity,
+          isChecked: true,
+        }),
+      );
+    } else {
+      dispatch(
+        addIngredients({
+          id: item.id,
+          ingredientId: ingredientsInfo.ingredientId,
+          ingredientName: ingredientsInfo.ingredientName,
+          ingredientState: ingredientsStatusInfo,
+          expirationDate: ingredientsInfo.expirationDate,
+          quantity: ingredientsInfo.quantity,
+          isChecked: false,
+        }),
+      );
+      setIsAddChecked(false);
+    }
+  }, [ingredientsInfo]);
 
-    if (newValue) {
+  const addThisIngredients = newValue => {
+    if (
+      ingredientsInfo.ingredientName != '' &&
+      ingredientsInfo.expirationDate != '' &&
+      ingredientsInfo.quantity != ''
+    ) {
+      setIsAddChecked(() => true);
+    } else {
+      setIsAddChecked(() => false);
+    }
+
+    if (isAddChecked) {
       dispatch(
         addIngredients({
           ingredientId: item.ingredientId,
@@ -82,10 +129,14 @@ const DirectlyRegisterIngredients = ({
   };
 
   useEffect(() => {
-    setIngredientsInfo({
-      ...ingredientsInfo,
-      ingredientName: checkedItem,
-    });
+    console.log(checkedItem);
+    if (item.id === checkedItem.index) {
+      setIngredientsInfo({
+        ...ingredientsInfo,
+        ingredientName: checkedItem.ingredientName,
+        ingredientId: checkedItem.ingredientId,
+      });
+    }
   }, [checkedItem]);
 
   return (
@@ -95,12 +146,12 @@ const DirectlyRegisterIngredients = ({
           <RegisterIngredientsCheckbox
             value={isAddChecked}
             onFillColor="#F09311"
-            onValueChange={addThisIngredients}
             tintColors={{true: '#F09311', false: '#A4A4A4'}}
             boxType="square"
             tintColor="#A4A4A4"
             onCheckColor="#FFFFFF"
             onTintColor="#F09311"
+            disabled={true}
           />
           <RegisterIngredientsText>이 식재료 추가</RegisterIngredientsText>
         </CheckBoxView>
@@ -123,7 +174,7 @@ const DirectlyRegisterIngredients = ({
           onFocus={() => {
             setSendText(() => item.ingredientName);
             setFocus(true);
-            setSelectIndex(item.ingredientId);
+            setSelectIndex(item.id);
           }}
           onBlur={() => {
             setFocus(false);

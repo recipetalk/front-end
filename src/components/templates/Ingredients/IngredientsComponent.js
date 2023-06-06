@@ -14,7 +14,7 @@ const IngredientsComponent = () => {
 
   useEffect(() => {
     dispatch(resetIngredients());
-  }, [dispatch, isFocused]);
+  }, [isFocused]);
 
   return (
     <IngredientsComponentContainer>
@@ -33,9 +33,8 @@ const IngredientsComponent = () => {
 };
 
 const IngredientsComponentContainer = styled.View`
-  margin-bottom: 300px;
-  height: 720px;
   height: 100%;
+  width: 100%;
 `;
 
 const PrepRegisterButton = styled.TouchableOpacity`

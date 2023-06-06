@@ -4,7 +4,8 @@ const IngredientsSlice = createSlice({
   name: 'IngredientsSlice',
   initialState: [
     {
-      ingredientId: 1,
+      id: 1,
+      ingredientId: '',
       ingredientName: '',
       ingredientState: '',
       expirationDate: '',
@@ -18,7 +19,8 @@ const IngredientsSlice = createSlice({
       return [
         ...previousState,
         {
-          ingredientId: previousState.length + 1,
+          id: previousState.length + 1,
+          ingredientId: '',
           ingredientName: '',
           ingredientState: '',
           expirationDate: '',
@@ -30,8 +32,9 @@ const IngredientsSlice = createSlice({
 
     addIngredients: (previousState, action) => {
       return previousState.map(item =>
-        item.ingredientId === action.payload.ingredientId
+        item.id === action.payload.id
           ? {
+              id: action.payload.id,
               ingredientId: action.payload.ingredientId,
               ingredientName: action.payload.ingredientName,
               ingredientState: action.payload.ingredientState,
@@ -44,13 +47,14 @@ const IngredientsSlice = createSlice({
     },
 
     deleteIngredients: (previousState, action) => {
-      return previousState.filter(item => item.ingredientId !== action.payload);
+      return previousState.filter(item => item.id !== action.payload);
     },
 
     resetIngredients: (previousState, action) => {
       return [
         {
-          ingredientId: 1,
+          id: 1,
+          ingredientId: '',
           ingredientName: '',
           ingredientState: '',
           expirationDate: '',
