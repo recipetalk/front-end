@@ -89,8 +89,6 @@ const PrepComponent = () => {
           </>
         )}
         contentContainerStyle={{
-          paddingLeft: '3%',
-          paddingRight: '3%',
           justifyContent: 'center',
         }}
         showsVerticalScrollIndicator={false}

@@ -41,7 +41,6 @@ const IngredientsHeader = props => {
 
 const Header = styled.View`
   height: 50px;
-  display: flex;
   flex-direction: row;
   justify-content: space-between;
   padding-left: 5%;

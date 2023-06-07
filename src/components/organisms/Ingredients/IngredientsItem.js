@@ -163,8 +163,10 @@ const ExpirationInfo = ({expirationDate}) => {
   if (expirationDate == null) {
     return undefined;
   }
-  const now = new Date();
+  const now = new Date().setHours(9);
   const target = new Date(expirationDate);
+
+  console.log(now, ' ', target);
 
   const term = (target - now) / 1000 / 60 / 60 / 24;
 

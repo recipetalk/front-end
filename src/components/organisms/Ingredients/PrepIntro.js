@@ -26,7 +26,7 @@ const PrepIntro = props => {
       <PrepIntroContainer>
         <TitleInput
           placeholder={'제목'}
-          multiline={true}
+          multiline={false}
           value={props.state.title}
           onChangeText={res => props.setState({...props.state, title: res})}
         />
@@ -50,12 +50,14 @@ const TitleInput = styled.TextInput`
   width: 100%;
   margin-bottom: 10px;
   font-family: 'Pretendard Variable';
+  font-size: 22px;
+  color: #333333;
 `;
 
 const PrepInput = styled.TextInput`
   width: 100%;
-  height: 50px;
 
+  color: #666666;
   font-family: 'Pretendard Variable';
 `;
 export default PrepIntro;

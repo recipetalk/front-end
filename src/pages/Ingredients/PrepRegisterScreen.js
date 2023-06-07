@@ -13,6 +13,7 @@ const PrepRegisterScreen = () => {
 const PrepEditScreenContainer = styled.SafeAreaView`
   background-color: #ffffff;
   height: 100%;
+  width: 100%;
 `;
 
 export default PrepRegisterScreen;

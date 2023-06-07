@@ -1,6 +1,6 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {Image} from 'react-native';
+import {Image, KeyboardAvoidingView, Platform} from 'react-native';
 import {FlatList, TouchableOpacity, View} from 'react-native';
 import {useToast} from 'react-native-toast-notifications';
 import {useSelector} from 'react-redux';
@@ -160,103 +160,111 @@ const PrepRegisterComponent = () => {
   return (
     <>
       <IngredientsHeader title="손질법" isTitleOnly={true} />
-      <PrepIntro
-        isEdit={true}
-        state={prepInfo}
-        setThumbnailPhoto={setThumbnailPhoto}
-        thumbnailPhoto={thumbnailPhoto}
-        setState={setPrepInfo}
-      />
-      <Line />
-      <ImageAndCameraFun
-        toast={toast}
-        setAlert={setAlert}
-        isAlert={isAlert}
-        setPhoto={dataUpdatePhoto(index)}
-      />
-
-      <OrderTitle>손질 순서</OrderTitle>
-      <FlatList
-        data={rows}
-        renderItem={({item, index}) => (
-          <View
-            style={{
-              paddingLeft: '5%',
-              paddingRight: '5%',
-              marginBottom: 10,
-              flexDirection: 'row',
-            }}>
-            <PrepOrderItem>
-              <PrepOrderNum>
-                <PrepOrderNumText>{index + 1}</PrepOrderNumText>
-              </PrepOrderNum>
-              <PrepOrderInfo>
-                {item.photo.uri === '' ? (
-                  <ImageSelectBox
-                    onPress={() => {
-                      setAlert(true);
-                      setIndex(index);
-                    }}>
-                    <Image
-                      source={require('../../../assets/images/_격리_모드.png')}
-                    />
-                  </ImageSelectBox>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setAlert(true);
-                      setIndex(index);
-                    }}>
-                    <Image
-                      style={{width: 98, height: 98, borderRadius: 8}}
-                      source={{uri: item.photo.uri}}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                )}
-                <PrepOrderContentTextInput
-                  multiline={true}
-                  scrollEnabled={false}
-                  value={item.description}
-                  onChange={dataUpdateTextHandler(index, 'description')}
-                  placeholder={'예) 준비된 양념으로 고기를 조물조물 재워둡니다'}
-                  placeholderTextColor={'#a0a0a0'}
-                />
-              </PrepOrderInfo>
-            </PrepOrderItem>
-            <View style={{position: 'absolute', right: 10, top: 5}}>
-              <TouchableOpacity onPress={deleteItem(index)}>
-                <PrepOrderCancel
-                  source={require('../../../assets/images/Cancel.png')}
-                />
-              </TouchableOpacity>
+      <KeyboardAvoidingView
+        behavior={Platform.select({ios: 'padding', android: undefined})}>
+        <FlatList
+          data={rows}
+          renderItem={({item, index}) => (
+            <View
+              style={{
+                paddingLeft: '5%',
+                paddingRight: '5%',
+                marginBottom: 10,
+                flexDirection: 'row',
+              }}>
+              <PrepOrderItem>
+                <PrepOrderNum>
+                  <PrepOrderNumText>{index + 1}</PrepOrderNumText>
+                </PrepOrderNum>
+                <PrepOrderInfo>
+                  {item.photo.uri === '' ? (
+                    <ImageSelectBox
+                      onPress={() => {
+                        setAlert(true);
+                        setIndex(index);
+                      }}>
+                      <Image
+                        source={require('../../../assets/images/_격리_모드.png')}
+                      />
+                    </ImageSelectBox>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setAlert(true);
+                        setIndex(index);
+                      }}>
+                      <Image
+                        style={{width: 98, height: 98, borderRadius: 8}}
+                        source={{uri: item.photo.uri}}
+                        resizeMode="contain"
+                      />
+                    </TouchableOpacity>
+                  )}
+                  <PrepOrderContentTextInput
+                    multiline={true}
+                    scrollEnabled={false}
+                    value={item.description}
+                    onChange={dataUpdateTextHandler(index, 'description')}
+                    placeholder={
+                      '예) 준비된 양념으로 고기를 조물조물 재워둡니다'
+                    }
+                    placeholderTextColor={'#a0a0a0'}
+                  />
+                </PrepOrderInfo>
+              </PrepOrderItem>
+              <View style={{position: 'absolute', right: 10, top: 5}}>
+                <TouchableOpacity onPress={deleteItem(index)}>
+                  <PrepOrderCancel
+                    source={require('../../../assets/images/Cancel.png')}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        )}
-        ListFooterComponent={
-          <>
-            <AddPrepOrder>
-              <AddPrepOrderText>손질 순서 추가</AddPrepOrderText>
-              <TouchContainer onPress={addComponent}>
-                <AddImage
-                  source={require('../../../assets/images/Add_o.png')}
-                />
-              </TouchContainer>
-            </AddPrepOrder>
-            <BtnContainer>
-              <CancelBtn onPress={() => navigation.goBack()}>
-                <CancelText>취소</CancelText>
-              </CancelBtn>
-              <SaveBtn
-                onPress={
-                  isEmptyArr(prepState) ? registerPrepOrder : editPrepOrder
-                }>
-                <SaveText>저장</SaveText>
-              </SaveBtn>
-            </BtnContainer>
-          </>
-        }
-      />
+          )}
+          ListFooterComponent={
+            <>
+              <AddPrepOrder>
+                <AddPrepOrderText>손질 순서 추가</AddPrepOrderText>
+                <TouchContainer onPress={addComponent}>
+                  <AddImage
+                    source={require('../../../assets/images/Add_o.png')}
+                  />
+                </TouchContainer>
+              </AddPrepOrder>
+              <BtnContainer>
+                <CancelBtn onPress={() => navigation.goBack()}>
+                  <CancelText>취소</CancelText>
+                </CancelBtn>
+                <SaveBtn
+                  onPress={
+                    isEmptyArr(prepState) ? registerPrepOrder : editPrepOrder
+                  }>
+                  <SaveText>저장</SaveText>
+                </SaveBtn>
+              </BtnContainer>
+            </>
+          }
+          ListHeaderComponent={
+            <>
+              <PrepIntro
+                isEdit={true}
+                state={prepInfo}
+                setThumbnailPhoto={setThumbnailPhoto}
+                thumbnailPhoto={thumbnailPhoto}
+                setState={setPrepInfo}
+              />
+              <Line />
+              <ImageAndCameraFun
+                toast={toast}
+                setAlert={setAlert}
+                isAlert={isAlert}
+                setPhoto={dataUpdatePhoto(index)}
+              />
+              <OrderTitle>손질 순서</OrderTitle>
+            </>
+          }
+        />
+      </KeyboardAvoidingView>
     </>
   );
 };

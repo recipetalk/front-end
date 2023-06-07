@@ -5,13 +5,15 @@ import RegisterMyIngredientsComponent from '../../components/templates/Ingredien
 
 const RegisterMyIngredientsScreen = () => {
   return (
-    <RegisterMyIngredientsScreenContainer>
+    <>
+      <RegisterMyIngredientsScreenContainer edges={['top']} />
       <RegisterMyIngredientsComponent />
-    </RegisterMyIngredientsScreenContainer>
+    </>
   );
 };
 
-const RegisterMyIngredientsScreenContainer =
-  Platform.OS === 'ios' ? styled.SafeAreaView`` : styled.View``;
+const RegisterMyIngredientsScreenContainer = styled.SafeAreaView`
+  background: #ffffff;
+`;
 
 export default RegisterMyIngredientsScreen;

@@ -10,6 +10,7 @@ import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import {Dimensions, Modal, View} from 'react-native';
 import {Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
+import {initSaveIngredientToTarget} from '../../../store/Ingredients/SelectedByFindIngredientSlice';
 
 const DirectlyRegisterIngredients = ({
   item,
@@ -22,8 +23,8 @@ const DirectlyRegisterIngredients = ({
 }) => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(() => {
-    const date = new Date();
-    const temp = date.toISOString();
+    const date = new Date().setHours(9);
+    const temp = new Date(date).toISOString();
     return temp.split('T')[0];
   });
 
@@ -79,42 +80,6 @@ const DirectlyRegisterIngredients = ({
     }
   }, [ingredientsInfo]);
 
-  const addThisIngredients = newValue => {
-    if (
-      ingredientsInfo.ingredientName != '' &&
-      ingredientsInfo.expirationDate != '' &&
-      ingredientsInfo.quantity != ''
-    ) {
-      setIsAddChecked(() => true);
-    } else {
-      setIsAddChecked(() => false);
-    }
-
-    if (isAddChecked) {
-      dispatch(
-        addIngredients({
-          ingredientId: item.ingredientId,
-          ingredientName: ingredientsInfo.ingredientName,
-          ingredientState: ingredientsStatusInfo,
-          expirationDate: ingredientsInfo.expirationDate,
-          quantity: ingredientsInfo.quantity,
-          isChecked: true,
-        }),
-      );
-    } else {
-      dispatch(
-        addIngredients({
-          ingredientId: item.ingredientId,
-          ingredientName: ingredientsInfo.ingredientName,
-          ingredientState: ingredientsStatusInfo,
-          expirationDate: ingredientsInfo.expirationDate,
-          quantity: ingredientsInfo.quantity,
-          isChecked: false,
-        }),
-      );
-    }
-  };
-
   const deleteThisIngredients = () => {
     dispatch(deleteIngredients(item.ingredientId));
   };
@@ -137,6 +102,7 @@ const DirectlyRegisterIngredients = ({
         ingredientId: checkedItem.ingredientId,
       });
     }
+    dispatch(initSaveIngredientToTarget());
   }, [checkedItem]);
 
   return (
@@ -252,7 +218,6 @@ const RegisterIngredientsItemContainer = styled.View`
 `;
 
 const CheckBoxViewContainer = styled.View`
-  display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 22px;

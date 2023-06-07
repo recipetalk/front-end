@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
 
 const PrepOrderComponent = props => {
   const navigation = useNavigation();
+
+  const maxValue = useMemo(() => {
+    return Math.max.apply(
+      Math,
+      props.items?.map(data => data.trimmingSeq),
+    );
+  }, [props.items]);
 
   return (
     <PrepOrderItem>
@@ -13,7 +20,14 @@ const PrepOrderComponent = props => {
       <InfoPart>
         <TextPart>{props.value.description}</TextPart>
         <ImagePart source={{url: `${props.value.imgUri}`}} />
-        <TouchContainer onPress={() => navigation.push('SequenceDetailScreen')}>
+        <TouchContainer
+          onPress={() =>
+            navigation.push('SequenceDetailScreen', {
+              index: props.value.trimmingSeq,
+              item: props.items,
+              lastIndex: maxValue,
+            })
+          }>
           <MorePart>
             <MoreImg source={require('../../assets/images/Find_g.png')} />
             <MoreText>자세히보기</MoreText>

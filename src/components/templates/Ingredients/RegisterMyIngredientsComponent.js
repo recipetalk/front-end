@@ -36,27 +36,29 @@ const RegisterMyIngredientsComponent = () => {
   };
 
   return (
-    <RegisterMyIngredientsComponentContainer>
+    <>
       <IngredientsHeader
         title="내 식재료 등록하기"
         isTitleOnly={true}
         btnTextValue=""
       />
-
-      <RegisterIngredientsDirectlyContainer>
-        <RegisterIngredientsDirectlyText>
-          재료 직접 추가
-        </RegisterIngredientsDirectlyText>
-        <TouchContainer onPress={addDirectly}>
-          <RegisterIngredientsDirectlyImage
-            source={require('../../../assets/images/Add_o.png')}
-          />
-        </TouchContainer>
-      </RegisterIngredientsDirectlyContainer>
       <KeyboardAvoidingView
         behavior={Platform.select({ios: 'padding', android: undefined})}
         style={{flex: 1, backgroundColor: 'white'}}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <RegisterIngredientsDirectlyContainer>
+          <RegisterIngredientsDirectlyText>
+            재료 직접 추가
+          </RegisterIngredientsDirectlyText>
+          <TouchContainer onPress={addDirectly}>
+            <RegisterIngredientsDirectlyImage
+              source={require('../../../assets/images/Add_o.png')}
+            />
+          </TouchContainer>
+        </RegisterIngredientsDirectlyContainer>
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{width: '100%', height: '100%'}}>
           <DirectlyRegisterIngredientsContainer>
             <DirectlyRegisterIngredientsText>
               식재료 등록하기
@@ -124,26 +126,26 @@ const RegisterMyIngredientsComponent = () => {
           </DirectlyRegisterIngredientsContainer>
         </ScrollView>
         {isFocus ? (
-          <CustomInputView>
-            <IngredientSelectorComponent
-              isFocus={isFocus}
-              setCheckedItem={setCheckedItem}
-              targetIngredientName={sendText}
-              index={selectIndex}
-            />
-          </CustomInputView>
+          <IngredientSelectorComponent
+            isFocus={isFocus}
+            setCheckedItem={setCheckedItem}
+            targetIngredientName={sendText}
+            index={selectIndex}
+          />
         ) : undefined}
       </KeyboardAvoidingView>
 
       <BarcodeRegisterBtn onPress={() => navigation.navigate('Receipt')}>
         <CustomImage source={require('../../../assets/images/Receipt.png')} />
       </BarcodeRegisterBtn>
-    </RegisterMyIngredientsComponentContainer>
+    </>
   );
 };
 
 const DirectlyRegisterIngredientsContainer = styled.View`
-  padding: 18px;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-top: 20px;
 `;
 
 const DirectlyRegisterIngredientsText = styled.Text`
@@ -152,19 +154,18 @@ const DirectlyRegisterIngredientsText = styled.Text`
   font-size: 20px;
   font-family: 'Pretendard Variable';
   color: #333333;
-  font-family: 'Pretendard Variable';
-`;
-
-const RegisterMyIngredientsComponentContainer = styled.View`
-  height: 100%;
 `;
 
 const RegisterIngredientsDirectlyContainer = styled.View`
-  display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 20px 30px;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 60px;
+  align-items: center;
   background-color: #ffffff;
+  border-bottom-width: 4px;
+  border-bottom-color: #e5e5e5;
 `;
 
 const RegisterIngredientsDirectlyText = styled.Text`
@@ -206,7 +207,7 @@ const BarcodeRegisterBtn = styled.TouchableOpacity`
   background: #333333;
   border-radius: 100px;
   right: 20px;
-  bottom: 20px;
+  bottom: 80px;
 
   align-items: center;
   justify-content: center;

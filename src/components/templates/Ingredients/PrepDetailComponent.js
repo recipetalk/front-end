@@ -258,7 +258,13 @@ const PrepDetailComponent = () => {
             <PrepOrderContainer>
               <PrepOrderTitle>손질 순서</PrepOrderTitle>
               {detailInfo.trimmingRows.map((item, index) => {
-                return <PrepOrderComponent value={item} key={index} />;
+                return (
+                  <PrepOrderComponent
+                    value={item}
+                    key={index}
+                    items={detailInfo.trimmingRows}
+                  />
+                );
               })}
             </PrepOrderContainer>
           ) : (

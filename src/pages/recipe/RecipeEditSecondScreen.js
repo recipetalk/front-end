@@ -171,7 +171,6 @@ const RecipeEditSecondScreen = ({navigation}) => {
           />
         ) : undefined}
       </KeyboardAvoidingView>
-
     </>
   );
 };
