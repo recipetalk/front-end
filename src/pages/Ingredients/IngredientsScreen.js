@@ -14,6 +14,7 @@ const IngredientsScreen = () => {
 const IngredientsScreenContainer = styled.SafeAreaView`
   width: 100%;
   height: 100%;
+  background: white;
 `;
 
 export default IngredientsScreen;

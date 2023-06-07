@@ -10,15 +10,15 @@ export const IngredientList = props => {
       <Label>{props.item.ingredientName}</Label>
 
       <IngredientsItemETCInfo>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Efficacy', {
-              ingredientID: props.item.ingredientId,
-            })
-          }>
-          <EfficacyText>효능 및 정보</EfficacyText>
-        </TouchableOpacity>
-        <Text> | </Text>
+        {/*<TouchableOpacity*/}
+        {/*  onPress={() =>*/}
+        {/*    navigation.navigate('Efficacy', {*/}
+        {/*      ingredientID: props.item.ingredientId,*/}
+        {/*    })*/}
+        {/*  }>*/}
+        {/*  <EfficacyText>효능 및 정보</EfficacyText>*/}
+        {/*</TouchableOpacity>*/}
+        {/*<Text> | </Text>*/}
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('Prep', {ingredientID: props.item.ingredientId})

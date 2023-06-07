@@ -35,6 +35,7 @@ const IngredientsComponent = () => {
 const IngredientsComponentContainer = styled.View`
   height: 100%;
   width: 100%;
+  background: #f3f3f3;
 `;
 
 const PrepRegisterButton = styled.TouchableOpacity`

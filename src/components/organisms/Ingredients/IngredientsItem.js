@@ -58,15 +58,15 @@ const IngredientsItem = props => {
 
       {props?.item.ingredientId != null ? (
         <IngredientsItemETCInfo>
-          <TouchContainer
-            onPress={() =>
-              navigation.navigate('Efficacy', {
-                ingredientID: props.item.ingredientId,
-              })
-            }>
-            <EfficacyText>효능 및 정보</EfficacyText>
-          </TouchContainer>
-          <Text> | </Text>
+          {/*<TouchContainer*/}
+          {/*  onPress={() =>*/}
+          {/*    navigation.navigate('Efficacy', {*/}
+          {/*      ingredientID: props.item.ingredientId,*/}
+          {/*    })*/}
+          {/*  }>*/}
+          {/*  <EfficacyText>효능 및 정보</EfficacyText>*/}
+          {/*</TouchContainer>*/}
+          {/*<Text> | </Text>*/}
           <TouchContainer
             onPress={() =>
               navigation.navigate('Prep', {

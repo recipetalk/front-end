@@ -31,14 +31,18 @@ const EfficacyComponent = () => {
       />
       <EfficacyInfoContainer>
         <EfficacyTitleText>효능</EfficacyTitleText>
-        <EfficacyContentText>{efficacyInfo.description}</EfficacyContentText>
+        <ContentBoxContainer>
+          <EfficacyContentText>{efficacyInfo.description}</EfficacyContentText>
+        </ContentBoxContainer>
       </EfficacyInfoContainer>
     </>
   );
 };
 
-const EfficacyInfoContainer = styled.View`
-  padding: 18px;
+const EfficacyInfoContainer = styled.ScrollView`
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 100%;
 `;
 
 const EfficacyTitleText = styled.Text`
@@ -57,6 +61,12 @@ const EfficacyContentText = styled.Text`
   font-size: 16px;
   color: #666666;
   font-family: 'Pretendard Variable';
+`;
+
+const ContentBoxContainer = styled.View`
+  border: 1px solid #d8d8d8;
+  padding: 10px;
+  border-radius: 13px;
 `;
 
 export default EfficacyComponent;

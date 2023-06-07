@@ -52,33 +52,35 @@ const IngredientsInfo = ({
   };
 
   return (
-    <IngredientsInfoContainer>
+    <>
       <ImageAndCameraFun
         toast={toast}
         setAlert={setAlert}
         isAlert={isAlert}
         setPhoto={dataUpdatePhoto()}
       />
-
-      <IngredientsInfoSection>
-        <IngredientsName>{ingredientName}</IngredientsName>
-      </IngredientsInfoSection>
-      {renderFunc()}
-    </IngredientsInfoContainer>
+      <IngredientsInfoContainer>
+        <IngredientsInfoSection>
+          <IngredientsName>{ingredientName}</IngredientsName>
+        </IngredientsInfoSection>
+        {renderFunc()}
+      </IngredientsInfoContainer>
+    </>
   );
 };
 
 const IngredientsInfoContainer = styled.View`
-  display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  padding: 18px;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 15px;
+  padding-bottom: 15px;
   background-color: #ffffff;
 `;
 
-const IngredientsInfoSection = styled.View`
-  justify-content: center;
-`;
+const IngredientsInfoSection = styled.View``;
 
 const IngredientsName = styled.Text`
   font-style: normal;
