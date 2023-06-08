@@ -138,7 +138,7 @@ export const MyPrepScreen = ({navigation}) => {
                   fontWeight: 500,
                   color: '#333333',
                 }}>
-                차단한 사용자가 없습니다.
+                아직 작성된 손질법이 없습니다.
               </Text>
             </EmptyContainer>
           }
