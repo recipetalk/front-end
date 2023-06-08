@@ -2,7 +2,13 @@ import styled from 'styled-components/native';
 import React, {memo, useEffect, useState} from 'react';
 
 function CreatedDateLabel({createdDate}) {
-  const [date, setDate] = useState(new Date(createdDate));
+  const [date, setDate] = useState(null);
+
+  useEffect(() => {
+    if (createdDate != null) {
+      setDate(new Date(createdDate));
+    }
+  }, [createdDate]);
 
   console.log(createdDate);
   if (date == null) {

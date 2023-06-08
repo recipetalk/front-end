@@ -1,17 +1,17 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components/native';
 import {Image, Text} from 'react-native';
-import {CalanderPrint} from '../../../../utils/CalanderPrint';
+import CreatedDateLabel from '../../CreatedDateLabel';
 
 const CommentHistoryComponent = ({navigation, item}) => {
   useEffect(() => {
     console.log(item);
-  },[]);
+  }, []);
   return (
     <Container>
       <InnerContainer>
         <DatePart>
-          <Label>{CalanderPrint(item.createdDate)}</Label>
+          <CreatedDateLabel createdDate={item.createdDate} />
         </DatePart>
         <TitlePart>
           <TitleLabel ellipsizeMode={'tail'} numberOfLines={1}>

@@ -11,7 +11,7 @@ const PrepOrderComponent = ({num, item}) => {
         </NumberPart>
         <TextPart>{item[num - 1].description}</TextPart>
       </InfoPart>
-      {item[num - 1].imgUri != null ? (
+      {item[num - 1].imgUri != null && item[num - 1].imgUri != '' ? (
         <ImagePart source={{uri: item[num - 1].imgUri}} />
       ) : undefined}
     </PrepOrderItem>

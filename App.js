@@ -61,11 +61,12 @@ import {SearchResultScreen} from './src/pages/search/SearchResultScreen';
 import InitScreen from './src/pages/InitScreen';
 import {LogBox} from 'react-native';
 import PrepScreen from './src/pages/Ingredients/PrepScreen';
+import {RequestBarcodeScreen} from './src/pages/barcode/RequestBarcodeScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
     console.log('Reactotron Configured');
-      LogBox.ignoreAllLogs();
+    LogBox.ignoreAllLogs();
   });
 } else {
   LogBox.ignoreAllLogs();
@@ -443,6 +444,11 @@ function App() {
         <Stack.Screen
           name="Prep"
           component={PrepScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="RequestBarcode"
+          component={RequestBarcodeScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

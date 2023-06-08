@@ -242,3 +242,11 @@ export const getBarcode = async barcode => {
 
   return await jsonAPI.get(url, await config());
 };
+
+export const requestBarcodeRegist = async (barcodeNumber, productName) => {
+  const url = '/api/product';
+
+  const data = {productName: productName, barcode: barcodeNumber};
+
+  return await jsonAPI.post(url, data, await config());
+};

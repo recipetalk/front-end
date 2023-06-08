@@ -65,6 +65,7 @@ const Title = styled.Text`
   font-weight: 600;
   font-size: 16px;
   width: 200px;
+  color: #333333;
 `;
 
 const Content = styled.Text`
@@ -72,6 +73,7 @@ const Content = styled.Text`
   margin-top: 5px;
   font-family: 'Pretendard Variable';
   color: #a0a0a0;
+  width: 200px;
 `;
 
 const Line = styled.View`

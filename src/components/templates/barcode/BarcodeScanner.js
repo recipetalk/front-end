@@ -14,6 +14,8 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import AlertYesNoButton from '../../molecules/AlertYesNoButton';
+import {useDispatch} from 'react-redux';
+import {setBarcode} from '../../../store/barcode/BarcodeSlice';
 
 const BarcodeScanner = () => {
   const navigation = useNavigation();
@@ -22,6 +24,7 @@ const BarcodeScanner = () => {
   const [isAlertVisible, setAlertVisible] = useState(false);
   const ref = useRef(null);
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
   useFocusEffect(() => {
     //컴포넌트 마운트 됬을 때
@@ -43,14 +46,12 @@ const BarcodeScanner = () => {
     setAlertVisible(true);
   };
 
-  console.log(isAlertVisible);
-
   const moveAndCloseAlert = () => {
     navigation.navigate('RegisterMyIngredients', {
       barcodeNumber: scanValue,
     });
 
-    setTimeout(() => setAlertVisible(false), 500);
+    setAlertVisible(false);
   };
 
   return (

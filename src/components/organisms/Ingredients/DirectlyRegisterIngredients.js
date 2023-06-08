@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import Checkbox from '@react-native-community/checkbox';
 import {
   addIngredients,
   deleteIngredients,
+  updateIngredients,
 } from '../../../store/Ingredients/IngredientsSlice';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import DropDownPickerComponent from '../../molecules/DropDownPickerComponent';
 import {Dimensions, Modal, View} from 'react-native';
 import {Text} from 'react-native';
@@ -13,9 +14,11 @@ import {Calendar} from 'react-native-calendars';
 import {initSaveIngredientToTarget} from '../../../store/Ingredients/SelectedByFindIngredientSlice';
 
 const DirectlyRegisterIngredients = ({
-  item,
-  isFocus,
-  checkedItem,
+  id,
+  ingredientState,
+  quantity,
+  ingredientName,
+  isChecked,
   setSendText,
   setSelectIndex,
   setFocus,
@@ -27,17 +30,15 @@ const DirectlyRegisterIngredients = ({
     const temp = new Date(date).toISOString();
     return temp.split('T')[0];
   });
-
+  const getText = useSelector(state => state.findIngredientsSelector);
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
-  const [isAddChecked, setIsAddChecked] = useState(item.isChecked);
-  const [ingredientsStatusInfo, setIngredientsStatusInfo] = useState(
-    item.ingredientState,
-  );
-
+  const [isAddChecked, setIsAddChecked] = useState(isChecked);
+  const [ingredientsStatusInfo, setIngredientsStatusInfo] =
+    useState(ingredientState);
   const [ingredientsInfo, setIngredientsInfo] = useState({
-    ingredientName: item.ingredientName,
+    ingredientName: ingredientName,
     expirationDate: new Date().toISOString().split('T')[0],
-    quantity: item.quantity,
+    quantity: quantity,
   });
 
   const statusPlaceholder = [
@@ -47,32 +48,33 @@ const DirectlyRegisterIngredients = ({
   ];
 
   useEffect(() => {
+    console.log('renderInfo : ', ingredientsInfo);
     if (
-      ingredientsInfo.ingredientName != '' &&
+      ingredientsInfo.ingredientName.trim() != '' &&
       ingredientsInfo.expirationDate != '' &&
-      ingredientsInfo.quantity != ''
+      ingredientsInfo.quantity.trim() != ''
     ) {
       setIsAddChecked(true);
       dispatch(
         addIngredients({
-          id: item.id,
+          id: id,
           ingredientId: ingredientsInfo.ingredientId,
-          ingredientName: ingredientsInfo.ingredientName,
+          ingredientName: ingredientsInfo.ingredientName.trim(),
           ingredientState: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
-          quantity: ingredientsInfo.quantity,
+          quantity: ingredientsInfo.quantity.trim(),
           isChecked: true,
         }),
       );
     } else {
       dispatch(
         addIngredients({
-          id: item.id,
+          id: id,
           ingredientId: ingredientsInfo.ingredientId,
-          ingredientName: ingredientsInfo.ingredientName,
+          ingredientName: ingredientsInfo.ingredientName.trim(),
           ingredientState: ingredientsStatusInfo,
           expirationDate: ingredientsInfo.expirationDate,
-          quantity: ingredientsInfo.quantity,
+          quantity: ingredientsInfo.quantity.trim(),
           isChecked: false,
         }),
       );
@@ -81,7 +83,8 @@ const DirectlyRegisterIngredients = ({
   }, [ingredientsInfo]);
 
   const deleteThisIngredients = () => {
-    dispatch(deleteIngredients(item.ingredientId));
+    console.log(id);
+    dispatch(deleteIngredients(id));
   };
 
   const changeText = event => {
@@ -94,16 +97,15 @@ const DirectlyRegisterIngredients = ({
   };
 
   useEffect(() => {
-    console.log(checkedItem);
-    if (item.id === checkedItem.index) {
+    if (id === getText.index) {
       setIngredientsInfo({
         ...ingredientsInfo,
-        ingredientName: checkedItem.ingredientName,
-        ingredientId: checkedItem.ingredientId,
+        ingredientName: getText.ingredientName,
+        ingredientId: getText.ingredientId,
       });
     }
     dispatch(initSaveIngredientToTarget());
-  }, [checkedItem]);
+  }, [getText]);
 
   return (
     <RegisterIngredientsItemContainer>
@@ -138,9 +140,9 @@ const DirectlyRegisterIngredients = ({
           value={ingredientsInfo.ingredientName}
           onChange={changeText}
           onFocus={() => {
-            setSendText(() => item.ingredientName);
+            setSendText(() => ingredientsInfo.ingredientName);
             setFocus(true);
-            setSelectIndex(item.id);
+            setSelectIndex(id);
           }}
           onBlur={() => {
             setFocus(false);

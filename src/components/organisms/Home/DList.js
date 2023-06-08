@@ -50,9 +50,9 @@ const DList = props => {
           ingredientId: determineIngredientId,
         })
       }>
-      {props?.value?.thumbnailUri !== null &&
-      props?.value?.thumbnailUri !== '' ? (
-        <ImagePart source={{uri: props?.value?.thumbnailUri}} />
+      {props?.value?.thumbnailURI != null &&
+      props?.value?.thumbnailURI != '' ? (
+        <ImagePart source={{uri: props?.value?.thumbnailURI}} />
       ) : (
         <ImagePart />
       )}

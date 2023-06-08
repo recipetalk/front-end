@@ -138,9 +138,8 @@ const SetTimerPage = ({navigation, route}) => {
               setHour(0);
               route.params.setHour(0);
             }
-
-            navigation.goBack();
             route.params.setStart(true);
+            navigation.pop();
           }}>
           <ButtonLabel color={'#202020'}>시작</ButtonLabel>
         </StartButton>

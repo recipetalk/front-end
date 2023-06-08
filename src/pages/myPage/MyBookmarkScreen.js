@@ -16,7 +16,6 @@ export const MyBookmarkScreen = ({navigation}) => {
   const [last, setLast] = useState(false);
   const [isRefresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dummy = [1, 2, 3, 4, 5];
   const firstFilter = [
     {
       key: 1,

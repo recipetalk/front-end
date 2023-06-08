@@ -49,7 +49,7 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
     }
 
     return () => backHandler.remove();
-  }, []);
+  }, [isStartTimer]);
 
   const backAction = () => {
     if (isStartTimer) {
@@ -180,6 +180,7 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
   }, [isClickedStartTimer]);
 
   const pauseTimer = () => {
+
     setEstimatedEndTime(() => Date.now() + remainingTime);
     setHour(hoursLeft);
     setMin(minutesLeft);
@@ -311,7 +312,7 @@ const SequenceDetailDescriptionScreen = ({navigation, route}) => {
             onPress={() => {
               !init
                 ? startTimer(true)
-                : navigation.navigate('SetTimerPage', {
+                : navigation.push('SetTimerPage', {
                     setHour: setHour,
                     setMinute: setMin,
                     setSecond: setSec,

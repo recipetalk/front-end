@@ -19,7 +19,7 @@ export default function RecentRecipeComponent({navigation}) {
   const sortCategory = useSelector(state => state.sortCategory.value);
   const situationCategory = useSelector(state => state.situationCategory.value);
   const title = useSelector(state => state.searchValue.value);
-  useLayoutEffect(() => {
+  useEffect(() => {
     init();
   }, [firstClicked, sortCategory, situationCategory, title]);
 
@@ -37,6 +37,13 @@ export default function RecentRecipeComponent({navigation}) {
 
   const init = async () => {
     await setLoading(() => true);
+    console.log(
+      title,
+      firstFilter[firstClicked.key - 1].value,
+      sortCategory,
+      situationCategory,
+      limit,
+    );
     await getDynamicRecipes(
       title,
       firstFilter[firstClicked.key - 1].value,

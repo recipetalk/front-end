@@ -34,3 +34,11 @@ export const reportPreps = async trimmingId => {
 
   return await jsonAPI.post(url, data, await config());
 };
+
+export const reportUser = async username => {
+  const url = '/api/user/report';
+
+  const data = {description: `username=${username}`};
+
+  return await jsonAPI.post(url, data, await config());
+};

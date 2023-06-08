@@ -93,6 +93,7 @@ const InputBox = styled.View`
 const CustomInput = styled.TextInput`
   font-family: 'Pretendard Variable';
   flex: 1;
+  color: #333333;
 `;
 const SearchIcon = styled.Image`
   width: 18px;

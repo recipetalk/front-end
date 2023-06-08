@@ -1,6 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {FlatList, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {getSearchIngredient} from '../../../services/Ingredients';
 import {useDispatch} from 'react-redux';
 import {
@@ -11,7 +17,6 @@ import ingredientsComponent from './IngredientsComponent';
 
 export const IngredientSelectorComponent = ({
   targetIngredientName,
-  setCheckedItem,
   index,
 }) => {
   const [searchResult, setSearchResult] = useState([]);
@@ -38,19 +43,19 @@ export const IngredientSelectorComponent = ({
       index: index,
     };
 
-    if (setCheckedItem) {
-      setCheckedItem(infos);
-    }
-    //저장
     dispatch(setSaveIngredientToTarget(infos));
   };
 
   return (
-    <Container>
+    <Container horizontal={true} keyboardShouldPersistTaps={'always'}>
       {searchResult.map(item => (
         <TouchableOpacity
           onPress={() => saveInfo(item)}
-          style={{alignItems: 'center', flexDirection: 'row'}}>
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+          }}>
           <ItemBox>
             <ItemLabel>{item.ingredientName}</ItemLabel>
           </ItemBox>
@@ -64,7 +69,8 @@ export const IngredientSelectorComponent = ({
 const ItemBox = styled.View`
   align-items: center;
   justify-content: center;
-  margin-right: 5px;
+  margin-right: 20px;
+  margin-left: 20px;
 `;
 
 const ItemLabel = styled.Text`
@@ -79,14 +85,11 @@ const VerticalBar = styled.View`
   background-color: #e5e5e5;
 `;
 
-const Container = styled.View`
+const Container = styled.ScrollView`
   width: 100%;
   height: 50px;
   background: #f5f5f5;
   border: 1px solid #e1e1e1;
-  justify-content: center;
-  align-items: center;
-  padding: 0 5%;
+
   flex-direction: row;
-  gap: 10px;
 `;

@@ -3,14 +3,14 @@ import {loadLoginFromStorage} from '../repository/AutoLogin';
 import {jsonLogin} from './JsonLogin';
 
 export const jsonAPI = axios.create({
-  baseURL: 'http://kitcapstone.iptime.org:8080',
+  baseURL: 'https://receipe.shop',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 export const multiPartAPI = axios.create({
-  baseURL: 'http://kitcapstone.iptime.org:8080',
+  baseURL: 'https://receipe.shop',
   headers: {
     'Content-Type': 'multipart/form-data',
   },
@@ -28,6 +28,7 @@ jsonAPI.interceptors.response.use(
     if (config?.headers?.authorization && status === 401) {
       //console.log('jsonAPI response Interceptor : ', err.response);
       const originalRequest = config;
+      console.log('repeat Request');
       const {username, password} = await loadLoginFromStorage();
       config.headers.authorization = await jsonLogin(username, password);
       return axios(originalRequest);

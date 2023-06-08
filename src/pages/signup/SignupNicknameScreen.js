@@ -71,7 +71,7 @@ export default function SignupNicknameScreen({navigation}) {
             />
             {isValidNickname === 'no' && (
               <ValidateLabel>
-                닉네임은 4~10자리 한글, 영어, 숫자만 가능합니다
+                닉네임은 3~10자리 한글, 영어, 숫자만 가능합니다
               </ValidateLabel>
             )}
           </View>
@@ -83,10 +83,7 @@ export default function SignupNicknameScreen({navigation}) {
               !equals(localNickname, accessNickname) ? '중복확인' : '확인완료'
             }
             LabelSize="14px"
-            isActive={
-              localNickname.length >= 1 &&
-              !equals(localNickname, accessNickname)
-            }
+            isActive={isValidNickname && !equals(localNickname, accessNickname)}
             onPress={getIsValidNickname}
           />
         </DuplicationAndTextInputContainer>

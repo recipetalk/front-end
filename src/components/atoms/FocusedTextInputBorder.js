@@ -26,6 +26,7 @@ export default function FocusedTextInputBorder({
       autoCapitalize="none"
       keyboardType={type}
       maxLength={maxLength}
+      placeholderTextColor={'#e1e1e1'}
     />
   );
 }

@@ -63,5 +63,6 @@ const InputBox = styled.View`
 const CustomInput = styled.TextInput`
   font-family: 'Pretendard Variable';
   flex: 1;
+  color: #333333;
 `;
 export default SearchInput;

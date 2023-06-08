@@ -10,6 +10,7 @@ import {removeComment} from '../../../services/Comment';
 import {useToast} from 'react-native-toast-notifications';
 import {reportComment} from '../../../services/Report';
 import {requestRegisterBlockedUser} from '../../../services/MyPage';
+import CreatedDateLabel from '../../atoms/CreatedDateLabel';
 
 export const CommentComponent = ({
   details = false,
@@ -136,7 +137,7 @@ export const CommentComponent = ({
           <NicknameAndCreatedDatePart>
             <Nickname>{comment?.userProfile?.nickname}</Nickname>
             <Nickname> · </Nickname>
-            <Nickname>{CalanderPrint(comment?.createdDate)}</Nickname>
+            <CreatedDateLabel createdDate={comment?.createdDate} />
           </NicknameAndCreatedDatePart>
           {comment?.userProfile?.username === undefined ? undefined : (
             <OptionModalChildImage

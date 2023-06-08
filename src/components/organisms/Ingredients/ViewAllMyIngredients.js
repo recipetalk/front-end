@@ -53,7 +53,7 @@ const ViewAllMyIngredients = () => {
     setOneItemState('new');
     setDeleteItem(false);
     init('new');
-  }, [isFocused, deleteItem]);
+  }, [deleteItem]);
 
   useEffect(() => {
     if (oneItemState !== undefined) {

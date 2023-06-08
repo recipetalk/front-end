@@ -88,6 +88,14 @@ const PrepComponent = () => {
             </Header>
           </>
         )}
+        ListEmptyComponent={
+          <>
+            <EmptyContainer>
+              <EmptyLabel>아직 손질법이 없어요.</EmptyLabel>
+              <EmptyLabel>처음으로 손질법을 작성해보시겠어요?</EmptyLabel>
+            </EmptyContainer>
+          </>
+        }
         contentContainerStyle={{
           justifyContent: 'center',
         }}
@@ -122,6 +130,21 @@ const PrepComponent = () => {
               ingredientId={router.params.ingredientID}
             />
  */
+
+const EmptyContainer = styled.View`
+  padding-top: 100px;
+  flex: 1;
+
+  align-items: center;
+  justify-content: center;
+`;
+
+const EmptyLabel = styled.Text`
+  font-weight: 500;
+  font-size: 16px;
+  color: #f09311;
+  font-family: 'Pretendard Variable';
+`;
 
 const PrepComponentContainer = styled.SafeAreaView`
   width: 100%;
