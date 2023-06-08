@@ -354,8 +354,7 @@ const PrepOrderNum = styled.View`
   background: #f09311;
   border-radius: 50px;
   justify-content: center;
-  margin-right: 15px;
-  top: 65px;
+  margin-right: 10px;
 `;
 
 const PrepOrderNumText = styled.Text`
