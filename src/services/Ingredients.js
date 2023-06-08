@@ -183,8 +183,8 @@ export const getEfficacy = async ingredientId => {
 };
 
 // 입력한 이름을 포함하는 식재료 이름 조회 get
-export const getSearchIngredient = async searchValue => {
-  const url = `/api/ingredient/${searchValue}`;
+export const getSearchIngredient = async (searchValue, page) => {
+  const url = `/api/ingredient/${searchValue}?page=${page}`;
   return await jsonAPI.get(url, await config());
 };
 

@@ -10,8 +10,10 @@ const CommentHistoryScreen = ({navigation}) => {
   const [pageNum, setPageNum] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const config = async () => {
+      await setLoading(true);
       await getCommentHistory(0)
         .then(res => {
           const data = JSON.parse(res.request._response);
@@ -21,23 +23,26 @@ const CommentHistoryScreen = ({navigation}) => {
           setPageNum(1);
         })
         .catch(err => console.log(err.response));
+      await setLoading(false);
     };
     config();
   }, []);
 
   const request = async () => {
+    await setLoading(true);
     await getCommentHistory(pageNum).then(res => {
       const json = JSON.parse(res.request._response);
       setLast(() => json.last);
       setCommentHistory(data => data.concat(json.content));
       setPageNum(pageNum => pageNum + 1);
     });
+    await setLoading(false);
   };
 
   const onRefresh = async () => {
     if (!refresh) {
+      setLoading(true);
       setRefresh(() => true);
-      setPageNum(0);
       await getCommentHistory(0).then(res => {
         const json = JSON.parse(res.request._response);
         setLast(json.last);
@@ -46,6 +51,7 @@ const CommentHistoryScreen = ({navigation}) => {
         setPageNum(1);
       });
     }
+    setLoading(false);
     setTimeout(() => setRefresh(false), 1000);
   };
 
@@ -84,6 +90,9 @@ const CommentHistoryScreen = ({navigation}) => {
         onRefresh={onRefresh}
         refreshing={refresh}
         onEndReached={() => {
+          if (loading) {
+            return;
+          }
           if (!isLast) {
             request();
           }
