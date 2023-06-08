@@ -29,6 +29,7 @@ const PrepIntro = props => {
           multiline={false}
           value={props.state.title}
           onChangeText={res => props.setState({...props.state, title: res})}
+          placeholderTextColor={'#a0a0a0'}
         />
         <PrepInput
           placeholder={`나만의 손질법을 소개해주세요.
@@ -36,6 +37,7 @@ const PrepIntro = props => {
           multiline={true}
           value={props.state.desc}
           onChangeText={res => props.setState({...props.state, desc: res})}
+          placeholderTextColor={'#a0a0a0'}
         />
       </PrepIntroContainer>
     </>

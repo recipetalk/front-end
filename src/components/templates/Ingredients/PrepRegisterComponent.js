@@ -346,6 +346,7 @@ const PrepOrderItem = styled.View`
   display: flex;
   flex-direction: row;
   width: 85%;
+  align-items: center;
 `;
 const PrepOrderNum = styled.View`
   width: 22px;
