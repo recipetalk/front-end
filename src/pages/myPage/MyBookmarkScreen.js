@@ -4,7 +4,12 @@ import RadioButton from '../../components/atoms/board/RadioButton';
 import DropDownPickerComponent from '../../components/molecules/DropDownPickerComponent';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
 import DList from '../../components/organisms/Home/DList';
-import {ActivityIndicator, FlatList, TouchableOpacity} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {getBoardBookmarkList, getBoardLikeList} from '../../services/MyPage';
 import {toggleBoardLikeAction} from '../../services/BoardLike';
 import {toggleBoardBookmark} from '../../services/BoardBookmark';
@@ -120,6 +125,20 @@ export const MyBookmarkScreen = ({navigation}) => {
         keyExtractor={_ => _.boardId}
         onRefresh={onRefresh}
         refreshing={isRefresh}
+        ListEmptyComponent={
+          <InnerContainer>
+            <Text
+              style={{
+                fontStyle: 'normal',
+                fontFamily: 'Pretendard Variable',
+                fontSize: 14,
+                fontWeight: 500,
+                color: '#333333',
+              }}>
+              북마크한 게시글이 없습니다.
+            </Text>
+          </InnerContainer>
+        }
         onEndReached={() => {
           if (loading) {
             return;
@@ -210,4 +229,9 @@ const EmptyContainer = styled.View`
   align-items: center;
   background: white;
   margin-bottom: 70px;
+`;
+const InnerContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;

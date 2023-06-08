@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components/native';
 import RadioButton from '../../atoms/board/RadioButton';
 import HList from '../../organisms/Home/HList';
-import {FlatList, TouchableWithoutFeedback, View} from 'react-native';
+import {FlatList, Text, TouchableWithoutFeedback, View} from 'react-native';
 import ModalDropDownPickerComponent from '../../molecules/ModalDropDownPickerComponent';
 import {RecipeSortList} from '../../../category/recipe/RecipeSortList';
 import {RecipeSituationList} from '../../../category/recipe/RecipeSituationList';
@@ -180,7 +180,6 @@ export const RecipeAndTrimmingComponent = props => {
     await setPrepLoading(() => false);
   }, [props?.username, secondFilter, prepOffset, prepLimit]);
 
-
   const recipeRefreshHandler = useCallback(() => {
     if (recipeLoading) {
       return;
@@ -290,6 +289,20 @@ export const RecipeAndTrimmingComponent = props => {
             onEndReached={() => recipeRefreshHandler()}
             onEndReachedThreshold={0.8}
             maxToRenderPerBatch={6}
+            ListEmptyComponent={
+              <EmptyContainer>
+                <Text
+                  style={{
+                    fontStyle: 'normal',
+                    fontFamily: 'Pretendard Variable',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: '#333333',
+                  }}>
+                  아직 작성한 레시피가 없습니다.
+                </Text>
+              </EmptyContainer>
+            }
           />
         ) : (
           <FlatList
@@ -307,6 +320,20 @@ export const RecipeAndTrimmingComponent = props => {
             onEndReached={() => prepRefreshHandler()}
             maxToRenderPerBatch={6}
             onEndReachedThreshold={0.8}
+            ListEmptyComponent={
+              <EmptyContainer>
+                <Text
+                  style={{
+                    fontStyle: 'normal',
+                    fontFamily: 'Pretendard Variable',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: '#333333',
+                  }}>
+                  아직 작성한 손질법이 없습니다.
+                </Text>
+              </EmptyContainer>
+            }
           />
         )}
       </HListView>
@@ -376,4 +403,10 @@ const CategorySelectorContainer = styled.View`
   gap: 10px;
   width: 100%;
   z-index: 100;
+`;
+
+const EmptyContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 50%;
 `;

@@ -20,6 +20,7 @@ export const IngredientSelectorComponent = ({
   index,
 }) => {
   const [searchResult, setSearchResult] = useState([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

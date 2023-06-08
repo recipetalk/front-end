@@ -143,7 +143,7 @@ export const requestRegisterRecipeRows = async (recipeId, recipeRow) => {
 export const hardRemoveRecipes = async recipeId => {
   const url = `/api/board/recipe/hard/${recipeId}`;
 
-  return await jsonAPI.delete(url, config);
+  return await jsonAPI.delete(url, await config());
 };
 
 export const getRecipe = async recipeId => {
@@ -214,7 +214,7 @@ export const modifyRecipeBoard = async ({
     await data.append('situation', secondCategory);
   }
   console.log('modifyRequest : ', data);
-  return await multiPartAPI.put(url, data, config);
+  return await multiPartAPI.put(url, data, await config());
 };
 
 export const modifyRecipeIngredients = async (recipeId, recipeIngredients) => {

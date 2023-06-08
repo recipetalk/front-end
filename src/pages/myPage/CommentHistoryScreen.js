@@ -42,6 +42,7 @@ const CommentHistoryScreen = ({navigation}) => {
         const json = JSON.parse(res.request._response);
         setLast(json.last);
         setCommentHistory(json.content);
+        setTotalCount(json.totalElements);
         setPageNum(1);
       });
     }

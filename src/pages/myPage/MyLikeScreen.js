@@ -4,7 +4,12 @@ import RadioButton from '../../components/atoms/board/RadioButton';
 import DropDownPickerComponent from '../../components/molecules/DropDownPickerComponent';
 import {NavigationHeader} from '../../components/organisms/mypage/NavigationHeader';
 import DList from '../../components/organisms/Home/DList';
-import {ActivityIndicator, FlatList, TouchableOpacity} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
 import {getDynamicRecipes} from '../../services/recipe/Recipe';
 import {determinePageEnd} from '../../utils/determinePageEnd';
@@ -84,6 +89,20 @@ export const MyLikeScreen = ({navigation}) => {
             onRequest();
           }
         }}
+        ListEmptyComponent={
+          <InnerContainer>
+            <Text
+              style={{
+                fontStyle: 'normal',
+                fontFamily: 'Pretendard Variable',
+                fontSize: 14,
+                fontWeight: 500,
+                color: '#333333',
+              }}>
+              좋아요를 누른 게시글이 아직 없습니다.
+            </Text>
+          </InnerContainer>
+        }
         onEndReachedThreshold={0.6}
       />
     </>
@@ -143,4 +162,10 @@ const EmptyContainer = styled.View`
   align-items: center;
   background: white;
   margin-bottom: 70px;
+`;
+
+const InnerContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;

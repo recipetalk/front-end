@@ -1,6 +1,6 @@
 import {useIsFocused} from '@react-navigation/native';
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import {ScrollView} from 'react-native';
 import styled from 'styled-components/native';
 import {getMyIngredientPage} from '../../../services/Ingredients';
@@ -189,6 +189,20 @@ const ViewAllMyIngredients = () => {
             onRequest();
           }
         }}
+        ListEmptyComponent={
+          <InnerContainer>
+            <Text
+              style={{
+                fontStyle: 'normal',
+                fontFamily: 'Pretendard Variable',
+                fontSize: 14,
+                fontWeight: 500,
+                color: '#333333',
+              }}>
+              식재료가 없습니다.
+            </Text>
+          </InnerContainer>
+        }
         onEndReachedThreshold={0.6}
       />
     </>
@@ -211,6 +225,12 @@ const MyIngredientsTitle = styled.Text`
   padding: 18px;
   color: #333333;
   font-family: 'Pretendard Variable';
+`;
+
+const InnerContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;
 
 export default ViewAllMyIngredients;

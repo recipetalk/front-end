@@ -7,7 +7,7 @@ import {loadLoginFromStorage} from '../../services/repository/AutoLogin';
 import {getDynamicRecipes} from '../../services/recipe/Recipe';
 import {determinePageEnd} from '../../utils/determinePageEnd';
 import {getIngredientPrepByUsername} from '../../services/Ingredients';
-import {ActivityIndicator, FlatList} from 'react-native';
+import {ActivityIndicator, FlatList, Text} from 'react-native';
 
 export const MyPrepScreen = ({navigation}) => {
   const [firstClicked, setFirstClicked] = useState({key: 1});
@@ -86,9 +86,9 @@ export const MyPrepScreen = ({navigation}) => {
 
   if (prep == null) {
     return (
-      <EmptyContainer>
+      <LoadingContainer>
         <ActivityIndicator color={'#f09311'} size="large" />
-      </EmptyContainer>
+      </LoadingContainer>
     );
   }
 
@@ -128,6 +128,20 @@ export const MyPrepScreen = ({navigation}) => {
               onRequest();
             }
           }}
+          ListEmptyComponent={
+            <EmptyContainer>
+              <Text
+                style={{
+                  fontStyle: 'normal',
+                  fontFamily: 'Pretendard Variable',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: '#333333',
+                }}>
+                차단한 사용자가 없습니다.
+              </Text>
+            </EmptyContainer>
+          }
           onEndReachedThreshold={0.6}
         />
       </InnerContainer>
@@ -161,11 +175,17 @@ const HorizontalBar = styled.View`
   background: #e1e1e1;
 `;
 
-const EmptyContainer = styled.View`
+const LoadingContainer = styled.View`
   width: 100%;
   height: 100%;
   padding-top: 10px;
   align-items: center;
   background: white;
   margin-bottom: 70px;
+`;
+
+const EmptyContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;

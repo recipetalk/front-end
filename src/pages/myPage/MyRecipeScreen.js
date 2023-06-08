@@ -6,6 +6,7 @@ import {NavigationHeader} from '../../components/organisms/mypage/NavigationHead
 import {
   ActivityIndicator,
   FlatList,
+  Text,
   TouchableWithoutFeedback,
 } from 'react-native';
 import ModalDropDownPickerComponent from '../../components/molecules/ModalDropDownPickerComponent';
@@ -98,9 +99,9 @@ export const MyRecipeScreen = ({navigation}) => {
 
   if (recipe == null) {
     return (
-      <EmptyContainer>
+      <LoadingContainer>
         <ActivityIndicator color={'#f09311'} size="large" />
-      </EmptyContainer>
+      </LoadingContainer>
     );
   }
 
@@ -166,7 +167,22 @@ export const MyRecipeScreen = ({navigation}) => {
               onRequest();
             }
           }}
+          ListEmptyComponent={
+            <EmptyContainer>
+              <Text
+                style={{
+                  fontStyle: 'normal',
+                  fontFamily: 'Pretendard Variable',
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: '#333333',
+                }}>
+                아직 작성한 레시피가 없습니다.
+              </Text>
+            </EmptyContainer>
+          }
           onEndReachedThreshold={0.6}
+          maxToRenderPerBatch={3}
         />
       </InnerContainer>
     </Container>
@@ -174,6 +190,13 @@ export const MyRecipeScreen = ({navigation}) => {
 };
 
 const EmptyContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+
+const LoadingContainer = styled.View`
   width: 100%;
   height: 100%;
   padding-top: 10px;
