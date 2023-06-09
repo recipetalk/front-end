@@ -72,9 +72,11 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = recipetalk/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = recipetalk/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = recipetalk/main.m; sourceTree = "<group>"; };
+		178CFE8AC8BFB03ECDAAF5F1 /* Pods-recipetalk-recipetalkTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-recipetalk-recipetalkTests.staging.xcconfig"; path = "Target Support Files/Pods-recipetalk-recipetalkTests/Pods-recipetalk-recipetalkTests.staging.xcconfig"; sourceTree = "<group>"; };
 		34667A837F76BC8B4B24A678 /* Pods-recipetalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-recipetalk.debug.xcconfig"; path = "Target Support Files/Pods-recipetalk/Pods-recipetalk.debug.xcconfig"; sourceTree = "<group>"; };
 		681F102B4162F39EA3C9E04F /* Pods-recipetalk-recipetalkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-recipetalk-recipetalkTests.debug.xcconfig"; path = "Target Support Files/Pods-recipetalk-recipetalkTests/Pods-recipetalk-recipetalkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = recipetalk/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8AB6C2E396CE4D8952628C2F /* Pods-recipetalk.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-recipetalk.staging.xcconfig"; path = "Target Support Files/Pods-recipetalk/Pods-recipetalk.staging.xcconfig"; sourceTree = "<group>"; };
 		8B77C8B859B04E2B9DEE25D3 /* PretendardVariable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PretendardVariable.ttf; path = ../src/assets/fonts/PretendardVariable.ttf; sourceTree = "<group>"; };
 		B30B330729F6694400847B6A /* recipetalkRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = recipetalkRelease.entitlements; path = recipetalk/recipetalkRelease.entitlements; sourceTree = "<group>"; };
 		B3100FD929F6747500B0EA5F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -253,6 +255,8 @@
 				EF9509EEDC0E60115346814F /* Pods-recipetalk.release.xcconfig */,
 				681F102B4162F39EA3C9E04F /* Pods-recipetalk-recipetalkTests.debug.xcconfig */,
 				06EA05A42ADF73352F8C695F /* Pods-recipetalk-recipetalkTests.release.xcconfig */,
+				8AB6C2E396CE4D8952628C2F /* Pods-recipetalk.staging.xcconfig */,
+				178CFE8AC8BFB03ECDAAF5F1 /* Pods-recipetalk-recipetalkTests.staging.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1043,7 +1047,7 @@
 		};
 		B37F9E532A2EEBDB00639B07 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF9509EEDC0E60115346814F /* Pods-recipetalk.release.xcconfig */;
+			baseConfigurationReference = 8AB6C2E396CE4D8952628C2F /* Pods-recipetalk.staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1075,7 +1079,7 @@
 		};
 		B37F9E542A2EEBDB00639B07 /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 06EA05A42ADF73352F8C695F /* Pods-recipetalk-recipetalkTests.release.xcconfig */;
+			baseConfigurationReference = 178CFE8AC8BFB03ECDAAF5F1 /* Pods-recipetalk-recipetalkTests.staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

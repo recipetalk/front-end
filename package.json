@@ -1,6 +1,6 @@
 {
   "name": "recipetalk",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android adb reverse tcp:9090 tcp:9090",
@@ -38,6 +38,7 @@
     "react-native-svg": "^13.8.0",
     "react-native-toast-notifications": "^3.3.1",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-webview": "12.1.0",
     "react-redux": "^8.0.5",
     "styled-components": "^5.3.6"
   },

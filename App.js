@@ -62,6 +62,9 @@ import InitScreen from './src/pages/InitScreen';
 import {LogBox} from 'react-native';
 import PrepScreen from './src/pages/Ingredients/PrepScreen';
 import {RequestBarcodeScreen} from './src/pages/barcode/RequestBarcodeScreen';
+import {PrivacyHandlePolicyScreen} from './src/pages/tos/PrivacyHandlePolicyScreen';
+import {ServiceHandlePolicyScreen} from './src/pages/tos/ServiceHandlePolicyScreen';
+import {MarketingHandlePolicyScreen} from './src/pages/tos/MarketingHandlePolicyScreen';
 
 if (__DEV__) {
   import('./config').then(() => {
@@ -102,6 +105,21 @@ function SignStackNavigator() {
       <SignStack.Screen
         name="SignupFirstScreen"
         component={SignupStartScreen}
+        options={{headerShown: false}}
+      />
+      <SignStack.Screen
+        name="PrivacyScreen"
+        component={PrivacyHandlePolicyScreen}
+        options={{headerShown: false}}
+      />
+      <SignStack.Screen
+        name="ServiceRoleScreen"
+        component={ServiceHandlePolicyScreen}
+        options={{headerShown: false}}
+      />
+      <SignStack.Screen
+        name="MarketingScreen"
+        component={MarketingHandlePolicyScreen}
         options={{headerShown: false}}
       />
       <SignStack.Screen
@@ -449,6 +467,21 @@ function App() {
         <Stack.Screen
           name="RequestBarcode"
           component={RequestBarcodeScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Privacy"
+          component={PrivacyHandlePolicyScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="ServiceRole"
+          component={ServiceHandlePolicyScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Marketing"
+          component={MarketingHandlePolicyScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

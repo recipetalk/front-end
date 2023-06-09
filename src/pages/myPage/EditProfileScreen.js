@@ -191,8 +191,20 @@ export const EditProfileScreen = ({navigation}) => {
             <ClearLabel>지우기</ClearLabel>
           </TouchableOpacity>
         </View>
+
         <TouchableOpacity
-          style={{width: 100, marginTop: 100}}
+          style={{width: 110}}
+          onPress={() => navigation.push('Privacy')}>
+          <WidthdrawLabel>개인정보이용방침</WidthdrawLabel>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{width: 110}}
+          onPress={() => navigation.push('ServiceRole')}>
+          <WidthdrawLabel>서비스이용약관</WidthdrawLabel>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{width: 100, marginTop: 200}}
           onPress={() => setTryWithdraw(true)}>
           <WidthdrawLabel>회원 탈퇴하기</WidthdrawLabel>
         </TouchableOpacity>

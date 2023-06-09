@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
-import {Image, Platform, StyleSheet} from 'react-native';
+import {Image, Platform, StyleSheet, TouchableOpacity} from 'react-native';
 import ActiveButton from '../../components/atoms/board/ActiveButton';
 import CheckboxAndLabel from '../../components/molecules/CheckboxAndLabel';
+import {useDispatch} from 'react-redux';
+import {setMarketingAccept} from '../../store/signup/Signup';
 
 const SignupStartScreen = ({navigation}) => {
   const [isAllChecked, setAllChecked] = useState(false);
   const [isFirstChecked, setFirstChecked] = useState(false);
   const [isSecondChecked, setSecondChecked] = useState(false);
   const [isThirdChecked, setThirdChecked] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isAllChecked) {
@@ -28,6 +31,10 @@ const SignupStartScreen = ({navigation}) => {
       setAllChecked(false);
     }
   }, [isFirstChecked, isSecondChecked, isThirdChecked]);
+
+  useEffect(() => {
+    dispatch(setMarketingAccept(isThirdChecked));
+  }, [isThirdChecked]);
 
   return (
     <SignupIdScreenContainer>
@@ -49,6 +56,11 @@ const SignupStartScreen = ({navigation}) => {
             labelFontStyle={CheckboxLabelStyle.sub}
             checkboxSize={25}
           />
+          <TouchableOpacity
+            onPress={() => navigation.push('ServiceRoleScreen')}
+            style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Image source={require('../../assets/images/More_Arrow.png')} />
+          </TouchableOpacity>
         </CheckItem>
         <CheckItem>
           <CheckboxAndLabel
@@ -58,15 +70,25 @@ const SignupStartScreen = ({navigation}) => {
             labelFontStyle={CheckboxLabelStyle.sub}
             checkboxSize={25}
           />
+          <TouchableOpacity
+            onPress={() => navigation.push('PrivacyScreen')}
+            style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Image source={require('../../assets/images/More_Arrow.png')} />
+          </TouchableOpacity>
         </CheckItem>
         <CheckItem>
           <CheckboxAndLabel
             value={isThirdChecked}
             setValue={setThirdChecked}
-            label={'[선택] 마케팅 활용 동의'}
+            label={'[선택] 마케팅 정보 수신 동의'}
             labelFontStyle={CheckboxLabelStyle.sub}
             checkboxSize={25}
           />
+          <TouchableOpacity
+            onPress={() => navigation.push('MarketingScreen')}
+            style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Image source={require('../../assets/images/More_Arrow.png')} />
+          </TouchableOpacity>
         </CheckItem>
       </CheckPart>
       <NextButtonContainer>
@@ -156,6 +178,8 @@ const CheckPart = styled.View`
 const CheckItem = styled.View`
   width: 90%;
   margin: 0 auto;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const CheckboxLabelStyle = StyleSheet.create({

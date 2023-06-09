@@ -8,6 +8,7 @@ const Signup = createSlice({
       password: '',
       email: '',
       nickname: '',
+      marketingIsAccept: false,
     },
   },
   reducers: {
@@ -26,14 +27,18 @@ const Signup = createSlice({
     setNickname: (state, action) => {
       state.value.nickname = action.payload;
     },
+    setMarketingAccept: (state, action) => {
+      state.value.MarketingIsAccept = action.payload;
+    },
     clear: state => {
       state.value.username = '';
       state.value.email = '';
       state.value.password = '';
       state.value.nickname = '';
+      state.value.isMarketingAccept = false;
     },
   },
 });
-export const {clear, setSignup, setId, setPassword, setEmail, setNickname} =
+export const {clear, setSignup, setId, setPassword, setEmail, setNickname, setMarketingAccept} =
   Signup.actions;
 export default Signup.reducer;
