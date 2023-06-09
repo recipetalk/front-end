@@ -79,9 +79,9 @@ const ViewAllMyIngredients = () => {
     }
   }, [threeItemState]);
 
-  const init = async type => {
+  const init = async (type1, type2, type3) => {
     await setLoading(() => true);
-    await getMyIngredientPage(0, type)
+    await getMyIngredientPage(0, type1, type2, type3)
       .then(res => {
         const data = JSON.parse(res.request._response);
         setMyIngredients(data.content);

@@ -17,9 +17,11 @@ import ingredientsComponent from './IngredientsComponent';
 import {
   loadIngredientRecipeTutorial,
   loadIngredientTutorial,
+  saveIngredientRecipeTutorial,
   saveIngredientTutorial,
 } from '../../../services/repository/tutorial/IngredientSelectorTutorial';
 import AlertTutorialButton from '../../molecules/AlertTutorialButton';
+import {useIsFocused} from '@react-navigation/native';
 
 export const IngredientSelectorComponent = ({
   targetIngredientName,
@@ -37,14 +39,13 @@ export const IngredientSelectorComponent = ({
     const willTutorial = async () => {
       if (screen === 'RECIPE_INGREDIENT') {
         const {isValid} = await loadIngredientTutorial();
-        setTutorialAlert(!isValid);
+        await setTutorialAlert(!isValid);
       }
       if (screen === 'USER_HAS_INGREDIENT') {
         const {isValid} = await loadIngredientRecipeTutorial();
-        setTutorialAlert(!isValid);
+        await setTutorialAlert(!isValid);
       }
     };
-
     willTutorial();
   }, []);
 
@@ -75,7 +76,7 @@ export const IngredientSelectorComponent = ({
     }
 
     if (screen === 'USER_HAS_INGREDIENT') {
-      await saveIngredientTutorial(value);
+      await saveIngredientRecipeTutorial(value);
     }
   };
 
