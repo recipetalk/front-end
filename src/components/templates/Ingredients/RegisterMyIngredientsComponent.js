@@ -59,6 +59,7 @@ const RegisterMyIngredientsComponent = () => {
           if (status === 404) {
             setExceptionAlert(true);
           } else {
+            console.log(error.response);
             toast.show(
               '네트워크가 좋지 않습니다. 나중에 다시 한번 시도해주세요',
             );
@@ -153,6 +154,7 @@ const RegisterMyIngredientsComponent = () => {
             isFocus={isFocus}
             targetIngredientName={sendText}
             index={selectIndex}
+            screen={'USER_HAS_INGREDIENT'}
           />
         ) : undefined}
       </KeyboardAvoidingView>

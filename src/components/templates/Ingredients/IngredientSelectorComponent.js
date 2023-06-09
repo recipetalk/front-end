@@ -14,14 +14,39 @@ import {
   setSaveIngredientToTarget,
 } from '../../../store/Ingredients/SelectedByFindIngredientSlice';
 import ingredientsComponent from './IngredientsComponent';
+import {
+  loadIngredientRecipeTutorial,
+  loadIngredientTutorial,
+  saveIngredientTutorial,
+} from '../../../services/repository/tutorial/IngredientSelectorTutorial';
+import AlertTutorialButton from '../../molecules/AlertTutorialButton';
 
-export const IngredientSelectorComponent = ({targetIngredientName, index}) => {
+export const IngredientSelectorComponent = ({
+  targetIngredientName,
+  index,
+  screen,
+}) => {
   const [searchResult, setSearchResult] = useState([]);
   const [isLast, setLast] = useState(false);
   const [pageNum, setPageNum] = useState(0);
-  const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isTutorialAlert, setTutorialAlert] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const willTutorial = async () => {
+      if (screen === 'RECIPE_INGREDIENT') {
+        const {isValid} = await loadIngredientTutorial();
+        setTutorialAlert(!isValid);
+      }
+      if (screen === 'USER_HAS_INGREDIENT') {
+        const {isValid} = await loadIngredientRecipeTutorial();
+        setTutorialAlert(!isValid);
+      }
+    };
+
+    willTutorial();
+  }, []);
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -42,6 +67,16 @@ export const IngredientSelectorComponent = ({targetIngredientName, index}) => {
     };
 
     dispatch(setSaveIngredientToTarget(infos));
+  };
+
+  const tutorialSave = async value => {
+    if (screen === 'RECIPE_INGREDIENT') {
+      await saveIngredientTutorial(value);
+    }
+
+    if (screen === 'USER_HAS_INGREDIENT') {
+      await saveIngredientTutorial(value);
+    }
   };
 
   const init = async () => {
@@ -92,6 +127,18 @@ export const IngredientSelectorComponent = ({targetIngredientName, index}) => {
         renderItem={({item}) => renderItem(item, saveInfo)}
         keyExtractor={_ => String(_.ingredientId)}
       />
+      {isTutorialAlert ? (
+        <AlertTutorialButton
+          title={'식재료 자동완성 기능!'}
+          text={`식재료 이름을 넣으실 땐 꼭! 
+식재료 자동완성 기능을 사용해주세요!
+(불편함을 끼쳐드려 죄송합니다)`}
+          setTutorialValid={tutorialSave}
+          onPress={() => {
+            setTutorialAlert(false);
+          }}
+        />
+      ) : undefined}
     </Container>
   );
 };

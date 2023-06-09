@@ -2,12 +2,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import Title from '../../components/atoms/board/recipe/edit/Title';
 import {
-  FlatList,
   Image,
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {IngredientSelectorComponent} from '../../components/templates/Ingredients/IngredientSelectorComponent';
@@ -168,6 +166,7 @@ const RecipeEditSecondScreen = ({navigation}) => {
             targetIngredientName={sendText}
             index={selectIndex}
             isFocus={isFocus}
+            screen={'RECIPE_INGREDIENT'}
           />
         ) : undefined}
       </KeyboardAvoidingView>

@@ -9,6 +9,11 @@ import {
 } from '../../services/repository/AutoLogin';
 import {deleteJwtAccessTokenToStorage} from '../../services/repository/JwtToken';
 import {RemoveFcmConnect} from '../../services/fcm/FcmConnect';
+import {deleteAllSearchHistoryToStorage} from '../../services/repository/SearchHistory';
+import {
+  deleteIngredientRecipeToStorage,
+  deleteIngredientToStorage,
+} from '../../services/repository/tutorial/IngredientSelectorTutorial';
 
 const MypageScreen = ({navigation}) => {
   const [alert, setAlert] = useState(false);
@@ -18,6 +23,9 @@ const MypageScreen = ({navigation}) => {
     await RemoveFcmConnect();
     await deleteLoginToStorage();
     await deleteJwtAccessTokenToStorage();
+    await deleteAllSearchHistoryToStorage();
+    await deleteIngredientRecipeToStorage();
+    await deleteIngredientToStorage();
     await navigation.reset({routes: [{name: 'Login'}]});
   };
 
