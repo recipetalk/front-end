@@ -276,6 +276,7 @@ const IngredientNameInput = styled.TextInput`
   border-radius: 8px;
   font-family: 'Pretendard Variable';
   padding: 10px;
+  color: #333333;
 `;
 
 const IngredientStatusContainer = styled.View`
@@ -299,6 +300,7 @@ const IngredientStatusInput = styled.TextInput`
   border-radius: 8px;
   font-family: 'Pretendard Variable';
   padding: 10px;
+  color: #333333;
 `;
 
 const IngredientStatusText = styled.Text`

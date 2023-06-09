@@ -109,6 +109,7 @@ const IngredientNameInput = styled.TextInput`
   border-radius: 8px;
   font-family: 'Pretendard Variable';
   padding: 10px;
+  color: #333333;
 `;
 
 const NextButtonContainer = styled.View`
