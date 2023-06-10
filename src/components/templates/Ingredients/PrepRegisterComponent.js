@@ -184,7 +184,7 @@ const PrepRegisterComponent = () => {
                         setIndex(index);
                       }}>
                       <Image
-                        source={require('../../../assets/images/_격리_모드.png')}
+                        source={require('../../../assets/images/Camera_Icon.png')}
                       />
                     </ImageSelectBox>
                   ) : (

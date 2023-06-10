@@ -1154,7 +1154,7 @@
 				B37F9E542A2EEBDB00639B07 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "recipetalk" */ = {
 			isa = XCConfigurationList;
@@ -1164,7 +1164,7 @@
 				B37F9E532A2EEBDB00639B07 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "recipetalk" */ = {
 			isa = XCConfigurationList;
@@ -1174,7 +1174,7 @@
 				B37F9E522A2EEBDB00639B07 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		B369F6BC2A02071700F16AF5 /* Build configuration list for PBXNativeTarget "TimerExtension" */ = {
 			isa = XCConfigurationList;
@@ -1184,7 +1184,7 @@
 				B37F9E552A2EEBDB00639B07 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

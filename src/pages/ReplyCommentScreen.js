@@ -83,7 +83,7 @@ export const ReplyCommentScreen = ({navigation, route}) => {
         <CommentComponent
           existChild={false}
           comment={parentComment}
-          isMine={loadUsername === parentComment.userProfile.username}
+          isMine={loadUsername === parentComment?.userProfile?.username}
           details={true}
           onRefresh={onRefresh}
         />

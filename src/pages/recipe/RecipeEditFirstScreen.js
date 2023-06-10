@@ -128,7 +128,7 @@ const RecipeEditFirstScreen = ({navigation}) => {
           <ThumbnailImageEditContainer>
             {photo.uri == null || photo.uri === '' ? (
               <ImageSelectBox onPress={() => setAlert(true)}>
-                <Image source={require('../../assets/images/_격리_모드.png')} />
+                <Image source={require('../../assets/images/Camera_Icon.png')} />
               </ImageSelectBox>
             ) : (
               <TouchableOpacity onPress={() => setCancelAlert(true)}>

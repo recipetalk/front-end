@@ -10,7 +10,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: 'ONE_PERSON',
       labelText: '1인 가구',
-      imageURI: require('../../../assets/images/일인가구Icon.png'),
+      imageURI: require('../../../assets/images/One_Person_Icon.png'),
     },
     {
       key: 2,
@@ -18,7 +18,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: 'VERY_EASY',
       labelText: '5분 완성',
-      imageURI: require('../../../assets/images/5분완성Icon.png'),
+      imageURI: require('../../../assets/images/Five_Min_Icon.png'),
     },
     {
       key: 3,
@@ -26,7 +26,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: 'DIET',
       labelText: '다이어트',
-      imageURI: require('../../../assets/images/다이어트Icon.png'),
+      imageURI: require('../../../assets/images/Diet_Icon.png'),
     },
     {
       key: 4,
@@ -34,7 +34,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: 'STRESS_FREE',
       labelText: '스트레스 해소',
-      imageURI: require('../../../assets/images/스트레스해소Icon.png'),
+      imageURI: require('../../../assets/images/Stress_Free_Icon.png'),
     },
     {
       key: 5,
@@ -42,7 +42,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: 'PARTY',
       labelText: '파티',
-      imageURI: require('../../../assets/images/파티Icon.png'),
+      imageURI: require('../../../assets/images/Party_Icon.png'),
     },
     {
       key: 6,
@@ -50,7 +50,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: 'HEALTHY',
       labelText: '건강식',
-      imageURI: require('../../../assets/images/건강식Icon.png'),
+      imageURI: require('../../../assets/images/Healthy_Food_Icon.png'),
     },
     {
       key: 7,
@@ -58,7 +58,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: null,
       labelText: '반찬',
-      imageURI: require('../../../assets/images/반찬Icon.png'),
+      imageURI: require('../../../assets/images/Child_Food_Icon.png'),
     },
     {
       key: 8,
@@ -66,7 +66,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: null,
       labelText: '안주',
-      imageURI: require('../../../assets/images/안주Icon.png'),
+      imageURI: require('../../../assets/images/Drink_Food_Icon.png'),
     },
     {
       key: 9,
@@ -74,7 +74,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: null,
       labelText: '고기',
-      imageURI: require('../../../assets/images/고기Icon.png'),
+      imageURI: require('../../../assets/images/Meat_Icon.png'),
     },
     {
       key: 10,
@@ -82,7 +82,7 @@ const CComponent = () => {
       firstClicked: {key: 1},
       situation: null,
       labelText: '더보기',
-      imageURI: require('../../../assets/images/더보기Icon.png'),
+      imageURI: require('../../../assets/images/More_Icon.png'),
     },
   ];
   return (
