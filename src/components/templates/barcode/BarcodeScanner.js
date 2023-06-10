@@ -7,7 +7,7 @@ import {
   Vibration,
   View,
 } from 'react-native';
-import {Camera, CameraType} from 'react-native-camera-kit';
+import {Camera, CameraScreen, CameraType} from 'react-native-camera-kit';
 import {
   useFocusEffect,
   useIsFocused,
@@ -57,8 +57,7 @@ const BarcodeScanner = () => {
   return (
     <View style={styles.container}>
       {scaned ? (
-        <Camera
-          style={styles.scanner}
+        <CameraScreen
           ref={ref}
           cameraType={CameraType.Back} // Front/Back(default)
           zoomMode={'on'}
