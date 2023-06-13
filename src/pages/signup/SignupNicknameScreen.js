@@ -83,7 +83,9 @@ export default function SignupNicknameScreen({navigation}) {
               !equals(localNickname, accessNickname) ? '중복확인' : '확인완료'
             }
             LabelSize="14px"
-            isActive={isValidNickname && !equals(localNickname, accessNickname)}
+            isActive={
+              isValidNickname === 'ok' && !equals(localNickname, accessNickname)
+            }
             onPress={getIsValidNickname}
           />
         </DuplicationAndTextInputContainer>
