@@ -56,7 +56,6 @@ export default function RecentRecipeComponent({navigation}) {
         const data = JSON.parse(res.request._response);
         setData(data);
         setLast(() => determinePageEnd(data.length, limit));
-        console.log();
         setOffset(() => 20);
       })
       .catch(err => {
@@ -85,7 +84,6 @@ export default function RecentRecipeComponent({navigation}) {
       setData(recipes => recipes.concat(data));
       setLast(() => determinePageEnd(data.length, limit));
       setOffset(offset => offset + limit);
-      console.log(data);
     });
     setLoading(() => false);
   };

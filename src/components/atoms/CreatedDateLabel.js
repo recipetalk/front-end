@@ -10,7 +10,6 @@ function CreatedDateLabel({createdDate}) {
     }
   }, [createdDate]);
 
-  console.log(createdDate);
   if (date == null) {
     return null;
   }

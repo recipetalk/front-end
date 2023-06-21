@@ -76,7 +76,7 @@ const CommentHistoryScreen = ({navigation}) => {
           <TouchContainer onPress={() => navigation.pop()}>
             <Image source={require('../../assets/images/Back.png')} />
           </TouchContainer>
-          <TitleLabel>덧글 작성 내역</TitleLabel>
+          <TitleLabel>댓글 작성 내역</TitleLabel>
         </View>
       </TitlePart>
       <HorizontalBar height={5} />

@@ -71,7 +71,7 @@ const NavigatePartContainerComponent = ({navigation, setAlert}) => {
             source={require('../../../assets/images/Comment_b.png')}
             resizeMode={'contain'}
           />
-          <NavigateTitle>덧글 내역</NavigateTitle>
+          <NavigateTitle>댓글 내역</NavigateTitle>
         </NavigateTouchButton>
       </NavigateContainer>
 

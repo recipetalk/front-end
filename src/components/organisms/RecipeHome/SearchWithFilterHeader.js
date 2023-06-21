@@ -105,7 +105,7 @@ const SearchWithFilterHeader = () => {
               items={RecipeSortList}
               placeholder={'종류별'}
               minHeight={'31px'}
-              width={'100px'}
+              width={'140px'}
             />
           </TouchableWithoutFeedback>
           <TouchableWithoutFeedback>
@@ -145,7 +145,8 @@ const SearchInputContainer = styled.View`
 `;
 
 const HorizontalScrollContainer = styled.ScrollView`
-  margin-left: 20px;
+  margin-left: 5%;
+  margin-right: 5%;
 `;
 
 const CategorySelectorContainer = styled.View`

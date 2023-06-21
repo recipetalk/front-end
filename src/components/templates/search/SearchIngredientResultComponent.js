@@ -23,7 +23,7 @@ const SearchIngredientResultComponent = () => {
   }, [searchValue]);
 
   const init = async () => {
-    getSearchIngredient(searchValue).then(result => {
+    getSearchIngredient(searchValue, 0).then(result => {
       const data = JSON.parse(result.request._response);
       setIngredients(() => data);
     });

@@ -27,7 +27,7 @@ const OnePersonRecipeComponent = props => {
   }, [props.isRefresh]);
 
   const init = async () => {
-    await getDynamicRecipes(null, 'POPULAR', null, 'ONE_PERSON', 0, 4, null)
+    await getDynamicRecipes(null, 'NEW', null, 'ONE_PERSON', 0, 4, null)
       .then(res => {
         const data = JSON.parse(res.request._response);
         setData(data);

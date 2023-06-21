@@ -32,15 +32,15 @@ const ViewAllMyIngredients = () => {
   ];
   const threeItem = [
     {
-      label: '가까운 순서보기(임박)',
+      label: '임박',
       value: 'expiry_date_immi',
     },
     {
-      label: '여유로운 순서보기(여유)',
+      label: '여유',
       value: 'expiry_date_spare',
     },
     {
-      label: '이미 지난거 보기(지남)',
+      label: '지남',
       value: 'expired',
     },
   ];
@@ -125,7 +125,7 @@ const ViewAllMyIngredients = () => {
       <DropDownPickerContainer>
         <View>
           <DropDownPickerComponent
-            width="80px"
+            width="100px"
             items={oneItem}
             value={oneItemState}
             placeholder="등록일"
@@ -145,10 +145,10 @@ const ViewAllMyIngredients = () => {
         </View>
         <View>
           <DropDownPickerComponent
-            width="170px"
+            width="120px"
             items={threeItem}
             value={threeItemState}
-            placeholder="소비기한(임박)"
+            placeholder="소비기한 순"
             setValue={setThreeItemState}
             minHeight={'35px'}
           />
